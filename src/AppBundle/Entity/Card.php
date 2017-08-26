@@ -691,4 +691,38 @@ class Card
     {
         return $this->user;
     }
+
+    /**
+     * Add fieldInteger
+     *
+     * @param \AppBundle\Entity\FieldInteger $fieldInteger
+     *
+     * @return Card
+     */
+    public function addFieldInteger(\AppBundle\Entity\FieldInteger $fieldInteger)
+    {
+        $this->fieldIntegers[] = $fieldInteger;
+
+        return $this;
+    }
+
+    /**
+     * Remove fieldInteger
+     *
+     * @param \AppBundle\Entity\FieldInteger $fieldInteger
+     */
+    public function removeFieldInteger(\AppBundle\Entity\FieldInteger $fieldInteger)
+    {
+        $this->fieldIntegers->removeElement($fieldInteger);
+    }
+
+    /**
+     * Get fieldIntegers
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFieldIntegers()
+    {
+        return $this->fieldIntegers;
+    }
 }

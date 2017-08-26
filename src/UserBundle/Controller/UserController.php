@@ -93,8 +93,14 @@ class UserController extends Controller
                 ->find($post->get('colorId'));
             $card->setColor($color);
 
+
+
+
+
             $em->persist($card);
+
             $em->flush();
+
 
             foreach($post->get('subField') as $fieldId=>$value){
                 $subfield = $this->getDoctrine()
@@ -102,16 +108,16 @@ class UserController extends Controller
                     ->find($fieldId);
                 $storageTypeName = "\AppBundle\Entity\\".$subfield->getStorageType();
                 $storage = new $storageTypeName();
-                $storage->setCardId($card->getId());
+                $storage->setCard($card);
                 $storage->setCardFieldId($fieldId);
                 $storage->setValue($value);
-                //$storage->setSubField(new \AppBundle\Entity\SubField());
-                //dump($storage);
+
                 $em->persist($storage);
 
             }
+
             $em->flush();
-            $response = $this->redirectToRoute('homepage');
+            $response = $this->redirectToRoute('user_cards');
         }
 
         return $response;
@@ -130,6 +136,7 @@ class UserController extends Controller
             'result' => $result,
         ]);
     }
+
 
     /**
      * @Route("/ajax/getSubField")
@@ -173,7 +180,7 @@ class UserController extends Controller
             }
         }
 
-        return $this->redirectToRoute('homepage');
+        return $this->redirectToRoute('user_main');
     }
 
     /**
@@ -189,24 +196,6 @@ class UserController extends Controller
         return $this->redirectToRoute('homepage');
     }
 
-    /**
-     * @Route("/testMail")
-     */
-    public function testMailAction(\Swift_Mailer $mailer)
-    {
-        $message = (new \Swift_Message('Hello Email'))
-            ->setFrom('send@example.com')
-            ->setTo('wqs-info@mail.ru')
-            ->setBody(
-                $this->renderView(
-                    'email/registration.html.twig',
-                    array('name' => 'NaMe')
-                ),
-                'text/html'
-            );
-        $mailer->send($message);
-        return $this->redirectToRoute('homepage');
-    }
 
     /**
      * @Route("/userSignUp")
@@ -269,6 +258,8 @@ class UserController extends Controller
      */
     public function activateAccountAction($code)
     {
+        $return_url = 'homepage';
+
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->findOneBy(array(
@@ -287,6 +278,7 @@ class UserController extends Controller
                 'notice',
                 'Your account is activated!'
             );
+            $return_url = 'user_main';
         } else {
             $this->addFlash(
                 'notice',
@@ -294,13 +286,13 @@ class UserController extends Controller
             );
         }
 
-        return $this->redirectToRoute('homepage');
+        return $this->redirectToRoute($return_url);
     }
 
     /**
      * @Route("/user/edit/card/{cardId}")
      */
-    public function editCardAction($cardId, MenuGeneralType $mgt, MenuMarkModel $markmenu, MenuCity $mc)
+    public function editCardAction($cardId, MenuGeneralType $mgt, MenuMarkModel $markmenu, MenuCity $mc, SubFieldUtils $sf)
     {
         $conditions = $this->getDoctrine()
             ->getRepository(State::class)
@@ -332,8 +324,6 @@ class UserController extends Controller
             ->getRepository(City::class)
             ->find($card->getCityId());
 
-
-
         return $this->render('user/edit_card.html.twig',[
             'card' => $card,
             'conditions' => $conditions,
@@ -347,8 +337,88 @@ class UserController extends Controller
             'models' => $models,
             'mark_groups' => $markmenu->getGroups(),
             'countryCode' =>$city->getCountry(),
-            'regionId' =>$city->getParent()->getId(),
-            'cityId' =>$city->getId(),
+            'regionId' => $city->getParent()->getId(),
+            'regions' => $mc->getRegion($city->getCountry()),
+            'cities' => $city->getParent()->getChildren(),
+            'subfields' => $sf->getSubFieldsEdit($card)
         ]);
+    }
+
+    /**
+     * @Route("/card/update")
+     */
+    public function saveCardAction(Request $request)
+    {
+
+        $post = $request->request;
+
+        $card = $this->getDoctrine()
+            ->getRepository(Card::class)
+            ->find($post->get('cardId'));
+
+        $em = $this->getDoctrine()->getManager();
+
+        if ($post->has('delete')){
+            $em->remove($card);
+            $em->flush();
+            return $this->redirectToRoute('user_cards');
+        }
+
+        $card->setHeader($post->get('header'));
+
+        $modelId = $this->getDoctrine()
+            ->getRepository(Mark::class)
+            ->find($post->get('modelId'));
+        $card->setMarkModel($modelId);
+
+        $generalType = $this->getDoctrine()
+            ->getRepository(GeneralType::class)
+            ->find($post->get('generalTypeId'));
+        $card->setGeneralType($generalType);
+
+        $city = $this->getDoctrine()
+            ->getRepository(City::class)
+            ->find($post->get('cityId'));
+        $card->setCity($city);
+
+        $card->setProdYear($post->get('prodYear'));
+
+        $condition = $this->getDoctrine()
+            ->getRepository(State::class)
+            ->find($post->get('conditionId'));
+        $card->setCondition($condition);
+
+        $card->setServiceTypeId($post->get('serviceTypeId'));
+
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($this->get('session')->get('logged_user')->getId());
+        $card->setUser($user);
+
+        $color = $this->getDoctrine()
+            ->getRepository(Color::class)
+            ->find($post->get('colorId'));
+        $card->setColor($color);
+
+        $em->persist($card);
+
+
+        foreach($post->get('subField') as $fieldId=>$value){
+            $subfield = $this->getDoctrine()
+                ->getRepository(FieldType::class)
+                ->find($fieldId);
+
+            $dql = 'SELECT s FROM AppBundle:'.$subfield->getStorageType().' s WHERE s.cardId = ?1 AND s.cardFieldId = ?2';
+            $query = $em->createQuery($dql);
+            $query->setParameter(1, $card->getId());
+            $query->setParameter(2, $fieldId);
+            $storage = $query->getSingleResult();
+
+            $storage->setValue($value);
+            $em->persist($storage);
+
+        }
+        $em->flush();
+        return $this->redirectToRoute('user_cards');
     }
 }

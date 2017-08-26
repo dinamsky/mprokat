@@ -84,6 +84,7 @@ $( document ).ready(function() {
                 console.log(html);
                 if (html) {
                     $(element).attr('name', 'old');
+                    $(element).next('select').remove();
                     $(element).after(html);
                 }
             },

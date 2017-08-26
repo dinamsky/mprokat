@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * SubField
@@ -31,7 +32,7 @@ class SubField
     /**
      * @var int
      *
-     * @ORM\Column(name="parent_id", type="integer")
+     * @ORM\Column(name="parent_id", type="bigint", nullable=true)
      */
     private $parentId;
 
@@ -42,6 +43,24 @@ class SubField
      */
     private $header;
 
+    /**
+     * One Category has Many Categories.
+     * @ORM\OneToMany(targetEntity="SubField", mappedBy="parent")
+     */
+    private $children;
+
+    /**
+     * Many Categories have One Category.
+     * @ORM\ManyToOne(targetEntity="SubField", inversedBy="children")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=true)
+     */
+    private $parent;
+
+
+
+    public function __construct() {
+        $this->children = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -124,5 +143,62 @@ class SubField
     {
         return $this->header;
     }
-}
 
+    /**
+     * Add child
+     *
+     * @param \AppBundle\Entity\SubField $child
+     *
+     * @return SubField
+     */
+    public function addChild(\AppBundle\Entity\SubField $child)
+    {
+        $this->children[] = $child;
+
+        return $this;
+    }
+
+    /**
+     * Remove child
+     *
+     * @param \AppBundle\Entity\SubField $child
+     */
+    public function removeChild(\AppBundle\Entity\SubField $child)
+    {
+        $this->children->removeElement($child);
+    }
+
+    /**
+     * Get children
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    /**
+     * Set parent
+     *
+     * @param \AppBundle\Entity\SubField $parent
+     *
+     * @return SubField
+     */
+    public function setParent(\AppBundle\Entity\SubField $parent = null)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get parent
+     *
+     * @return \AppBundle\Entity\SubField
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+}

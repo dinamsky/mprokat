@@ -19,7 +19,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class ProfileController extends Controller
 {
     /**
-     * @Route("/user")
+     * @Route("/user", name="user_main")
      */
     public function indexAction()
     {
@@ -30,7 +30,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * @Route("/user/cards")
+     * @Route("/user/cards", name="user_cards")
      */
     public function userCardsAction(em $em)
     {
