@@ -1,0 +1,7 @@
+
+<select name="subField[{{ options[0].fieldId }}]" data-id="{{ options[0].fieldId }}" class="subFieldSelect">
+        <option value="0">- выберите -</option>
+    {% for option in options %}
+        <option value="{{ option.id }}">{{ option.header }}</option>
+    {% endfor %}
+</select>

@@ -37,5 +37,7 @@ monolog:
         #    type: chromephp
         #    level: info
 
-#swiftmailer:
-#    delivery_addresses: ['me@example.com']
+swiftmailer:
+    transport: gmail
+    username:  test.multiprokat
+    password:  147896325qqq

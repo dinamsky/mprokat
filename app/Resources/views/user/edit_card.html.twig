@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/editCardForm.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+    <form action="/card/new" method="POST"
+          data-country_code="{{ countryCode }}"
+          data-region_id="{{ regionId }}"
+          data-city_id="{{ cityId }}"
+          data-general_type_id="{{ card.generalTypeId }}"
+    >
+        <div>Главный тип:
+            <select name="generalTypeTopLevelId" id="generalTypeTopLevelId">
+                {{ include( 'common/ajax_edit_options.html.twig', { 'options': generalTopLevel, 'id': generalSecondLevel[card.generalTypeId].getParent.id }) }}
+            </select>
+            <select name="generalTypeId" id="generalTypeId">
+                {{ include( 'common/ajax_edit_options.html.twig', { 'options': generalSecondLevel, 'id': generalSecondLevel[card.generalTypeId].id }) }}
+            </select>
+        </div>
+
+        <div>Заголовок: <input type="text" name="header" value="{{ card.header }}"></div>
+
+        <div>Марка и модель:
+            <select name="groupName" id="markGroupName">
+                <option value="0">-выберите группу-</option>
+                {% for group_name, group_title in mark_groups %}
+                    <option value="{{ group_name }}" {{ group_name == model.groupName ? 'selected' : '' }}>{{ group_title }}</option>
+                {% endfor %}
+            </select>
+            <select name="mark" id="markId">
+                {{ include( 'common/ajax_edit_options.html.twig', { 'options': marks, 'id': mark.id }) }}
+            </select>
+            <select name="modelId" id="markModelId">
+                {{ include( 'common/ajax_edit_options.html.twig', { 'options': models, 'id': model.id }) }}
+            </select>
+        </div>
+
+        <div>Страна и город:
+            <select name="countryCode" id="countryCode">
+                <option value="0">-выберите страну-</option>
+                {% for country_code, country_title in countries %}
+                    <option value="{{ country_code }}">{{ country_title }}</option>
+                {% endfor %}
+            </select>
+            <select name="regionId" id="regionId"></select>
+            <select name="cityId" id="cityId"></select>
+        </div>
+
+        <div>Год выпуска:
+            <select name="prodYear">
+                {% for year in 1950..'now'|date('Y') %}
+                    <option value="{{ year }}" {{  year == card.prodYear  ? 'selected' : ''}}>{{ year }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>Состояние:
+            <select name="conditionId">
+                {% for condition in conditions %}
+                    <option value="{{ condition.id }}" {{ condition.id == card.conditionId ? 'selected' : '' }}>{{ condition.header }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>Прокат/аренда:
+            <label><input type="radio" name="serviceTypeId" value="1" {{ card.serviceTypeId == 1 ? 'checked' : '' }}>Прокат</label>
+            <label><input type="radio" name="serviceTypeId" value="2" {{ card.serviceTypeId == 2 ? 'checked' : '' }}>Аренда</label>
+        </div>
+
+        <div>Цвет:
+            <select name="colorId">
+                {% for color in colors %}
+                    <option value="{{ color.id }}" {{ color.id == card.colorId ? 'selected' : '' }}>{{ color.header }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div id="subfields">
+
+        </div>
+
+        <button class="uk-button uk-button-primary">Готово</button>
+
+    </form>
+{% endblock %}

@@ -1,0 +1,39 @@
+<div>
+    {% if app.session.get('logged_user').header is defined %}
+        <a href="/userLogout" class="uk-button uk-button-danger">Выход</a>
+    {% else %}
+        <button type="button" uk-toggle="target: #sign_in" class="uk-button">Вход</button>
+        <div class="uk-margin-top">
+            <button type="button" uk-toggle="target: #sign_up" class="uk-button">Регистрация</button>
+        </div>
+    {% endif %}
+</div>
+
+
+
+<hr>
+
+<div id="sign_in" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <h2 class="uk-modal-title">Вход</h2>
+        <form action="/userSignIn" method="POST">
+            <input type="text" name="email" placeholder="login">
+            <input type="password" name="password" placeholder="password">
+            <button>Войти</button>
+        </form>
+    </div>
+</div>
+
+<div id="sign_up" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <h2 class="uk-modal-title">Регистрация</h2>
+        <form action="/userSignUp" method="POST">
+            <input type="text" name="header" placeholder="name">
+            <input type="text" name="email" placeholder="email" required>
+            <input type="password" name="password" placeholder="password" required>
+            <button>Зарегистрироваться</button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,10 @@
+{% for item in result %}
+    <div>
+        <span>{{ item.label }}: </span>
+        {{ include(item.template, { 'options': item.value }) }}
+    </div>
+{% endfor %}
+
+
+
+

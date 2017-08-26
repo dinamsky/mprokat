@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+
+    <h1>{{ card.header }}</h1>
+    <div>Город: {{ card.getCity.header }}, {{ card.getCity.getParent.header }}, {{ card.getCity.country }}</div>
+    <div>Год выпуска: {{ card.prodYear }}</div>
+    <div>Тип транспорта: {{ card.getGeneralType.header }}</div>
+    <div>Состояние: {{ card.getCondition.header }}</div>
+    <div>Марка и модель: {{ card.getMarkModel.getParent.header }} {{ card.getMarkModel.header }}</div>
+    <div>Цвет: {{ card.getColor.header }}</div>
+    <div>Дата создания: {{ card.dateCreate|date("d-m-Y") }}</div>
+    <div>Просмотров: {{ card.views }}</div>
+
+    {% for subfield in sub_fields %}
+        <div>
+        {{ subfield.label }}:
+        {% if subfield.type == 'subfield' %}
+            {{ subfield.value.getHeader }}
+        {% else %}
+            {{ subfield.value.getValue }}
+        {% endif %}
+        </div>
+    {% endfor %}
+
+    <hr>
+    <div>
+        <b>{{ card.user.header }}</b>
+    </div>
+
+    <div>
+        {% for info in card.user.information %}
+            <div>{{ info.uiKey }}: {{ info.uiValue }}</div>
+        {% endfor %}
+    </div>
+
+
+
+{% endblock %}

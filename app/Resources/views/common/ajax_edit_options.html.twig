@@ -1,0 +1,4 @@
+<option value="0">- выберите -</option>
+{% for option in options %}
+    <option value="{{ option.id }}" {{ option.id == id ? 'selected' : '' }}>{{ option.header }}</option>
+{% endfor %}

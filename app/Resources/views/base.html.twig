@@ -2,12 +2,59 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+
+        {% block stylesheets %}
+            <link href="{{ asset('assets/css/uikit.css') }}" rel="stylesheet" />
+        {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <title>{% block title %}Welcome!{% endblock %}</title>
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        <div uk-grid>
+            <div class="uk-width-1-6">
+
+                {% if app.session.get('logged_user').header is defined %}
+                    <a href="/user">{{ app.session.get('logged_user').header }}</a>
+                    <br><br>
+                    <a href="/card/new" class="uk-button uk-button-primary">Добавить</a>
+                {% endif %}
+
+                {% block left_block %}{% endblock %}
+
+
+
+
+
+            </div>
+            <div class="uk-width-2-3">
+                {% for label, messages in app.flashes %}
+                    {% for message in messages %}
+                    <div uk-alert>
+                        <a class="uk-alert-close" uk-close></a>
+                        <div class="flash-{{ label }}">
+                            {{ message }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% endfor %}
+
+
+                {% block content %}{% endblock %}
+            </div>
+            <div class="uk-width-1-6">
+
+
+                {% block right_block %}{% endblock %}
+
+                {{ include('user/auth_button_modal.html.twig') }}
+                {#{{ include('filter_fields/custom_fields.html.twig', { 'custom_fields': custom_fields }) }}#}
+                {#{{ include('mark/mark_menu.html.twig', { 'mark_model': mark_model, 'city_id': city.id, 'general_type': general_type }) }}#}
+            </div>
+        </div>
+        {% block javascripts %}
+            <script src="{{ asset('assets/js/jquery-3.2.1.min.js') }}"></script>
+            <script src="{{ asset('assets/js/uikit.min.js') }}"></script>
+            <script src="{{ asset('assets/js/newCardForm.js') }}"></script>
+        {% endblock %}
     </body>
 </html>
