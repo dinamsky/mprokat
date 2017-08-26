@@ -20,3 +20,8 @@ monolog:
         console:
             type: console
             process_psr_3_messages: false
+
+swiftmailer:
+    transport: gmail
+    username:  test.multiprokat
+    password:  147896325qqq
