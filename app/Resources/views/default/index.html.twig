@@ -10,6 +10,13 @@
 {% endblock %}
 
 {% block content %}
+
+    {% if main is defined %}
+        <h1>Главная страница</h1>
+        <div>Топ 10 авто</div>
+        <div>Выберите категорию для перехода в список</div>
+    {% endif %}
+
     <div uk-grid>
 
             {% for card in cards %}

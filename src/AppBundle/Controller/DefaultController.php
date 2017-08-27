@@ -28,12 +28,14 @@ class DefaultController extends Controller
             'cards' => '',
             'custom_fields' => '',
             'countries' => $mc->getCountry(),
-            'general_type' => 1,
+            'general_type' => null,
             'city' => array(
                 'id' => 'RUS',
                 'regions' => array()
             ),
-            'mark_model' => array()
+            'mark_model' => array(),
+            'main' => true
+
         ]);
     }
 

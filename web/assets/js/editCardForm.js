@@ -13,7 +13,7 @@ $( document ).ready(function() {
             type: 'POST',
             data: {id:id},
             success: function(html){
-                $(t).parent('.edit_foto').remove();
+                $(t).parents('.edit_foto').remove();
             }
         });
     });

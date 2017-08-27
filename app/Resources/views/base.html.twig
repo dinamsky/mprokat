@@ -13,6 +13,7 @@
         <div uk-grid>
             <div class="uk-width-1-6">
 
+                <a href="/">Главная</a><br><br>
                 {% if app.session.get('logged_user').header is defined %}
                     <a href="/user">{{ app.session.get('logged_user').header }}</a>
                     <br><br>
