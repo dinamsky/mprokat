@@ -48,6 +48,59 @@ class SubFieldUtils extends Controller
         return $result;
     }
 
+    public function getSubFieldsEdit(Card $card)
+    {
+        foreach($card->getFieldIntegers() as $row){
+            $fieldInteger[$row->getCardFieldId()] = $row->getValue();
+        }
+
+        $query = $this->em->createQuery('SELECT f, t FROM AppBundle:CardField f JOIN f.fieldType t WHERE f.generalTypeId = ?1');
+        $query->setParameter(1, $card->getGeneralTypeId());
+        $fields = $query->getResult();
+        foreach ($fields as $field){
+
+            $query = $this->em->createQuery('SELECT s FROM AppBundle:SubField s WHERE s.id = ?1');
+            $query->setParameter(1, $fieldInteger[$field->getfieldType()->getId()]);
+            $is_subfield = $query->getResult();
+            if ($is_subfield) $subfield = $is_subfield[0];
+            else $subfield = array();
+
+            if ($field->getfieldType()->getformElementType() == 'numberInput'){
+                $result[] = array(
+                    'template' => 'common/input_edit.html.twig',
+                    'value' => $field->getfieldId(),
+                    'label' => $field->getfieldType()->getHeader(),
+                    'data' => $fieldInteger[$field->getfieldType()->getId()],
+                    'subfield' => $subfield
+                );
+            }
+            if ($field->getfieldType()->getformElementType() == 'ajaxMenu'){
+
+                $last = $subfield;
+                $level = 0;
+                if ($subfield->getParentId() != NULL) do {
+                    $subfield = $subfield->getParent();
+                    $level++;
+                } while ($subfield->getParentId() != NULL);
+
+                $query = $this->em->createQuery('SELECT s FROM AppBundle:SubField s WHERE s.fieldId=?1 AND s.parentId IS NULL');
+                $query->setParameter(1, $field->getfieldType()->getId());
+                $first = $query->getResult();
+
+                $result[] = array(
+                    'template' => 'common/ajax_select_edit.html.twig',
+                    'label' => $field->getfieldType()->getHeader(),
+                    'data' => $fieldInteger[$field->getfieldType()->getId()],
+                    'subfield_first' => $subfield,
+                    'subfield_last' => $last,
+                    'first' => $first,
+                    'level' => $level,
+                );
+            }
+        }
+        return $result;
+    }
+
     public function getCardSubFields(Card $card)
     {
         $generalTypeId = $card->getGeneralTypeId();

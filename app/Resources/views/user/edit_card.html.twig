@@ -6,12 +6,7 @@
 {% endblock %}
 
 {% block content %}
-    <form action="/card/new" method="POST"
-          data-country_code="{{ countryCode }}"
-          data-region_id="{{ regionId }}"
-          data-city_id="{{ cityId }}"
-          data-general_type_id="{{ card.generalTypeId }}"
-    >
+    <form action="/card/update" method="POST">
         <div>Главный тип:
             <select name="generalTypeTopLevelId" id="generalTypeTopLevelId">
                 {{ include( 'common/ajax_edit_options.html.twig', { 'options': generalTopLevel, 'id': generalSecondLevel[card.generalTypeId].getParent.id }) }}
@@ -42,11 +37,15 @@
             <select name="countryCode" id="countryCode">
                 <option value="0">-выберите страну-</option>
                 {% for country_code, country_title in countries %}
-                    <option value="{{ country_code }}">{{ country_title }}</option>
+                    <option value="{{ country_code }}" {{ country_code == countryCode ? 'selected' : '' }}>{{ country_title }}</option>
                 {% endfor %}
             </select>
-            <select name="regionId" id="regionId"></select>
-            <select name="cityId" id="cityId"></select>
+            <select name="regionId" id="regionId">
+                {{ include( 'common/ajax_edit_options.html.twig', { 'options': regions, 'id': regionId }) }}
+            </select>
+            <select name="cityId" id="cityId">
+                {{ include( 'common/ajax_edit_options.html.twig', { 'options': cities, 'id': card.cityId }) }}
+            </select>
         </div>
 
         <div>Год выпуска:
@@ -78,11 +77,62 @@
             </select>
         </div>
 
-        <div id="subfields">
+        <hr>
 
+        <div id="subfields">
+        {% for item in subfields %}
+            <div>
+                <span>{{ item.label }}: </span>
+                {% if item.subfield_last is defined %}
+                {{ include(item.template, {
+                    'data': item.data,
+                    'subfield_last':item.subfield_last,
+                    'subfield_first':item.subfield_first,
+                    'first':item.first,
+                    'level':item.level
+                }) }}
+                {% else %}
+                    {{ include(item.template, {
+                        'options': item.value,
+                        'data': item.data,
+                        'subfield':item.subfield,
+                    }) }}
+                {% endif %}
+            </div>
+        {% endfor %}
         </div>
 
-        <button class="uk-button uk-button-primary">Готово</button>
+        <hr>
+
+        {% set setFeatures = [] %}
+        {% for cardFeature in card.getCardFeatures %}
+            {% set setFeatures = setFeatures|merge([cardFeature.featureId]) %}
+        {% endfor %}
+
+        <div uk-grid>
+            {% for feature in features %}
+                <div>
+                    <b>{{ feature.header }}</b>
+                    <div>
+                        {% for item in feature.getChildren %}
+                            <div>
+                                <label>
+                                    <input class="feature_item" type="checkbox" name="feature[{{ item.id }}]" value="{{  item.id in setFeatures ? '1' : '0' }}"
+                                            {{  item.id in setFeatures ? 'checked' : '0' }}
+                                    > {{ item.header }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <hr>
+
+        <input type="hidden" name="cardId" value="{{ card.id }}">
+        <button class="uk-button uk-button-primary" name="update">Записать</button>
+        <button class="uk-button uk-button-danger" name="delete">Удалить</button>
 
     </form>
 {% endblock %}

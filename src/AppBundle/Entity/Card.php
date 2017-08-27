@@ -172,8 +172,14 @@ class Card
      */
     private $fieldIntegers;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\CardFeature", mappedBy="card", cascade={"remove"}, orphanRemoval=true)
+     */
+    private $cardFeatures;
+
     public function __construct() {
         $this->fieldIntegers = new ArrayCollection();
+        $this->features = new ArrayCollection();
     }
 
     /**
@@ -690,5 +696,79 @@ class Card
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Add fieldInteger
+     *
+     * @param \AppBundle\Entity\FieldInteger $fieldInteger
+     *
+     * @return Card
+     */
+    public function addFieldInteger(\AppBundle\Entity\FieldInteger $fieldInteger)
+    {
+        $this->fieldIntegers[] = $fieldInteger;
+
+        return $this;
+    }
+
+    /**
+     * Remove fieldInteger
+     *
+     * @param \AppBundle\Entity\FieldInteger $fieldInteger
+     */
+    public function removeFieldInteger(\AppBundle\Entity\FieldInteger $fieldInteger)
+    {
+        $this->fieldIntegers->removeElement($fieldInteger);
+    }
+
+    /**
+     * Get fieldIntegers
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFieldIntegers()
+    {
+        return $this->fieldIntegers;
+    }
+
+
+
+
+
+
+
+    /**
+     * Add cardFeature
+     *
+     * @param \AppBundle\Entity\CardFeature $cardFeature
+     *
+     * @return Card
+     */
+    public function addCardFeature(\AppBundle\Entity\CardFeature $cardFeature)
+    {
+        $this->cardFeatures[] = $cardFeature;
+
+        return $this;
+    }
+
+    /**
+     * Remove cardFeature
+     *
+     * @param \AppBundle\Entity\CardFeature $cardFeature
+     */
+    public function removeCardFeature(\AppBundle\Entity\CardFeature $cardFeature)
+    {
+        $this->cardFeatures->removeElement($cardFeature);
+    }
+
+    /**
+     * Get cardFeatures
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCardFeatures()
+    {
+        return $this->cardFeatures;
     }
 }

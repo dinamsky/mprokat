@@ -18,14 +18,13 @@ class MenuSubFieldAjax extends Controller
         $this->em = $em;
     }
 
-    public function getSubField($fieldId, $parentId = 0)
+    public function getSubField($fieldId, $parentId = NULL)
     {
         $query = $this->em->createQuery('SELECT s FROM AppBundle:SubField s WHERE s.fieldId = ?1 AND s.parentId = ?2');
+        if ($parentId == NULL) $query = $this->em->createQuery('SELECT s FROM AppBundle:SubField s WHERE s.fieldId = ?1 AND s.parentId IS NULL');
         $query->setParameter(1, $fieldId);
-        $query->setParameter(2, $parentId);
+        if ($parentId != NULL) $query->setParameter(2, $parentId);
         return $query->getResult();
     }
-
-
 
 }

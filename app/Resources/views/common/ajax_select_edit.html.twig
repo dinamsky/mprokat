@@ -1,0 +1,21 @@
+<select
+        {% if subfield_first.getChildren is empty %}
+        name="subField[{{ subfield_first.getFieldId }}]" data-id="{{ subfield_first.getFieldId }}" class="subFieldSelect">
+        {% else %}
+        name="" data-id="{{ subfield_first.getFieldId }}" class="subFieldSelect">
+        {% endif %}
+    <option value="0">- выберите -</option>
+    {% for option in first %}
+        <option value="{{ option.id }}" {{ option.id == subfield_first.id ? 'selected' : '' }}>{{ option.header }}</option>
+    {% endfor %}
+</select>
+
+
+{% if subfield_first.getChildren is not empty %}
+<select name="subField[{{ subfield_first.getFieldId }}]" data-id="{{ subfield_first.getFieldId }}" class="subFieldSelect">
+    <option value="0">- выберите -</option>
+    {%  for option in subfield_first.getChildren %}
+        <option value="{{ option.id }}" {{ option.id == subfield_last.id ? 'selected' : '' }}>{{ option.header }}</option>
+    {% endfor %}
+</select>
+{% endif %}

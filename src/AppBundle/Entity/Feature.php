@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * SubField
+ * Feature
  *
- * @ORM\Table(name="sub_field")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\SubFieldRepository")
+ * @ORM\Table(name="feature")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\FeatureRepository")
  */
-class SubField
+class Feature
 {
     /**
      * @var int
@@ -23,11 +23,11 @@ class SubField
     private $id;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="field_id", type="integer")
+     * @ORM\Column(name="group_name", type="string", length=255)
      */
-    private $fieldId;
+    private $groupName;
 
     /**
      * @var int
@@ -45,23 +45,25 @@ class SubField
 
     /**
      * One Category has Many Categories.
-     * @ORM\OneToMany(targetEntity="SubField", mappedBy="parent")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Feature", mappedBy="parent")
      */
     private $children;
 
     /**
      * Many Categories have One Category.
-     * @ORM\ManyToOne(targetEntity="SubField", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Feature", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=true)
      */
     private $parent;
 
-
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\CardFeature", mappedBy="feature", cascade={"remove"}, orphanRemoval=true)
+     */
+    private $cardFeatures;
 
     public function __construct() {
         $this->children = new ArrayCollection();
     }
-
     /**
      * Get id
      *
@@ -73,27 +75,27 @@ class SubField
     }
 
     /**
-     * Set fieldId
+     * Set groupName
      *
-     * @param integer $fieldId
+     * @param string $groupName
      *
-     * @return SubField
+     * @return Feature
      */
-    public function setFieldId($fieldId)
+    public function setGroupName($groupName)
     {
-        $this->fieldId = $fieldId;
+        $this->groupName = $groupName;
 
         return $this;
     }
 
     /**
-     * Get fieldId
+     * Get groupName
      *
-     * @return int
+     * @return string
      */
-    public function getFieldId()
+    public function getGroupName()
     {
-        return $this->fieldId;
+        return $this->groupName;
     }
 
     /**
@@ -101,7 +103,7 @@ class SubField
      *
      * @param integer $parentId
      *
-     * @return SubField
+     * @return Feature
      */
     public function setParentId($parentId)
     {
@@ -125,7 +127,7 @@ class SubField
      *
      * @param string $header
      *
-     * @return SubField
+     * @return Feature
      */
     public function setHeader($header)
     {
@@ -147,11 +149,11 @@ class SubField
     /**
      * Add child
      *
-     * @param \AppBundle\Entity\SubField $child
+     * @param \AppBundle\Entity\Feature $child
      *
-     * @return SubField
+     * @return Feature
      */
-    public function addChild(\AppBundle\Entity\SubField $child)
+    public function addChild(\AppBundle\Entity\Feature $child)
     {
         $this->children[] = $child;
 
@@ -161,9 +163,9 @@ class SubField
     /**
      * Remove child
      *
-     * @param \AppBundle\Entity\SubField $child
+     * @param \AppBundle\Entity\Feature $child
      */
-    public function removeChild(\AppBundle\Entity\SubField $child)
+    public function removeChild(\AppBundle\Entity\Feature $child)
     {
         $this->children->removeElement($child);
     }
@@ -181,11 +183,11 @@ class SubField
     /**
      * Set parent
      *
-     * @param \AppBundle\Entity\SubField $parent
+     * @param \AppBundle\Entity\Feature $parent
      *
-     * @return SubField
+     * @return Feature
      */
-    public function setParent(\AppBundle\Entity\SubField $parent = null)
+    public function setParent(\AppBundle\Entity\Feature $parent = null)
     {
         $this->parent = $parent;
 
@@ -195,10 +197,44 @@ class SubField
     /**
      * Get parent
      *
-     * @return \AppBundle\Entity\SubField
+     * @return \AppBundle\Entity\Feature
      */
     public function getParent()
     {
         return $this->parent;
+    }
+
+    /**
+     * Add cardFeature
+     *
+     * @param \AppBundle\Entity\CardFeature $cardFeature
+     *
+     * @return Feature
+     */
+    public function addCardFeature(\AppBundle\Entity\CardFeature $cardFeature)
+    {
+        $this->cardFeatures[] = $cardFeature;
+
+        return $this;
+    }
+
+    /**
+     * Remove cardFeature
+     *
+     * @param \AppBundle\Entity\CardFeature $cardFeature
+     */
+    public function removeCardFeature(\AppBundle\Entity\CardFeature $cardFeature)
+    {
+        $this->cardFeatures->removeElement($cardFeature);
+    }
+
+    /**
+     * Get cardFeatures
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCardFeatures()
+    {
+        return $this->cardFeatures;
     }
 }
