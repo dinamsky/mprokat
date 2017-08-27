@@ -177,9 +177,15 @@ class Card
      */
     private $cardFeatures;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Foto", mappedBy="card", cascade={"remove"}, orphanRemoval=true)
+     */
+    private $fotos;
+
     public function __construct() {
         $this->fieldIntegers = new ArrayCollection();
         $this->features = new ArrayCollection();
+        $this->fotos = new ArrayCollection();
     }
 
     /**
@@ -770,5 +776,39 @@ class Card
     public function getCardFeatures()
     {
         return $this->cardFeatures;
+    }
+
+    /**
+     * Add foto
+     *
+     * @param \AppBundle\Entity\Foto $foto
+     *
+     * @return Card
+     */
+    public function addFoto(\AppBundle\Entity\Foto $foto)
+    {
+        $this->fotos[] = $foto;
+
+        return $this;
+    }
+
+    /**
+     * Remove foto
+     *
+     * @param \AppBundle\Entity\Foto $foto
+     */
+    public function removeFoto(\AppBundle\Entity\Foto $foto)
+    {
+        $this->fotos->removeElement($foto);
+    }
+
+    /**
+     * Get fotos
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFotos()
+    {
+        return $this->fotos;
     }
 }

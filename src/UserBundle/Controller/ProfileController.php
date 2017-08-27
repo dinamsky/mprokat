@@ -77,6 +77,8 @@ class ProfileController extends Controller
         $em->persist($user);
         $em->flush();
 
+        $this->get('session')->set('logged_user', $user);
+
         return $this->redirectToRoute('user_profile');
     }
 }

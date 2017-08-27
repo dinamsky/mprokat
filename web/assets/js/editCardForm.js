@@ -5,4 +5,17 @@ $( document ).ready(function() {
         else $(this).val('0').removeAttr('checked');
     });
 
+    $('.delete_foto_button').on('click',function(){
+        var t = $(this);
+        var id = $(t).data('id');
+        $.ajax({
+            url: '/ajax/deleteFoto',
+            type: 'POST',
+            data: {id:id},
+            success: function(html){
+                $(t).parent('.edit_foto').remove();
+            }
+        });
+    });
+
 });
