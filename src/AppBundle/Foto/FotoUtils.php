@@ -10,6 +10,7 @@ use AppBundle\Entity\Card;
 use AppBundle\Entity\Foto;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class FotoUtils extends Controller
@@ -124,12 +125,12 @@ class FotoUtils extends Controller
             ->getRepository(Foto::class)
             ->find($id);
 
-
-
         $this->em->remove($foto);
         $this->em->flush();
 
         unlink ($main_dir.'/'.$id.'.jpg');
         unlink ($thumbs.'/'.$id.'.jpg');
+
+        return new Response();
     }
 }
