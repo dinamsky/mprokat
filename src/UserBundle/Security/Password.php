@@ -24,7 +24,6 @@ class Password
 
         $this->random_state = microtime() . uniqid(rand(), TRUE); // removed getmypid() for compatibility reasons
 
-        dump($this);
     }
 
     function get_random_bytes($count)
