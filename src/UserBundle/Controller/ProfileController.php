@@ -36,7 +36,7 @@ class ProfileController extends Controller
      */
     public function userCardsAction(em $em)
     {
-        $query = $em->createQuery('SELECT c FROM AppBundle:Card c WHERE c.userId = ?1');
+        $query = $em->createQuery('SELECT * FROM AppBundle:Card c WHERE c.userId = ?1');
         $query->setParameter(1, $this->get('session')->get('logged_user')->getId());
         $cards = $query->getResult();
         return $this->render('user/user_cards.html.twig',['cards' => $cards]);
@@ -76,6 +76,8 @@ class ProfileController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
         $em->flush();
+
+        $this->get('session')->set('logged_user', $user);
 
         return $this->redirectToRoute('user_profile');
     }

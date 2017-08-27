@@ -122,7 +122,7 @@ class UserController extends Controller
                 $em->persist($storage);
             }
 
-            foreach ($post->get('feature') as $featureId=>$featureValue){
+            if ($post->has('feature')) foreach ($post->get('feature') as $featureId=>$featureValue){
                 $feature = $this->getDoctrine()
                     ->getRepository(Feature::class)
                     ->find($featureId);
@@ -442,45 +442,19 @@ class UserController extends Controller
 
         }
 
-        $allFeatures = $this->getDoctrine()
-            ->getRepository(Feature::class)
-            ->findAll();
+        $query = $em->createQuery('DELETE AppBundle\Entity\CardFeature c WHERE c.cardId = ?1');
+        $query->setParameter(1, $card->getId());
+        $query->execute();
 
-        $cardFeatures = $card->getCardFeatures();
-        foreach ($cardFeatures as $cf){
-            $existFeatures[$cf->getFeatureId()] = 1;
-        }
-
-        $postFeatures = [];
-        if ($post->has('feature')) foreach($post->get('feature') as $fid=>$pf){
-            $postFeatures[$fid] = 1;
-        }
-
-        foreach ($allFeatures as $f) {
-
-            $fid = $f->getId();
-            if(isset($postFeatures[$fid]) and !isset($existFeatures[$fid])){
-                $feature = $this->getDoctrine()
-                    ->getRepository(Feature::class)
-                    ->find($fid);
-                $cardFeature = new CardFeature();
-                $cardFeature->setCard($card);
-                $cardFeature->setFeature($feature);
-                $em->persist($cardFeature);
-            }
-
-            if(!isset($postFeatures[$fid]) and isset($existFeatures[$fid])) {
-                $cardFeature = $this->getDoctrine()
-                    ->getRepository(CardFeature::class)
-                    ->findOneBy([
-                        'cardId' => $card->getId(),
-                        'featureId' => $fid
-                    ]);
-                $em->remove($cardFeature);
-            }
-
+        if ($post->has('feature')) foreach($post->get('feature') as $fid=>$f) {
+            $feature = $this->getDoctrine()
+                ->getRepository(Feature::class)
+                ->find($fid);
+            $cardFeature = new CardFeature();
+            $cardFeature->setCard($card);
+            $cardFeature->setFeature($feature);
+            $em->persist($cardFeature);
         };
-
 
         $em->flush();
         return $this->redirectToRoute('user_cards');
