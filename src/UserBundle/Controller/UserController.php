@@ -4,6 +4,8 @@ namespace UserBundle\Controller;
 
 use AppBundle\Entity\CardFeature;
 use AppBundle\Entity\Feature;
+use AppBundle\Entity\Foto;
+use AppBundle\Foto\FotoUtils;
 use UserBundle\Entity\User;
 use AppBundle\Entity\Card;
 use AppBundle\Entity\City;
@@ -33,6 +35,9 @@ class UserController extends Controller
      */
     public function indexAction(MenuMarkModel $markmenu, MenuGeneralType $mgt, MenuCity $mc, Request $request)
     {
+
+// TODO check mark AC in ajax
+
         if($this->get('session')->get('logged_user') === null) return new Response("",404);
 
         $card = new Card();
@@ -100,14 +105,9 @@ class UserController extends Controller
                 ->find($post->get('colorId'));
             $card->setColor($color);
 
-
-
-
-
             $em->persist($card);
 
             $em->flush();
-
 
             foreach($post->get('subField') as $fieldId=>$value){
                 $subfield = $this->getDoctrine()
@@ -132,9 +132,91 @@ class UserController extends Controller
                 $em->persist($cardFeature);
             }
 
-
-
             $em->flush();
+
+            $main_dir = $_SERVER['DOCUMENT_ROOT'].'/assets/images';
+            $thumbs = $_SERVER['DOCUMENT_ROOT'].'/assets/thumbs';
+            $ff = 'fotos';
+            $is_main = true;
+
+            foreach($_FILES[$ff]['name'] as $k=>$v)
+            {
+                if (!empty($_FILES[$ff]['name'][$k]))
+                {
+                    $ext = explode(".",basename($_FILES[$ff]['name'][$k]));
+                    $ext = strtolower($ext[(count($ext)-1)]);
+
+                    $foto = new Foto();
+                    $foto->setCard($card);
+                    $foto->setIsMain($is_main);
+                    $em->persist($foto);
+                    $em->flush();
+
+                    $is_main = false;
+
+                    $file_id = $foto->getId();
+
+                    $new_name = 'original_'.$file_id.'.'.$ext;
+                    if(move_uploaded_file($_FILES[$ff]['tmp_name'][$k],$main_dir.'/'.$new_name))
+                    {
+                        //var_dump($_FILES);
+                        if(preg_match('/[.](GIF)|(gif)$/', $new_name)) {
+                            $im1 = imagecreatefromgif($main_dir.'/'.$new_name) ; //gif
+                        }
+                        if(preg_match('/[.](PNG)|(png)$/', $new_name)) {
+                            $im1 = imagecreatefrompng($main_dir.'/'.$new_name) ;//png
+                        }
+
+                        if(preg_match('/[.](JPG)|(jpg)|(jpeg)|(JPEG)$/', $new_name)) {
+                            $im1 = imagecreatefromjpeg($main_dir.'/'.$new_name); //jpg
+                        }
+
+                        $width = 1280;
+                        $height = 900;
+
+                        $w_src1 = imagesx($im1);
+                        $h_src1 = imagesy($im1);
+                        $ratio = $w_src1/$h_src1;
+                        if ($width/$height > $ratio) {
+                            $width = $height*$ratio;
+                        } else {
+                            $height = $width/$ratio;
+                        }
+                        $image_p = imagecreatetruecolor($width, $height);
+                        $bgColor = imagecolorallocate($image_p, 255,255,255);
+                        imagefill($image_p , 0,0 , $bgColor);
+                        imagecopyresampled($image_p, $im1, 0, 0, 0, 0, $width, $height, $w_src1, $h_src1);
+
+                        imagejpeg($image_p, $main_dir.'/'.$file_id.'.jpg');
+
+                        $width = 200;
+                        $height = 200;
+
+                        $w_src1 = imagesx($im1);
+                        $h_src1 = imagesy($im1);
+                        $ratio = $w_src1/$h_src1;
+                        if ($width/$height > $ratio) {
+                            $width = $height*$ratio;
+                        } else {
+                            $height = $width/$ratio;
+                        }
+                        $image_p = imagecreatetruecolor($width, $height);
+                        $bgColor = imagecolorallocate($image_p, 255,255,255);
+                        imagefill($image_p , 0,0 , $bgColor);
+                        imagecopyresampled($image_p, $im1, 0, 0, 0, 0, $width, $height, $w_src1, $h_src1);
+                        imagejpeg($image_p, $thumbs.'/'.$file_id.'.jpg');
+
+                        unlink ($main_dir.'/'.$new_name);
+                    }
+                    else
+                    {
+                        $em->remove($foto);
+                        $em->flush();
+                    }
+                }
+            }
+
+
             $response = $this->redirectToRoute('user_cards');
         }
 
@@ -370,7 +452,7 @@ class UserController extends Controller
     /**
      * @Route("/card/update")
      */
-    public function saveCardAction(Request $request)
+    public function saveCardAction(Request $request, FotoUtils $fu)
     {
 
         $post = $request->request;
@@ -457,6 +539,9 @@ class UserController extends Controller
         };
 
         $em->flush();
+
+        $fu->uploadImages($card);
+
         return $this->redirectToRoute('user_cards');
     }
 }

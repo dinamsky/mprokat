@@ -17,3 +17,5 @@
 /web/bundles/
 /web/assets/images/*
 !web/assets/images/.gitkeep
+/web/assets/thumbs/*
+!web/assets/thumbs/.gitkeep

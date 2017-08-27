@@ -5,17 +5,17 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * CardFeature
+ * Foto
  *
- * @ORM\Table(name="card_feature")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CardFeatureRepository")
+ * @ORM\Table(name="foto")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\FotoRepository")
  */
-class CardFeature
+class Foto
 {
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="bigint")
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -29,25 +29,17 @@ class CardFeature
     private $cardId;
 
     /**
-     * @var int
+     * @var bool
      *
-     * @ORM\Column(name="feature_id", type="bigint")
+     * @ORM\Column(name="is_main", type="boolean")
      */
-    private $featureId;
+    private $isMain;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Card", inversedBy="cardFeatures")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Card", inversedBy="fotos")
      * @ORM\JoinColumn(name="card_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $card;
-
-
-    /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Feature", inversedBy="cardFeatures")
-     * @ORM\JoinColumn(name="feature_id", referencedColumnName="id")
-     */
-    private $feature;
-
 
     /**
      * Get id
@@ -64,7 +56,7 @@ class CardFeature
      *
      * @param integer $cardId
      *
-     * @return CardFeature
+     * @return Foto
      */
     public function setCardId($cardId)
     {
@@ -84,27 +76,27 @@ class CardFeature
     }
 
     /**
-     * Set featureId
+     * Set isMain
      *
-     * @param integer $featureId
+     * @param boolean $isMain
      *
-     * @return CardFeature
+     * @return Foto
      */
-    public function setFeatureId($featureId)
+    public function setIsMain($isMain)
     {
-        $this->featureId = $featureId;
+        $this->isMain = $isMain;
 
         return $this;
     }
 
     /**
-     * Get featureId
+     * Get isMain
      *
-     * @return int
+     * @return bool
      */
-    public function getFeatureId()
+    public function getIsMain()
     {
-        return $this->featureId;
+        return $this->isMain;
     }
 
     /**
@@ -112,7 +104,7 @@ class CardFeature
      *
      * @param \AppBundle\Entity\Card $card
      *
-     * @return CardFeature
+     * @return Foto
      */
     public function setCard(\AppBundle\Entity\Card $card = null)
     {
@@ -129,29 +121,5 @@ class CardFeature
     public function getCard()
     {
         return $this->card;
-    }
-
-    /**
-     * Set feature
-     *
-     * @param \AppBundle\Entity\Feature $feature
-     *
-     * @return CardFeature
-     */
-    public function setFeature(\AppBundle\Entity\Feature $feature = null)
-    {
-        $this->feature = $feature;
-
-        return $this;
-    }
-
-    /**
-     * Get feature
-     *
-     * @return \AppBundle\Entity\Feature
-     */
-    public function getFeature()
-    {
-        return $this->feature;
     }
 }

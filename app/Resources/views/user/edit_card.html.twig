@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-    <form action="/card/update" method="POST">
+    <form action="/card/update" method="POST" enctype="multipart/form-data">
         <div>Главный тип:
             <select name="generalTypeTopLevelId" id="generalTypeTopLevelId">
                 {{ include( 'common/ajax_edit_options.html.twig', { 'options': generalTopLevel, 'id': generalSecondLevel[card.generalTypeId].getParent.id }) }}
@@ -127,6 +127,21 @@
                 </div>
             {% endfor %}
         </div>
+
+        <hr>
+
+        <div uk-grid>
+            {% for foto in card.getFotos %}
+                <div class="uk-width-1-5 uk-position-relative edit_foto">
+                    <div style="background:url('/assets/thumbs/{{ foto.id }}.jpg'); background-size: cover; height: 100px;">
+                        <button type="button" class="uk-button-danger delete_foto_button" uk-close data-id="{{ foto.id }}"></button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <hr>
+
+        Загрузить фотографии: <input type="file" name="fotos[]" multiple> (до 20 одновременно)
 
         <hr>
 

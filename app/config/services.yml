@@ -44,5 +44,10 @@ services:
     AppBundle\SubFields\:
             resource: '../../src/AppBundle/SubFields'
 
+    AppBundle\Foto\:
+            resource: '../../src/AppBundle/Foto'
+            public: true
+            tags: ['controller.service_arguments']
+
     UserBundle\Security\:
                 resource: '../../src/UserBundle/Security'

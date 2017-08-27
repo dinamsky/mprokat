@@ -2,7 +2,7 @@
 
 {% block content %}
 
-    <form action="/card/new" method="POST">
+    <form action="/card/new" method="POST" enctype="multipart/form-data">
         <div>Главный тип:
             <select name="generalTypeTopLevelId" id="generalTypeTopLevelId">
                 {{ include( 'common/ajax_options.html.twig', { 'options': generalTopLevel }) }}
@@ -86,6 +86,10 @@
                 </div>
             {% endfor %}
         </div>
+
+        <hr>
+
+        Загрузить фотографии: <input type="file" name="fotos[]" multiple> (до 20 одновременно)
 
         <hr>
         <button class="uk-button uk-button-primary">Готово</button>

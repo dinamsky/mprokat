@@ -9,3 +9,7 @@ app:
 app_menu:
     resource: '@AppBundle/Menu/'
     type: annotation
+
+app_foto:
+    resource: '@AppBundle/Foto/'
+    type: annotation

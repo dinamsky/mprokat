@@ -34,6 +34,18 @@
     </div>
 
     <hr>
+
+    <div uk-grid>
+        {% for foto in card.getFotos %}
+            <div class="uk-width-1-5">
+                <div style="background:url('/assets/thumbs/{{ foto.id }}.jpg'); background-size: cover; height: 100px;">
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <hr>
+
     <div>
         <b>{{ card.user.header }}</b>
     </div>
