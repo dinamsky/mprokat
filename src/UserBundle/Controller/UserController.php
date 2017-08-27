@@ -2,6 +2,8 @@
 
 namespace UserBundle\Controller;
 
+use AppBundle\Entity\CardFeature;
+use AppBundle\Entity\Feature;
 use UserBundle\Entity\User;
 use AppBundle\Entity\Card;
 use AppBundle\Entity\City;
@@ -43,6 +45,10 @@ class UserController extends Controller
             ->getRepository(Color::class)
             ->findAll();
 
+        $features = $this->getDoctrine()
+            ->getRepository(Feature::class)
+            ->findBy(['parent'=>null]);
+
         if($request->isMethod('GET')) {
             $response = $this->render('card/card_new.html.twig', [
                 'generalTopLevel' => $mgt->getTopLevel(),
@@ -51,6 +57,7 @@ class UserController extends Controller
                 'mark_groups' => $markmenu->getGroups(),
                 'conditions' => $conditions,
                 'colors' => $colors,
+                'features' => $features,
             ]);
         }
 
@@ -113,8 +120,19 @@ class UserController extends Controller
                 $storage->setValue($value);
 
                 $em->persist($storage);
-
             }
+
+            foreach ($post->get('feature') as $featureId=>$featureValue){
+                $feature = $this->getDoctrine()
+                    ->getRepository(Feature::class)
+                    ->find($featureId);
+                $cardFeature = new CardFeature();
+                $cardFeature->setCard($card);
+                $cardFeature->setFeature($feature);
+                $em->persist($cardFeature);
+            }
+
+
 
             $em->flush();
             $response = $this->redirectToRoute('user_cards');
@@ -324,6 +342,10 @@ class UserController extends Controller
             ->getRepository(City::class)
             ->find($card->getCityId());
 
+        $features = $this->getDoctrine()
+            ->getRepository(Feature::class)
+            ->findBy(['parent'=>null]);
+
         return $this->render('user/edit_card.html.twig',[
             'card' => $card,
             'conditions' => $conditions,
@@ -340,7 +362,8 @@ class UserController extends Controller
             'regionId' => $city->getParent()->getId(),
             'regions' => $mc->getRegion($city->getCountry()),
             'cities' => $city->getParent()->getChildren(),
-            'subfields' => $sf->getSubFieldsEdit($card)
+            'subfields' => $sf->getSubFieldsEdit($card),
+            'features' => $features
         ]);
     }
 
@@ -418,6 +441,47 @@ class UserController extends Controller
             $em->persist($storage);
 
         }
+
+        $allFeatures = $this->getDoctrine()
+            ->getRepository(Feature::class)
+            ->findAll();
+
+        $cardFeatures = $card->getCardFeatures();
+        foreach ($cardFeatures as $cf){
+            $existFeatures[$cf->getFeatureId()] = 1;
+        }
+
+        $postFeatures = [];
+        if ($post->has('feature')) foreach($post->get('feature') as $fid=>$pf){
+            $postFeatures[$fid] = 1;
+        }
+
+        foreach ($allFeatures as $f) {
+
+            $fid = $f->getId();
+            if(isset($postFeatures[$fid]) and !isset($existFeatures[$fid])){
+                $feature = $this->getDoctrine()
+                    ->getRepository(Feature::class)
+                    ->find($fid);
+                $cardFeature = new CardFeature();
+                $cardFeature->setCard($card);
+                $cardFeature->setFeature($feature);
+                $em->persist($cardFeature);
+            }
+
+            if(!isset($postFeatures[$fid]) and isset($existFeatures[$fid])) {
+                $cardFeature = $this->getDoctrine()
+                    ->getRepository(CardFeature::class)
+                    ->findOneBy([
+                        'cardId' => $card->getId(),
+                        'featureId' => $fid
+                    ]);
+                $em->remove($cardFeature);
+            }
+
+        };
+
+
         $em->flush();
         return $this->redirectToRoute('user_cards');
     }

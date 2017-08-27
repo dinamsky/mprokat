@@ -67,6 +67,27 @@
 
         </div>
 
+
+        <hr>
+
+        <div uk-grid>
+            {% for feature in features %}
+                <div>
+                    <b>{{ feature.header }}</b>
+                    <div>
+                        {% for item in feature.getChildren %}
+                            <div>
+                                <label>
+                                    <input type="checkbox" name="feature[{{ item.id }}]"> {{ item.header }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <hr>
         <button class="uk-button uk-button-primary">Готово</button>
 
     </form>

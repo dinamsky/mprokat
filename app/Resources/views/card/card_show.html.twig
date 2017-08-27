@@ -24,6 +24,16 @@
     {% endfor %}
 
     <hr>
+
+    <div>
+        {% for feature in card.getCardFeatures %}
+            <div class="uk-button uk-button-default">
+                {{ feature.getFeature.header }}
+            </div>
+        {% endfor %}
+    </div>
+
+    <hr>
     <div>
         <b>{{ card.user.header }}</b>
     </div>

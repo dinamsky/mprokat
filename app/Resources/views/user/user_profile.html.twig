@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+
+{% block content %}
+    <form action="/profile/save" method="POST">
+        <div>Имя: <input name="header" value="{{ user.header }}"></div>
+        {% for info in user.information %}
+            <div>{{ info.uiKey }}: <input name="{{ info.uiKey }}" value="{{ info.uiValue }}"></div>
+        {% endfor %}
+        <button class="uk-button uk-button-primary">Записать</button>
+    </form>
+{% endblock %}
+

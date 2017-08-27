@@ -2,7 +2,7 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {#<script src="{{ asset('assets/js/editCardForm.js') }}"></script>#}
+    <script src="{{ asset('assets/js/editCardForm.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -77,6 +77,8 @@
             </select>
         </div>
 
+        <hr>
+
         <div id="subfields">
         {% for item in subfields %}
             <div>
@@ -99,6 +101,35 @@
             </div>
         {% endfor %}
         </div>
+
+        <hr>
+
+        {% set setFeatures = [] %}
+        {% for cardFeature in card.getCardFeatures %}
+            {% set setFeatures = setFeatures|merge([cardFeature.featureId]) %}
+        {% endfor %}
+
+        <div uk-grid>
+            {% for feature in features %}
+                <div>
+                    <b>{{ feature.header }}</b>
+                    <div>
+                        {% for item in feature.getChildren %}
+                            <div>
+                                <label>
+                                    <input class="feature_item" type="checkbox" name="feature[{{ item.id }}]" value="{{  item.id in setFeatures ? '1' : '0' }}"
+                                            {{  item.id in setFeatures ? 'checked' : '0' }}
+                                    > {{ item.header }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <hr>
+
         <input type="hidden" name="cardId" value="{{ card.id }}">
         <button class="uk-button uk-button-primary" name="update">Записать</button>
         <button class="uk-button uk-button-danger" name="delete">Удалить</button>
