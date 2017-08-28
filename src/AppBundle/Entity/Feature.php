@@ -63,6 +63,7 @@ class Feature
 
     public function __construct() {
         $this->children = new ArrayCollection();
+        $this->cardFeatures = new ArrayCollection();
     }
     /**
      * Get id

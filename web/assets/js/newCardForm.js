@@ -83,9 +83,12 @@ $( document ).ready(function() {
             success: function(html){
                 console.log(html);
                 if (html) {
-                    $(element).attr('name', 'old');
+                    $(element).attr('name', 'old').attr('class','old_select');
                     $(element).next('select').remove();
                     $(element).after(html);
+                }
+                else {
+                    //
                 }
             },
             error: function (response) {

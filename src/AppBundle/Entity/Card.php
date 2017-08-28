@@ -179,13 +179,20 @@ class Card
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Foto", mappedBy="card", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OrderBy({"isMain" = "DESC"})
      */
     private $fotos;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\CardPrice", mappedBy="card", cascade={"remove"}, orphanRemoval=true)
+     */
+    private $cardPrices;
+
     public function __construct() {
         $this->fieldIntegers = new ArrayCollection();
-        $this->features = new ArrayCollection();
+        $this->cardFeatures = new ArrayCollection();
         $this->fotos = new ArrayCollection();
+        $this->cardPrices = new ArrayCollection();
     }
 
     /**
@@ -810,5 +817,39 @@ class Card
     public function getFotos()
     {
         return $this->fotos;
+    }
+
+    /**
+     * Add cardPrice
+     *
+     * @param \AppBundle\Entity\CardPrice $cardPrice
+     *
+     * @return Card
+     */
+    public function addCardPrice(\AppBundle\Entity\CardPrice $cardPrice)
+    {
+        $this->cardPrices[] = $cardPrice;
+
+        return $this;
+    }
+
+    /**
+     * Remove cardPrice
+     *
+     * @param \AppBundle\Entity\CardPrice $cardPrice
+     */
+    public function removeCardPrice(\AppBundle\Entity\CardPrice $cardPrice)
+    {
+        $this->cardPrices->removeElement($cardPrice);
+    }
+
+    /**
+     * Get cardPrices
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCardPrices()
+    {
+        return $this->cardPrices;
     }
 }

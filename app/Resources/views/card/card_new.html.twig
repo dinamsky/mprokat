@@ -1,8 +1,14 @@
 {% extends 'base.html.twig' %}
 
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/new_card_validate.js') }}"></script>
+{% endblock %}
+
 {% block content %}
 
-    <form action="/card/new" method="POST" enctype="multipart/form-data">
+    <form action="/card/new" method="POST" enctype="multipart/form-data" onsubmit="return new_card_validate();">
         <div>Главный тип:
             <select name="generalTypeTopLevelId" id="generalTypeTopLevelId">
                 {{ include( 'common/ajax_options.html.twig', { 'options': generalTopLevel }) }}
@@ -67,6 +73,17 @@
 
         </div>
 
+
+        <hr>
+
+        <div>
+        {% for price in prices %}
+            <div>
+                <span>{{ price.header }}: </span>
+                <input type="number" name="price[{{ price.id }}]"> руб.
+            </div>
+        {% endfor %}
+        </div>
 
         <hr>
 

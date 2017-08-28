@@ -18,4 +18,17 @@ $( document ).ready(function() {
         });
     });
 
+    $('.main_foto_button').on('click',function(){
+        var t = $(this);
+        var id = $(t).data('id');
+        $.ajax({
+            url: '/ajax/mainFoto',
+            type: 'POST',
+            data: {id:id},
+            success: function(html){
+                $(t).parents('.edit_foto').prependTo(".edit_fotos_block");
+            }
+        });
+    });
+
 });
