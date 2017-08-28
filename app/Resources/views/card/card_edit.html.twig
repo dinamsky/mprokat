@@ -2,6 +2,10 @@
 
 {% block javascripts %}
     {{ parent() }}
+
+    <script src="{{ asset('assets/tinymce/jquery.tinymce.min.js') }}"></script>
+    <script src="{{ asset('assets/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ asset('assets/js/visual_editor.js') }}"></script>
     <script src="{{ asset('assets/js/editCardForm.js') }}"></script>
 {% endblock %}
 
@@ -75,6 +79,10 @@
                     <option value="{{ color.id }}" {{ color.id == card.colorId ? 'selected' : '' }}>{{ color.header }}</option>
                 {% endfor %}
             </select>
+        </div>
+
+        <div>Описание:
+            <textarea name="content" class="visual_editor">{{ card.content }}</textarea>
         </div>
 
         <hr>

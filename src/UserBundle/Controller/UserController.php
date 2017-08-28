@@ -77,6 +77,7 @@ class UserController extends Controller
             $em = $this->getDoctrine()->getManager();
             $post = $request->request;
             $card->setHeader($post->get('header'));
+            $card->setContent($post->get('content'));
 
             $modelId = $this->getDoctrine()
                 ->getRepository(Mark::class)
@@ -369,7 +370,7 @@ class UserController extends Controller
             ->getRepository(Price::class)
             ->findAll();
 
-        return $this->render('user/edit_card.html.twig',[
+        return $this->render('card/card_edit.html.twig',[
             'card' => $card,
             'conditions' => $conditions,
             'colors' => $colors,
@@ -412,6 +413,7 @@ class UserController extends Controller
         }
 
         $card->setHeader($post->get('header'));
+        $card->setContent($post->get('content'));
 
         $modelId = $this->getDoctrine()
             ->getRepository(Mark::class)

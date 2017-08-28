@@ -1,6 +1,6 @@
 {% for item in result %}
     <div>
-        <span>{{ item.label }}: </span>
+        <span class="subfield_label" data-id="{{ item.value[0] is defined ? item.value[0].fieldId : item.value }}">{{ item.label }}</span>:
         {{ include(item.template, { 'options': item.value }) }}
     </div>
 {% endfor %}

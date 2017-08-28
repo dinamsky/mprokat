@@ -3,6 +3,9 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="{{ asset('assets/tinymce/jquery.tinymce.min.js') }}"></script>
+    <script src="{{ asset('assets/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ asset('assets/js/visual_editor.js') }}"></script>
     <script src="{{ asset('assets/js/new_card_validate.js') }}"></script>
 {% endblock %}
 
@@ -67,6 +70,12 @@
                     <option value="{{ color.id }}">{{ color.header }}</option>
                 {% endfor %}
             </select>
+        </div>
+
+
+
+        <div>Описание:
+            <textarea name="content" class="visual_editor"></textarea>
         </div>
 
         <div id="subfields">

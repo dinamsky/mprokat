@@ -25,6 +25,10 @@
 
     <hr>
 
+    <div>{{ card.content|raw }}</div>
+
+    <hr>
+
     <div>
         {% for price in card.getCardPrices %}
             <div class="">
