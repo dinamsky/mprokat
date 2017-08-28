@@ -104,6 +104,18 @@
 
         <hr>
 
+        <div>
+            {% for price in prices %}
+                <div>
+                    <span>{{ price.header }}: </span>
+                    <input type="number" name="price[{{ price.id }}]"
+                           value="{% for cardPrice in card.getCardPrices if cardPrice.priceId == price.id %}{{ cardPrice.value }}{% endfor %}"> руб.
+                </div>
+            {% endfor %}
+        </div>
+
+        <hr>
+
         {% set setFeatures = [] %}
         {% for cardFeature in card.getCardFeatures %}
             {% set setFeatures = setFeatures|merge([cardFeature.featureId]) %}
@@ -130,11 +142,17 @@
 
         <hr>
 
-        <div uk-grid>
+        <div uk-grid class="edit_fotos_block">
             {% for foto in card.getFotos %}
-                <div class="uk-width-1-5 uk-position-relative edit_foto">
-                    <div style="background:url('/assets/thumbs/{{ foto.id }}.jpg'); background-size: cover; height: 100px;">
-                        <button type="button" class="uk-button-danger delete_foto_button" uk-close data-id="{{ foto.id }}"></button>
+                <div class="uk-width-1-5 edit_foto">
+                    <div style="background:url('/assets/thumbs/{{ foto.id }}.jpg') center center; background-size: cover; height: 100px;" class="uk-position-relative">
+                        <button type="button" class="uk-button-danger delete_foto_button" uk-close data-id="{{ foto.id }}"
+                        style="position:absolute;top:0;right:0;color: white;">
+                        </button>
+
+                        <button type="button" class="uk-button-default main_foto_button" uk-icon="icon: home" data-id="{{ foto.id }}"
+                                style="position:absolute;top:0;left:0;color: white;"><span></span>
+                        </button>
                     </div>
                 </div>
             {% endfor %}

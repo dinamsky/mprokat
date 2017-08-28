@@ -27,7 +27,8 @@ class FotoUtils extends Controller
         $main_dir = $_SERVER['DOCUMENT_ROOT'].'/assets/images';
         $thumbs = $_SERVER['DOCUMENT_ROOT'].'/assets/thumbs';
         $ff = 'fotos';
-        $is_main = true;
+        $is_main = false;
+        if(empty($card->getFotos())) $is_main = true;
 
         foreach($_FILES[$ff]['name'] as $k=>$v)
         {
@@ -130,6 +131,30 @@ class FotoUtils extends Controller
 
         unlink ($main_dir.'/'.$id.'.jpg');
         unlink ($thumbs.'/'.$id.'.jpg');
+
+        return new Response();
+    }
+
+    /**
+     * @Route("/ajax/mainFoto")
+     */
+
+    public function mainFoto(Request $request)
+    {
+        $post = $request->request;
+        $id = $post->get('id');
+
+        $foto = $this->em
+            ->getRepository(Foto::class)
+            ->find($id);
+
+        $query = $this->em->createQuery('UPDATE AppBundle:Foto f SET f.isMain = 0 WHERE f.cardId = ?1');
+        $query->setParameter(1, $foto->getCardId());
+        $query->execute();
+
+        $foto->setIsMain(true);
+        $this->em->persist($foto);
+        $this->em->flush();
 
         return new Response();
     }

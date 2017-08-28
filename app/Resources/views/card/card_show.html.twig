@@ -26,6 +26,16 @@
     <hr>
 
     <div>
+        {% for price in card.getCardPrices %}
+            <div class="">
+                {{ price.value }} руб. в {{ price.getPrice.header }}
+            </div>
+        {% endfor %}
+    </div>
+
+    <hr>
+
+    <div>
         {% for feature in card.getCardFeatures %}
             <div class="uk-button uk-button-default">
                 {{ feature.getFeature.header }}
@@ -38,7 +48,9 @@
     <div uk-grid>
         {% for foto in card.getFotos %}
             <div class="uk-width-1-5">
-                <div style="background:url('/assets/thumbs/{{ foto.id }}.jpg'); background-size: cover; height: 100px;">
+                <div style="background:url('/assets/thumbs/{{ foto.id }}.jpg') center center;
+                        background-size: cover;
+                        height: 100px;">
                 </div>
             </div>
         {% endfor %}
@@ -56,6 +68,8 @@
         {% endfor %}
     </div>
 
-
+    {% if app.session.get('logged_user').header is defined %}
+        <a class="uk-button uk-button-primary" href="/user/edit/card/{{ card.id }}">Редактировать</a>
+    {% endif %}
 
 {% endblock %}
