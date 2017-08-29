@@ -140,7 +140,7 @@ class UserController extends Controller
                 $em->persist($cardFeature);
             }
 
-            if ($post->has('price')) foreach ($post->get('price') as $priceId=>$priceValue){
+            if ($post->has('price')) foreach ($post->get('price') as $priceId=>$priceValue) if ($priceValue!="") {
                 $price = $this->getDoctrine()
                     ->getRepository(Price::class)
                     ->find($priceId);
