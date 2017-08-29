@@ -10,7 +10,8 @@
 {% endblock %}
 
 {% block content %}
-    <form action="/card/update" method="POST" enctype="multipart/form-data">
+
+    <form action="/card/update" method="POST" enctype="multipart/form-data" class="standard_wide">
         <div>Главный тип:
             <select name="generalTypeTopLevelId" id="generalTypeTopLevelId">
                 {{ include( 'common/ajax_edit_options.html.twig', { 'options': generalTopLevel, 'id': generalSecondLevel[card.generalTypeId].getParent.id }) }}

@@ -2,78 +2,154 @@
 
 {% block content %}
 
-    <h1>{{ card.header }}</h1>
-    <div>Город: {{ card.getCity.header }}, {{ card.getCity.getParent.header }}, {{ card.getCity.country }}</div>
-    <div>Год выпуска: {{ card.prodYear }}</div>
-    <div>Тип транспорта: {{ card.getGeneralType.header }}</div>
-    <div>Состояние: {{ card.getCondition.header }}</div>
-    <div>Марка и модель: {{ card.getMarkModel.getParent.header }} {{ card.getMarkModel.header }}</div>
-    <div>Цвет: {{ card.getColor.header }}</div>
-    <div>Дата создания: {{ card.dateCreate|date("d-m-Y") }}</div>
-    <div>Просмотров: {{ card.views }}</div>
 
-    {% for subfield in sub_fields %}
-        <div>
-        {{ subfield.label }}:
-        {% if subfield.type == 'subfield' %}
-            {{ subfield.value.getHeader }}
-        {% else %}
-            {{ subfield.value.getValue }}
-        {% endif %}
+    <div class="uk-flex uk-flex-bottom" style="background:url('/assets/images/{% for foto in card.getFotos if foto.isMain %}{{ foto.id }}{% endfor %}.jpg') center center;
+            background-size: cover;
+            height: 500px;">
+
+        <div class="card_cover_description">
+            <div class="standard_wide">
+                <h1 class="c_white">{{ card.header }}</h1>
+                <div>Город: {{ card.getCity.header }}, {{ card.getCity.getParent.header }}, {{ card.getCity.country }}</div>
+                <div>Опубликовано: {{ card.dateCreate|date("d.m.Y") }} Просмотров: {{ card.views }}</div>
+            </div>
         </div>
-    {% endfor %}
 
-    <hr>
-
-    <div>{{ card.content|raw }}</div>
-
-    <hr>
-
-    <div>
-        {% for price in card.getCardPrices %}
-            <div class="">
-                {{ price.value }} руб. в {{ price.getPrice.header }}
-            </div>
-        {% endfor %}
     </div>
 
-    <hr>
 
-    <div>
-        {% for feature in card.getCardFeatures %}
-            <div class="uk-button uk-button-default">
-                {{ feature.getFeature.header }}
-            </div>
-        {% endfor %}
+    <div class="breadcrumbs uk-margin-bottom">
+        <div class="standard_wide">
+            <a href="/">Главная</a>
+        </div>
     </div>
 
-    <hr>
+    <div class="standard_wide">
 
     <div uk-grid>
-        {% for foto in card.getFotos %}
-            <div class="uk-width-1-5">
-                <div style="background:url('/assets/thumbs/{{ foto.id }}.jpg') center center;
-                        background-size: cover;
-                        height: 100px;">
+        <div class="uk-width-3-4">
+
+
+            <div uk-grid>
+                {% for foto in card.getFotos %}
+                    <div class="uk-width-1-5">
+                        <div style="background:url('/assets/thumbs/{{ foto.id }}.jpg') center center;
+                                background-size: cover;
+                                height: 100px;">
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+
+            <ul uk-tab>
+                <li><a href="#">Информация</a></li>
+                <li><a href="#">Карта</a></li>
+                <li><a href="#">Местность</a></li>
+            </ul>
+
+            <ul class="uk-switcher uk-margin">
+                <li>
+                    <div uk-grid>
+                        <div class="uk-width-1-2">
+
+                            <div>
+                                {% for price in card.getCardPrices %}
+                                    <div class="">
+                                        {{ price.value }} руб. в {{ price.getPrice.header }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            <hr>
+
+                            <div>Год выпуска: {{ card.prodYear }}</div>
+                            <div>Состояние: {{ card.getCondition.header }}</div>
+                            <div>Марка и модель: {{ card.getMarkModel.getParent.header }} {{ card.getMarkModel.header }}</div>
+                            <div>Цвет: {{ card.getColor.header }}</div>
+
+
+
+                            {% for subfield in sub_fields %}
+                                <div>
+                                    {{ subfield.label }}:
+                                    {% if subfield.type == 'subfield' %}
+                                        {{ subfield.value.getHeader }}
+                                    {% else %}
+                                        {{ subfield.value.getValue }}
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+
+
+
+                        </div>
+                        <div class="uk-width-1-2">
+                            <div>{{ card.content|raw }}</div>
+                        </div>
+                    </div>
+
+                </li>
+                <li>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
+                <li>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur, sed do eiusmod.</li>
+            </ul>
+
+
+
+
+
+
+
+            <h2 class="pf_style_header"><span>Характеристики</span></h2>
+
+            <div uk-grid>
+                {% for feature in card.getCardFeatures %}
+                    <div class="">
+                        <span class="check_icon" uk-icon="icon:check; ratio: 1"></span>{{ feature.getFeature.header }}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <hr>
+
+
+
+            <h2 class="pf_style_header"><span>{{ card.user.header }}</span></h2>
+
+            <div uk-grid>
+                <div class="uk-width-1-5"></div>
+                <div class="uk-width-2-5">
+                    {% for info in card.user.information %}
+                        <div>{{ info.uiKey }}: {{ info.uiValue }}</div>
+                    {% endfor %}
+                </div>
+                <div class="uk-width-2-5">
+                    <form action="#" uk-grid class="uk-grid-medium">
+                        <div class="uk-width-1-2"><input type="text" name="" class="uk-input"></div>
+                        <div class="uk-width-1-2"><input type="text" name="" class="uk-input uk-width-1-1"></div>
+                        <div class="uk-width-1-1"><input type="text" name="" class="uk-input "></div>
+                        <div class="uk-width-1-1"><textarea name="" class="uk-width-1-1 short_textarea"></textarea></div>
+                        <div class="uk-width-1-1"><button class="uk-button uk-button-default">Отправить</button></div>
+                    </form>
                 </div>
             </div>
-        {% endfor %}
+
+            <div>
+
+            </div>
+
+            {% if app.session.get('logged_user').header is defined %}
+                <a class="uk-button uk-button-primary" href="/user/edit/card/{{ card.id }}">Редактировать</a>
+            {% endif %}
+        </div>
+        <div class="uk-width-1-4">
+            <h3 class="pf_style_header"><span>Поиск</span></h3>
+            {{ include('search/search_form.html.twig') }}
+        </div>
     </div>
 
-    <hr>
 
-    <div>
-        <b>{{ card.user.header }}</b>
+
     </div>
-
-    <div>
-        {% for info in card.user.information %}
-            <div>{{ info.uiKey }}: {{ info.uiValue }}</div>
-        {% endfor %}
-    </div>
-
-    {% if app.session.get('logged_user').header is defined %}
-        <a class="uk-button uk-button-primary" href="/user/edit/card/{{ card.id }}">Редактировать</a>
-    {% endif %}
 
 {% endblock %}
