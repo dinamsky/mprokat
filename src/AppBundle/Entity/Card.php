@@ -140,6 +140,13 @@ class Card
     private $isActive = 1;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_top", type="boolean", nullable=true)
+     */
+    private $isTop = 0;
+
+    /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="date_create", type="datetime", nullable=true)

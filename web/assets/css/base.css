@@ -1,0 +1,111 @@
+#content{
+    min-height:500px;
+}
+
+.standard_wide{
+    width: 1170px;
+    margin: 0 auto;
+}
+
+
+.top_sc_links{
+    border-left:1px solid white;
+}
+
+.top_sc_links a{
+    border-right: 1px solid white;
+    color: white;
+    display: inline-block;
+    width: 45px;
+    text-align: center;
+    vertical-align: top;
+    padding: 1px 0 6px 0;
+}
+
+.top_sticky{
+    padding: 30px 0;
+    background: rgba(255, 255, 255, 0.86);
+}
+
+.top_sticky.uk-active{
+    padding: 10px 0;
+    background: rgba(255, 255, 255, 0.86);
+}
+
+.top_sticky.uk-active .logo{
+    width: 200px;
+}
+
+.top_user_actions{
+    border-right:1px solid white;
+}
+
+.top_user_actions a, .top_user_actions_button{
+    color:white;
+    border: 0;
+    border-left:1px solid white;
+    display: inline-block;
+    text-align: center;
+    vertical-align: top;
+    padding: 1px 5px 6px 5px;
+    background: transparent;
+    cursor: pointer;
+}
+
+.card_cover_description{
+    background: rgba(0, 0, 0, 0.26);
+    color: white;
+    width: 100%;
+    padding: 10px 0;
+}
+
+.breadcrumbs{
+    border-bottom: 1px solid lightgrey;
+    padding:10px 0;
+}
+
+.pf_style_header{
+    border-bottom: 2px solid lightgrey;
+}
+
+.pf_style_header span{
+    display: inline-block;
+    border-bottom: 2px solid #ad2424;
+    padding-bottom: 5px;
+    position: relative;
+    top: 2px;
+}
+
+.short_textarea{
+    width: 100%;
+    max-width: 100%;
+    min-height: 100px;
+}
+
+.check_icon{
+    background: green;
+    color: white;
+    margin-right: 5px;
+}
+
+.view_select{
+    border: 1px solid lightgrey;
+    padding: 5px;
+}
+
+.bordered{
+    border:1px solid lightgray;
+}
+
+.padding20{
+    padding:20px;
+}
+
+.footer_info{
+    background: #283d51;
+    padding: 30px 0;
+}
+
+.bottom_line{
+    padding: 20px 0;
+}

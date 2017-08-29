@@ -1,0 +1,21 @@
+<div uk-grid class="uk-grid-medium uk-grid-match">
+    {% for card in cards %}
+        <div class="uk-width-1-4">
+            <div class="bordered">
+                <div style="background:url('/assets/thumbs/{% for foto in card.getFotos if foto.isMain %}{{ foto.id }}{% endfor %}.jpg') center center;
+                        background-size: cover;
+                        height: 150px;">
+                </div>
+                <div class="padding20">
+                    <a href="/card/{{ card.id }}">{{ card.header }}</a>
+                    <div>
+                        {{ card.getCity.header }}, {{ card.getCity.getParent.header }}, {{ card.getCity.country }}
+                    </div>
+                    <div>
+                        {{ card.getMarkModel.getParent.header }} {{ card.getMarkModel.header }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

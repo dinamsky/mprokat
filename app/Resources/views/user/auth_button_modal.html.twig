@@ -1,17 +1,16 @@
-<div>
+<div class="top_user_actions">
     {% if app.session.get('logged_user').header is defined %}
-        <a href="/userLogout" class="uk-button uk-button-danger">Выход</a>
+        <a href="/user"><span uk-icon="icon:user"></span> {{ app.session.get('logged_user').header }}</a>
+        <a href="/userLogout" class=""><span uk-icon="icon:sign-out"></span> Выход</a>
     {% else %}
-        <button type="button" uk-toggle="target: #sign_in" class="uk-button">Вход</button>
-        <div class="uk-margin-top">
-            <button type="button" uk-toggle="target: #sign_up" class="uk-button">Регистрация</button>
-        </div>
+        <div  uk-toggle="target: #sign_in" class="top_user_actions_button"><span uk-icon="icon:sign-in"></span> Войти</div>
+        <div  uk-toggle="target: #sign_up" class="top_user_actions_button"><span uk-icon="icon:lock"></span>Регистрация</div>
     {% endif %}
 </div>
 
 
 
-<hr>
+
 
 <div id="sign_in" uk-modal>
     <div class="uk-modal-dialog uk-modal-body">

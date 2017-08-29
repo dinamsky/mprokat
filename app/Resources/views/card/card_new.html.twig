@@ -11,7 +11,7 @@
 
 {% block content %}
 
-    <form action="/card/new" method="POST" enctype="multipart/form-data" onsubmit="return new_card_validate();">
+    <form action="/card/new" method="POST" enctype="multipart/form-data" onsubmit="return new_card_validate();" class="standard_wide">
         <div>Главный тип:
             <select name="generalTypeTopLevelId" id="generalTypeTopLevelId">
                 {{ include( 'common/ajax_options.html.twig', { 'options': generalTopLevel }) }}

@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/search_page.js') }}"></script>
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="standard_wide">
+        <div uk-grid>
+            <div class="uk-width-3-4">
+                <h3 class="pf_style_header"><span>Результаты: {{ cards|length }}</span></h3>
+                <div class="uk-text-right uk-margin-bottom">
+                    <button class="view_select" type="button" value="grid_view" uk-icon="icon:grid"></button>
+                    <button class="view_select" type="button" value="list_view" uk-icon="icon:list"></button>
+                </div>
+                {{ include('search/' ~ view ~ '.html.twig') }}
+            </div>
+            <div class="uk-width-1-4">
+                <h3 class="pf_style_header"><span>Поиск</span></h3>
+                {{ include('search/search_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+
+
