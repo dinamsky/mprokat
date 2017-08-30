@@ -1,13 +1,14 @@
 <div uk-grid class="uk-grid-medium">
     {% for card in cards %}
         <div class="uk-width-1-1">
-            <div class="bordered">
+            <div class="bordered uk-position-relative">
                 <div uk-grid class="uk-grid-collapse">
                     <div class="uk-width-1-5">
-                        <div style="background:url('/assets/thumbs/{% for foto in card.getFotos if foto.isMain %}{{ foto.id }}{% endfor %}.jpg') center center;
+                        <a href="/card/{{ card.id }}" style="background:url('/assets/thumbs/{% for foto in card.getFotos if foto.isMain %}{{ foto.id }}{% endfor %}.jpg') center center;
                                 background-size: cover;
-                                height: 120px;">
-                        </div>
+                                height: 120px;
+                                display: block;">
+                        </a>
                     </div>
                     <div class="uk-width-4-5">
                         <div class="padding20">
@@ -21,6 +22,15 @@
                         </div>
                     </div>
                 </div>
+
+                {% if app.session.get('admin').email is defined %}
+                    <form action="/card/update" method="POST" style="position: absolute;top:0;right:0;">
+                        <input type="hidden" name="cardId" value="{{ card.id }}">
+                        <button class="uk-button uk-button-danger" name="delete">Удалить</button>
+                    </form>
+                    <a class="uk-button-primary" href="/user/edit/card/{{ card.id }}" uk-icon="icon:pencil" style="position: absolute;left:0;top:0"></a>
+                {% endif %}
+
             </div>
         </div>
     {% endfor %}

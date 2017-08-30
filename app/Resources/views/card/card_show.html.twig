@@ -1,5 +1,10 @@
 {% extends 'base.html.twig' %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/showCard.js') }}"></script>
+{% endblock %}
+
 {% block content %}
 
 
@@ -10,7 +15,7 @@
         <div class="card_cover_description">
             <div class="standard_wide">
                 <h1 class="c_white">{{ card.header }}</h1>
-                <div>Город: {{ card.getCity.header }}, {{ card.getCity.getParent.header }}, {{ card.getCity.country }}</div>
+                <div>{{ card.getCity.header }}, {{ card.getCity.getParent.header }}, {{ card.getCity.country }} {{ card.address }}</div>
                 <div>Опубликовано: {{ card.dateCreate|date("d.m.Y") }} Просмотров: {{ card.views }}</div>
             </div>
         </div>
@@ -42,13 +47,13 @@
             </div>
 
 
-            <ul uk-tab>
+            <ul id="tt" uk-tab>
                 <li><a href="#">Информация</a></li>
                 <li><a href="#">Карта</a></li>
                 <li><a href="#">Местность</a></li>
             </ul>
 
-            <ul class="uk-switcher uk-margin">
+            <ul id="cardTabs" class="uk-switcher uk-margin">
                 <li>
                     <div uk-grid>
                         <div class="uk-width-1-2">
@@ -90,7 +95,16 @@
                     </div>
 
                 </li>
-                <li>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
+                <li id="card_tab">
+                    {% if card.coords != NULL %}
+                        {% set coords = card.coords|split(',') %}
+                        <div id="map" data-lat="{{ coords[0] }}" data-lng="{{ coords[1] }}"></div>
+                        <script async defer
+                                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWdm1zrblFjsdUfi1-6fsPvj30ACCiCxk">
+                        </script>
+                    {% endif %}
+
+                </li>
                 <li>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur, sed do eiusmod.</li>
             </ul>
 
@@ -111,6 +125,8 @@
             </div>
 
             <hr>
+
+
 
 
 

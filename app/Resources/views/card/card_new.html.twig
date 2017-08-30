@@ -43,6 +43,14 @@
             <select name="cityId" id="cityId"></select>
         </div>
 
+        <div>Адрес:
+            <textarea name="address" class="uk-textarea"></textarea>
+        </div>
+
+        <div>Координаты:
+            <input name="coords">
+        </div>
+
         <div>Год выпуска:
             <select name="prodYear">
                 {% for year in 1950..'now'|date('Y') %}

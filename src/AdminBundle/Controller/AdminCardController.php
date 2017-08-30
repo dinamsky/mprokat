@@ -1,36 +1,22 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AdminBundle\Controller;
 
-use AppBundle\Entity\Card;
-use AppBundle\Entity\City;
-use AppBundle\Entity\Color;
-use AppBundle\Entity\FieldInteger;
-use AppBundle\Entity\FieldType;
-use AppBundle\Entity\GeneralType;
-use AppBundle\Entity\Mark;
-use AppBundle\Entity\State;
-use AppBundle\Entity\CardField;
 use AppBundle\Menu\MenuCity;
 use AppBundle\Menu\MenuGeneralType;
 use AppBundle\Menu\MenuMarkModel;
-use AppBundle\Menu\MenuSubFieldAjax;
-use AppBundle\SubFields\SubFieldUtils;
-use UserBundle\Security\Password;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
-class SearchController extends Controller
+class AdminCardController extends Controller
 {
     /**
-     * @Route("/search", name="search")
+     * @Route("/adminCards", name="adminCards")
      */
-    public function showCardsByGeneralTypeAction(EntityManagerInterface $em, MenuGeneralType $mgt, MenuCity $mc, MenuMarkModel $mm, Request $request)
+    public function adminCardsAction(EntityManagerInterface $em, MenuGeneralType $mgt, MenuCity $mc, MenuMarkModel $mm, Request $request)
     {
-
         $get = $request->query->all();
 
         if (!$request->query->has('countryCode')) {
@@ -76,7 +62,7 @@ class SearchController extends Controller
         $cards = $query->getResult();
 
 
-        return $this->render('search/search_main.html.twig', [
+        return $this->render('@Admin/AdminCardController/admin_cards.html.twig', [
 
             'cards' => $cards,
             'view' => $view,
@@ -98,68 +84,4 @@ class SearchController extends Controller
 
         ]);
     }
-
 }
-
-
-//$query = $em->createQuery('SELECT f, t FROM AppBundle:CardField f JOIN f.fieldType t WHERE f.generalTypeId = ?1');
-//$query->setParameter(1, $id);
-//$fields = $query->getResult();
-//
-//
-//foreach($result as $row) {
-//    $ids[] = $row->getId();
-//    $mark_id = $row->getMarkModel()->getId();
-//    $markIds[$mark_id] = $mark_id;
-//}
-//
-//
-//
-//
-//
-//$city = array(
-//    'id'=> $cityId,
-//    'regions' => $regions,
-//    'object' => $city
-//);
-
-
-///**
-// * @var $field CardField
-// */
-//foreach ($fields as $key=>$field) {
-//
-//    //$query_string = 'SELECT i FROM AppBundle:'.$field->getFieldType()->getStorageType().' i JOIN i.subField s WHERE i.cardFieldId = :fieldId AND i.cardId IN ( :ids )';
-//    $query_string = 'SELECT i FROM AppBundle:'.$field->getFieldType()->getStorageType().' i WHERE i.cardId IN ( :ids ) AND i.cardFieldId=?1';
-//    $query = $em->createQuery($query_string);
-//    $query->setParameter(1, $field->getFieldType()->getId());
-//    $query->setParameter('ids', $ids);
-//
-//    $fresult = $query->getResult();
-//    if($field->getFieldType()->getFormElementType() == 'ajaxMenu') {
-//        foreach ($fresult as $row) {
-//            $values[] = $this->getDoctrine()
-//                ->getRepository(SubField::class)
-//                ->find($row->getValue());
-//        }
-//    } else {
-//        $values = $fresult;
-//    }
-//
-//    $fields[$key]->setSelects($values);
-//
-//}
-//
-///**
-// * @var $city City
-// */
-//if(in_array($cityId, $countries)) {
-//    $city = array();
-//    $regions = $mc->getRegion($cityId);
-//}
-//else {
-//    $city = $mc->getCity($cityId)[0];
-//    $city->getChildren()->initialize();
-//    if (NULL != $city->getParent()) $city->getParent()->getChildren()->initialize();
-//    $regions = $mc->getRegion($mc->getCity($cityId)[0]->getCountry());
-//}
