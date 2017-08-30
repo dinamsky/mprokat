@@ -109,3 +109,8 @@
 .bottom_line{
     padding: 20px 0;
 }
+
+#map {
+    height: 400px;
+    width: 100%;
+}

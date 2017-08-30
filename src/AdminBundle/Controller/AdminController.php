@@ -13,7 +13,7 @@ class AdminController extends Controller
     /**
      * @Route("/admin", name="admin_main")
      */
-    public function indexAction()
+    public function indexAction(Password $password)
     {
 
         if ($this->get('session')->get('admin') === null) return $this->render('AdminBundle::admin_enter_form.html.twig');
@@ -37,11 +37,17 @@ class AdminController extends Controller
 
             if ($password->CheckPassword($request->request->get('password'), $admin->getPassword())){
                 $this->get('session')->set('admin', $admin);
+                return $this->redirectToRoute('admin_main');
                 break;
             }
         }
 
-        return $this->redirectToRoute('admin_main');
+        $this->addFlash(
+            'notice',
+            'Wrong login/password!'
+        );
+
+        return $this->redirectToRoute('homepage');
     }
 
     /**

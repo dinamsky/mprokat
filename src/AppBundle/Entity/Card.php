@@ -32,11 +32,23 @@ class Card
     /**
      * @var string
      *
+     * @ORM\Column(name="coords", type="string", length=255, nullable=true)
+     */
+    private $coords = null;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="content", type="text", nullable=true)
      */
     private $content = null;
 
-
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="address", type="text", nullable=true)
+     */
+    private $address = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="City")
@@ -858,5 +870,77 @@ class Card
     public function getCardPrices()
     {
         return $this->cardPrices;
+    }
+
+    /**
+     * Set coords
+     *
+     * @param string $coords
+     *
+     * @return Card
+     */
+    public function setCoords($coords)
+    {
+        $this->coords = $coords;
+
+        return $this;
+    }
+
+    /**
+     * Get coords
+     *
+     * @return string
+     */
+    public function getCoords()
+    {
+        return $this->coords;
+    }
+
+    /**
+     * Set address
+     *
+     * @param string $address
+     *
+     * @return Card
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * Set isTop
+     *
+     * @param boolean $isTop
+     *
+     * @return Card
+     */
+    public function setIsTop($isTop)
+    {
+        $this->isTop = $isTop;
+
+        return $this;
+    }
+
+    /**
+     * Get isTop
+     *
+     * @return boolean
+     */
+    public function getIsTop()
+    {
+        return $this->isTop;
     }
 }

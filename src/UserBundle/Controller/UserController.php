@@ -78,6 +78,8 @@ class UserController extends Controller
             $post = $request->request;
             $card->setHeader($post->get('header'));
             $card->setContent($post->get('content'));
+            $card->setAddress($post->get('address'));
+            $card->setCoords($post->get('coords'));
 
             $modelId = $this->getDoctrine()
                 ->getRepository(Mark::class)
@@ -214,11 +216,17 @@ class UserController extends Controller
 
             if ($password->CheckPassword($request->request->get('password'), $user->getPassword())){
                 $this->get('session')->set('logged_user', $user);
+                return $this->redirectToRoute('user_main');
                 break;
             }
         }
 
-        return $this->redirectToRoute('user_main');
+        $this->addFlash(
+            'notice',
+            'Wrong login/password!'
+        );
+
+        return $this->redirectToRoute('homepage');
     }
 
     /**
@@ -423,6 +431,8 @@ class UserController extends Controller
 
         $card->setHeader($post->get('header'));
         $card->setContent($post->get('content'));
+        $card->setAddress($post->get('address'));
+        $card->setCoords($post->get('coords'));
 
         $modelId = $this->getDoctrine()
             ->getRepository(Mark::class)

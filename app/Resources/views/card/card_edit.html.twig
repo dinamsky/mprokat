@@ -6,6 +6,7 @@
     <script src="{{ asset('assets/tinymce/jquery.tinymce.min.js') }}"></script>
     <script src="{{ asset('assets/tinymce/tinymce.min.js') }}"></script>
     <script src="{{ asset('assets/js/visual_editor.js') }}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWdm1zrblFjsdUfi1-6fsPvj30ACCiCxk"></script>
     <script src="{{ asset('assets/js/editCardForm.js') }}"></script>
 {% endblock %}
 
@@ -51,6 +52,23 @@
             <select name="cityId" id="cityId">
                 {{ include( 'common/ajax_edit_options.html.twig', { 'options': cities, 'id': card.cityId }) }}
             </select>
+        </div>
+
+        <div>Адрес:
+            <textarea name="address" class="uk-textarea">{{ card.address }}</textarea>
+        </div>
+
+        <div>Координаты:
+            {% if card.coords == NULL %}
+                {% set coords = '55.752174, 37.619643'|split(',') %}
+            {% else %}
+                {% set coords = card.coords|split(',') %}
+            {% endif %}
+
+            <input name="coords"  value="{{ card.coords == NULL ? '55.752174, 37.619643' : card.coords }}">
+
+            <div id="map" data-lat="{{ coords[0] }}" data-lng="{{ coords[1] }}"></div>
+
         </div>
 
         <div>Год выпуска:
