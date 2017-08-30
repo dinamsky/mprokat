@@ -332,6 +332,18 @@ class UserController extends Controller
      */
     public function editCardAction($cardId, MenuGeneralType $mgt, MenuMarkModel $markmenu, MenuCity $mc, SubFieldUtils $sf)
     {
+        $card = $this->getDoctrine()
+            ->getRepository(Card::class)
+            ->find($cardId);
+
+        if ( $this->get('session')->get('logged_user') !== null
+            and $card->getUserId() != $this->get('session')->get('logged_user')->getId()
+        ) return new Response("",404);
+
+        if ( $this->get('session')->get('logged_user') === null
+            and $this->get('session')->get('admin') === null
+        ) return new Response("",404);
+
         $conditions = $this->getDoctrine()
             ->getRepository(State::class)
             ->findAll();
@@ -339,10 +351,6 @@ class UserController extends Controller
         $colors = $this->getDoctrine()
             ->getRepository(Color::class)
             ->findAll();
-
-        $card = $this->getDoctrine()
-            ->getRepository(Card::class)
-            ->find($cardId);
 
         $generalType = $this->getDoctrine()
         ->getRepository(GeneralType::class)
@@ -409,7 +417,8 @@ class UserController extends Controller
         if ($post->has('delete')){
             $em->remove($card);
             $em->flush();
-            return $this->redirectToRoute('user_cards');
+            if ($this->get('session')->get('admin') === null) return $this->redirectToRoute('user_cards');
+            else return $this->redirectToRoute('search');
         }
 
         $card->setHeader($post->get('header'));
@@ -441,7 +450,7 @@ class UserController extends Controller
 
         $user = $this->getDoctrine()
             ->getRepository(User::class)
-            ->find($this->get('session')->get('logged_user')->getId());
+            ->find($card->getUserId());
         $card->setUser($user);
 
         $color = $this->getDoctrine()
@@ -503,6 +512,7 @@ class UserController extends Controller
 
         $fu->uploadImages($card);
 
-        return $this->redirectToRoute('user_cards');
+        if ($this->get('session')->get('admin') === null) return $this->redirectToRoute('user_cards');
+        else return $this->redirectToRoute('search');
     }
 }
