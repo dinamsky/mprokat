@@ -44,9 +44,9 @@ class MoveImagesCommand extends ContainerAwareCommand
 
 
                 $ext = explode(".",$x_url[7]);
-                $from_img = $_SERVER['DOCUMENT_ROOT'].'/assets/images/source/'.$x_url[5].'/'.$x_url[6].'/'.$x_url[7];
-                $to_img = $_SERVER['DOCUMENT_ROOT'].'/assets/images/cards/'.$x_url[5].'/'.$x_url[6].'/'.(int)$img.'.jpg';
-                $to_thumb_img = $_SERVER['DOCUMENT_ROOT'].'/assets/images/cards/'.$x_url[5].'/'.$x_url[6].'/t/'.(int)$img.'.jpg';
+                $from_img = './web/assets/images/source/'.$x_url[5].'/'.$x_url[6].'/'.$x_url[7];
+                $to_img = './web/assets/images/cards/'.$x_url[5].'/'.$x_url[6].'/'.(int)$img.'.jpg';
+                $to_thumb_img = './web/assets/images/cards/'.$x_url[5].'/'.$x_url[6].'/t/'.(int)$img.'.jpg';
 
 
                 @$fu->moveResizeImage($from_img, $to_img, $to_thumb_img);
