@@ -16,6 +16,8 @@ class MoveMainImagesCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $output->writeln('start');
+
         $fu = $this->getContainer()->get('AppBundle\Foto\FotoUtils');
 
         //$output->writeln(scandir('./web'));
@@ -44,8 +46,9 @@ class MoveMainImagesCommand extends ContainerAwareCommand
             $to_thumb_img = $_SERVER['DOCUMENT_ROOT'].'/assets/images/cards/'.$x_url[5].'/'.$x_url[6].'/t/'.(int)$meta['_thumbnail_id'].'.jpg';
 
 
-            @$fu->moveResizeImage($from_img, $to_img, $to_thumb_img);
-
+            $fu->moveResizeImage($from_img, $to_img, $to_thumb_img);
+            $output->writeln($from_img);
+            $output->writeln($to_thumb_img);
 
             $i++;
             //if ($i==50) break;
