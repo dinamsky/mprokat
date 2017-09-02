@@ -103,6 +103,7 @@ class SubFieldUtils extends Controller
 
     public function getCardSubFields(Card $card)
     {
+        $result = array();
         $generalTypeId = $card->getGeneralTypeId();
 
         $query = $this->em->createQuery('SELECT f, t FROM AppBundle:CardField f JOIN f.fieldType t WHERE f.generalTypeId = ?1');
@@ -118,11 +119,11 @@ class SubFieldUtils extends Controller
             $query = $this->em->createQuery('SELECT s FROM '.$storage.' s WHERE s.cardId = ?1 AND s.cardFieldId = ?2');
             $query->setParameter(1, $card->getId());
             $query->setParameter(2, $field->getFieldType()->getId());
-            $value = $query->getSingleResult();
+            $value = $query->getOneOrNullResult();
 
             $type = 'integer';
 
-            if ($field->getfieldType()->getformElementType() == 'ajaxMenu'){
+            if ($field->getfieldType()->getformElementType() == 'ajaxMenu' and $value != null){
                 $value = $this->em
                     ->getRepository(SubField::class)
                     ->find($value->getValue());

@@ -46,6 +46,13 @@ class User
     private $header;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="login", type="string", length=255)
+     */
+    private $login;
+
+    /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="date_create", type="datetime", nullable=true)
@@ -263,5 +270,29 @@ class User
     public function getInformation()
     {
         return $this->information;
+    }
+
+    /**
+     * Set login
+     *
+     * @param string $login
+     *
+     * @return User
+     */
+    public function setLogin($login)
+    {
+        $this->login = $login;
+
+        return $this;
+    }
+
+    /**
+     * Get login
+     *
+     * @return string
+     */
+    public function getLogin()
+    {
+        return $this->login;
     }
 }

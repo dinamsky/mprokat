@@ -8,7 +8,7 @@
 {% block content %}
 
 
-    <div class="uk-flex uk-flex-bottom" style="background:url('/assets/images/{% for foto in card.getFotos if foto.isMain %}{{ foto.id }}{% endfor %}.jpg') center center;
+    <div class="uk-flex uk-flex-bottom" style="background:url('/assets/images/cards/{% for foto in card.getFotos if foto.isMain %}{{ foto.folder }}/{{ foto.id }}.jpg{% endfor %}') center center;
             background-size: cover;
             height: 500px;">
 
@@ -38,7 +38,7 @@
             <div uk-grid>
                 {% for foto in card.getFotos %}
                     <div class="uk-width-1-5">
-                        <div style="background:url('/assets/thumbs/{{ foto.id }}.jpg') center center;
+                        <div style="background:url('/assets/images/cards/{{ foto.folder }}/t/{{ foto.id }}.jpg') center center;
                                 background-size: cover;
                                 height: 100px;">
                         </div>
@@ -75,7 +75,7 @@
 
 
 
-                            {% for subfield in sub_fields %}
+                            {% for subfield in sub_fields if subfield.value is not null %}
                                 <div>
                                     {{ subfield.label }}:
                                     {% if subfield.type == 'subfield' %}

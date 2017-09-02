@@ -39,6 +39,13 @@ class Card
     /**
      * @var string
      *
+     * @ORM\Column(name="street_view", type="string", length=255, nullable=true)
+     */
+    private $streetView = null;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="content", type="text", nullable=true)
      */
     private $content = null;
@@ -942,5 +949,29 @@ class Card
     public function getIsTop()
     {
         return $this->isTop;
+    }
+
+    /**
+     * Set streetView
+     *
+     * @param string $streetView
+     *
+     * @return Card
+     */
+    public function setStreetView($streetView)
+    {
+        $this->streetView = $streetView;
+
+        return $this;
+    }
+
+    /**
+     * Get streetView
+     *
+     * @return string
+     */
+    public function getStreetView()
+    {
+        return $this->streetView;
     }
 }

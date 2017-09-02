@@ -80,8 +80,8 @@ class FotoUtils extends Controller
 
                     imagejpeg($image_p, $main_dir.'/'.$file_id.'.jpg');
 
-                    $width = 200;
-                    $height = 200;
+                    $width = 400;
+                    $height = 300;
 
                     $w_src1 = imagesx($im1);
                     $h_src1 = imagesy($im1);
@@ -107,6 +107,62 @@ class FotoUtils extends Controller
             }
         }
     }
+
+    public function moveResizeImage($from_img, $to_img, $to_thumb_img)
+    {
+        @mkdir($to_img, 0755, true);
+        @mkdir($to_thumb_img, 0755, true);
+
+        $ext = explode(".",basename($from_img));
+        $ext = strtolower($ext[(count($ext)-1)]);
+
+        if(preg_match('/[.](GIF)|(gif)$/', $from_img)) {
+            $im1 = imagecreatefromgif($from_img) ; //gif
+        }
+        if(preg_match('/[.](PNG)|(png)$/', $from_img)) {
+            $im1 = imagecreatefrompng($from_img) ;//png
+        }
+
+        if(preg_match('/[.](JPG)|(jpg)|(jpeg)|(JPEG)$/', $from_img)) {
+            $im1 = imagecreatefromjpeg($from_img); //jpg
+        }
+
+        $width = 1280;
+        $height = 900;
+
+        $w_src1 = imagesx($im1);
+        $h_src1 = imagesy($im1);
+        $ratio = $w_src1/$h_src1;
+        if ($width/$height > $ratio) {
+            $width = $height*$ratio;
+        } else {
+            $height = $width/$ratio;
+        }
+        $image_p = imagecreatetruecolor($width, $height);
+        $bgColor = imagecolorallocate($image_p, 255,255,255);
+        imagefill($image_p , 0,0 , $bgColor);
+        imagecopyresampled($image_p, $im1, 0, 0, 0, 0, $width, $height, $w_src1, $h_src1);
+
+        imagejpeg($image_p, $to_img);
+
+        $width = 400;
+        $height = 300;
+
+        $w_src1 = imagesx($im1);
+        $h_src1 = imagesy($im1);
+        $ratio = $w_src1/$h_src1;
+        if ($width/$height > $ratio) {
+            $width = $height*$ratio;
+        } else {
+            $height = $width/$ratio;
+        }
+        $image_p = imagecreatetruecolor($width, $height);
+        $bgColor = imagecolorallocate($image_p, 255,255,255);
+        imagefill($image_p , 0,0 , $bgColor);
+        imagecopyresampled($image_p, $im1, 0, 0, 0, 0, $width, $height, $w_src1, $h_src1);
+        imagejpeg($image_p, $to_thumb_img);
+    }
+
 
     /**
      * @Route("/ajax/deleteFoto")

@@ -43,24 +43,44 @@ twig:
 # Doctrine Configuration
 doctrine:
     dbal:
-        driver: pdo_mysql
-        host: '%database_host%'
-        port: '%database_port%'
-        dbname: '%database_name%'
-        user: '%database_user%'
-        password: '%database_password%'
-        charset: UTF8
-        # if using pdo_sqlite as your database driver:
-        #   1. add the path in parameters.yml
-        #     e.g. database_path: '%kernel.project_dir%/var/data/data.sqlite'
-        #   2. Uncomment database_path in parameters.yml.dist
-        #   3. Uncomment next line:
-        #path: '%database_path%'
+        default_connection: default
+        connections:
+            default:
+                driver: pdo_mysql
+                host: '%database_host%'
+                port: '%database_port%'
+                dbname: '%database_name%'
+                user: '%database_user%'
+                password: '%database_password%'
+                charset: UTF8
+                # if using pdo_sqlite as your database driver:
+                #   1. add the path in parameters.yml
+                #     e.g. database_path: '%kernel.project_dir%/var/data/data.sqlite'
+                #   2. Uncomment database_path in parameters.yml.dist
+                #   3. Uncomment next line:
+                #path: '%database_path%'
+            wpcon:
+                driver: pdo_mysql
+                host: '194.58.123.237'
+                port: '3306'
+                dbname: 'multiprokat_mult'
+                user: 'dumper'
+                password: '366774home'
+                charset: UTF8
 
     orm:
+        default_entity_manager: default
+        entity_managers:
+            default:
+                connection: default
+
+
+                naming_strategy: doctrine.orm.naming_strategy.underscore
+                auto_mapping: true
+            wpcon:
+                connection: wpcon
         auto_generate_proxy_classes: '%kernel.debug%'
-        naming_strategy: doctrine.orm.naming_strategy.underscore
-        auto_mapping: true
+
 #stof
 stof_doctrine_extensions:
     orm:
