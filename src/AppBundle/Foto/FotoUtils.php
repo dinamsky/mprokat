@@ -110,8 +110,16 @@ class FotoUtils extends Controller
 
     public function moveResizeImage($from_img, $to_img, $to_thumb_img)
     {
-        @mkdir($to_img, 0755, true);
-        @mkdir($to_thumb_img, 0755, true);
+        $d1 = explode("/",$to_img);
+        unset($d1[count($d1)-1]);
+        $d1 = implode("/",$d1);
+        @mkdir($d1, 0755, true);
+
+
+        $d2 = explode("/",$to_thumb_img);
+        unset($d2[count($d1)-1]);
+        $d2 = implode("/",$d2);
+        @mkdir($d2, 0755, true);
 
         $ext = explode(".",basename($from_img));
         $ext = strtolower($ext[(count($ext)-1)]);
