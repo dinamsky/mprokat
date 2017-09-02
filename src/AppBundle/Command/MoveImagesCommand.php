@@ -49,7 +49,7 @@ class MoveImagesCommand extends ContainerAwareCommand
                 $to_thumb_img = './web/assets/images/cards/'.$x_url[5].'/'.$x_url[6].'/t/'.(int)$img.'.jpg';
 
 
-                @$fu->moveResizeImage($from_img, $to_img, $to_thumb_img);
+                if (is_file($from_img)) $fu->moveResizeImage($from_img, $to_img, $to_thumb_img);
             }
 
             $i++;
