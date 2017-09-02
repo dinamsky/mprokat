@@ -117,7 +117,7 @@ class FotoUtils extends Controller
 
 
         $d2 = explode("/",$to_thumb_img);
-        unset($d2[count($d1)-1]);
+        unset($d2[count($d2)-1]);
         $d2 = implode("/",$d2);
         @mkdir($d2, 0755, true);
 
