@@ -43,7 +43,7 @@ class MoveMainImagesCommand extends ContainerAwareCommand
             $ext = explode(".",$x_url[7]);
             $from_img = './web/assets/images/source/'.$x_url[5].'/'.$x_url[6].'/'.$x_url[7];
             $to_img = './web/assets/images/cards/'.$x_url[5].'/'.$x_url[6].'/'.(int)$meta['_thumbnail_id'].'.jpg';
-            $to_thumb_img = '/./webassets/images/cards/'.$x_url[5].'/'.$x_url[6].'/t/'.(int)$meta['_thumbnail_id'].'.jpg';
+            $to_thumb_img = './webassets/images/cards/'.$x_url[5].'/'.$x_url[6].'/t/'.(int)$meta['_thumbnail_id'].'.jpg';
 
             $output->writeln($from_img);
             $output->writeln($to_thumb_img);
