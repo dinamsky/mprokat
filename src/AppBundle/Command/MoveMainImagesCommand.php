@@ -47,7 +47,7 @@ class MoveMainImagesCommand extends ContainerAwareCommand
 
             $output->writeln($from_img);
             $output->writeln($to_thumb_img);
-            $fu->moveResizeImage($from_img, $to_img, $to_thumb_img);
+            if (is_file($from_img)) $fu->moveResizeImage($from_img, $to_img, $to_thumb_img);
 
 
             $i++;
