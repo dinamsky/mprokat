@@ -36,6 +36,13 @@ class Foto
     private $isMain;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="folder", type="string", length=255, nullable=true)
+     */
+    private $folder = null;
+
+    /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Card", inversedBy="fotos")
      * @ORM\JoinColumn(name="card_id", referencedColumnName="id", onDelete="CASCADE")
      */
@@ -121,5 +128,29 @@ class Foto
     public function getCard()
     {
         return $this->card;
+    }
+
+    /**
+     * Set folder
+     *
+     * @param string $folder
+     *
+     * @return Foto
+     */
+    public function setFolder($folder)
+    {
+        $this->folder = $folder;
+
+        return $this;
+    }
+
+    /**
+     * Get folder
+     *
+     * @return string
+     */
+    public function getFolder()
+    {
+        return $this->folder;
     }
 }
