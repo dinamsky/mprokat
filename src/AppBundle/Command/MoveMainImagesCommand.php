@@ -41,14 +41,14 @@ class MoveMainImagesCommand extends ContainerAwareCommand
             $mainfoto_url = $json['mainfotos'][$meta['_thumbnail_id']];
             $x_url = explode("/",$mainfoto_url);
             $ext = explode(".",$x_url[7]);
-            $from_img = $_SERVER['DOCUMENT_ROOT'].'/assets/images/source/'.$x_url[5].'/'.$x_url[6].'/'.$x_url[7];
-            $to_img = $_SERVER['DOCUMENT_ROOT'].'/assets/images/cards/'.$x_url[5].'/'.$x_url[6].'/'.(int)$meta['_thumbnail_id'].'.jpg';
-            $to_thumb_img = $_SERVER['DOCUMENT_ROOT'].'/assets/images/cards/'.$x_url[5].'/'.$x_url[6].'/t/'.(int)$meta['_thumbnail_id'].'.jpg';
+            $from_img = './web/assets/images/source/'.$x_url[5].'/'.$x_url[6].'/'.$x_url[7];
+            $to_img = './web/assets/images/cards/'.$x_url[5].'/'.$x_url[6].'/'.(int)$meta['_thumbnail_id'].'.jpg';
+            $to_thumb_img = '/./webassets/images/cards/'.$x_url[5].'/'.$x_url[6].'/t/'.(int)$meta['_thumbnail_id'].'.jpg';
 
-
-            $fu->moveResizeImage($from_img, $to_img, $to_thumb_img);
             $output->writeln($from_img);
             $output->writeln($to_thumb_img);
+            $fu->moveResizeImage($from_img, $to_img, $to_thumb_img);
+
 
             $i++;
             //if ($i==50) break;
