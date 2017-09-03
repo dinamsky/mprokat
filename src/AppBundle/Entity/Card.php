@@ -46,6 +46,13 @@ class Card
     /**
      * @var string
      *
+     * @ORM\Column(name="video", type="string", length=255, nullable=true)
+     */
+    private $video = null;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="content", type="text", nullable=true)
      */
     private $content = null;
@@ -973,5 +980,29 @@ class Card
     public function getStreetView()
     {
         return $this->streetView;
+    }
+
+    /**
+     * Set video
+     *
+     * @param string $video
+     *
+     * @return Card
+     */
+    public function setVideo($video)
+    {
+        $this->video = $video;
+
+        return $this;
+    }
+
+    /**
+     * Get video
+     *
+     * @return string
+     */
+    public function getVideo()
+    {
+        return $this->video;
     }
 }

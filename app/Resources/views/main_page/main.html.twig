@@ -10,7 +10,7 @@
     <div uk-grid>
         {% for card in top3 %}
             <div class="uk-width-1-3">
-                <a href="/card/{{ card.id }}" style="background:url('/assets/thumbs/{% for foto in card.getFotos if foto.isMain %}{{ foto.id }}{% endfor %}.jpg') center center;
+                <a href="/card/{{ card.id }}" style="background:url('/assets/images/cards/{% for foto in card.getFotos if foto.isMain %}{{ foto.folder }}/t/{{ foto.id }}.jpg{% endfor %}') center center;
                         background-size: cover;
                         height: 200px;
                         display: block;">

@@ -18,6 +18,36 @@ class MoveMainImagesCommand extends ContainerAwareCommand
     {
         $output->writeln('start');
 
+        $dirs = array(
+            './web/assets/images/cards/2014/12',
+            './web/assets/images/cards/2015/01',
+            './web/assets/images/cards/2015/02',
+            './web/assets/images/cards/2017/02',
+            './web/assets/images/cards/2017/03',
+            './web/assets/images/cards/2017/04',
+            './web/assets/images/cards/2017/05',
+            './web/assets/images/cards/2017/06',
+            './web/assets/images/cards/2017/07',
+            './web/assets/images/cards/2017/08',
+            './web/assets/images/cards/2017/09',
+            './web/assets/images/cards/2014/12/t',
+            './web/assets/images/cards/2015/01/t',
+            './web/assets/images/cards/2015/02/t',
+            './web/assets/images/cards/2017/02/t',
+            './web/assets/images/cards/2017/03/t',
+            './web/assets/images/cards/2017/04/t',
+            './web/assets/images/cards/2017/05/t',
+            './web/assets/images/cards/2017/06/t',
+            './web/assets/images/cards/2017/07/t',
+            './web/assets/images/cards/2017/08/t',
+            './web/assets/images/cards/2017/09/t',
+        );
+        foreach($dirs as $dir) {
+            @mkdir($dir, 0755, true);
+        }
+
+        $output->writeln('dirs created!');
+
         $fu = $this->getContainer()->get('AppBundle\Foto\FotoUtils');
 
         //$output->writeln(scandir('./web'));
@@ -32,6 +62,8 @@ class MoveMainImagesCommand extends ContainerAwareCommand
             $ids[] = $user['ID'];
         }
 
+        $output->writeln(count($ids));
+
         $i=0;
 
         foreach($json['posts'] as $post_id => $post) if (in_array($post['post_author'],$ids) and isset($json['meta'][$post_id]) ) {
@@ -45,13 +77,14 @@ class MoveMainImagesCommand extends ContainerAwareCommand
             $to_img = './web/assets/images/cards/'.$x_url[5].'/'.$x_url[6].'/'.(int)$meta['_thumbnail_id'].'.jpg';
             $to_thumb_img = './web/assets/images/cards/'.$x_url[5].'/'.$x_url[6].'/t/'.(int)$meta['_thumbnail_id'].'.jpg';
 
-            $output->writeln($from_img);
-            $output->writeln($to_thumb_img);
-            if (is_file($from_img)) $fu->moveResizeImage($from_img, $to_img, $to_thumb_img);
+            //$output->writeln($from_img);
+            //$output->writeln($to_thumb_img);
+            $fu->moveResizeImage($from_img, $to_img, $to_thumb_img);
 
 
             $i++;
             //if ($i==50) break;
+            $output->writeln($i);
         }
 
         $output->writeln('All fotos moved!!');

@@ -38,7 +38,7 @@ LEFT JOIN wp_posts p ON (p.ID = m.meta_value) AND m.meta_key = 'user_photo'
 WHERE user_id IN ($ids)");
         foreach($usermeta as $m){
             if($m['meta_key'] == 'user_mobile' and $m['meta_value'] != '') $inf[] = "(".$m['user_id'].","."'phone','".$m['meta_value']."')";
-            if($m['meta_key'] == 'user_photo') $inf[] = "(".$m['user_id'].","."'foto','".$m['guid']."')";
+            if($m['meta_key'] == 'user_photo' and $m['guid']!='') $inf[] = "(".$m['user_id'].","."'foto','".$m['ID']."')";
         }
 
         $user_sql = 'INSERT INTO user (id,email,password,header,date_create,is_activated,activate_string,login) VALUES '.implode(",",$u_sql).';';
@@ -57,6 +57,9 @@ WHERE user_id IN ($ids)");
     public function wpAction()
     {
         echo 'ok';
+        //$file = file_get_contents('dump.json');
+        //$json = json_decode($file,true);
+        //var_dump($json['mainfotos']);
         return new Response();
     }
 
@@ -257,15 +260,7 @@ WHERE user_id IN ($ids)");
         return $mark;
     }
 
-    /**
-     * @Route("/checkMarks")
-     */
-    public function checkMarks()
-    {
-        $header = 'Аренда грузовых Mercedes';
-        echo $this->fillMark($header);
-        return new Response();
-    }
+
 
 
     private function checkCount($array, $parent_id){
@@ -291,24 +286,24 @@ WHERE user_id IN ($ids)");
         return 0;
     }
 
-    /**
-     * @Route("/extMarks555")
-     */
-    public function extMarks() // ready
-    {
-        $em = $this->get('doctrine')->getManager();
-        $new_conn = $em->getConnection();
-
-        $marks = $new_conn->fetchAll('SELECT id FROM mark WHERE parent_id IS NULL');
-        foreach($marks as $mark) {
-            $p = $mark['id'];
-            $new_conn->query("INSERT INTO mark SET group_name='cars', parent_id=$p, header = '---'");
-        }
-
-        echo 'marks inserted!';
-
-        return new Response();
-    }
+//    /**
+//     * @Route("/extMarks555")
+//     */
+//    public function extMarks() // ready
+//    {
+//        $em = $this->get('doctrine')->getManager();
+//        $new_conn = $em->getConnection();
+//
+//        $marks = $new_conn->fetchAll('SELECT id FROM mark WHERE parent_id IS NULL');
+//        foreach($marks as $mark) {
+//            $p = $mark['id'];
+//            $new_conn->query("INSERT INTO mark SET group_name='cars', parent_id=$p, header = '---'");
+//        }
+//
+//        echo 'marks inserted!';
+//
+//        return new Response();
+//    }
 
     /**
      * @Route("/wpInsert")
@@ -326,7 +321,7 @@ WHERE user_id IN ($ids)");
             $ids[] = $user['ID'];
         }
 
-        $sql = 'INSERT INTO card (id,header,content,prod_year,general_type_id,condition_id,service_type_id,model_id,color_id,user_id,is_active,date_create,date_update,date_expiry,views,city_id,is_top,coords,address,street_view) VALUES ';
+        $sql = 'INSERT INTO card (id,header,content,prod_year,general_type_id,condition_id,service_type_id,model_id,color_id,user_id,is_active,date_create,date_update,date_expiry,views,city_id,is_top,coords,address,street_view,video) VALUES ';
 
         $i=0;
 
@@ -354,11 +349,12 @@ WHERE user_id IN ($ids)");
                 $s[] = (int)$this->checkMeta('webbupointfinder_item_featuredmarker', $meta);
                 $s[] = "'" . $this->checkMeta('webbupointfinder_items_location', $meta) . "'";
                 $s[] = $new_conn->quote($this->checkMeta('webbupointfinder_items_address', $meta), \PDO::PARAM_STR);
-                $s[] = $new_conn->quote($this->checkMeta('webbupointfinder_item_streetview', $meta), \PDO::PARAM_STR) . ")";
+                $s[] = $new_conn->quote($this->checkMeta('webbupointfinder_item_streetview', $meta), \PDO::PARAM_STR);
+                $s[] = $new_conn->quote($this->checkMeta('webbupointfinder_item_video', $meta), \PDO::PARAM_STR) . ")";
                 $string[] = implode(",", $s);
             }
             $i++;
-            //if($i==3679) break;
+            //if($i==100) break;
         }
 
         $string = implode(",", $string);

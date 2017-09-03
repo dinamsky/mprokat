@@ -110,65 +110,46 @@ class FotoUtils extends Controller
 
     public function moveResizeImage($from_img, $to_img, $to_thumb_img)
     {
-        $d1 = explode("/",$to_img);
-        unset($d1[count($d1)-1]);
-        $d1 = implode("/",$d1);
-        @mkdir($d1, 0755, true);
+        $im1 = false;
+        $file = @file_get_contents($from_img);
+        if ($file !== false) $im1 = @imagecreatefromstring($file);
+        if ($im1 !== false) {
 
+            $width = 1280;
+            $height = 900;
 
-        $d2 = explode("/",$to_thumb_img);
-        unset($d2[count($d2)-1]);
-        $d2 = implode("/",$d2);
-        @mkdir($d2, 0755, true);
+            $w_src1 = imagesx($im1);
+            $h_src1 = imagesy($im1);
+            $ratio = $w_src1 / $h_src1;
+            if ($width / $height > $ratio) {
+                $width = $height * $ratio;
+            } else {
+                $height = $width / $ratio;
+            }
+            $image_p = imagecreatetruecolor($width, $height);
+            $bgColor = imagecolorallocate($image_p, 255, 255, 255);
+            imagefill($image_p, 0, 0, $bgColor);
+            imagecopyresampled($image_p, $im1, 0, 0, 0, 0, $width, $height, $w_src1, $h_src1);
 
-        $ext = explode(".",basename($from_img));
-        $ext = strtolower($ext[(count($ext)-1)]);
+            imagejpeg($image_p, $to_img);
 
-        if(preg_match('/[.](GIF)|(gif)$/', $from_img)) {
-            $im1 = imagecreatefromgif($from_img) ; //gif
+            $width = 400;
+            $height = 300;
+
+            $w_src1 = imagesx($im1);
+            $h_src1 = imagesy($im1);
+            $ratio = $w_src1 / $h_src1;
+            if ($width / $height > $ratio) {
+                $width = $height * $ratio;
+            } else {
+                $height = $width / $ratio;
+            }
+            $image_p = imagecreatetruecolor($width, $height);
+            $bgColor = imagecolorallocate($image_p, 255, 255, 255);
+            imagefill($image_p, 0, 0, $bgColor);
+            imagecopyresampled($image_p, $im1, 0, 0, 0, 0, $width, $height, $w_src1, $h_src1);
+            imagejpeg($image_p, $to_thumb_img);
         }
-        if(preg_match('/[.](PNG)|(png)$/', $from_img)) {
-            $im1 = imagecreatefrompng($from_img) ;//png
-        }
-
-        if(preg_match('/[.](JPG)|(jpg)|(jpeg)|(JPEG)$/', $from_img)) {
-            $im1 = imagecreatefromjpeg($from_img); //jpg
-        }
-
-        $width = 1280;
-        $height = 900;
-
-        $w_src1 = imagesx($im1);
-        $h_src1 = imagesy($im1);
-        $ratio = $w_src1/$h_src1;
-        if ($width/$height > $ratio) {
-            $width = $height*$ratio;
-        } else {
-            $height = $width/$ratio;
-        }
-        $image_p = imagecreatetruecolor($width, $height);
-        $bgColor = imagecolorallocate($image_p, 255,255,255);
-        imagefill($image_p , 0,0 , $bgColor);
-        imagecopyresampled($image_p, $im1, 0, 0, 0, 0, $width, $height, $w_src1, $h_src1);
-
-        imagejpeg($image_p, $to_img);
-
-        $width = 400;
-        $height = 300;
-
-        $w_src1 = imagesx($im1);
-        $h_src1 = imagesy($im1);
-        $ratio = $w_src1/$h_src1;
-        if ($width/$height > $ratio) {
-            $width = $height*$ratio;
-        } else {
-            $height = $width/$ratio;
-        }
-        $image_p = imagecreatetruecolor($width, $height);
-        $bgColor = imagecolorallocate($image_p, 255,255,255);
-        imagefill($image_p , 0,0 , $bgColor);
-        imagecopyresampled($image_p, $im1, 0, 0, 0, 0, $width, $height, $w_src1, $h_src1);
-        imagejpeg($image_p, $to_thumb_img);
     }
 
 

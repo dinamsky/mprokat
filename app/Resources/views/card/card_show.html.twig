@@ -133,7 +133,9 @@
             <h2 class="pf_style_header"><span>{{ card.user.header }}</span></h2>
 
             <div uk-grid>
-                <div class="uk-width-1-5"></div>
+                <div class="uk-width-1-5">
+                    <img src="/assets/images/users/t/{% for info in card.user.information if info.uiKey == 'foto' %}{{ info.uiValue }}{% endfor %}.jpg" alt="">
+                </div>
                 <div class="uk-width-2-5">
                     {% for info in card.user.information %}
                         <div>{{ info.uiKey }}: {{ info.uiValue }}</div>
