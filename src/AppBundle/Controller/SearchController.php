@@ -59,6 +59,39 @@ class SearchController extends Controller
         $countries = array_keys($mc->getCountry());
 
         if(in_array($cityId, $countries)){
+            $dql = 'SELECT count(c.id) FROM AppBundle:Card c WHERE c.generalTypeId IN ( :ids ) AND c.cityId BETWEEN ?1 AND ?2';
+            $range = $mc->getCountryIdRange($cityId);
+            $query = $em->createQuery($dql);
+            $query->setParameter(1, $range['first']);
+            $query->setParameter(2, $range['last']);
+            $query->setParameter('ids', $gt_ids);
+
+        } else {
+            $dql = 'SELECT count(c.id) FROM AppBundle:Card c WHERE c.generalTypeId IN ( :ids ) AND c.cityId IN ( :cities )';
+            $query = $em->createQuery($dql);
+            $query->setParameter('cities', array_merge($mc->getCity($cityId),$mc->getCities($cityId)));
+            $query->setParameter('ids', $gt_ids);
+        }
+
+        $total_cards = $query->getSingleScalarResult();
+
+        if ($request->query->has('page')) $page = $get['page']; else $page = 1;
+        if ($request->query->has('onpage')) $cards_per_page = $get['onpage']; else $cards_per_page = 12;
+        $pages_in_center = 5;
+        $pager_center_start = 2;
+
+        $total_pages = ceil($total_cards/$cards_per_page);
+        $start = ($page-1)*$cards_per_page;
+
+        if ($total_pages>($pages_in_center+1)) {
+            if(($total_pages-$page) > $pages_in_center) $pager_center_start = $page;
+            else $pager_center_start = $total_pages - $pages_in_center;
+            if ($pager_center_start == 1) $pager_center_start = 2;
+        }
+
+
+
+        if(in_array($cityId, $countries)){
             $dql = 'SELECT c FROM AppBundle:Card c WHERE c.generalTypeId IN ( :ids ) AND c.cityId BETWEEN ?1 AND ?2';
             $range = $mc->getCountryIdRange($cityId);
             $query = $em->createQuery($dql);
@@ -72,7 +105,8 @@ class SearchController extends Controller
             $query->setParameter('cities', array_merge($mc->getCity($cityId),$mc->getCities($cityId)));
             $query->setParameter('ids', $gt_ids);
         }
-
+        $query->setMaxResults($cards_per_page);
+        $query->setFirstResult($start);
         $cards = $query->getResult();
 
 
@@ -81,6 +115,12 @@ class SearchController extends Controller
             'cards' => $cards,
             'view' => $view,
             'get_array' => $get,
+            'total_cards' => $total_cards,
+            'total_pages' => $total_pages,
+            'pager_center_start' => $pager_center_start,
+            'pages_in_center' => $pages_in_center,
+            'current_page' => $page,
+            'onpage' => $cards_per_page,
 
             'countries' => $mc->getCountry(),
             'countryCode' => $get['countryCode'],

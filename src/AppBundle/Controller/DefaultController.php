@@ -64,9 +64,14 @@ class DefaultController extends Controller
             'object' => $mc->getCity($card->getCityId())[0]
         );
 
+        if ($card->getVideo() != '') $video = explode("=",$card->getVideo())[1];
+        else $video = false;
+
         return $this->render('card/card_show.html.twig', [
 
             'card' => $card,
+            'streetView' => unserialize($card->getStreetView()),
+            'video' => $video,
 
             'sub_fields' =>$subFields,
 
