@@ -63,7 +63,9 @@
             <ul id="tt" uk-tab>
                 <li><a href="#">Информация</a></li>
                 <li><a href="#">Карта</a></li>
+                {% if streetView %}
                 <li><a href="#">Местность</a></li>
+                {% endif %}
                 {% if video %}
                 <li><a href="#">Видео</a></li>
                 {% endif %}
@@ -121,6 +123,7 @@
                     {% endif %}
 
                 </li>
+                {% if streetView %}
                 <li>
                     <iframe
                             width="100%"
@@ -129,6 +132,7 @@
                             src="https://www.google.com/maps/embed/v1/streetview?key=AIzaSyDWdm1zrblFjsdUfi1-6fsPvj30ACCiCxk&location={{ coords[0] }},{{ coords[1] }}&heading={{ streetView.heading }}&pitch={{ streetView.pitch }}&fov=35" allowfullscreen>
                     </iframe>
                 </li>
+                {% endif %}
                 {% if video %}
                 <li>
                     <iframe width="100%" height="400" src="https://www.youtube.com/embed/{{ video }}?feature=oembed" frameborder="0" allowfullscreen></iframe>
