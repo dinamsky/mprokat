@@ -5,5 +5,8 @@ $( document ).ready(function() {
         $('#searchForm').submit();
     });
 
+    $('#onpage').on('change', function () {
+        $('#searchForm').submit();
+    });
 
 });
