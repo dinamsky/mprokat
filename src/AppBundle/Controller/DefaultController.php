@@ -67,10 +67,13 @@ class DefaultController extends Controller
         if ($card->getVideo() != '') $video = explode("=",$card->getVideo())[1];
         else $video = false;
 
+        if ($card->getStreetView() != '') $streetView = unserialize($card->getStreetView());
+        else $streetView = false;
+
         return $this->render('card/card_show.html.twig', [
 
             'card' => $card,
-            'streetView' => unserialize($card->getStreetView()),
+            'streetView' => $streetView,
             'video' => $video,
 
             'sub_fields' =>$subFields,
