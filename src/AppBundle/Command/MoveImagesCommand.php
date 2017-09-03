@@ -32,7 +32,7 @@ class MoveImagesCommand extends ContainerAwareCommand
 
             $meta = $json['meta'][$post_id];
 
-            if (isset($meta['images'])) foreach ($meta['images'] as $img) if(isset($json['allfotos'][$img]) and !in_array((int)$img,$all) and !in_array($img,array_keys($json['mainfotos']))) {
+            if (isset($meta['images'])) foreach ($meta['images'] as $img) if(isset($json['allfotos'][$img]) and !in_array($img,array_keys($json['mainfotos']))) {
                 $foto_url = $json['allfotos'][$img];
                 $x_url = explode("/", $foto_url);
 
