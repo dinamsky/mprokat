@@ -4,7 +4,7 @@
             <div class="bordered uk-position-relative">
                 <div uk-grid class="uk-grid-collapse">
                     <div class="uk-width-1-5">
-                        <a href="/card/{{ card.id }}" style="background:url('/assets/thumbs/{% for foto in card.getFotos if foto.isMain %}{{ foto.id }}{% endfor %}.jpg') center center;
+                        <a href="/card/{{ card.id }}" style="background:url('/assets/images/cards/{% for foto in card.getFotos if foto.isMain %}{{ foto.folder }}/t/{{ foto.id }}.jpg{% endfor %}') center center;
                                 background-size: cover;
                                 height: 120px;
                                 display: block;">
