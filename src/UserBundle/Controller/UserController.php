@@ -2,11 +2,13 @@
 
 namespace UserBundle\Controller;
 
+use UserBundle\Entity\UserOrder;
 use AppBundle\Entity\CardFeature;
 use AppBundle\Entity\CardPrice;
 use AppBundle\Entity\Feature;
 use AppBundle\Entity\Foto;
 use AppBundle\Entity\Price;
+use AppBundle\Entity\Tariff;
 use AppBundle\Foto\FotoUtils;
 use UserBundle\Entity\User;
 use AppBundle\Entity\Card;
@@ -29,6 +31,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class UserController extends Controller
 {
@@ -46,6 +49,10 @@ class UserController extends Controller
 
         $conditions = $this->getDoctrine()
             ->getRepository(State::class)
+            ->findAll();
+
+        $tariffs = $this->getDoctrine()
+            ->getRepository(Tariff::class)
             ->findAll();
 
         $colors = $this->getDoctrine()
@@ -69,7 +76,8 @@ class UserController extends Controller
                 'conditions' => $conditions,
                 'colors' => $colors,
                 'features' => $features,
-                'prices' => $prices
+                'prices' => $prices,
+                'tariffs' =>$tariffs
             ]);
         }
 
@@ -80,6 +88,9 @@ class UserController extends Controller
             $card->setContent($post->get('content'));
             $card->setAddress($post->get('address'));
             $card->setCoords($post->get('coords'));
+            $card->setVideo($post->get('video'));
+            $card->setStreetView($post->get('streetView'));
+
 
             $modelId = $this->getDoctrine()
                 ->getRepository(Mark::class)
@@ -114,6 +125,11 @@ class UserController extends Controller
                 ->getRepository(Color::class)
                 ->find($post->get('colorId'));
             $card->setColor($color);
+
+            $tariff = $this->getDoctrine()
+                ->getRepository(Tariff::class)
+                ->find($post->get('tariffId'));
+            $card->setTariff($tariff);
 
             $em->persist($card);
 
@@ -157,11 +173,39 @@ class UserController extends Controller
 
             $fu->uploadImages($card);
 
-            $response = $this->redirectToRoute('user_cards');
+            if ($tariff->getId() == 1) $response = $this->redirectToRoute('user_cards');
+            else {
+
+                $order = new UserOrder();
+                $order->setUser($user);
+                $order->setCard($card);
+                $order->setTariff($tariff);
+                $order->setPrice($tariff->getPrice());
+                $order->setOrderType('tariff_'.$tariff->getId());
+                $order->setStatus('new');
+                $em->persist($order);
+                $em->flush();
+
+                $mrh_login = "test-multiprokat";
+                $mrh_pass1 = "DA35YAO3ABGlsM4FeP7z";
+                $inv_id    = $order->getId();
+                $inv_desc  = "set_tariff";
+                $out_summ  = $tariff->getPrice();
+
+                $crc  = md5("$mrh_login:$out_summ:$inv_id:$mrh_pass1");
+
+                $url = "https://auth.robokassa.ru/Merchant/Index.aspx?MrchLogin=$mrh_login&".
+                    "OutSum=$out_summ&InvId=$inv_id&Desc=$inv_desc&SignatureValue=$crc&IsTest=1";
+
+                $response = new RedirectResponse($url);
+            }
         }
 
         return $response;
     }
+
+
+
 
     /**
      * @Route("/ajax/getAllSubFields")
@@ -386,6 +430,10 @@ class UserController extends Controller
             ->getRepository(Price::class)
             ->findAll();
 
+        $tariffs = $this->getDoctrine()
+            ->getRepository(Tariff::class)
+            ->findAll();
+
         return $this->render('card/card_edit.html.twig',[
             'card' => $card,
             'conditions' => $conditions,
@@ -404,7 +452,8 @@ class UserController extends Controller
             'cities' => $city->getParent()->getChildren(),
             'subfields' => $sf->getSubFieldsEdit($card),
             'features' => $features,
-            'prices' => $prices
+            'prices' => $prices,
+            'tariffs' => $tariffs
         ]);
     }
 
@@ -433,6 +482,8 @@ class UserController extends Controller
         $card->setContent($post->get('content'));
         $card->setAddress($post->get('address'));
         $card->setCoords($post->get('coords'));
+        $card->setVideo($post->get('video'));
+        $card->setStreetView($post->get('streetView'));
 
         $modelId = $this->getDoctrine()
             ->getRepository(Mark::class)
@@ -467,6 +518,11 @@ class UserController extends Controller
             ->getRepository(Color::class)
             ->find($post->get('colorId'));
         $card->setColor($color);
+
+        $tariff = $this->getDoctrine()
+            ->getRepository(Tariff::class)
+            ->find($post->get('tariffId'));
+        //$card->setTariff($tariff);
 
         $em->persist($card);
 
@@ -522,7 +578,118 @@ class UserController extends Controller
 
         $fu->uploadImages($card);
 
-        if ($this->get('session')->get('admin') === null) return $this->redirectToRoute('user_cards');
-        else return $this->redirectToRoute('search');
+        if ($tariff->getId() == 1){
+            if ($this->get('session')->get('admin') === null) return $this->redirectToRoute('user_cards');
+            else return $this->redirectToRoute('search');
+        }
+        else {
+
+            $order = new UserOrder();
+            $order->setUser($user);
+            $order->setCard($card);
+            $order->setTariff($tariff);
+            $order->setPrice($tariff->getPrice());
+            $order->setOrderType('tariff_'.$tariff->getId());
+            $order->setStatus('new');
+            $em->persist($order);
+            $em->flush();
+
+            $mrh_login = "test-multiprokat";
+            $mrh_pass1 = "DA35YAO3ABGlsM4FeP7z";
+            $inv_id    = $order->getId();
+            $inv_desc  = "set_tariff";
+            $out_summ  = $tariff->getPrice();
+
+            $crc  = md5("$mrh_login:$out_summ:$inv_id:$mrh_pass1");
+
+            $url = "https://auth.robokassa.ru/Merchant/Index.aspx?MrchLogin=$mrh_login&".
+                "OutSum=$out_summ&InvId=$inv_id&Desc=$inv_desc&SignatureValue=$crc&IsTest=1";
+
+            return new RedirectResponse($url);
+        }
+
+
+    }
+
+    /**
+     * @Route("/robokassa/resultUrl")
+     */
+    public function robokassaResultUrlAction(Request $request)
+    {
+        $mrh_pass2 = "D1c2CDj17KjESzDgElr7"; //pass2
+
+        $out_summ = $_REQUEST["OutSum"];
+        $inv_id = $_REQUEST["InvId"];
+        $crc = strtoupper($_REQUEST["SignatureValue"]);
+
+        $my_crc = strtoupper(md5("$out_summ:$inv_id:$mrh_pass2"));
+        $text = "OK$inv_id\n";
+        if ($my_crc != $crc) $text = "bad sign\n";
+        else{
+            $em = $this->getDoctrine()->getManager();
+
+            $order = $this->getDoctrine()
+                ->getRepository(UserOrder::class)
+                ->find($inv_id);
+
+            $order->setStatus('paid');
+
+            $tariff = $this->getDoctrine()
+                ->getRepository(Tariff::class)
+                ->find($order->getTariffId());
+
+            $card = $this->getDoctrine()
+                ->getRepository(Card::class)
+                ->find($order->getCardId());
+
+            $card->setDateTariffStart(new \DateTime());
+
+            $card->setTariff($tariff);
+
+            $em->persist($order);
+            $em->persist($card);
+
+            $em->flush();
+        }
+        return new Response($text, 200);
+    }
+
+    /**
+ * @Route("/robokassa/successUrl")
+ */
+    public function robokassaSuccessUrlAction(Request $request)
+    {
+        $mrh_pass1 = "DA35YAO3ABGlsM4FeP7z";  // merchant pass1 here
+        $out_summ = $_REQUEST["OutSum"];
+        $inv_id = $_REQUEST["InvId"];
+        $crc = $_REQUEST["SignatureValue"];
+        $crc = strtoupper($crc);  // force uppercase
+        $my_crc = strtoupper(md5("$out_summ:$inv_id:$mrh_pass1"));
+
+        if ($my_crc != $crc)
+        {
+            $text = "bad sign\n";
+            return new Response($text, 200);
+        }
+
+        $this->addFlash(
+            'notice',
+            'Your order successfully paid!'
+        );
+
+        return $this->redirectToRoute('user_cards');
+    }
+
+    /**
+     * @Route("/robokassa/failUrl")
+     */
+    public function robokassaFailUrlAction(Request $request)
+    {
+        $this->addFlash(
+            'notice',
+            'Something went wrong!'
+        );
+
+        return $this->redirectToRoute('user_cards');
     }
 }

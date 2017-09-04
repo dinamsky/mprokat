@@ -24,9 +24,33 @@ class DefaultController extends Controller
      */
     public function indexAction(MenuGeneralType $mgt, MenuCity $mc, EntityManagerInterface $em)
     {
-        $query = $em->createQuery('SELECT c FROM AppBundle:Card c WHERE c.isTop = 1');
+        $query = $em->createQuery('SELECT c FROM AppBundle:Card c JOIN c.tariff t ORDER BY t.weight DESC, c.dateTariffStart DESC');
         $query->setMaxResults(3);
         $top3 = $query->getResult();
+
+        $query = $em->createQuery('SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId = 2 ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
+        $query->setMaxResults(10);
+        $cars = $query->getResult();
+
+        $query = $em->createQuery('SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId = 3 ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
+        $query->setMaxResults(10);
+        $trucks = $query->getResult();
+
+        $query = $em->createQuery('SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId = 14 ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
+        $query->setMaxResults(10);
+        $segways = $query->getResult();
+
+        $query = $em->createQuery('SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId = 15 ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
+        $query->setMaxResults(10);
+        $bicycles = $query->getResult();
+
+        $query = $em->createQuery('SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId = 12 ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
+        $query->setMaxResults(10);
+        $boats = $query->getResult();
+
+        $query = $em->createQuery('SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId = 13 ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
+        $query->setMaxResults(10);
+        $yachts = $query->getResult();
 
 
         return $this->render('main_page/main.html.twig', [
@@ -40,7 +64,13 @@ class DefaultController extends Controller
                 'regions' => array()
             ),
             'mark_model' => array(),
-            'top3' => $top3
+            'top3' => $top3,
+            'cars' => $cars,
+            'trucks' => $trucks,
+            'segways' => $segways,
+            'bicycles' => $bicycles,
+            'boats' => $boats,
+            'yachts' => $yachts
 
         ]);
     }
@@ -70,6 +100,12 @@ class DefaultController extends Controller
         if ($card->getStreetView() != '') $streetView = unserialize($card->getStreetView());
         else $streetView = false;
 
+        $dql = 'SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId = '.$card->getGeneralTypeId().' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
+        $em = $this->get('doctrine')->getManager();
+        $query = $em->createQuery($dql);
+        $query->setMaxResults(10);
+        $similar = $query->getResult();
+
         return $this->render('card/card_show.html.twig', [
 
             'card' => $card,
@@ -92,7 +128,7 @@ class DefaultController extends Controller
             'generalSecondLevel' => $mgt->getSecondLevel($card->getGeneralType()->getParentId()),
             'pgtid' => $card->getGeneralType()->getParentId(),
             'gtid' => $card->getGeneralTypeId(),
-
+            'similar' => $similar
 
         ]);
     }

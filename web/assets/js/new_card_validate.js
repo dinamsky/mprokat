@@ -6,7 +6,7 @@ $( document ).ready(function() {
 
 function new_card_validate(){
     var general_type = $('#generalTypeId').find('option:selected').val();
-    var header = $('input[name="header"]').val();
+    var header = $('#new_card_form').find('input[name="header"]').val();
     var model = $('#markModelId').find('option:selected').val();
     var city = $('#cityId').find('option:selected').val();
     var subfields = [];

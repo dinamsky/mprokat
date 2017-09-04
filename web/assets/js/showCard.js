@@ -12,11 +12,4 @@ $( document ).ready(function() {
             });
         }
     });
-
-    $(".owl-carousel").owlCarousel({
-        'items': 1,
-        'nav': true,
-        'navText': ['<i uk-icon="icon:chevron-left"></i>','<i uk-icon="icon:chevron-right"></i>'],
-        'autoHeight': true
-    });
 });

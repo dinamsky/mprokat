@@ -1,29 +1,7 @@
 <div uk-grid class="uk-grid-medium uk-grid-match">
     {% for card in cards %}
         <div class="uk-width-1-4">
-            <div class="bordered uk-position-relative">
-                <a href="/card/{{ card.id }}" style="background:url('/assets/images/cards/{% for foto in card.getFotos if foto.isMain %}{{ foto.folder }}/t/{{ foto.id }}.jpg{% endfor %}') center center;
-                        background-size: cover;
-                        height: 150px;
-                        display: block;">
-                </a>
-                <div class="padding20">
-                    <a href="/card/{{ card.id }}">{{ card.header }}</a>
-                    <div>
-                        {{ card.getCity.header }}, {{ card.getCity.getParent.header }}, {{ card.getCity.country }}
-                    </div>
-                    <div>
-                        {{ card.getMarkModel.getParent.header }} {{ card.getMarkModel.header }}
-                    </div>
-                </div>
-                {% if app.session.get('admin').email is defined %}
-                    <form action="/card/update" method="POST" style="position: absolute;top:0;right:0;">
-                        <input type="hidden" name="cardId" value="{{ card.id }}">
-                        <button class="uk-button-danger c_white" name="delete" uk-close></button>
-                    </form>
-                    <a class="uk-button-primary" href="/user/edit/card/{{ card.id }}" uk-icon="icon:pencil" style="position: absolute;left:0;top:0"></a>
-                {% endif %}
-            </div>
+            {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}
         </div>
     {% endfor %}
 </div>

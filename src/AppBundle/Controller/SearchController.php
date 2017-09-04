@@ -53,6 +53,12 @@ class SearchController extends Controller
         if ($request->query->has('pgtId') and $get['pgtId'] != 0) $generalTypeId = $get['pgtId'];
         if ($request->query->has('gtId') and $get['gtId'] != 0) $generalTypeId = $get['gtId'];
 
+        if ($request->query->has('order') and $get['order'] != ''){
+            $order = '';
+        } else {
+            $order = 'ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
+        }
+
 
         $gt = $mgt->getGeneralTypeMenu();
         $gt_ids = $mgt->getArrayOfChildIdsOfGeneralTypeMenu($gt, $generalTypeId);
@@ -92,7 +98,7 @@ class SearchController extends Controller
 
 
         if(in_array($cityId, $countries)){
-            $dql = 'SELECT c FROM AppBundle:Card c WHERE c.generalTypeId IN ( :ids ) AND c.cityId BETWEEN ?1 AND ?2';
+            $dql = 'SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId IN ( :ids ) AND c.cityId BETWEEN ?1 AND ?2 '.$order;
             $range = $mc->getCountryIdRange($cityId);
             $query = $em->createQuery($dql);
             $query->setParameter(1, $range['first']);
@@ -100,7 +106,7 @@ class SearchController extends Controller
             $query->setParameter('ids', $gt_ids);
 
         } else {
-            $dql = 'SELECT c FROM AppBundle:Card c WHERE c.generalTypeId IN ( :ids ) AND c.cityId IN ( :cities )';
+            $dql = 'SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId IN ( :ids ) AND c.cityId IN ( :cities ) '.$order;
             $query = $em->createQuery($dql);
             $query->setParameter('cities', array_merge($mc->getCity($cityId),$mc->getCities($cityId)));
             $query->setParameter('ids', $gt_ids);

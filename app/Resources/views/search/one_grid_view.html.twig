@@ -1,0 +1,24 @@
+<div class="bordered uk-position-relative">
+    <a href="/card/{{ card.id }}" style="background:url('/assets/images/cards/{% for foto in card.getFotos if foto.isMain %}{{ foto.folder }}/t/{{ foto.id }}.jpg{% endfor %}') center center;
+            background-size: cover;
+            height: {{ height }};
+            display: block;">
+    </a>
+    <div class="padding20">
+        <a class="uk-text-truncate uk-display-block" href="/card/{{ card.id }}">{{ card.header }}</a>
+        {#<div>#}
+            {#{{ card.getCity.header }}, {{ card.getCity.getParent.header }}, {{ card.getCity.country }}#}
+        {#</div>#}
+        {#<div>#}
+            {#{{ card.getMarkModel.getParent.header }} {{ card.getMarkModel.header }}#}
+        {#</div>#}
+    </div>
+    {% if app.session.get('admin') or app.session.get('logged_user') %}
+        <form action="/card/update" method="POST" style="position: absolute;top:0;right:0;">
+            <input type="hidden" name="cardId" value="{{ card.id }}">
+            <button class="uk-button-danger c_white" name="delete" uk-close></button>
+        </form>
+        <a class="uk-button-primary" href="/user/edit/card/{{ card.id }}" uk-icon="icon:pencil" style="position: absolute;left:0;top:0"></a>
+    {% endif %}
+</div>
+

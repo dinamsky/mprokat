@@ -1,7 +1,18 @@
 {% extends 'base.html.twig' %}
 
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('assets/css/owl.carousel.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/owl.theme.default.css') }}" rel="stylesheet" />
+{% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('assets/js/mainPage.js') }}"></script>
+    <script src="{{ asset('assets/js/sliderSettings.js') }}"></script>
+{% endblock %}
 
 {% block content %}
 
@@ -10,18 +21,19 @@
     <div uk-grid>
         {% for card in top3 %}
             <div class="uk-width-1-3">
-                <a href="/card/{{ card.id }}" style="background:url('/assets/images/cards/{% for foto in card.getFotos if foto.isMain %}{{ foto.folder }}/t/{{ foto.id }}.jpg{% endfor %}') center center;
-                        background-size: cover;
-                        height: 200px;
-                        display: block;">
-                </a>
-                <a href="/card/{{ card.id }}">{{ card.header }}</a>
-                <div>
-                    {{ card.getCity.header }}, {{ card.getCity.getParent.header }}, {{ card.getCity.country }}
-                </div>
-                <div>
-                    {{ card.getMarkModel.getParent.header }} {{ card.getMarkModel.header }}
-                </div>
+                {#<a href="/card/{{ card.id }}" style="background:url('/assets/images/cards/{% for foto in card.getFotos if foto.isMain %}{{ foto.folder }}/t/{{ foto.id }}.jpg{% endfor %}') center center;#}
+                        {#background-size: cover;#}
+                        {#height: 200px;#}
+                        {#display: block;">#}
+                {#</a>#}
+                {#<a href="/card/{{ card.id }}">{{ card.header }}</a>#}
+                {#<div>#}
+                    {#{{ card.getCity.header }}, {{ card.getCity.getParent.header }}, {{ card.getCity.country }}#}
+                {#</div>#}
+                {#<div>#}
+                    {#{{ card.getMarkModel.getParent.header }} {{ card.getMarkModel.header }}#}
+                {#</div>#}
+                {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'200px'}) }}
             </div>
         {% endfor %}
     </div>
@@ -74,6 +86,65 @@
             </div>
         </form>
     </div>
+
+    <div class="uk-margin-large">
+        <h2>Легковые</h2>
+        <div class="owl-carousel owl-theme uk-width-1-1" data-items="4">
+            {% for card in cars %}
+                {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="uk-margin-large">
+        <h2>Грузовые</h2>
+        <div class="owl-carousel owl-theme uk-width-1-1" data-items="4">
+            {% for card in trucks %}
+                {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="uk-margin-large">
+        <div uk-grid>
+            <div class="uk-width-1-2">
+                <h2>Сигвеи</h2>
+                <div class="owl-carousel owl-theme uk-width-1-1" data-items="2">
+                    {% for card in segways %}
+                        {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="uk-width-1-2">
+                <h2>Велосипеды</h2>
+                <div class="owl-carousel owl-theme uk-width-1-1" data-items="2">
+                    {% for card in bicycles %}
+                        {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="uk-margin-large">
+        <h2>Катера</h2>
+        <div class="owl-carousel owl-theme uk-width-1-1" data-items="4">
+            {% for card in boats %}
+                {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="uk-margin-large">
+        <h2>Яхты</h2>
+        <div class="owl-carousel owl-theme uk-width-1-1" data-items="4">
+            {% for card in yachts %}
+                {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}
+            {% endfor %}
+        </div>
+    </div>
+
+
 
 </div>
 
