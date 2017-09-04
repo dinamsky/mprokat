@@ -79,8 +79,14 @@ class User
      */
     private $information;
 
+    /**
+     * @ORM\OneToMany(targetEntity="UserBundle\Entity\UserOrder", mappedBy="user", cascade={"remove"}, orphanRemoval=true)
+     */
+    private $userOrders;
+
     public function __construct() {
         $this->information = new ArrayCollection();
+        $this->userOrders = new ArrayCollection();
     }
 
     /**
@@ -294,5 +300,39 @@ class User
     public function getLogin()
     {
         return $this->login;
+    }
+
+    /**
+     * Add userOrder
+     *
+     * @param \UserBundle\Entity\UserOrder $userOrder
+     *
+     * @return User
+     */
+    public function addUserOrder(\UserBundle\Entity\UserOrder $userOrder)
+    {
+        $this->userOrders[] = $userOrder;
+
+        return $this;
+    }
+
+    /**
+     * Remove userOrder
+     *
+     * @param \UserBundle\Entity\UserOrder $userOrder
+     */
+    public function removeUserOrder(\UserBundle\Entity\UserOrder $userOrder)
+    {
+        $this->userOrders->removeElement($userOrder);
+    }
+
+    /**
+     * Get userOrders
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUserOrders()
+    {
+        return $this->userOrders;
     }
 }

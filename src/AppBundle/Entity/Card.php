@@ -194,6 +194,13 @@ class Card
     private $dateExpiry = null;
 
     /**
+     * @var \DateTime
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="date_tariff_start", type="datetime", nullable=true)
+     */
+    private $dateTariffStart = null;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="views", type="integer", nullable=true)
@@ -221,11 +228,32 @@ class Card
      */
     private $cardPrices;
 
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="tariff_id", type="integer", nullable=true)
+     */
+    private $tariffId = 1;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Tariff")
+     * @ORM\JoinColumn(name="tariff_id", referencedColumnName="id")
+     */
+    private $tariff;
+
+    /**
+     * @ORM\OneToMany(targetEntity="UserBundle\Entity\UserOrder", mappedBy="card", cascade={"remove"}, orphanRemoval=true)
+     */
+    private $userOrders;
+
+
     public function __construct() {
         $this->fieldIntegers = new ArrayCollection();
         $this->cardFeatures = new ArrayCollection();
         $this->fotos = new ArrayCollection();
         $this->cardPrices = new ArrayCollection();
+        $this->userOrders = new ArrayCollection();
     }
 
     /**
@@ -1004,5 +1032,111 @@ class Card
     public function getVideo()
     {
         return $this->video;
+    }
+
+    /**
+     * Set tariffId
+     *
+     * @param integer $tariffId
+     *
+     * @return Card
+     */
+    public function setTariffId($tariffId)
+    {
+        $this->tariffId = $tariffId;
+
+        return $this;
+    }
+
+    /**
+     * Get tariffId
+     *
+     * @return integer
+     */
+    public function getTariffId()
+    {
+        return $this->tariffId;
+    }
+
+    /**
+     * Set tariff
+     *
+     * @param \AppBundle\Entity\Tariff $tariff
+     *
+     * @return Card
+     */
+    public function setTariff(\AppBundle\Entity\Tariff $tariff = null)
+    {
+        $this->tariff = $tariff;
+
+        return $this;
+    }
+
+    /**
+     * Get tariff
+     *
+     * @return \AppBundle\Entity\Tariff
+     */
+    public function getTariff()
+    {
+        return $this->tariff;
+    }
+
+    /**
+     * Set dateTariffStart
+     *
+     * @param \DateTime $dateTariffStart
+     *
+     * @return Card
+     */
+    public function setDateTariffStart($dateTariffStart)
+    {
+        $this->dateTariffStart = $dateTariffStart;
+
+        return $this;
+    }
+
+    /**
+     * Get dateTariffStart
+     *
+     * @return \DateTime
+     */
+    public function getDateTariffStart()
+    {
+        return $this->dateTariffStart;
+    }
+
+    /**
+     * Add userOrder
+     *
+     * @param \UserBundle\Entity\UserOrder $userOrder
+     *
+     * @return Card
+     */
+    public function addUserOrder(\UserBundle\Entity\UserOrder $userOrder)
+    {
+        $this->userOrders[] = $userOrder;
+
+        return $this;
+    }
+
+    /**
+     * Remove userOrder
+     *
+     * @param \UserBundle\Entity\UserOrder $userOrder
+     */
+    public function removeUserOrder(\UserBundle\Entity\UserOrder $userOrder)
+    {
+        $this->userOrders->removeElement($userOrder);
+    }
+
+    /**
+     * Get userOrders
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUserOrders()
+    {
+        return $this->userOrders;
     }
 }

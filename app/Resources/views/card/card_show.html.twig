@@ -2,27 +2,30 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link href="{{ asset('assets/css/owl.carousel.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/owl.theme.default.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/owl.carousel.min.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/owl.theme.default.css') }}" rel="stylesheet"/>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('assets/js/showCard.js') }}"></script>
+    <script src="{{ asset('assets/js/sliderSettings.js') }}"></script>
 {% endblock %}
 
 {% block content %}
 
 
-    <div class="uk-flex uk-flex-bottom" style="background:url('/assets/images/cards/{% for foto in card.getFotos if foto.isMain %}{{ foto.folder }}/{{ foto.id }}.jpg{% endfor %}') center center;
-            background-size: cover;
-            height: 500px;">
+    <div class="uk-flex uk-flex-bottom"
+         style="background:url('/assets/images/cards/{% for foto in card.getFotos if foto.isMain %}{{ foto.folder }}/{{ foto.id }}.jpg{% endfor %}') center center;
+                 background-size: cover;
+                 height: 500px;">
 
         <div class="card_cover_description">
             <div class="standard_wide">
                 <h1 class="c_white">{{ card.header }}</h1>
-                <div>{{ card.getCity.header }}, {{ card.getCity.getParent.header }}, {{ card.getCity.country }} {{ card.address }}</div>
+                <div>{{ card.getCity.header }}, {{ card.getCity.getParent.header }}
+                    , {{ card.getCity.country }} {{ card.address }}</div>
                 <div>Опубликовано: {{ card.dateCreate|date("d.m.Y") }} Просмотров: {{ card.views }}</div>
             </div>
         </div>
@@ -38,167 +41,174 @@
 
     <div class="standard_wide">
 
-    <div uk-grid>
-        <div class="uk-width-3-4">
+        <div uk-grid>
+            <div class="uk-width-3-4">
 
 
-            {#<div uk-grid>#}
+                {#<div uk-grid>#}
                 {#{% for foto in card.getFotos %}#}
-                    {#<div class="uk-width-1-5">#}
-                        {#<div style="background:url('/assets/images/cards/{{ foto.folder }}/t/{{ foto.id }}.jpg') center center;#}
-                                {#background-size: cover;#}
-                                {#height: 100px;">#}
-                        {#</div>#}
-                    {#</div>#}
+                {#<div class="uk-width-1-5">#}
+                {#<div style="background:url('/assets/images/cards/{{ foto.folder }}/t/{{ foto.id }}.jpg') center center;#}
+                {#background-size: cover;#}
+                {#height: 100px;">#}
+                {#</div>#}
+                {#</div>#}
                 {#{% endfor %}#}
-            {#</div>#}
+                {#</div>#}
 
-            <div class="owl-carousel owl-theme">
-                {% for foto in card.getFotos %}
-                    <div class="uk-width-1-1"><img src="/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg" alt=""></div>
-                {% endfor %}
-            </div>
-
-
-            <ul id="tt" uk-tab>
-                <li><a href="#">Информация</a></li>
-                <li><a href="#">Карта</a></li>
-                {% if streetView %}
-                <li><a href="#">Местность</a></li>
-                {% endif %}
-                {% if video %}
-                <li><a href="#">Видео</a></li>
-                {% endif %}
-            </ul>
-
-            <ul id="cardTabs" class="uk-switcher uk-margin">
-                <li>
-                    <div uk-grid>
-                        <div class="uk-width-1-2">
-
-                            <div>
-                                {% for price in card.getCardPrices %}
-                                    <div class="">
-                                        {{ price.value }} руб. в {{ price.getPrice.header }}
-                                    </div>
-                                {% endfor %}
-                            </div>
-
-                            <hr>
-
-                            <div>Год выпуска: {{ card.prodYear }}</div>
-                            <div>Состояние: {{ card.getCondition.header }}</div>
-                            <div>Марка и модель: {{ card.getMarkModel.getParent.header }} {{ card.getMarkModel.header }}</div>
-                            <div>Цвет: {{ card.getColor.header }}</div>
-
-
-
-                            {% for subfield in sub_fields if subfield.value is not null %}
-                                <div>
-                                    {{ subfield.label }}:
-                                    {% if subfield.type == 'subfield' %}
-                                        {{ subfield.value.getHeader }}
-                                    {% else %}
-                                        {{ subfield.value.getValue }}
-                                    {% endif %}
-                                </div>
-                            {% endfor %}
-
-
-
-                        </div>
-                        <div class="uk-width-1-2">
-                            <div>{{ card.content|raw }}</div>
-                        </div>
-                    </div>
-
-                </li>
-                <li id="card_tab">
-                    {% if card.coords != NULL %}
-                        {% set coords = card.coords|split(',') %}
-                        <div id="map" data-lat="{{ coords[0] }}" data-lng="{{ coords[1] }}"></div>
-                        <script async defer
-                                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWdm1zrblFjsdUfi1-6fsPvj30ACCiCxk">
-                        </script>
-                    {% endif %}
-
-                </li>
-                {% if streetView %}
-                <li>
-                    <iframe
-                            width="100%"
-                            height="400"
-                            frameborder="0" style="border:0"
-                            src="https://www.google.com/maps/embed/v1/streetview?key=AIzaSyDWdm1zrblFjsdUfi1-6fsPvj30ACCiCxk&location={{ coords[0] }},{{ coords[1] }}&heading={{ streetView.heading }}&pitch={{ streetView.pitch }}&fov=35" allowfullscreen>
-                    </iframe>
-                </li>
-                {% endif %}
-                {% if video %}
-                <li>
-                    <iframe width="100%" height="400" src="https://www.youtube.com/embed/{{ video }}?feature=oembed" frameborder="0" allowfullscreen></iframe>
-                </li>
-                {% endif %}
-            </ul>
-
-
-
-
-
-
-
-            <h2 class="pf_style_header"><span>Характеристики</span></h2>
-
-            <div uk-grid>
-                {% for feature in card.getCardFeatures %}
-                    <div class="">
-                        <span class="check_icon" uk-icon="icon:check; ratio: 1"></span>{{ feature.getFeature.header }}
-                    </div>
-                {% endfor %}
-            </div>
-
-            <hr>
-
-
-
-
-
-            <h2 class="pf_style_header"><span>{{ card.user.header }}</span></h2>
-
-            <div uk-grid>
-                <div class="uk-width-1-5">
-                    <img src="/assets/images/users/t/{% for info in card.user.information if info.uiKey == 'foto' %}{{ info.uiValue }}{% endfor %}.jpg" alt="">
-                </div>
-                <div class="uk-width-2-5">
-                    {% for info in card.user.information %}
-                        <div>{{ info.uiKey }}: {{ info.uiValue }}</div>
+                <div class="owl-carousel owl-theme" data-items="1">
+                    {% for foto in card.getFotos %}
+                        <div class="uk-width-1-1"><img src="/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg"
+                                                       alt=""></div>
                     {% endfor %}
                 </div>
-                <div class="uk-width-2-5">
-                    <form action="#" uk-grid class="uk-grid-medium">
-                        <div class="uk-width-1-2"><input type="text" name="" class="uk-input"></div>
-                        <div class="uk-width-1-2"><input type="text" name="" class="uk-input uk-width-1-1"></div>
-                        <div class="uk-width-1-1"><input type="text" name="" class="uk-input "></div>
-                        <div class="uk-width-1-1"><textarea name="" class="uk-width-1-1 short_textarea"></textarea></div>
-                        <div class="uk-width-1-1"><button class="uk-button uk-button-default">Отправить</button></div>
-                    </form>
+
+
+                <ul id="tt" uk-tab>
+                    <li><a href="#">Информация</a></li>
+                    <li><a href="#">Карта</a></li>
+                    {% if streetView %}
+                        <li><a href="#">Местность</a></li>
+                    {% endif %}
+                    {% if video %}
+                        <li><a href="#">Видео</a></li>
+                    {% endif %}
+                </ul>
+
+                <ul id="cardTabs" class="uk-switcher uk-margin">
+                    <li>
+                        <div uk-grid>
+                            <div class="uk-width-1-2">
+
+                                <div>
+                                    {% for price in card.getCardPrices %}
+                                        <div class="">
+                                            {{ price.value }} руб. в {{ price.getPrice.header }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+
+                                <hr>
+
+                                <div>Год выпуска: {{ card.prodYear }}</div>
+                                <div>Состояние: {{ card.getCondition.header }}</div>
+                                <div>Марка и
+                                    модель: {{ card.getMarkModel.getParent.header }} {{ card.getMarkModel.header }}</div>
+                                <div>Цвет: {{ card.getColor.header }}</div>
+
+
+                                {% for subfield in sub_fields if subfield.value is not null %}
+                                    <div>
+                                        {{ subfield.label }}:
+                                        {% if subfield.type == 'subfield' %}
+                                            {{ subfield.value.getHeader }}
+                                        {% else %}
+                                            {{ subfield.value.getValue }}
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+
+
+                            </div>
+                            <div class="uk-width-1-2">
+                                <div>{{ card.content|raw }}</div>
+                            </div>
+                        </div>
+
+                    </li>
+                    <li id="card_tab">
+                        {% if card.coords != NULL %}
+                            {% set coords = card.coords|split(',') %}
+                            <div id="map" data-lat="{{ coords[0] }}" data-lng="{{ coords[1] }}"></div>
+                            <script async defer
+                                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWdm1zrblFjsdUfi1-6fsPvj30ACCiCxk">
+                            </script>
+                        {% endif %}
+
+                    </li>
+                    {% if streetView %}
+                        <li>
+                            <iframe
+                                    width="100%"
+                                    height="400"
+                                    frameborder="0" style="border:0"
+                                    src="https://www.google.com/maps/embed/v1/streetview?key=AIzaSyDWdm1zrblFjsdUfi1-6fsPvj30ACCiCxk&location={{ coords[0] }},{{ coords[1] }}&heading={{ streetView.heading }}&pitch={{ streetView.pitch }}&fov=35"
+                                    allowfullscreen>
+                            </iframe>
+                        </li>
+                    {% endif %}
+                    {% if video %}
+                        <li>
+                            <iframe width="100%" height="400"
+                                    src="https://www.youtube.com/embed/{{ video }}?feature=oembed" frameborder="0"
+                                    allowfullscreen></iframe>
+                        </li>
+                    {% endif %}
+                </ul>
+
+
+                <h2 class="pf_style_header"><span>Характеристики</span></h2>
+
+                <div uk-grid>
+                    {% for feature in card.getCardFeatures %}
+                        <div class="">
+                            <span class="check_icon"
+                                  uk-icon="icon:check; ratio: 1"></span>{{ feature.getFeature.header }}
+                        </div>
+                    {% endfor %}
                 </div>
+
+                <hr>
+
+
+                <h2 class="pf_style_header"><span>{{ card.user.header }}</span></h2>
+
+                <div uk-grid>
+                    <div class="uk-width-1-5">
+                        <img src="/assets/images/users/t/{% for info in card.user.information if info.uiKey == 'foto' %}{{ info.uiValue }}{% endfor %}.jpg"
+                             alt="">
+                    </div>
+                    <div class="uk-width-2-5">
+                        {% for info in card.user.information %}
+                            <div>{{ info.uiKey }}: {{ info.uiValue }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="uk-width-2-5">
+                        <form action="#" uk-grid class="uk-grid-medium">
+                            <div class="uk-width-1-2"><input type="text" name="" class="uk-input"></div>
+                            <div class="uk-width-1-2"><input type="text" name="" class="uk-input uk-width-1-1"></div>
+                            <div class="uk-width-1-1"><input type="text" name="" class="uk-input "></div>
+                            <div class="uk-width-1-1"><textarea name="" class="uk-width-1-1 short_textarea"></textarea>
+                            </div>
+                            <div class="uk-width-1-1">
+                                <button class="uk-button uk-button-default">Отправить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div>
+
+                </div>
+
+                {% if app.session.get('logged_user').header is defined %}
+                    <a class="uk-button uk-button-primary" href="/user/edit/card/{{ card.id }}">Редактировать</a>
+                {% endif %}
             </div>
-
-            <div>
-
+            <div class="uk-width-1-4">
+                <h3 class="pf_style_header"><span>Поиск</span></h3>
+                {{ include('search/search_form.html.twig') }}
             </div>
-
-            {% if app.session.get('logged_user').header is defined %}
-                <a class="uk-button uk-button-primary" href="/user/edit/card/{{ card.id }}">Редактировать</a>
-            {% endif %}
         </div>
-        <div class="uk-width-1-4">
-            <h3 class="pf_style_header"><span>Поиск</span></h3>
-            {{ include('search/search_form.html.twig') }}
+
+        <div class="uk-margin-large">
+            <h2 class="pf_style_header"><span>Похожие объявления</span></h2>
+            <div class="owl-carousel in_row_4 owl-theme uk-width-1-1" data-items="4">
+                {% for card in similar %}
+                    {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}
+                {% endfor %}
+            </div>
         </div>
-    </div>
-
-
 
     </div>
 

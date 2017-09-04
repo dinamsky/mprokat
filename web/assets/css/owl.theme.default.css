@@ -54,6 +54,7 @@
     top: 50%;
     right: 0;
     padding-bottom: 7px !important;
+  margin-top: -35px !important;
 }
 
 .owl-prev{
@@ -61,4 +62,5 @@
     top: 50%;
     left: 0;
     padding-bottom: 7px !important;
+  margin-top: -35px !important;
 }

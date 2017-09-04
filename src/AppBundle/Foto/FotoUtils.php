@@ -24,8 +24,10 @@ class FotoUtils extends Controller
 
     public function uploadImages(Card $card)
     {
-        $main_dir = $_SERVER['DOCUMENT_ROOT'].'/assets/images';
-        $thumbs = $_SERVER['DOCUMENT_ROOT'].'/assets/thumbs';
+        $main_dir = $_SERVER['DOCUMENT_ROOT'].'/assets/images/cards/'.date('Y').'/'.date('m');
+        $thumbs = $_SERVER['DOCUMENT_ROOT'].'/assets/images/cards/'.date('Y').'/'.date('m').'/t';
+        @mkdir($main_dir,'0755', true);
+        @mkdir($thumbs,'0755', true);
         $ff = 'fotos';
         $is_main = false;
         if(empty($card->getFotos())) $is_main = true;
@@ -40,6 +42,7 @@ class FotoUtils extends Controller
                 $foto = new Foto();
                 $foto->setCard($card);
                 $foto->setIsMain($is_main);
+                $foto->setFolder(date('Y').'/'.date('m'));
                 $this->em->persist($foto);
                 $this->em->flush();
 
@@ -47,21 +50,10 @@ class FotoUtils extends Controller
 
                 $file_id = $foto->getId();
 
-                $new_name = 'original_'.$file_id.'.'.$ext;
-                if(move_uploaded_file($_FILES[$ff]['tmp_name'][$k],$main_dir.'/'.$new_name))
+                $file = @file_get_contents($_FILES[$ff]['tmp_name'][$k]);
+                $im1 = @imagecreatefromstring($file);
+                if ($im1 !== false)
                 {
-                    //var_dump($_FILES);
-                    if(preg_match('/[.](GIF)|(gif)$/', $new_name)) {
-                        $im1 = imagecreatefromgif($main_dir.'/'.$new_name) ; //gif
-                    }
-                    if(preg_match('/[.](PNG)|(png)$/', $new_name)) {
-                        $im1 = imagecreatefrompng($main_dir.'/'.$new_name) ;//png
-                    }
-
-                    if(preg_match('/[.](JPG)|(jpg)|(jpeg)|(JPEG)$/', $new_name)) {
-                        $im1 = imagecreatefromjpeg($main_dir.'/'.$new_name); //jpg
-                    }
-
                     $width = 1280;
                     $height = 900;
 
@@ -97,7 +89,7 @@ class FotoUtils extends Controller
                     imagecopyresampled($image_p, $im1, 0, 0, 0, 0, $width, $height, $w_src1, $h_src1);
                     imagejpeg($image_p, $thumbs.'/'.$file_id.'.jpg');
 
-                    unlink ($main_dir.'/'.$new_name);
+                    unlink ($_FILES[$ff]['tmp_name'][$k]);
                 }
                 else
                 {
