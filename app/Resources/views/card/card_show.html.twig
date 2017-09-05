@@ -24,9 +24,14 @@
         <div class="card_cover_description">
             <div class="standard_wide">
                 <h1 class="c_white">{{ card.header }}</h1>
-                <div>{{ card.getCity.header }}, {{ card.getCity.getParent.header }}
-                    , {{ card.getCity.country }} {{ card.address }}</div>
-                <div>Опубликовано: {{ card.dateCreate|date("d.m.Y") }} Просмотров: {{ card.views }}</div>
+                <div>
+                    {% if card.address != '' %}
+                        {{ card.address }}
+                    {% else %}
+                        {{ card.getCity.header }}, {{ card.getCity.getParent.header }}, {{ card.getCity.country }}
+                    {% endif %}
+                 </div>
+                <div><i class="fa fa-calendar"></i> {{ card.dateCreate|date("d.m.Y") }} <i class="fa fa-eye"></i> {{ card.views }}</div>
             </div>
         </div>
 
@@ -36,6 +41,10 @@
     <div class="breadcrumbs uk-margin-bottom">
         <div class="standard_wide">
             <a href="/">Главная</a>
+            <i uk-icon="icon:chevron-right"></i>
+            <a href="/search?pgtId={{ card.generalType.getParent.id }}&gtId=0">{{ card.generalType.getParent.header }}</a>
+            <i uk-icon="icon:chevron-right"></i>
+            <a href="/search?pgtId={{ card.generalType.getParent.id }}&gtId={{ card.generalType.id }}">{{ card.generalType.header }}</a>
         </div>
     </div>
 
@@ -80,16 +89,6 @@
                         <div uk-grid>
                             <div class="uk-width-1-2">
 
-                                <div>
-                                    {% for price in card.getCardPrices %}
-                                        <div class="">
-                                            {{ price.value }} руб. в {{ price.getPrice.header }}
-                                        </div>
-                                    {% endfor %}
-                                </div>
-
-                                <hr>
-
                                 <div>Год выпуска: {{ card.prodYear }}</div>
                                 <div>Состояние: {{ card.getCondition.header }}</div>
                                 <div>Марка и
@@ -126,7 +125,7 @@
                         {% endif %}
 
                     </li>
-                    {% if streetView %}
+                    {% if streetView and card.coords != NULL %}
                         <li>
                             <iframe
                                     width="100%"
@@ -161,7 +160,7 @@
                 <hr>
 
 
-                <h2 class="pf_style_header"><span>{{ card.user.header }}</span></h2>
+                <h2 class="pf_style_header"><span>Контакты</span></h2>
 
                 <div uk-grid>
                     <div class="uk-width-1-5">
@@ -169,17 +168,34 @@
                              alt="">
                     </div>
                     <div class="uk-width-2-5">
-                        {% for info in card.user.information %}
-                            <div>{{ info.uiKey }}: {{ info.uiValue }}</div>
+                        <h4>{{ card.user.header }}</h4>
+                        {% for info in card.user.information if info.uiKey == 'phone' %}
+                            <div class="phone_block">
+                                {% if app.session.get('phone')[card.user.id] is not defined %}
+                                    <span class="hidden_phone">
+                                        <i class="fa fa-phone"></i> {{ info.uiValue|slice(0,5) }}*******
+                                    </span>
+                                    <button class="uk-button-primary show_phone" type="button" data-card_id="{{ card.id }}">Показать</button>
+                                {% else %}
+                                    <span class="opened_phone">
+                                        <i class="fa fa-phone"></i> {{ info.uiValue }}
+                                    </span>
+                                {% endif %}
+                            </div>
                         {% endfor %}
+                        {% for info in card.user.information if info.uiKey == 'website' %}
+                            <div><i class="fa fa-globe"></i> {{ info.uiValue }}</div>
+                        {% endfor %}
+
                     </div>
                     <div class="uk-width-2-5">
-                        <form action="#" uk-grid class="uk-grid-medium">
-                            <div class="uk-width-1-2"><input type="text" name="" class="uk-input"></div>
-                            <div class="uk-width-1-2"><input type="text" name="" class="uk-input uk-width-1-1"></div>
-                            <div class="uk-width-1-1"><input type="text" name="" class="uk-input "></div>
-                            <div class="uk-width-1-1"><textarea name="" class="uk-width-1-1 short_textarea"></textarea>
+                        <form action="/user/sendMessage" uk-grid class="uk-grid-medium">
+                            <div class="uk-width-1-2"><input type="text" name="name" class="uk-input" placeholder="Имя"></div>
+                            <div class="uk-width-1-2"><input type="text" name="phone" class="uk-input uk-width-1-1" placeholder="Телефон"></div>
+                            <div class="uk-width-1-1"><input type="text" name="email" class="uk-input" placeholder="Email" required></div>
+                            <div class="uk-width-1-1"><textarea name="message" class="uk-width-1-1 short_textarea" placeholder="Сообщение" required></textarea>
                             </div>
+                            <input type="hidden" name="card_id" value="{{ card.id }}">
                             <div class="uk-width-1-1">
                                 <button class="uk-button uk-button-default">Отправить</button>
                             </div>
@@ -196,6 +212,43 @@
                 {% endif %}
             </div>
             <div class="uk-width-1-4">
+
+                <div class="uk-margin-bottom">
+                    {% for price in card.getCardPrices %}
+                        <div class="uk-text-center {{ price.priceId == 2 ? 'price_highlighted' : ''}}">
+                            <span class="price_value">{{ price.value|number_format(0,'.','<span class="thousand_separator"></span>')|raw }}</span> ₽ /
+                            <span class="price_descriptor">{{ price.getPrice.header }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="user_block uk-text-center">
+                    <h3>{{ card.user.header }}</h3>
+                    {% if user_foto %}
+                    <div style="background: url('{{ user_foto }}') center center no-repeat;
+                            background-size: contain;
+                            width: 100px;
+                            height: 100px;
+                            display: inline-block;
+                            ">
+                    </div>
+                    {% else %}
+                    {% endif %}
+                    <div class="phone_block">
+                        {% if app.session.get('phone')[card.user.id] is not defined %}
+                            <span class="hidden_phone">
+                                <i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue|slice(0,5) }}*******{% endfor %}
+                            </span>
+                            <button class="uk-button-primary show_phone" type="button" data-card_id="{{ card.id }}">Показать</button>
+                        {% else %}
+                            <span class="opened_phone">
+                                <i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+
+
                 <h3 class="pf_style_header"><span>Поиск</span></h3>
                 {{ include('search/search_form.html.twig') }}
             </div>

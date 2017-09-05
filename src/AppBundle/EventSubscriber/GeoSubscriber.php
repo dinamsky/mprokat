@@ -26,6 +26,7 @@ class GeoSubscriber implements EventSubscriberInterface
             if ($ip == 'unknown') {
                 $ip = $_SERVER['REMOTE_ADDR'];
             }
+            if ($ip == '127.0.0.1') $ip = '94.41.250.18';
 
             $sessId = $event->getRequest()->getSession()->getId();
 
@@ -40,7 +41,7 @@ class GeoSubscriber implements EventSubscriberInterface
             }
         }
 
-        dump($event->getRequest());
+        //dump($event->getRequest());
     }
 
     public static function getSubscribedEvents()

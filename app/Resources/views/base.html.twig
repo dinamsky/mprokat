@@ -39,7 +39,11 @@
                     <div uk-grid>
                         <div class="uk-width-1-2"><a href="/"><img class="logo" src="/assets/images/interface/logo.png" alt=""></a></div>
                         <div class="uk-width-1-2 uk-text-right">
+                            {% if app.session.has('logged_user') %}
                             <a href="/card/new" class="uk-button uk-button-danger uk-button-small">+ Добавить объявление</a>
+                            {% else %}
+                            <a uk-toggle="target: #sign_in" class="uk-button uk-button-danger uk-button-small">+ Добавить объявление</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
