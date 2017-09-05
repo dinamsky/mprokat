@@ -37,6 +37,9 @@ class SearchController extends Controller
             $get['countryCode'] = 'RUS';
             $get['regionId'] = 0;
             $get['cityId'] = 0;
+        }
+
+        if (!$request->query->has('pgtId')) {
             $get['pgtId'] = 0;
             $get['gtId'] = 0;
         }
@@ -56,16 +59,48 @@ class SearchController extends Controller
         if ($request->query->has('order') and $get['order'] != ''){
             $order = '';
         } else {
-            $order = 'ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
+            $order = ' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
         }
 
+
+        if($request->query->has('modelId') and $get['modelId'] != '') {
+
+            if ($get['modelId'] == 0){
+                $mark = $mm->getMark($get['mark']);
+                $marks = $mm->getMarks($mark->getGroupName());
+                $models = $mark->getChildren();
+                foreach($mm->getModels((int)$get['mark']) as $model){
+                    $model_ids[] = $model->getId();
+                }
+                $model = new Mark();
+                $model->setTempId(0);
+                $model_qry = 'AND c.modelId IN ( '.implode(",",$model_ids). ')';
+            } else {
+                $model = $this->getDoctrine()
+                    ->getRepository(Mark::class)
+                    ->find((int)$get['modelId']);
+                $marks = $mm->getMarks($model->getGroupName());
+                $mark = $model->getParent();
+                $models = $mark->getChildren();
+                $model_qry = 'AND c.modelId = '.(int)$get['modelId'];
+            }
+
+        } else {
+            $marks = $mm->getMarks('cars');
+            $model = $this->getDoctrine()
+                ->getRepository(Mark::class)
+                ->find(1799);
+            $mark = $model->getParent();
+            $models = $mark->getChildren();
+            $model_qry = '';
+        }
 
         $gt = $mgt->getGeneralTypeMenu();
         $gt_ids = $mgt->getArrayOfChildIdsOfGeneralTypeMenu($gt, $generalTypeId);
         $countries = array_keys($mc->getCountry());
 
         if(in_array($cityId, $countries)){
-            $dql = 'SELECT count(c.id) FROM AppBundle:Card c WHERE c.generalTypeId IN ( :ids ) AND c.cityId BETWEEN ?1 AND ?2';
+            $dql = 'SELECT count(c.id) FROM AppBundle:Card c WHERE c.generalTypeId IN ( :ids ) AND c.cityId BETWEEN ?1 AND ?2 '.$model_qry;
             $range = $mc->getCountryIdRange($cityId);
             $query = $em->createQuery($dql);
             $query->setParameter(1, $range['first']);
@@ -73,7 +108,7 @@ class SearchController extends Controller
             $query->setParameter('ids', $gt_ids);
 
         } else {
-            $dql = 'SELECT count(c.id) FROM AppBundle:Card c WHERE c.generalTypeId IN ( :ids ) AND c.cityId IN ( :cities )';
+            $dql = 'SELECT count(c.id) FROM AppBundle:Card c WHERE c.generalTypeId IN ( :ids ) AND c.cityId IN ( :cities ) '.$model_qry;
             $query = $em->createQuery($dql);
             $query->setParameter('cities', array_merge($mc->getCity($cityId),$mc->getCities($cityId)));
             $query->setParameter('ids', $gt_ids);
@@ -98,7 +133,7 @@ class SearchController extends Controller
 
 
         if(in_array($cityId, $countries)){
-            $dql = 'SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId IN ( :ids ) AND c.cityId BETWEEN ?1 AND ?2 '.$order;
+            $dql = 'SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId IN ( :ids ) AND c.cityId BETWEEN ?1 AND ?2 '.$model_qry.$order;
             $range = $mc->getCountryIdRange($cityId);
             $query = $em->createQuery($dql);
             $query->setParameter(1, $range['first']);
@@ -106,7 +141,7 @@ class SearchController extends Controller
             $query->setParameter('ids', $gt_ids);
 
         } else {
-            $dql = 'SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId IN ( :ids ) AND c.cityId IN ( :cities ) '.$order;
+            $dql = 'SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId IN ( :ids ) AND c.cityId IN ( :cities ) '.$model_qry.$order;
             $query = $em->createQuery($dql);
             $query->setParameter('cities', array_merge($mc->getCity($cityId),$mc->getCities($cityId)));
             $query->setParameter('ids', $gt_ids);
@@ -140,7 +175,11 @@ class SearchController extends Controller
             'pgtid' => $get['pgtId'],
             'gtid' => $get['gtId'],
 
-
+            'mark_groups' => $mm->getGroups(),
+            'mark' => $mark,
+            'model' => $model,
+            'marks' => $marks,
+            'models' => $models,
 
         ]);
     }

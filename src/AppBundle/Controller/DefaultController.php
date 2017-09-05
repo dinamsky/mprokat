@@ -80,7 +80,7 @@ class DefaultController extends Controller
     /**
      * @Route("/card/{id}", requirements={"id": "\d+"})
      */
-    public function showCardAction($id, MenuGeneralType $mgt, SubFieldUtils $sf, MenuCity $mc)
+    public function showCardAction($id, MenuGeneralType $mgt, SubFieldUtils $sf, MenuCity $mc, MenuMarkModel $mm)
     {
         $card = $this->getDoctrine()
             ->getRepository(Card::class)
@@ -106,6 +106,11 @@ class DefaultController extends Controller
         $query->setMaxResults(10);
         $similar = $query->getResult();
 
+        $model = $mm->getMark($card->getModelId());
+        $mark = $model->getParent();
+        $models = $mark->getChildren();
+        $marks = $mm->getMarks($model->getGroupName());
+
         return $this->render('card/card_show.html.twig', [
 
             'card' => $card,
@@ -128,7 +133,13 @@ class DefaultController extends Controller
             'generalSecondLevel' => $mgt->getSecondLevel($card->getGeneralType()->getParentId()),
             'pgtid' => $card->getGeneralType()->getParentId(),
             'gtid' => $card->getGeneralTypeId(),
-            'similar' => $similar
+            'similar' => $similar,
+
+            'mark_groups' => $mm->getGroups(),
+            'mark' => $mark,
+            'model' => $model,
+            'marks' => $marks,
+            'models' => $models,
 
         ]);
     }

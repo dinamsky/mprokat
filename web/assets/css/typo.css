@@ -1,0 +1,12 @@
+.thousand_separator{
+    display: inline-block;
+    width:5px;
+}
+
+.tx_16{
+    font-size: 16px;
+}
+
+.undln{
+    text-decoration: underline;
+}
