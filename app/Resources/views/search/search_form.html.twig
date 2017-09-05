@@ -1,4 +1,5 @@
 <form id="searchForm" action="/search" method="GET">
+
     <div class="uk-text-small">Местоположение</div>
     <select name="countryCode" id="countryCode" class="uk-select">
         <option value="0">-выберите страну-</option>
@@ -20,6 +21,22 @@
     <select name="gtId" id="generalTypeId" class="uk-select">
         {{ include( 'common/ajax_edit_options.html.twig', { 'options': generalSecondLevel, 'id': gtid }) }}
     </select>
+
+
+    <div class="uk-text-small uk-margin-top">Марка и модель</div>
+    <select name="groupName" id="markGroupName" class="uk-select">
+        <option value="0">-выберите группу-</option>
+        {% for group_name, group_title in mark_groups %}
+            <option value="{{ group_name }}" {{ group_name == model.groupName ? 'selected' : '' }}>{{ group_title }}</option>
+        {% endfor %}
+    </select>
+    <select name="mark" id="markId" class="uk-select">
+        {{ include( 'common/ajax_edit_options.html.twig', { 'options': marks, 'id': mark.id }) }}
+    </select>
+    <select name="modelId" id="markModelId" class="uk-select">
+        {{ include( 'common/ajax_edit_options.html.twig', { 'options': models, 'id': model.id }) }}
+    </select>
+
 
 
 

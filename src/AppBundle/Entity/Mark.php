@@ -75,6 +75,11 @@ class Mark
         return $this->id;
     }
 
+    public function setTempId($id)
+    {
+        $this->id = $id;
+    }
+
     /**
      * Set groupName
      *
