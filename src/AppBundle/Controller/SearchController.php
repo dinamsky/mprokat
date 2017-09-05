@@ -87,11 +87,11 @@ class SearchController extends Controller
 
         } else {
             $marks = $mm->getMarks('cars');
-            $model = $this->getDoctrine()
-                ->getRepository(Mark::class)
-                ->find(1799);
-            $mark = $model->getParent();
-            $models = $mark->getChildren();
+            $models = array();
+            $mark = new Mark();
+            $mark->setTempId(0);
+            $model = new Mark();
+            $model->setTempId(0);
             $model_qry = '';
         }
 

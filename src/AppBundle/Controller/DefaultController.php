@@ -10,6 +10,7 @@ use AppBundle\Menu\MenuMarkModel;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface as em;
 use AppBundle\Entity\Card;
@@ -22,7 +23,7 @@ class DefaultController extends Controller
     /**
      * @Route("/", name="homepage")
      */
-    public function indexAction(MenuGeneralType $mgt, MenuCity $mc, EntityManagerInterface $em)
+    public function indexAction(MenuGeneralType $mgt, MenuCity $mc, EntityManagerInterface $em, MenuMarkModel $mm)
     {
         $query = $em->createQuery('SELECT c FROM AppBundle:Card c JOIN c.tariff t ORDER BY t.weight DESC, c.dateTariffStart DESC');
         $query->setMaxResults(3);
@@ -52,25 +53,46 @@ class DefaultController extends Controller
         $query->setMaxResults(10);
         $yachts = $query->getResult();
 
+        if($this->get('session')->has('geo')){
+
+            $geo = $this->get('session')->get('geo');
+
+            $city = $em->getRepository("AppBundle:City")->createQueryBuilder('c')
+                ->andWhere('c.header LIKE :geoname')
+                ->setParameter('geoname', $geo['city']['name_ru'])
+                ->getQuery()
+                ->getResult();
+            $city = $city[0]; // TODO make easier!
+        } else {
+            $city = new City();
+            $city->setCountry('RUS');
+            $city->setParentId(0);
+            $city->setTempId(0);
+        }
+
 
         return $this->render('main_page/main.html.twig', [
             'generalTopLevel' => $mgt->getTopLevel(),
             'cards' => '',
             'custom_fields' => '',
-            'countries' => $mc->getCountry(),
             'general_type' => null,
-            'city' => array(
-                'id' => 'RUS',
-                'regions' => array()
-            ),
+            'city' => $city,
             'mark_model' => array(),
+            'mark_groups' => $mm->getGroups(),
             'top3' => $top3,
             'cars' => $cars,
             'trucks' => $trucks,
             'segways' => $segways,
             'bicycles' => $bicycles,
             'boats' => $boats,
-            'yachts' => $yachts
+            'yachts' => $yachts,
+
+            'countries' => $mc->getCountry(),
+            'countryCode' => $city->getCountry(),
+            'regionId' => $city->getParentId(),
+            'regions' => $mc->getRegion($city->getCountry()),
+            'cities' => $mc->getCities($city->getParentId()),
+            'cityId' => $city->getId(),
 
         ]);
     }
@@ -85,6 +107,16 @@ class DefaultController extends Controller
         $card = $this->getDoctrine()
             ->getRepository(Card::class)
             ->find($id);
+
+        $views = $this->get('session')->get('views');
+        if (!isset($views[$card->getId()])) {
+            $views[$card->getId()] = 1;
+            $this->get('session')->set('views', $views);
+            $card->setViews($card->getViews() + 1);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($card);
+            $em->flush();
+        }
 
         $subFields = $sf->getCardSubFields($card);
 
@@ -110,6 +142,14 @@ class DefaultController extends Controller
         $mark = $model->getParent();
         $models = $mark->getChildren();
         $marks = $mm->getMarks($model->getGroupName());
+
+
+       foreach ($card->getUser()->getInformation() as $info){
+           if($info->getUiKey() == 'foto' and $info->getUiValue()!='') $user_foto =  '/assets/images/users/t/'.$info->getUiValue().'.jpg';
+           else {
+               $user_foto = false;
+           }
+       }
 
         return $this->render('card/card_show.html.twig', [
 
@@ -141,6 +181,8 @@ class DefaultController extends Controller
             'marks' => $marks,
             'models' => $models,
 
+            'user_foto' => $user_foto
+
         ]);
     }
 
@@ -160,6 +202,31 @@ class DefaultController extends Controller
         if (isset($cityId) and $cityId != 0) $return = $cityId;
         //dump($request);
         return $this->redirect('/type/'.$return.'/'.$general_type);
+    }
+
+    /**
+     * @Route("/ajax/showPhone")
+     */
+    public function showPhoneAction(Request $request)
+    {
+        $post = $request->request;
+        $card = $this->getDoctrine()
+            ->getRepository(Card::class)
+            ->find($post->get('card_id'));
+
+        foreach($card->getUser()->getInformation() as $info){
+            if( $info->getUiKey() == 'phone') $phone = $info->getUiValue();
+        }
+
+        if($this->get('session')->has('phone')){
+            $array = $this->get('session')->get('phone');
+            $array[$card->getUserId()] = 1;
+            $this->get('session')->set('phone', $array);
+        } else {
+            $this->get('session')->set('phone', [$card->getUserId() => 1]);
+        }
+
+        return new Response($phone, 200);
     }
 
 

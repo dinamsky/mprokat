@@ -2,6 +2,7 @@
 
 namespace UserBundle\Controller;
 
+use AppBundle\Entity\Card;
 use UserBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface as em;
 use AppBundle\Menu\MenuCity;
@@ -80,5 +81,43 @@ class ProfileController extends Controller
         $this->get('session')->set('logged_user', $user);
 
         return $this->redirectToRoute('user_profile');
+    }
+
+    /**
+     * @Route("/user/sendMessage")
+     */
+    public function sendMessageAction(Request $request, \Swift_Mailer $mailer)
+    {
+        $post = $request->request;
+
+        $card_id = $post->get('card_id');
+
+        $card = $this->getDoctrine()
+            ->getRepository(Card::class)
+            ->find($card_id);
+
+        $user = $card->getUser();
+
+        $message = (new \Swift_Message('Сообщение от пользователя'))
+            ->setFrom('robot@multiprokat.com')
+            ->setTo($user->getEmail())
+            ->setBody(
+                $this->renderView(
+                    'email/request.html.twig',
+                    array(
+                        'header' => $user->getHeader(),
+                        'message' => $post->get('message')
+                    )
+                ),
+                'text/html'
+            );
+        $mailer->send($message);
+
+        $this->addFlash(
+            'notice',
+            'Your message sended!'
+        );
+
+        return $this->redirect('/card/'.$card_id);
     }
 }
