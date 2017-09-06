@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('assets/css/auto-complete.css') }}" rel="stylesheet" />
+{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
@@ -7,135 +11,216 @@
     <script src="{{ asset('assets/tinymce/tinymce.min.js') }}"></script>
     <script src="{{ asset('assets/js/visual_editor.js') }}"></script>
     <script src="{{ asset('assets/js/new_card_validate.js') }}"></script>
+    <script src="{{ asset('assets/js/auto-complete.min.js') }}"></script>
+    <script src="{{ asset('assets/js/form_autocomplete.js') }}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWdm1zrblFjsdUfi1-6fsPvj30ACCiCxk"></script>
+    <script src="{{ asset('assets/js/new_card_settings.js') }}"></script>
 {% endblock %}
 
 {% block content %}
 
     <form id="new_card_form" action="/card/new" method="POST" enctype="multipart/form-data" onsubmit="return new_card_validate();" class="standard_wide">
-        <div>Главный тип:
-            <select name="generalTypeTopLevelId" id="generalTypeTopLevelId">
-                {{ include( 'common/ajax_options.html.twig', { 'options': generalTopLevel }) }}
-            </select>
-            <select name="generalTypeId" id="generalTypeId"></select>
-        </div>
-
-        <div>Заголовок: <input type="text" name="header"></div>
-
-        <div>Марка и модель:
-            <select name="groupName" id="markGroupName">
-                <option value="0">-выберите группу-</option>
-                {% for group_name, group_title in mark_groups %}
-                    <option value="{{ group_name }}">{{ group_title }}</option>
-                {% endfor %}
-            </select>
-            <select name="mark" id="markId"></select>
-            <select name="modelId" id="markModelId"></select>
-        </div>
-
-        <div>Страна и город:
-            <select name="countryCode" id="countryCode">
-                <option value="0">-выберите страну-</option>
-                {% for country_code, country_title in countries %}
-                    <option value="{{ country_code }}">{{ country_title }}</option>
-                {% endfor %}
-            </select>
-            <select name="regionId" id="regionId"></select>
-            <select name="cityId" id="cityId"></select>
-        </div>
-
-        <div>Адрес:
-            <textarea name="address" class="uk-textarea"></textarea>
-        </div>
-
-        <div>Координаты:
-            <input name="coords">
-        </div>
-
-        <div>Год выпуска:
-            <select name="prodYear">
-                {% for year in 1950..'now'|date('Y') %}
-                    <option value="{{ year }}" {% if year == 2000  %} selected {% endif %}>{{ year }}</option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <div>Состояние:
-            <select name="conditionId">
-                {% for condition in conditions %}
-                    <option value="{{ condition.id }}">{{ condition.header }}</option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <div>Прокат/аренда:
-            <label><input type="radio" name="serviceTypeId" value="1" checked>Прокат</label>
-            <label><input type="radio" name="serviceTypeId" value="2">Аренда</label>
-        </div>
-
-        <div>Цвет:
-            <select name="colorId">
-                {% for color in colors %}
-                    <option value="{{ color.id }}">{{ color.header }}</option>
-                {% endfor %}
-            </select>
-        </div>
 
 
-
-        <div>Описание:
-            <textarea name="content" class="visual_editor"></textarea>
-        </div>
-
-
-        <div>Видео:
-            <input name="video">
-        </div>
-
-        <div>Местность:
-            <input name="streetView">
-        </div>
-
-
-
-
-        <div id="subfields">
-
-        </div>
-
-
-        <hr>
-
-        <div>
-        {% for price in prices %}
-            <div>
-                <span>{{ price.header }}: </span>
-                <input type="number" name="price[{{ price.id }}]"> руб.
-            </div>
-        {% endfor %}
-        </div>
-
-        <hr>
+        {% if app.session.has('admin') %}
+            {{ include('AdminBundle::admin_card_new.html.twig') }}
+        {% endif %}
 
         <div uk-grid>
-            {% for feature in features %}
-                <div>
-                    <b>{{ feature.header }}</b>
+            <div class="uk-width-1-2">
+                <div class="">
+                    <label><input type="radio" name="serviceTypeId" value="1" checked>Прокат</label>
+                    <label><input type="radio" name="serviceTypeId" value="2">Аренда</label>
+                </div>
+
+                <hr>
+
+                <div class=""><span class="red_star">*</span>Адрес: <span uk-toggle="target: #city_selector">{{ city.header }} <i uk-icon="icon:chevron-down"></i></span></div>
+
+                <div class="expandable_block" id="city_selector" hidden>
+                    <div class="uk-text-small">Страна</div>
+                    <select name="countryCode" id="countryCode" class="uk-select">
+                        <option value="0">-выберите страну-</option>
+                        {% for country_code, country_title in countries %}
+                            <option value="{{ country_code }}" {{ country_code == countryCode ? 'selected' : '' }}>{{ country_title }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="uk-text-small">Регион</div>
+                    <select name="regionId" id="regionId" class="uk-select">
+                        {{ include( 'common/ajax_edit_options.html.twig', { 'options': regions, 'id': regionId }) }}
+                    </select>
+                    <div class="uk-text-small">Город</div>
+                    <select name="cityId" id="cityId" class="uk-select">
+                        {{ include( 'common/ajax_edit_options.html.twig', { 'options': cities, 'id': cityId }) }}
+                    </select>
+                    <div class="uk-text-small">Адрес</div>
                     <div>
-                        {% for item in feature.getChildren %}
+                        <textarea name="address" class="uk-textarea"></textarea>
+                    </div>
+                    <div class="uk-text-small" uk-toggle="target: #map_selector" id="show_map">Карта <i uk-icon="icon:chevron-down"></i></div>
+                    <div id="map_selector" hidden>
+                        {% if app.session.get('geo').city.lat == NULL %}
+                            {% set lat = 55.753410 %}
+                            {% set lon = 37.620285 %}
+                        {% else %}
+                            {% set lat = app.session.get('geo').city.lat %}
+                            {% set lon = app.session.get('geo').city.lon %}
+                        {% endif %}
+                        <input name="coords" type="hidden" value="{{ lat }},{{ lon }}">
+                        <div id="map" data-lat="{{ lat }}" data-lng="{{ lon }}"></div>
+                    </div>
+
+
+                    <input type="hidden" name="streetView">
+
+                </div>
+
+                <hr>
+
+                <div class=""><span class="red_star">*</span>Тип транспорта: <span uk-toggle="target: #general_selector">{{ gt.header }} <i uk-icon="icon:chevron-down"></i></span></div>
+
+
+
+                <div class="expandable_block" id="general_selector" hidden>
+                    <div uk-grid>
+                        <div class="uk-width-1-2">
+                            <select name="generalTypeTopLevelId" id="generalTypeTopLevelId" class="uk-select">
+                                {{ include( 'common/ajax_edit_options.html.twig', { 'options': generalTopLevel, 'id': 1 }) }}
+                            </select>
+                        </div>
+
+                        <div class="uk-width-1-2">
+                            <select name="generalTypeId" id="generalTypeId" class="uk-select">
+                                {{ include( 'common/ajax_edit_options.html.twig', { 'options': generalSecondLevel, 'id':2 }) }}
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+
+                <hr>
+
+                    <div uk-grid class="uk-grid-small">
+                        <div class="uk-width-1-3">
+                            <div class="uk-text-small"><span class="red_star">*</span>Группа</div>
+                            <select name="groupName" id="markGroupName" class="uk-select">
+                                <option value="0">-выберите группу-</option>
+                                {% for group_name, group_title in mark_groups %}
+                                    <option value="{{ group_name }}" {{ group_name == 'cars' ? 'selected' : '' }}>{{ group_title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="uk-width-1-3">
+                            <div class="uk-text-small"><span class="red_star">*</span>Марка</div>
+                            <select name="mark" id="markId" class="uk-select">
+                                {{ include( 'common/ajax_edit_options.html.twig', { 'options': marks, 'id': 0 }) }}
+                            </select>
+                        </div>
+
+                        <div class="uk-width-1-3">
+                            <div class="uk-text-small"><span class="red_star">*</span>Модель</div>
+                            <select name="modelId" id="markModelId" class="uk-select"></select>
+                        </div>
+
+                    </div>
+
+                <hr>
+
+                <div uk-grid class="uk-grid-small">
+                    <div class="uk-width-1-3">
+                        <div class="uk-text-small"><span class="red_star">*</span>Состояние</div>
+                        <select name="conditionId" class="uk-select">
+                            {% for condition in conditions %}
+                                <option value="{{ condition.id }}">{{ condition.header }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="uk-width-1-3">
+                        <div class="uk-text-small"><span class="red_star">*</span>Цвет</div>
+                        <select name="colorId" class="uk-select">
+                            {% for color in colors %}
+                                <option value="{{ color.id }}">{{ color.header }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="uk-width-1-3">
+                        <div class="uk-text-small"><span class="red_star">*</span>Год выпуска</div>
+                        <select name="prodYear" class="uk-select">
+                            {% for year in 1950..'now'|date('Y') %}
+                                <option value="{{ year }}" {% if year == 2000  %} selected {% endif %}>{{ year }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <div class="uk-clearfix">
+                    {% for price in prices if price.id == 2%}
+                        <input type="number" name="price[{{ price.id }}]" class="uk-input uk-width-1-4" required> ₽ / <span>{{ price.header }} <span class="red_star">*</span> </span>
+                    {% endfor %}
+                    <span class="uk-float-right" uk-toggle="target: #price_selector">Еще цены <i uk-icon="icon:chevron-down"></i></span>
+                </div>
+                <div class="expandable_block" id="price_selector" hidden>
+                    {% for price in prices if price.id != 2 %}
+                        <div>
+                            <input type="number" name="price[{{ price.id }}]" class="uk-input uk-width-1-4"> ₽ / <span>{{ price.header }} </span>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+
+            <div class="uk-width-1-2">
+                <div class="uk-margin-bottom"><input type="text" name="header" placeholder="Заголовок" class="uk-input"></div>
+                <div><textarea name="content" class="uk-textarea" placeholder="Описание"></textarea></div>
+
+                <hr>
+
+
+                <div class=""><span uk-toggle="target: #features_selector">Характеристики  <i uk-icon="icon:chevron-down"></i></span></div>
+
+                <div class="expandable_block" id="features_selector" hidden>
+                    <div >
+                        {% for feature in features %}
                             <div>
-                                <label>
-                                    <input type="checkbox" name="feature[{{ item.id }}]"> {{ item.header }}
-                                </label>
+                                <b>{{ feature.header }}</b>
+                                <div>
+                                    {% for item in feature.getChildren %}
+                                        <div>
+                                            <label>
+                                                <input type="checkbox" name="feature[{{ item.id }}]"> {{ item.header }}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
                             </div>
                         {% endfor %}
                     </div>
                 </div>
-            {% endfor %}
+
+                <hr>
+
+                <div class=""><span uk-toggle="target: #subfields">Дополнительно <i uk-icon="icon:chevron-down"></i></span></div>
+                <div class="expandable_block" id="subfields" hidden></div>
+
+                <hr>
+                <div>
+                    Фото: <input type="file" name="fotos[]" multiple> (до 5 одновременно)
+                </div>
+
+                <hr>
+
+                <div class="uk-text-small">Видео:</div>
+                <input name="video" class="uk-input">
+
+            </div>
         </div>
 
-        <hr>
-
-        Загрузить фотографии: <input type="file" name="fotos[]" multiple> (до 20 одновременно)
 
         <hr>
         <div>Тариф:
@@ -147,5 +232,7 @@
         <button class="uk-button uk-button-primary">Готово</button>
 
     </form>
+
+
 
 {% endblock %}

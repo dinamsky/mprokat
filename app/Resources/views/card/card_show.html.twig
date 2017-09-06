@@ -53,22 +53,11 @@
         <div uk-grid>
             <div class="uk-width-3-4">
 
-
-                {#<div uk-grid>#}
-                {#{% for foto in card.getFotos %}#}
-                {#<div class="uk-width-1-5">#}
-                {#<div style="background:url('/assets/images/cards/{{ foto.folder }}/t/{{ foto.id }}.jpg') center center;#}
-                {#background-size: cover;#}
-                {#height: 100px;">#}
-                {#</div>#}
-                {#</div>#}
-                {#{% endfor %}#}
-                {#</div>#}
-
                 <div class="owl-carousel owl-theme" data-items="1">
                     {% for foto in card.getFotos %}
-                        <div class="uk-width-1-1"><img src="/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg"
-                                                       alt=""></div>
+                        <div class="uk-width-1-1" style="height:500px;">
+                            <img src="/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg" alt="" style="max-height: auto">
+                        </div>
                     {% endfor %}
                 </div>
 

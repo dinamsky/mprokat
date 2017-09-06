@@ -30,7 +30,7 @@ class FotoUtils extends Controller
         @mkdir($thumbs,'0755', true);
         $ff = 'fotos';
         $is_main = false;
-        if(empty($card->getFotos())) $is_main = true;
+        if($card->getFotos()->isEmpty()) $is_main = true;
 
         foreach($_FILES[$ff]['name'] as $k=>$v)
         {
