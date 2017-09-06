@@ -41,6 +41,13 @@ class User
     /**
      * @var string
      *
+     * @ORM\Column(name="temp_password", type="string", length=255)
+     */
+    private $tempPassword;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="header", type="string", length=255)
      */
     private $header;
@@ -84,9 +91,15 @@ class User
      */
     private $userOrders;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Card", mappedBy="user", cascade={"remove"}, orphanRemoval=true)
+     */
+    private $cards;
+
     public function __construct() {
         $this->information = new ArrayCollection();
         $this->userOrders = new ArrayCollection();
+        $this->cards = new ArrayCollection();
     }
 
     /**
@@ -334,5 +347,63 @@ class User
     public function getUserOrders()
     {
         return $this->userOrders;
+    }
+
+    /**
+     * Add card
+     *
+     * @param \AppBundle\Entity\Card $card
+     *
+     * @return User
+     */
+    public function addCard(\AppBundle\Entity\Card $card)
+    {
+        $this->cards[] = $card;
+
+        return $this;
+    }
+
+    /**
+     * Remove card
+     *
+     * @param \AppBundle\Entity\Card $card
+     */
+    public function removeCard(\AppBundle\Entity\Card $card)
+    {
+        $this->cards->removeElement($card);
+    }
+
+    /**
+     * Get cards
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCards()
+    {
+        return $this->cards;
+    }
+
+    /**
+     * Set tempPassword
+     *
+     * @param string $tempPassword
+     *
+     * @return User
+     */
+    public function setTempPassword($tempPassword)
+    {
+        $this->tempPassword = $tempPassword;
+
+        return $this;
+    }
+
+    /**
+     * Get tempPassword
+     *
+     * @return string
+     */
+    public function getTempPassword()
+    {
+        return $this->tempPassword;
     }
 }

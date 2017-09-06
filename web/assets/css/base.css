@@ -162,3 +162,11 @@
     color: white;
     padding: 5px 0;
 }
+
+.icon_button{
+    width: 16px;
+    height: 16px;
+    display: block;
+    line-height: 16px;
+    padding: 2px;
+}

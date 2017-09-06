@@ -22,8 +22,10 @@
         <form action="/userSignIn" method="POST">
             <input type="text" name="email" placeholder="login">
             <input type="password" name="password" placeholder="password">
+            <input type="hidden" name="return" value="{{ app.request.requestUri }}">
             <button>Войти</button>
         </form>
+        <a uk-toggle="target: #pass_recover">Забыли пароль?</a>
     </div>
 </div>
 
@@ -36,6 +38,20 @@
             <input type="text" name="email" placeholder="email" required>
             <input type="password" name="password" placeholder="password" required>
             <button>Зарегистрироваться</button>
+        </form>
+    </div>
+</div>
+
+<div id="pass_recover" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <h2 class="uk-modal-title">Новый пароль</h2>
+        <form action="/userRecover" method="POST">
+            <input type="text" name="email" placeholder="email">
+            <input type="password" name="password1" placeholder="пароль">
+            <input type="password" name="password2" placeholder="повторите пароль">
+            <input type="hidden" name="return" value="{{ app.request.requestUri }}">
+            <button>Сменить пароль</button>
         </form>
     </div>
 </div>

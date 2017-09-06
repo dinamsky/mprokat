@@ -153,7 +153,7 @@ class Card
     private $userId = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User", inversedBy="cards")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
