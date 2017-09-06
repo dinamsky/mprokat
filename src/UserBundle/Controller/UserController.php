@@ -250,17 +250,22 @@ class UserController extends Controller
      */
     public function signInAction(Request $request, Password $password)
     {
-        $users = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->findBy(array(
-                'email' => $request->request->get('email')
-            ));
+        $em = $this->getDoctrine()->getManager();
+        $dql = 'SELECT u FROM UserBundle:User u WHERE u.email = ?1 OR u.login = ?1';
+        $query = $em->createQuery($dql);
+        $query->setParameter(1, $request->request->get('email'));
+        $users = $query->getResult();
 
         foreach($users as $user){
 
             if ($password->CheckPassword($request->request->get('password'), $user->getPassword())){
+
                 $this->get('session')->set('logged_user', $user);
-                return $this->redirectToRoute('user_main');
+                $this->addFlash(
+                    'notice',
+                    'Вы успешно вошли в аккаунт!'
+                );
+                return $this->redirect($request->request->get('return'));
                 break;
             }
         }
@@ -316,6 +321,7 @@ class UserController extends Controller
         $user->setPassword($password->HashPassword($request->request->get('password')));
         $user->setHeader($request->request->get('header'));
         $user->setActivateString($code);
+        $user->setTempPassword('');
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
@@ -353,11 +359,16 @@ class UserController extends Controller
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->findOneBy(array(
-                'activateString' => $code,
-                'isActivated' => 0
+                'activateString' => $code
             ));
 
         if($user){
+            $message = 'Your account is activated!';
+            if ($user->getTempPassword() != '') {
+                $user->setPassword($user->getTempPassword());
+                $message = 'Your new password is activated';
+            }
+            $user->setTempPassword('');
             $user->setIsActivated(true);
             $user->setActivateString('');
             $em = $this->getDoctrine()->getManager();
@@ -366,7 +377,7 @@ class UserController extends Controller
             $this->get('session')->set('logged_user', $user);
             $this->addFlash(
                 'notice',
-                'Your account is activated!'
+                $message
             );
             $return_url = 'user_main';
         } else {
@@ -377,6 +388,52 @@ class UserController extends Controller
         }
 
         return $this->redirectToRoute($return_url);
+    }
+
+    /**
+     * @Route("/userRecover")
+     */
+    public function recoverAction(Request $request, \Swift_Mailer $mailer)
+    {
+        if($request->request->get('password1') == $request->request->get('password2')) {
+            $user = $this->getDoctrine()
+                ->getRepository(User::class)
+                ->findOneBy(array(
+                    'email' => $request->request->get('email'),
+                ));
+
+            $code = md5(rand(0, 99999999));
+            $user->setActivateString($code);
+            $user->setTempPassword($request->request->get('password1'));
+
+            $message = (new \Swift_Message('Восстановление пароля на сайте multiprokat.com'))
+                ->setFrom('robot@multiprokat.com')
+                ->setTo($user->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'email/recover.html.twig',
+                        array(
+                            'header' => $user->getHeader(),
+                            'code' => $code
+                        )
+                    ),
+                    'text/html'
+                );
+            $mailer->send($message);
+
+            $this->addFlash(
+                'notice',
+                'Вам отправлено письмо с активацией нового пароля'
+            );
+
+            return $this->redirect($request->request->get('return'));
+        } else {
+            $this->addFlash(
+                'notice',
+                'Пароли не совпадают!'
+            );
+            return $this->redirect($request->request->get('return'));
+        }
     }
 
     /**
