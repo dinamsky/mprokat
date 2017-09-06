@@ -143,13 +143,10 @@ class DefaultController extends Controller
         $models = $mark->getChildren();
         $marks = $mm->getMarks($model->getGroupName());
 
-
-       foreach ($card->getUser()->getInformation() as $info){
+        $user_foto = false;
+        foreach ($card->getUser()->getInformation() as $info){
            if($info->getUiKey() == 'foto' and $info->getUiValue()!='') $user_foto =  '/assets/images/users/t/'.$info->getUiValue().'.jpg';
-           else {
-               $user_foto = false;
-           }
-       }
+        }
 
         return $this->render('card/card_show.html.twig', [
 
