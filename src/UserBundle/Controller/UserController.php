@@ -393,7 +393,7 @@ class UserController extends Controller
     /**
      * @Route("/userRecover")
      */
-    public function recoverAction(Request $request, \Swift_Mailer $mailer)
+    public function recoverAction(Request $request, \Swift_Mailer $mailer, Password $password)
     {
         if($request->request->get('password1') == $request->request->get('password2')) {
             $user = $this->getDoctrine()
@@ -404,7 +404,7 @@ class UserController extends Controller
 
             $code = md5(rand(0, 99999999));
             $user->setActivateString($code);
-            $user->setTempPassword($request->request->get('password1'));
+            $user->setTempPassword($password->HashPassword($request->request->get('password1')));
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
