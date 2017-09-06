@@ -24,8 +24,9 @@ class ProfileController extends Controller
     /**
      * @Route("/user", name="user_main")
      */
-    public function indexAction()
+    public function indexAction(Password $password)
     {
+
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->find($this->get('session')->get('logged_user')->getId());

@@ -38,12 +38,13 @@ class UserController extends Controller
     /**
      * @Route("/card/new")
      */
-    public function indexAction(MenuMarkModel $markmenu, MenuGeneralType $mgt, MenuCity $mc, Request $request, FotoUtils $fu)
+    public function indexAction(MenuMarkModel $markmenu, MenuGeneralType $mgt, MenuCity $mc, Request $request, FotoUtils $fu, EntityManagerInterface $em)
     {
 
 // TODO check mark AC in ajax
 
-        if($this->get('session')->get('logged_user') === null) return new Response("",404);
+
+        if($this->get('session')->get('logged_user') === null and !$this->get('session')->has('admin')) return new Response("",404);
 
         $card = new Card();
 
@@ -68,16 +69,53 @@ class UserController extends Controller
             ->findAll();
 
         if($request->isMethod('GET')) {
+
+
+            if($this->get('session')->has('geo')){
+
+                $geo = $this->get('session')->get('geo');
+
+                $city = $em->getRepository("AppBundle:City")->createQueryBuilder('c')
+                    ->andWhere('c.header LIKE :geoname')
+                    ->setParameter('geoname', $geo['city']['name_ru'])
+                    ->getQuery()
+                    ->getResult();
+                $city = $city[0]; // TODO make easier!
+            } else {
+                $city = new City();
+                $city->setCountry('RUS');
+                $city->setParentId(0);
+                $city->setTempId(0);
+            }
+
+            $gt = $this->getDoctrine()
+                ->getRepository(GeneralType::class)
+                ->find(2);
+
+
+
             $response = $this->render('card/card_new.html.twig', [
                 'generalTopLevel' => $mgt->getTopLevel(),
-                'countries' => $mc->getCountry(),
+                'generalSecondLevel' => $mgt->getSecondLevel(1),
+                'gt' => $gt,
                 'custom_fields' => '',
                 'mark_groups' => $markmenu->getGroups(),
+                'marks' => $markmenu->getMarks('cars'),
                 'conditions' => $conditions,
                 'colors' => $colors,
                 'features' => $features,
                 'prices' => $prices,
-                'tariffs' =>$tariffs
+                'tariffs' =>$tariffs,
+
+                'countries' => $mc->getCountry(),
+                'countryCode' => $city->getCountry(),
+                'regionId' => $city->getParentId(),
+                'regions' => $mc->getRegion($city->getCountry()),
+                'cities' => $mc->getCities($city->getParentId()),
+                'cityId' => $city->getId(),
+                'city' => $city
+
+
             ]);
         }
 
@@ -116,9 +154,18 @@ class UserController extends Controller
 
             $card->setServiceTypeId($post->get('serviceTypeId'));
 
-            $user = $this->getDoctrine()
-                ->getRepository(User::class)
-                ->find($this->get('session')->get('logged_user')->getId());
+            if ($post->has('user_email') and $this->get('session')->has('admin')){
+                $user = $this->getDoctrine()
+                    ->getRepository(User::class)
+                    ->findOneBy(array(
+                        'email' => $post->get('user_email')
+                    ));
+            } else {
+                $user = $this->getDoctrine()
+                    ->getRepository(User::class)
+                    ->find($this->get('session')->get('logged_user')->getId());
+            }
+
             $card->setUser($user);
 
             $color = $this->getDoctrine()
@@ -135,7 +182,7 @@ class UserController extends Controller
 
             $em->flush();
 
-            foreach($post->get('subField') as $fieldId=>$value){
+            foreach($post->get('subField') as $fieldId=>$value) if($value!=0 and $value!=''){
                 $subfield = $this->getDoctrine()
                     ->getRepository(FieldType::class)
                     ->find($fieldId);
@@ -582,6 +629,7 @@ class UserController extends Controller
         $tariff = $this->getDoctrine()
             ->getRepository(Tariff::class)
             ->find($post->get('tariffId'));
+
         //$card->setTariff($tariff);
 
         $em->persist($card);
@@ -638,7 +686,7 @@ class UserController extends Controller
 
         $fu->uploadImages($card);
 
-        if ($tariff->getId() == 1){
+        if ($tariff->getId() == $card->getTariffId()){
             if ($this->get('session')->get('admin') === null) return $this->redirectToRoute('user_cards');
             else return $this->redirectToRoute('search');
         }
@@ -752,4 +800,26 @@ class UserController extends Controller
 
         return $this->redirectToRoute('user_cards');
     }
+
+    /**
+     * @Route("/ajax/getUser")
+     */
+    public function getUserAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $emails = array();
+
+        $users = $em->getRepository("UserBundle:User")->createQueryBuilder('u')
+            ->where('u.email LIKE :eml')
+            ->setParameter('eml', '%'.$request->request->get('q').'%')
+            ->getQuery()
+            ->getResult();
+
+        foreach($users as $user){
+            $emails[] = $user->getEmail();
+        }
+
+        return new Response(json_encode($emails));
+    }
+
 }

@@ -148,6 +148,9 @@ class DefaultController extends Controller
            if($info->getUiKey() == 'foto' and $info->getUiValue()!='') $user_foto =  '/assets/images/users/t/'.$info->getUiValue().'.jpg';
         }
 
+
+
+
         return $this->render('card/card_show.html.twig', [
 
             'card' => $card,
