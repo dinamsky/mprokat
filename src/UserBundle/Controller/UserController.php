@@ -405,6 +405,9 @@ class UserController extends Controller
             $code = md5(rand(0, 99999999));
             $user->setActivateString($code);
             $user->setTempPassword($request->request->get('password1'));
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
 
             $message = (new \Swift_Message('Восстановление пароля на сайте multiprokat.com'))
                 ->setFrom('robot@multiprokat.com')
