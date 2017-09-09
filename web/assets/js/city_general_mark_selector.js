@@ -92,6 +92,19 @@ $( document ).ready(function() {
         document.location.href = getSelectorUrl() + getQueryVars();;
     });
 
+    // $('.hide_on_click_out').click(function (e){ // событие клика по веб-документу
+    //     // e.preventDefault();
+    //     e.stopPropagation();
+    // });
+    //
+    $(document).click( function(event){
+        if( $(event.target).closest('.hide_on_click_out').length || $(event.target).closest('.selector_opener').length)
+            return;
+        $('.hide_on_click_out').removeClass('is_open');
+        event.stopPropagation();
+    });
+
+
 });
 
 function getSelectorUrl(){

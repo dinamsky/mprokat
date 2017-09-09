@@ -180,3 +180,11 @@
 .red_star{
     color:red;
 }
+
+.hide_on_click_out{
+    display: none;
+}
+
+.hide_on_click_out.is_open{
+    display: block;
+}

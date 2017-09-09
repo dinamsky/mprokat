@@ -146,7 +146,7 @@ class SearchController extends Controller
             if ($pager_center_start == 1) $pager_center_start = 2;
         }
 
-        $dql = 'SELECT c, f FROM AppBundle:Card c LEFT JOIN c.fotos f LEFT JOIN c.tariff t WHERE 1=1 '.$city_condition.$service_condition.$general_condition.$mark_condition.$order;
+        $dql = 'SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE 1=1 '.$city_condition.$service_condition.$general_condition.$mark_condition.$order;
         $query = $em->createQuery($dql);
 
         $query->setMaxResults($cards_per_page);

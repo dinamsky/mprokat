@@ -38,7 +38,7 @@ class UserController extends Controller
     /**
      * @Route("/card/new")
      */
-    public function indexAction(MenuMarkModel $markmenu, MenuGeneralType $mgt, MenuCity $mc, Request $request, FotoUtils $fu, EntityManagerInterface $em)
+    public function indexAction(MenuMarkModel $markmenu, MenuGeneralType $mgt, MenuCity $mc, Request $request, FotoUtils $fu, EntityManagerInterface $em, \Swift_Mailer $mailer)
     {
 
 // TODO check mark AC in ajax
@@ -129,10 +129,15 @@ class UserController extends Controller
             $card->setVideo($post->get('video'));
             $card->setStreetView($post->get('streetView'));
 
-
-            $modelId = $this->getDoctrine()
-                ->getRepository(Mark::class)
-                ->find($post->get('modelId'));
+            if($post->has('noMark')){
+                $modelId = $this->getDoctrine()
+                    ->getRepository(Mark::class)
+                    ->find(1799);
+            } else {
+                $modelId = $this->getDoctrine()
+                    ->getRepository(Mark::class)
+                    ->find($post->get('modelId'));
+            }
             $card->setMarkModel($modelId);
 
             $generalType = $this->getDoctrine()
@@ -181,6 +186,25 @@ class UserController extends Controller
             $em->persist($card);
 
             $em->flush();
+
+
+            if($post->has('noMark')){
+                $message = (new \Swift_Message('Пользователь не нашел свою марку'))
+                    ->setFrom('robot@multiprokat.com')
+                    ->setTo('test.multiprokat@gmail.com')
+                    ->setBody(
+                        $this->renderView(
+                            'email/newmark.html.twig',
+                            array(
+                                'mark' => $post->get('ownMark'),
+                                'card' => $card
+                            )
+                        ),
+                        'text/html'
+                    );
+                $mailer->send($message);
+            }
+
 
             foreach($post->get('subField') as $fieldId=>$value) if($value!=0 and $value!=''){
                 $subfield = $this->getDoctrine()
@@ -541,12 +565,17 @@ class UserController extends Controller
             ->getRepository(Tariff::class)
             ->findAll();
 
+        $gt = $this->getDoctrine()
+            ->getRepository(GeneralType::class)
+            ->find($card->getGeneralTypeId());
+
         return $this->render('card/card_edit.html.twig',[
             'card' => $card,
             'conditions' => $conditions,
             'colors' => $colors,
             'generalTopLevel' => $mgt->getTopLevel(),
             'generalSecondLevel' => $mgt->getSecondLevel($generalType->getParentId()),
+            'gt' => $gt,
             'countries' => $mc->getCountry(),
             'mark' => $mark,
             'model' => $model,
@@ -557,6 +586,7 @@ class UserController extends Controller
             'regionId' => $city->getParent()->getId(),
             'regions' => $mc->getRegion($city->getCountry()),
             'cities' => $city->getParent()->getChildren(),
+            'city' => $city,
             'subfields' => $sf->getSubFieldsEdit($card),
             'features' => $features,
             'prices' => $prices,

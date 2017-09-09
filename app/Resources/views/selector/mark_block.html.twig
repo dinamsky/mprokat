@@ -1,9 +1,9 @@
-<span class="show_mark_selector" uk-toggle="target: #mark_block">
+<span class="selector_opener show_mark_selector" uk-toggle="target: #mark_block; cls: is_open">
     <span class="mark_selector">Марка и модель </span>
     <i uk-icon="icon:chevron-down"></i>
 </span>
 
-<div id="mark_block" hidden>
+<div class="hide_on_click_out" id="mark_block">
     <select class="uk-select" name="groupName" id="markGroupName">
         {{ include( 'common/ajax_edit_options.html.twig', { 'options': mark_groups, 'id': ''}) }}
     </select>

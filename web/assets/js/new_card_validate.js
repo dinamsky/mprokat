@@ -9,12 +9,20 @@ function new_card_validate(){
     var header = $('#new_card_form').find('input[name="header"]').val();
     var model = $('#markModelId').find('option:selected').val();
     var city = $('#cityId').find('option:selected').val();
+    var noMark = $('input[name="noMark"]').prop('checked');
+    var ownMark = $('input[name="ownMark"]').val();
     var subfields = [];
 
     var message = [];
     if (!general_type) message.push('\nТип транспорта');
     if (!header) message.push('\nЗаголовок');
-    if (!model) message.push('\nМодель');
+    if (!model) {
+        if(noMark){
+            if (!ownMark)  message.push('\nВпишите свою марку/модель');
+        } else {
+            message.push('\nМодель');
+        }
+    }
     if (!city || city === '0') message.push('\nГород');
 
     // $('.sub_field_field').each(function(){

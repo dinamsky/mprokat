@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+
+{% block content %}
+    <div class="standard_wide">
+        {% for article in articles %}
+            <a href="/adminArticleEdit/{{ article.id }}">{{ article.header }}</a><br>
+        {% endfor %}
+    </div>
+{% endblock %}

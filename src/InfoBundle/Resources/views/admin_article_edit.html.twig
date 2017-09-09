@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/tinymce/jquery.tinymce.min.js') }}"></script>
+    <script src="{{ asset('assets/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ asset('assets/js/visual_editor.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="standard_wide">
+        <form action="/adminArticleEdit" method="POST">
+            <div>
+                <input type="text" name="header" value="{{ article.header }}" class="uk-input">
+            </div>
+            <div>
+                <input type="text" name="slug" value="{{ article.slug }}" class="uk-input">
+            </div>
+            <div>
+                <textarea name="content" class="visual_editor">{{ article.content }}</textarea>
+            </div>
+            <input type="hidden" name="id" value="{{ article.id }}">
+            <button class="uk-button uk-button-primary">Записать</button>
+        </form>
+    </div>
+{% endblock %}

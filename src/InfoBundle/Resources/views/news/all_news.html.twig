@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+
+{% block content %}
+    <div class="standard_wide">
+        {% for news in all_news %}
+            <a href="/news/{{ news.slug }}">{{ news.header }}</a><br>
+        {% endfor %}
+    </div>
+{% endblock %}
