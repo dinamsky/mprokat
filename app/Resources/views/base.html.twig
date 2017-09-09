@@ -121,7 +121,7 @@
             <script src="{{ asset('assets/js/uikit-icons.min.js') }}"></script>
         {% endblock %}
 
-        {% if app.session.has('ip') == false %}
+        {% if not app.session.has('ip') %}
             <script src="{{ asset('assets/js/front_geo.js') }}"></script>
         {% endif %}
 
