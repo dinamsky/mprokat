@@ -153,8 +153,8 @@ class FotoUtils extends Controller
     {
         // TODO set main if deleted
 
-        $main_dir = $_SERVER['DOCUMENT_ROOT'].'/assets/images';
-        $thumbs = $_SERVER['DOCUMENT_ROOT'].'/assets/thumbs';
+        $main_dir = '.web/assets/images/cards';
+        $thumbs = '.web/assets/images/cards';
 
         $post = $request->request;
         $id = $post->get('id');
@@ -166,8 +166,8 @@ class FotoUtils extends Controller
         $this->em->remove($foto);
         $this->em->flush();
 
-        unlink ($main_dir.'/'.$id.'.jpg');
-        unlink ($thumbs.'/'.$id.'.jpg');
+        unlink ($main_dir.'/'.$foto->getFolder().'/'.$id.'.jpg');
+        unlink ($thumbs.'/'.$foto->getFolder().'/t/'.$id.'.jpg');
 
         return new Response();
     }
