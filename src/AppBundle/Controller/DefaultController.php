@@ -17,6 +17,7 @@ use AppBundle\Entity\Card;
 use AppBundle\Entity\CardField;
 use AppBundle\Entity\City;
 use AppBundle\SubFields\SubFieldUtils;
+use Symfony\Component\HttpFoundation\Cookie;
 
 class DefaultController extends Controller
 {
@@ -57,7 +58,7 @@ class DefaultController extends Controller
 
             $geo = $this->get('session')->get('geo');
 
-            dump($geo);
+            //dump($geo);
 
             $city = $em->getRepository("AppBundle:City")->createQueryBuilder('c')
                 ->andWhere('c.header LIKE :geoname')
@@ -65,7 +66,7 @@ class DefaultController extends Controller
                 ->getQuery()
                 ->getResult();
 
-            dump($city);
+            //dump($city);
 
             $city = $city[0]; // TODO make easier!
         } else {
@@ -235,6 +236,31 @@ class DefaultController extends Controller
         }
 
         return new Response($phone, 200);
+    }
+
+    /**
+     * @Route("/ajax/frontGeo")
+     */
+    public function frontGeoAction(Request $request, Response $response, EntityManagerInterface $em)
+    {
+        $post = $request->request;
+        $geo = json_decode($post->get('geo'), true);
+        $this->get('session')->set('geo', $geo);
+        $this->get('session')->set('ip', $geo['ip']);
+        $this->get('session')->set('sessId', $this->get('session')->getId());
+
+        $city = $em->getRepository("AppBundle:City")->createQueryBuilder('c')
+            ->where('c.header LIKE :geoname')
+            ->setParameter('geoname', '%'.$geo['city']['name_ru'].'%')
+            ->getQuery()
+            ->getResult();
+        if ($city) $cityId = $city[0]->getId();
+        else $cityId = 77;
+
+        $response = new Response();
+        $response->headers->setCookie(new Cookie('geo', $cityId));
+
+        return $response;
     }
 
 
