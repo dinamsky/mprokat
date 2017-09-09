@@ -62,7 +62,7 @@ class DefaultController extends Controller
 
             $city = $em->getRepository("AppBundle:City")->createQueryBuilder('c')
                 ->andWhere('c.header LIKE :geoname')
-                ->setParameter('geoname', '%'.$geo['city']['name_ru'].'%')
+                ->setParameter('geoname', '%'.$geo['city'].'%')
                 ->getQuery()
                 ->getResult();
 
