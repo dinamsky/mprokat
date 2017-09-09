@@ -2,12 +2,12 @@ $( document ).ready(function() {
 
 
     $.ajax({
-        url: 'http://api.sypexgeo.net/',
+        url: '//api.sypexgeo.net/',
         type: 'POST',
         dataType: 'json',
         success: function(json){
             $.ajax({
-                url: 'http://api.sypexgeo.net/',
+                url: '/ajax/frontGeo',
                 type: 'POST',
                 dataType: 'json',
                 data: {geo:json},
