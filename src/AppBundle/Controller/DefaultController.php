@@ -68,7 +68,10 @@ class DefaultController extends Controller
 
             //dump($city);
 
-            $city = $city[0]; // TODO make easier!
+            if ($city) $city = $city[0]; // TODO make easier!
+            else $city = $this->getDoctrine()
+                ->getRepository(City::class)
+                ->find(77);
         } else {
             $city = new City();
             $city->setCountry('RUS');
