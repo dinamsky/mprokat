@@ -89,7 +89,7 @@ $( document ).ready(function() {
 
 
     $('#main_search_button').on('click', function () {
-        document.location.href = getSelectorUrl() + getQueryVars();;
+        document.location.href = getSelectorUrl() + getQueryVars();
     });
 
     // $('.hide_on_click_out').click(function (e){ // событие клика по веб-документу
