@@ -242,10 +242,10 @@
 
                 <hr>
 
-                <div uk-grid class="edit_fotos_block">
+                <div uk-grid class="edit_fotos_block uk-grid-small">
                     {% for foto in card.getFotos %}
                         <div class="uk-width-1-5 edit_foto">
-                            <div style="background:url('/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg') center center; background-size: cover; height: 100px;" class="uk-position-relative">
+                            <div style="background:url('/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg') center center; background-size: cover; height: 80px;" class="uk-position-relative">
                                 <button type="button" class="uk-button-danger delete_foto_button" uk-close data-id="{{ foto.id }}"
                                         style="position:absolute;top:0;right:0;color: white;">
                                 </button>
@@ -268,34 +268,12 @@
                 <label><input type="radio" name="tariffId" value="{{ tariff.id }}" {{ tariff.id == card.tariff.id ? 'checked' : '' }}> {{ tariff.header }}</label>
             {% endfor %}
         </div>
+
+        <hr>
+
         <button class="uk-button uk-button-primary" name="setTariff">Оплатить</button>
         <hr>
         <input type="hidden" name="cardId" value="{{ card.id }}">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         <button class="uk-button uk-button-primary" name="update">Записать</button>
         <button class="uk-button uk-button-danger" name="delete">Удалить</button>

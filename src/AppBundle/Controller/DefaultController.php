@@ -57,11 +57,16 @@ class DefaultController extends Controller
 
             $geo = $this->get('session')->get('geo');
 
+            dump($geo);
+
             $city = $em->getRepository("AppBundle:City")->createQueryBuilder('c')
                 ->andWhere('c.header LIKE :geoname')
-                ->setParameter('geoname', $geo['city']['name_ru'])
+                ->setParameter('geoname', '%'.$geo['city']['name_ru'].'%')
                 ->getQuery()
                 ->getResult();
+
+            dump($city);
+
             $city = $city[0]; // TODO make easier!
         } else {
             $city = new City();
