@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+
+{% block content %}
+    <div class="standard_wide">
+        <h1>{{ news.header }}</h1>
+        <div>{{ news.content|raw }}</div>
+    </div>
+{% endblock %}

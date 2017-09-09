@@ -1,3 +1,7 @@
+info:
+    resource: "@InfoBundle/Controller/"
+    type:     annotation
+
 admin:
     resource: "@AdminBundle/Controller/"
     type:     annotation

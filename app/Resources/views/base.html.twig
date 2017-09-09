@@ -89,13 +89,13 @@
                         <div class="uk-width-1-4">Новый транспорт</div>
                         <div class="uk-width-1-4">
                             <div>
-                                <a href="#">> Новости</a>
+                                <a href="/news">> Новости</a>
                             </div>
                             <div>
-                                <a href="#">> Контакты</a>
+                                <a href="/contacts">> Контакты</a>
                             </div>
                             <div>
-                                <a href="#">> Сдать свой автомобиль</a>
+                                <a href="/article/kak-sdavat-avto">> Сдать свой автомобиль</a>
                             </div>
                         </div>
                     </div>
@@ -105,8 +105,8 @@
                 <div class="standard_wide uk-clearfix">
                     <div class="uk-float-left c_white">&copy; {{ date()|date("Y") }} МультиПрокат | Сервис аренды автотранспорта</div>
                     <div class="uk-float-right c_white">
-                        <a href="#" class="c_white">Условия и положения</a> /
-                        <a href="#" class="c_white">Конфиденциальность</a>
+                        <a href="/article/term-conditions" class="c_white">Условия и положения</a> /
+                        <a href="/article/politika-konfidentsialnosti" class="c_white">Конфиденциальность</a>
                     </div>
                 </div>
             </div>
@@ -119,7 +119,6 @@
             <script src="{{ asset('assets/js/jquery-3.2.1.min.js') }}"></script>
             <script src="{{ asset('assets/js/uikit.min.js') }}"></script>
             <script src="{{ asset('assets/js/uikit-icons.min.js') }}"></script>
-            <script src="{{ asset('assets/js/newCardForm.js') }}"></script>
         {% endblock %}
     </body>
 </html>

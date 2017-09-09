@@ -1,0 +1,16 @@
+<span class="selector_opener show_address_selector" uk-toggle="target: #address_block; cls: is_open">
+    <span class="city_selector">{{ cityId != 0 ? city.header : 'Местоположение' }}</span>
+    <i uk-icon="icon:chevron-down"></i>
+</span>
+
+<div class="hide_on_click_out" id="address_block">
+    <select name="countryCode" id="countryCode" class="uk-select">
+        {{ include( 'common/ajax_edit_options.html.twig', { 'options': countries, 'id': countryCode }) }}
+    </select>
+    <select name="regionId" id="regionId" class="uk-select">
+        {{ include( 'common/ajax_edit_options.html.twig', { 'options': regions, 'id': regionId }) }}
+    </select>
+    <select name="cityId" id="cityId" class="uk-select">
+        {{ include( 'common/ajax_edit_options.html.twig', { 'options': cities, 'id': cityId }) }}
+    </select>
+</div>

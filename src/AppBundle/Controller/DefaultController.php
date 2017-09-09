@@ -100,7 +100,7 @@ class DefaultController extends Controller
 
 
     /**
-     * @Route("/card/{id}", requirements={"id": "\d+"})
+     * @Route("/card/{id}", requirements={"id": "\d+"}, name="showCard")
      */
     public function showCardAction($id, MenuGeneralType $mgt, SubFieldUtils $sf, MenuCity $mc, MenuMarkModel $mm)
     {
@@ -120,11 +120,14 @@ class DefaultController extends Controller
 
         $subFields = $sf->getCardSubFields($card);
 
-        $city = array(
-            'id'=> $card->getCityId(),
-            'regions' => $mc->getRegion($mc->getCity($card->getCityId())[0]->getCountry()),
-            'object' => $mc->getCity($card->getCityId())[0]
-        );
+//        $city = array(
+//            'id'=> $card->getCityId(),
+//            'regions' => $mc->getRegion($mc->getCity($card->getCityId())[0]->getCountry()),
+//            'object' => $mc->getCity($card->getCityId())[0]
+//        );
+
+        $city = $card->getCity();
+
 
         if ($card->getVideo() != '') $video = explode("=",$card->getVideo())[1];
         else $video = false;
@@ -160,13 +163,13 @@ class DefaultController extends Controller
             'sub_fields' =>$subFields,
 
 //            'general_type' => $card->getGeneralTypeId(),
-//            'city' => $city,
+            'city' => $city,
 
             'countries' => $mc->getCountry(),
-            'countryCode' => $card->getCity()->getCountry(),
-            'regionId' => $card->getCity()->getParentId(),
-            'regions' => $mc->getRegion($card->getCity()->getCountry()),
-            'cities' => $mc->getCities($card->getCity()->getParentId()),
+            'countryCode' => $city->getCountry(),
+            'regionId' => $city->getParentId(),
+            'regions' => $mc->getRegion($city->getCountry()),
+            'cities' => $mc->getCities($city->getParentId()),
             'cityId' => $card->getCityId(),
 
             'generalTopLevel' => $mgt->getTopLevel(),

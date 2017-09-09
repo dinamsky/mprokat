@@ -56,4 +56,15 @@ $( document ).ready(function() {
             $('#map').data('lng',latlon[1]);
         });
     });
+
+    $('#fill_dop_button').on('click', function(){
+        $(this).parent().remove();
+        $('#dop_fields').addClass('uk-animation-slide-right').removeAttr('hidden');
+    });
+
+    $('.service_selector button').on('click', function(){
+        $('input[name="serviceTypeId"]').val($(this).val());
+        $('.service_selector button').removeClass('uk-button-primary');
+        $(this).addClass('uk-button-primary');
+    });
 });

@@ -56,3 +56,8 @@ services:
 
     UserBundle\Security\:
                 resource: '../../src/UserBundle/Security'
+
+    AppBundle\Twig\Extension\:
+            resource: '../../src/AppBundle/Twig/Extension'
+            public: true
+            tags: ['twig.extension']

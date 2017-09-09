@@ -20,9 +20,9 @@ class MenuCity extends Controller
     public function getCountry()
     {
         $array = array(
-            'RUS'=>'Россия',
-            'BLR'=>'Беларусь',
-            'KAZ'=>'Казахстан'
+            ['id'=>'RUS', 'header'=>'Россия','url' => 'RUS'],
+            ['id'=>'BLR', 'header'=>'Беларусь','url' => 'BLR'],
+            ['id'=>'KAZ', 'header'=>'Казахстан','url' => 'KAZ']
         );
         return $array;
     }
@@ -66,7 +66,7 @@ class MenuCity extends Controller
     public function getRegionAction(Request $request)
     {
         $countryCode = $request->request->get('countryCode');
-        return $this->render('common/ajax_options.html.twig', [
+        return $this->render('common/ajax_options_url.html.twig', [
             'options' => $this->getRegion($countryCode)
         ]);
     }
@@ -77,7 +77,7 @@ class MenuCity extends Controller
     public function getCityAction(Request $request)
     {
         $regionId = $request->request->get('regionId');
-        return $this->render('common/ajax_options.html.twig', [
+        return $this->render('common/ajax_options_url.html.twig', [
             'options' => $this->getCities($regionId)
         ]);
     }
