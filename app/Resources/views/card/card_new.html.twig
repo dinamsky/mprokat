@@ -67,12 +67,12 @@
                     </div>
                     <div class="uk-text-small" uk-toggle="target: #map_selector" id="show_map">Карта <i uk-icon="icon:chevron-down"></i></div>
                     <div id="map_selector" hidden>
-                        {% if app.session.get('geo').city.lat == NULL %}
+                        {% if app.session.get('geo').lat == NULL %}
                             {% set lat = 55.753410 %}
                             {% set lon = 37.620285 %}
                         {% else %}
-                            {% set lat = app.session.get('geo').city.lat %}
-                            {% set lon = app.session.get('geo').city.lon %}
+                            {% set lat = app.session.get('geo').lat %}
+                            {% set lon = app.session.get('geo').lon %}
                         {% endif %}
                         <input name="coords" type="hidden" value="{{ lat }},{{ lon }}">
                         <div id="map" data-lat="{{ lat }}" data-lng="{{ lon }}"></div>
