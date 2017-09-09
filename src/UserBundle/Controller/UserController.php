@@ -77,10 +77,16 @@ class UserController extends Controller
 
                 $city = $em->getRepository("AppBundle:City")->createQueryBuilder('c')
                     ->andWhere('c.header LIKE :geoname')
-                    ->setParameter('geoname', $geo['city']['name_ru'])
+                    ->setParameter('geoname', '%'.$geo['city'].'%')
                     ->getQuery()
                     ->getResult();
-                $city = $city[0]; // TODO make easier!
+                if ($city) $city = $city[0]; // TODO make easier!
+                else {
+                    $city = new City();
+                    $city->setCountry('RUS');
+                    $city->setParentId(0);
+                    $city->setTempId(0);
+                }
             } else {
                 $city = new City();
                 $city->setCountry('RUS');
@@ -389,6 +395,7 @@ class UserController extends Controller
         $code = md5(rand(0,99999999));
         $user = new User();
         $user->setEmail($request->request->get('email'));
+        $user->setLogin('');
         $user->setPassword($password->HashPassword($request->request->get('password')));
         $user->setHeader($request->request->get('header'));
         $user->setActivateString($code);
