@@ -259,8 +259,7 @@ class DefaultController extends Controller
 
         $response = new Response();
         $response->headers->setCookie(new Cookie('geo', $cityId));
-
-        return $response;
+        $response->send();
     }
 
 
