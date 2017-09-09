@@ -20,8 +20,8 @@ class MenuMarkModel extends Controller
     public function getGroups()
     {
         $array = array(
-            'cars'=>'Легковые автомобили',
-            'trucks'=>'Грузовые автомобили'
+            ['id'=>'cars', 'header'=>'Легковые автомобили','url' => 'cars'],
+            ['id'=>'trucks', 'header'=>'Грузовые автомобили','url' => 'trucks']
         );
         return $array;
     }
@@ -70,8 +70,8 @@ class MenuMarkModel extends Controller
     public function getMarksAction(Request $request)
     {
         $groupName = $request->request->get('groupName');
-        return $this->render('mark/mark_options.html.twig', [
-            'marks' => $this->getMarks($groupName)
+        return $this->render('common/ajax_options_url.html.twig', [
+            'options' => $this->getMarks($groupName)
         ]);
     }
 
@@ -81,8 +81,8 @@ class MenuMarkModel extends Controller
     public function getModelsAction(Request $request)
     {
         $markId = $request->request->get('markId');
-        return $this->render('mark/mark_options.html.twig', [
-            'marks' => $this->getModels($markId)
+        return $this->render('common/ajax_options_url.html.twig', [
+            'options' => $this->getModels($markId)
         ]);
     }
 }

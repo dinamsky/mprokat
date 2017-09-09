@@ -64,7 +64,7 @@ class MenuGeneralType extends Controller
     public function getSecondLevelAction(Request $request)
     {
         $generalTypeTopLevelId = $request->request->get('generalTypeTopLevelId');
-        return $this->render('common/ajax_options.html.twig', [
+        return $this->render('common/ajax_options_url.html.twig', [
             'options' => $this->getSecondLevel($generalTypeTopLevelId)
         ]);
     }

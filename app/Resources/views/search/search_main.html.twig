@@ -2,6 +2,7 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="{{ asset('assets/js/city_general_mark_selector.js') }}"></script>
     <script src="{{ asset('assets/js/search_page.js') }}"></script>
 {% endblock %}
 
@@ -22,26 +23,26 @@
                         </select>
                     </div>
                     <div class="uk-width-1-4 uk-text-right">
-                        <button class="view_select" type="button" value="grid_view" uk-icon="icon:grid"></button>
-                        <button class="view_select" type="button" value="list_view" uk-icon="icon:list"></button>
+                        <button class="view_select {{ view == 'grid_view' ? 'uk-button-primary' : '' }}" type="button" value="grid_view" uk-icon="icon:grid"></button>
+                        <button class="view_select {{ view == 'list_view' ? 'uk-button-primary' : '' }}" type="button" value="list_view" uk-icon="icon:list"></button>
                     </div>
                 </div>
                 {{ include('search/' ~ view ~ '.html.twig') }}
                 <hr>
-                <div>
+                <div id="pager">
                     {% if total_pages > pages_in_center %}
-                    <button class="uk-button uk-button-default" name="page" form="searchForm" value="{{ current_page-1 }}"><i uk-icon="icon:arrow-left"></i></button>
-                    <button class="uk-button {{ 1 == current_page ? 'uk-button-primary' : 'uk-button-default' }}" name="page" form="searchForm" value="1">1</button>
+                    <button class="uk-button uk-button-default" name="page"  value="{{ current_page-1 }}"><i uk-icon="icon:arrow-left"></i></button>
+                    <button class="uk-button {{ 1 == current_page ? 'uk-button-primary' : 'uk-button-default' }}" name="page"  value="1">1</button>
                         <span class="uk-display-inline-block"><i uk-icon="icon:more"></i></span>
                         {% for page in pager_center_start..pager_center_start+pages_in_center-1 %}
-                            <button class="uk-button {{ page == current_page ? 'uk-button-primary' : 'uk-button-default' }}" name="page" form="searchForm" value="{{ page }}">{{ page }}</button>
+                            <button class="uk-button {{ page == current_page ? 'uk-button-primary' : 'uk-button-default' }}" name="page"  value="{{ page }}">{{ page }}</button>
                         {% endfor %}
                         <span class="uk-display-inline-block"><i uk-icon="icon:more"></i></span>
-                    <button class="uk-button {{ total_pages == current_page ? 'uk-button-primary' : 'uk-button-default' }}" name="page" form="searchForm" value="{{ total_pages }}">{{ total_pages }}</button>
-                    <button class="uk-button uk-button-default" name="page" form="searchForm" value="{{ current_page+1 }}"><i uk-icon="icon:arrow-right"></i></button>
+                    <button class="uk-button {{ total_pages == current_page ? 'uk-button-primary' : 'uk-button-default' }}" name="page"  value="{{ total_pages }}">{{ total_pages }}</button>
+                    <button class="uk-button uk-button-default" name="page"  value="{{ current_page+1 }}"><i uk-icon="icon:arrow-right"></i></button>
                     {% else %}
                         {% for page in 1..total_pages %}
-                            <button class="uk-button {{ page == current_page ? 'uk-button-primary' : 'uk-button-default' }}" name="page" form="searchForm" value="{{ page }}">{{ page }}</button>
+                            <button class="uk-button {{ page == current_page ? 'uk-button-primary' : 'uk-button-default' }}" name="page"  value="{{ page }}">{{ page }}</button>
                         {% endfor %}
                     {% endif %}
                 </div>

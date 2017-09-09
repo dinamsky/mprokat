@@ -125,15 +125,15 @@
     border:1px solid white;
 }
 
-#address_block{
+#main_search_form #address_block{
     position: absolute;
 }
 
-#general_type_block{
+#main_search_form #general_type_block{
     position: absolute;
 }
 
-#mark_block{
+#main_search_form #mark_block{
     position: absolute;
 }
 

@@ -26,93 +26,109 @@ use Doctrine\ORM\EntityManagerInterface;
 class SearchController extends Controller
 {
     /**
-     * @Route("/search", name="search")
+     * @Route("/show/{city}/{service}/{general}/{mark}/{model}", name="search")
      */
-    public function showCardsByGeneralTypeAction(EntityManagerInterface $em, MenuGeneralType $mgt, MenuCity $mc, MenuMarkModel $mm, Request $request)
+    public function showCardsAction(
+        $city = false, $service = false, $general = false, $mark = false, $model = false, $card = false,
+        EntityManagerInterface $em, MenuGeneralType $mgt, MenuCity $mc, MenuMarkModel $mm, Request $request)
     {
-
+        if (strtolower($city) == 'rus') $city = false;
+        if ($service == 'all') $service = false;
+        if ($general == 'alltypes') $general = false;
         $get = $request->query->all();
-
-        if (!$request->query->has('countryCode')) {
-            $get['countryCode'] = 'RUS';
-            $get['regionId'] = 0;
-            $get['cityId'] = 0;
-        }
-
-        if (!$request->query->has('pgtId')) {
-            $get['pgtId'] = 0;
-            $get['gtId'] = 0;
-        }
-
         $view = 'grid_view';
-        if ($request->query->has('view') and $get['view'] != '') $view = $get['view'];
-
-        $cityId = 'RUS';
-        if ($request->query->has('countryCode') and $get['countryCode'] != 0) $cityId = $get['countryCode'];
-        if ($request->query->has('regionId') and $get['regionId'] != 0) $cityId = $get['regionId'];
-        if ($request->query->has('cityId') and $get['cityId'] != 0) $cityId = $get['cityId'];
-
-        $generalTypeId = 1;
-        if ($request->query->has('pgtId') and $get['pgtId'] != 0) $generalTypeId = $get['pgtId'];
-        if ($request->query->has('gtId') and $get['gtId'] != 0) $generalTypeId = $get['gtId'];
-
-        if ($request->query->has('order') and $get['order'] != ''){
-            $order = '';
-        } else {
-            $order = ' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
-        }
+        if (isset($get['view'])) $view = $get['view'];
 
 
-        if($request->query->has('modelId') and $get['modelId'] != '') {
 
-            if ($get['modelId'] == 0){
-                $mark = $mm->getMark($get['mark']);
-                $marks = $mm->getMarks($mark->getGroupName());
-                $models = $mark->getChildren();
-                foreach($mm->getModels((int)$get['mark']) as $model){
-                    $model_ids[] = $model->getId();
-                }
-                $model = new Mark();
-                $model->setTempId(0);
-                $model_qry = 'AND c.modelId IN ( '.implode(",",$model_ids). ')';
+        $city_condition = '';
+        $service_condition = '';
+        $general_condition = '';
+        $mark_condition = '';
+        $order = ' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
+
+        $pgtId = 0;
+        $gtId = 0;
+
+        if($city){
+            $city = $this->getDoctrine()
+                ->getRepository(City::class)
+                ->findOneBy(['url' => $city]);
+            $countryCode = $city->getCountry();
+            if($city->getChildren()->isEmpty()){
+                $city_condition = 'AND c.cityId = '.$city->getId();
+                $cityId = $city->getId();
+                $regionId = $city->getParent()->getId();
+                $cities = $city->getParent()->getChildren();
             } else {
-                $model = $this->getDoctrine()
-                    ->getRepository(Mark::class)
-                    ->find((int)$get['modelId']);
-                $marks = $mm->getMarks($model->getGroupName());
-                $mark = $model->getParent();
-                $models = $mark->getChildren();
-                $model_qry = 'AND c.modelId = '.(int)$get['modelId'];
+                $cities = $city->getChildren();
+                foreach($cities as $child){
+                    $city_ids[] = $child->getId();
+                }
+                $city_condition = 'AND c.cityId IN ('.implode(',',$city_ids).')';
+                $regionId = $city->getId();
+                $cityId = 0;
             }
-
         } else {
-            $marks = $mm->getMarks('cars');
+            $countryCode = 'RUS';
+            $regionId = 0;
+            $cities = array();
+            $cityId = 0;
+        }
+
+        if($service){
+            if ($service == 'prokat') $service = 1; else $service = 2;
+            $service_condition = ' AND c.serviceTypeId = '.$service;
+        }
+
+        if($general){
+            $general = $this->getDoctrine()
+                ->getRepository(GeneralType::class)
+                ->findOneBy(['url' => $general]);
+            if($general->getChildren()->isEmpty()){
+                $gtId = $general->getId();
+                $general_condition = 'AND c.generalTypeId = '.$gtId;
+                if (!$general->getParent()) $pgtId = 0;
+                else $pgtId = $general->getParent()->getId();
+            } else {
+                $generals = $general->getChildren();
+                foreach($generals as $child){
+                    $general_ids[] = $child->getId();
+                }
+                $general_condition = ' AND c.generalTypeId IN ('.implode(',',$general_ids).')';
+                $pgtId = $general->getId();
+                $gtId = 0;
+            }
+        }
+
+        if($mark){
+            $mark = $this->getDoctrine()
+                ->getRepository(Mark::class)
+                ->findOneBy(['header' => $mark, 'parentId' => NULL]);
+            $models = $mark->getChildren();
+            foreach($models as $child){
+                $mark_ids[] = $child->getId();
+            }
+            $mark_condition = ' AND c.modelId IN ('.implode(',',$mark_ids).')';
+            $marks = $mm->getMarks($mark->getGroupName());
+        } else {
+            $mark = array('id' => 0);
+            $marks = array();
+        }
+
+        if($model){
+            $model = $this->getDoctrine()
+                ->getRepository(Mark::class)
+                ->findOneBy(['header' => $model]);
+
+            $mark_condition = ' AND c.modelId = '.$model->getId();
+        } else {
+            $model = array('groupName' => 'cars','id' => 0);
             $models = array();
-            $mark = new Mark();
-            $mark->setTempId(0);
-            $model = new Mark();
-            $model->setTempId(0);
-            $model_qry = '';
         }
 
-        $gt = $mgt->getGeneralTypeMenu();
-        $gt_ids = $mgt->getArrayOfChildIdsOfGeneralTypeMenu($gt, $generalTypeId);
-        $countries = array_keys($mc->getCountry());
-
-        if(in_array($cityId, $countries)){
-            $dql = 'SELECT count(c.id) FROM AppBundle:Card c WHERE c.generalTypeId IN ( :ids ) AND c.cityId BETWEEN ?1 AND ?2 '.$model_qry;
-            $range = $mc->getCountryIdRange($cityId);
-            $query = $em->createQuery($dql);
-            $query->setParameter(1, $range['first']);
-            $query->setParameter(2, $range['last']);
-            $query->setParameter('ids', $gt_ids);
-
-        } else {
-            $dql = 'SELECT count(c.id) FROM AppBundle:Card c WHERE c.generalTypeId IN ( :ids ) AND c.cityId IN ( :cities ) '.$model_qry;
-            $query = $em->createQuery($dql);
-            $query->setParameter('cities', array_merge($mc->getCity($cityId),$mc->getCities($cityId)));
-            $query->setParameter('ids', $gt_ids);
-        }
+        $dql = 'SELECT count(c.id) FROM AppBundle:Card c WHERE 1=1 '.$city_condition.$service_condition.$general_condition.$mark_condition;
+        $query = $em->createQuery($dql);
 
         $total_cards = $query->getSingleScalarResult();
 
@@ -130,26 +146,12 @@ class SearchController extends Controller
             if ($pager_center_start == 1) $pager_center_start = 2;
         }
 
+        $dql = 'SELECT c, f FROM AppBundle:Card c LEFT JOIN c.fotos f LEFT JOIN c.tariff t WHERE 1=1 '.$city_condition.$service_condition.$general_condition.$mark_condition.$order;
+        $query = $em->createQuery($dql);
 
-
-        if(in_array($cityId, $countries)){
-            $dql = 'SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId IN ( :ids ) AND c.cityId BETWEEN ?1 AND ?2 '.$model_qry.$order;
-            $range = $mc->getCountryIdRange($cityId);
-            $query = $em->createQuery($dql);
-            $query->setParameter(1, $range['first']);
-            $query->setParameter(2, $range['last']);
-            $query->setParameter('ids', $gt_ids);
-
-        } else {
-            $dql = 'SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId IN ( :ids ) AND c.cityId IN ( :cities ) '.$model_qry.$order;
-            $query = $em->createQuery($dql);
-            $query->setParameter('cities', array_merge($mc->getCity($cityId),$mc->getCities($cityId)));
-            $query->setParameter('ids', $gt_ids);
-        }
         $query->setMaxResults($cards_per_page);
         $query->setFirstResult($start);
         $cards = $query->getResult();
-
 
         return $this->render('search/search_main.html.twig', [
 
@@ -164,16 +166,17 @@ class SearchController extends Controller
             'onpage' => $cards_per_page,
 
             'countries' => $mc->getCountry(),
-            'countryCode' => $get['countryCode'],
-            'regionId' => $get['regionId'],
-            'regions' => $mc->getRegion($get['countryCode']),
-            'cities' => $mc->getCities($get['regionId']),
-            'cityId' => $get['cityId'],
+            'countryCode' => $countryCode,
+            'regionId' => $regionId,
+            'regions' => $mc->getRegion($countryCode),
+            'cities' => $cities,
+            'cityId' => $cityId,
+            'city' => $city,
 
             'generalTopLevel' => $mgt->getTopLevel(),
-            'generalSecondLevel' => $mgt->getSecondLevel($get['pgtId']),
-            'pgtid' => $get['pgtId'],
-            'gtid' => $get['gtId'],
+            'generalSecondLevel' => $mgt->getSecondLevel($pgtId),
+            'pgtid' => $pgtId,
+            'gtid' => $gtId,
 
             'mark_groups' => $mm->getGroups(),
             'mark' => $mark,
@@ -187,64 +190,125 @@ class SearchController extends Controller
 }
 
 
-//$query = $em->createQuery('SELECT f, t FROM AppBundle:CardField f JOIN f.fieldType t WHERE f.generalTypeId = ?1');
-//$query->setParameter(1, $id);
-//$fields = $query->getResult();
-//
-//
-//foreach($result as $row) {
-//    $ids[] = $row->getId();
-//    $mark_id = $row->getMarkModel()->getId();
-//    $markIds[$mark_id] = $mark_id;
-//}
-//
-//
-//
-//
-//
-//$city = array(
-//    'id'=> $cityId,
-//    'regions' => $regions,
-//    'object' => $city
-//);
-
-
 ///**
-// * @var $field CardField
+// * @Route("/translit")
 // */
-//foreach ($fields as $key=>$field) {
+//public function translitAction()
+//{
 //
-//    //$query_string = 'SELECT i FROM AppBundle:'.$field->getFieldType()->getStorageType().' i JOIN i.subField s WHERE i.cardFieldId = :fieldId AND i.cardId IN ( :ids )';
-//    $query_string = 'SELECT i FROM AppBundle:'.$field->getFieldType()->getStorageType().' i WHERE i.cardId IN ( :ids ) AND i.cardFieldId=?1';
-//    $query = $em->createQuery($query_string);
-//    $query->setParameter(1, $field->getFieldType()->getId());
-//    $query->setParameter('ids', $ids);
+//    $cities = $this->getDoctrine()
+//        ->getRepository(City::class)
+//        ->findAll();
 //
-//    $fresult = $query->getResult();
-//    if($field->getFieldType()->getFormElementType() == 'ajaxMenu') {
-//        foreach ($fresult as $row) {
-//            $values[] = $this->getDoctrine()
-//                ->getRepository(SubField::class)
-//                ->find($row->getValue());
-//        }
-//    } else {
-//        $values = $fresult;
+//    $em = $this->getDoctrine()->getManager();
+//
+//    foreach($cities as $city){
+//        $city->setUrl($this->translit($city->getHeader()));
+//        $em->persist($city);
 //    }
 //
-//    $fields[$key]->setSelects($values);
+//    $em->flush();
 //
+//    return new Response();
+//}
+
+//private function translit($string){
+//    $converter = array(
+//        'а' => 'a',   'б' => 'b',   'в' => 'v',
+//        'г' => 'g',   'д' => 'd',   'е' => 'e',
+//        'ё' => 'e',   'ж' => 'zh',  'з' => 'z',
+//        'и' => 'i',   'й' => 'y',   'к' => 'k',
+//        'л' => 'l',   'м' => 'm',   'н' => 'n',
+//        'о' => 'o',   'п' => 'p',   'р' => 'r',
+//        'с' => 's',   'т' => 't',   'у' => 'u',
+//        'ф' => 'f',   'х' => 'h',   'ц' => 'c',
+//        'ч' => 'ch',  'ш' => 'sh',  'щ' => 'sch',
+//        'ь' => '',    'ы' => 'y',   'ъ' => '',
+//        'э' => 'e',   'ю' => 'yu',  'я' => 'ya',
+//
+//        'А' => 'A',   'Б' => 'B',   'В' => 'V',
+//        'Г' => 'G',   'Д' => 'D',   'Е' => 'E',
+//        'Ё' => 'E',   'Ж' => 'Zh',  'З' => 'Z',
+//        'И' => 'I',   'Й' => 'Y',   'К' => 'K',
+//        'Л' => 'L',   'М' => 'M',   'Н' => 'N',
+//        'О' => 'O',   'П' => 'P',   'Р' => 'R',
+//        'С' => 'S',   'Т' => 'T',   'У' => 'U',
+//        'Ф' => 'F',   'Х' => 'H',   'Ц' => 'C',
+//        'Ч' => 'Ch',  'Ш' => 'Sh',  'Щ' => 'Sch',
+//        'Ь' => '',    'Ы' => 'Y',   'Ъ' => '',
+//        'Э' => 'E',   'Ю' => 'Yu',  'Я' => 'Ya',
+//        ' ' => '_',   '.' => '.',   '«' => '',
+//        '»' => '',   '"' => '', '№' => 'N', '“'=>'', '”'=>''
+//    );
+//    return strtr($string, $converter);
+//}
+
+
+
+//$get = $request->query->all();
+//
+//if (!$request->query->has('countryCode')) {
+//    $get['countryCode'] = 'RUS';
+//    $get['regionId'] = 0;
+//    $get['cityId'] = 0;
 //}
 //
-///**
-// * @var $city City
-// */
-//if(in_array($cityId, $countries)) {
-//    $city = array();
-//    $regions = $mc->getRegion($cityId);
+//if (!$request->query->has('pgtId')) {
+//    $get['pgtId'] = 0;
+//    $get['gtId'] = 0;
 //}
-//else {
-//    $city = $mc->getCity($cityId)[0];
-//    $city->getChildren()->initialize();
-//    if (NULL != $city->getParent()) $city->getParent()->getChildren()->initialize();
-//    $regions = $mc->getRegion($mc->getCity($cityId)[0]->getCountry());
+//
+//$view = 'grid_view';
+//if ($request->query->has('view') and $get['view'] != '') $view = $get['view'];
+//
+//$cityId = 'RUS';
+//if ($request->query->has('countryCode') and $get['countryCode'] != 0) $cityId = $get['countryCode'];
+//if ($request->query->has('regionId') and $get['regionId'] != 0) $cityId = $get['regionId'];
+//if ($request->query->has('cityId') and $get['cityId'] != 0) $cityId = $get['cityId'];
+//
+//$generalTypeId = 1;
+//if ($request->query->has('pgtId') and $get['pgtId'] != 0) $generalTypeId = $get['pgtId'];
+//if ($request->query->has('gtId') and $get['gtId'] != 0) $generalTypeId = $get['gtId'];
+//
+//if ($request->query->has('order') and $get['order'] != ''){
+//    $order = '';
+//} else {
+//    $order = ' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
 //}
+//
+//
+//if($request->query->has('modelId') and $get['modelId'] != '') {
+//
+//    if ($get['modelId'] == 0){
+//        $mark = $mm->getMark($get['mark']);
+//        $marks = $mm->getMarks($mark->getGroupName());
+//        $models = $mark->getChildren();
+//        foreach($mm->getModels((int)$get['mark']) as $model){
+//            $model_ids[] = $model->getId();
+//        }
+//        $model = new Mark();
+//        $model->setTempId(0);
+//        $model_qry = 'AND c.modelId IN ( '.implode(",",$model_ids). ')';
+//    } else {
+//        $model = $this->getDoctrine()
+//            ->getRepository(Mark::class)
+//            ->find((int)$get['modelId']);
+//        $marks = $mm->getMarks($model->getGroupName());
+//        $mark = $model->getParent();
+//        $models = $mark->getChildren();
+//        $model_qry = 'AND c.modelId = '.(int)$get['modelId'];
+//    }
+//
+//} else {
+//    $marks = $mm->getMarks('cars');
+//    $models = array();
+//    $mark = new Mark();
+//    $mark->setTempId(0);
+//    $model = new Mark();
+//    $model->setTempId(0);
+//    $model_qry = '';
+//}
+//
+//$gt = $mgt->getGeneralTypeMenu();
+//$gt_ids = $mgt->getArrayOfChildIdsOfGeneralTypeMenu($gt, $generalTypeId);
+//$countries = array_keys($mc->getCountry());

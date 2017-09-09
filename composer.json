@@ -7,7 +7,8 @@
         "psr-4": {
             "AppBundle\\": "src/AppBundle",
             "UserBundle\\": "src/UserBundle",
-            "AdminBundle\\": "src/AdminBundle"
+            "AdminBundle\\": "src/AdminBundle",
+            "InfoBundle\\": "src/InfoBundle"
         },
         "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
     },

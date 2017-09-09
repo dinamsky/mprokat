@@ -11,6 +11,7 @@
     {{ parent() }}
     <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('assets/js/mainPage.js') }}"></script>
+    <script src="{{ asset('assets/js/city_general_mark_selector.js') }}"></script>
     <script src="{{ asset('assets/js/sliderSettings.js') }}"></script>
 {% endblock %}
 
@@ -32,68 +33,24 @@
         <div class="standard_wide">
             <h1 class="uk-text-center">Большой выбор транспорта в аренду</h1>
             <div class="uk-margin-auto uk-width-3-4">
-                <form uk-grid action="/search" method="GET">
+                <form uk-grid id="main_search_form">
                     <div class="uk-width-1-4 uk-position-relative">
-
-
-                        <span class="show_address_selector" uk-toggle="target: #address_block">
-                            <span class="city_selector">{{ cityId is defined ? city.header : 'Местоположение' }}</span>
-                            <i uk-icon="icon:chevron-down"></i></span>
-
-                        <div id="address_block" hidden>
-                            <select name="countryCode" id="countryCode" class="uk-select">
-                                <option value="0">-выберите страну-</option>
-                                {% for country_code, country_title in countries %}
-                                    <option value="{{ country_code }}" {{ country_code == countryCode ? 'selected' : '' }}>{{ country_title }}</option>
-                                {% endfor %}
-                            </select>
-                            <select name="regionId" id="regionId" class="uk-select">
-                                {{ include( 'common/ajax_edit_options.html.twig', { 'options': regions, 'id': regionId }) }}
-                            </select>
-                            <select name="cityId" id="cityId" class="uk-select">
-                                {{ include( 'common/ajax_edit_options.html.twig', { 'options': cities, 'id': cityId }) }}
-                            </select>
-                        </div>
+                        {{ include('selector/adress_block.html.twig') }}
                     </div>
 
                     <div class="uk-width-1-4 uk-position-relative">
-                        <span class="show_general_selector" uk-toggle="target: #general_type_block">
-                            <span class="general_selector">Тип транспорта</span>
-                            <i uk-icon="icon:chevron-down"></i></span>
-                        <div id="general_type_block" hidden>
-                            <select class="uk-select" name="pgtId" id="generalTypeTopLevelId">
-                                <option value="0">- тип транспорта -</option>
-                                {% for gt in generalTopLevel %}
-                                    <option value="{{ gt.id }}">{{ gt.header }}</option>
-                                {% endfor %}
-                            </select>
-                            <select class="uk-select" name="gtId" id="generalTypeId">
-                                <option value="0">- тип -</option>
-                            </select>
-                        </div>
+                        {{ include('selector/general_block.html.twig') }}
                     </div>
 
                     <div class="uk-width-1-4 uk-position-relative">
-                        <span class="show_mark_selector" uk-toggle="target: #mark_block">
-                            <span class="mark_selector">Марка и модель </span>
-                            <i uk-icon="icon:chevron-down"></i></span>
-                        <div id="mark_block" hidden>
-                            <select class="uk-select" name="groupName" id="markGroupName">
-                                <option value="0">-выберите группу-</option>
-                                {% for group_name, group_title in mark_groups %}
-                                    <option value="{{ group_name }}">{{ group_title }}</option>
-                                {% endfor %}
-                            </select>
-                            <select class="uk-select" name="mark" id="markId"></select>
-                            <select class="uk-select" name="modelId" id="markModelId"></select>
-                        </div>
+                        {{ include('selector/mark_block.html.twig') }}
                     </div>
 
                     <div class="uk-width-1-4">
-                        <button class="uk-button uk-button-primary uk-width-1-1">Найти</button>
+                        <button id="main_search_button" type="button" class="uk-button uk-button-primary uk-width-1-1">Найти</button>
                     </div>
+                </form>
             </div>
-            </form>
         </div>
     </div>
 
