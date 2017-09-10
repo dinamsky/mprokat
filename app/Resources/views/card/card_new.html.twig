@@ -16,6 +16,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWdm1zrblFjsdUfi1-6fsPvj30ACCiCxk"></script>
     <script src="{{ asset('assets/js/new_card_settings.js') }}"></script>
     <script src="{{ asset('assets/js/newCardForm.js') }}"></script>
+    <script src="{{ asset('assets/js/tariff_selector.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -245,14 +246,16 @@
         </div>
 
 
-        <hr>
-        <div>Тариф:
-            {% for tariff in tariffs %}
-                <label><input type="radio" name="tariffId" value="{{ tariff.id }}" {{ tariff.id == 1 ? 'checked' : '' }}> {{ tariff.header }}</label>
-            {% endfor %}
-        </div>
-        <hr>
-        <button class="uk-button uk-button-primary">Готово</button>
+
+
+
+        {{ include(':card:tariff_selector.html.twig', {'tariffId':3}) }}
+
+
+        <input type="hidden" name="tariffId" value="3">
+
+        {#<hr>#}
+        {#<button class="uk-button uk-button-primary">Готово</button>#}
 
     </form>
 

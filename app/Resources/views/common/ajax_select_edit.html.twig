@@ -1,5 +1,5 @@
 <select
-        {% if subfield_first.getChildren is empty %}
+        {% if subfield_first is not empty and subfield_first.getChildren is empty %}
         name="subField[{{ subfield_first.getFieldId }}]" data-id="{{ subfield_first.getFieldId }}" class="subFieldSelect">
         {% else %}
         name="" data-id="{{ subfield_first.getFieldId }}" class="subFieldSelect">

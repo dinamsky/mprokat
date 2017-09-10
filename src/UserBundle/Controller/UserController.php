@@ -576,6 +576,10 @@ class UserController extends Controller
             ->getRepository(GeneralType::class)
             ->find($card->getGeneralTypeId());
 
+        if ($card->getFieldIntegers()->isEmpty()) $subfields = false;
+        else $subfields = $sf->getSubFieldsEdit($card);
+
+
         return $this->render('card/card_edit.html.twig',[
             'card' => $card,
             'conditions' => $conditions,
@@ -594,7 +598,7 @@ class UserController extends Controller
             'regions' => $mc->getRegion($city->getCountry()),
             'cities' => $city->getParent()->getChildren(),
             'city' => $city,
-            'subfields' => $sf->getSubFieldsEdit($card),
+            'subfields' => $subfields,
             'features' => $features,
             'prices' => $prices,
             'tariffs' => $tariffs

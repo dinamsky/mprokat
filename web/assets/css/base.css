@@ -188,3 +188,70 @@
 .hide_on_click_out.is_open{
     display: block;
 }
+
+.tariff_block{
+    display: none;
+}
+
+.tariff_block.active{
+    display: block;
+}
+
+.tariff_block_inner{
+    height: 250px;
+    padding: 30px;
+}
+
+.tariff_block_inner h3{
+    color: white;
+}
+
+#tariff_1 .tariff_block_inner h3{
+    color: grey;
+}
+
+
+#tariff_3 .tariff_block_inner{
+    background: #feae00;
+    color: white;
+}
+
+#tariff_2 .tariff_block_inner{
+    background: #3992fd;
+    color: white;
+}
+
+#tariff_1 .tariff_block_inner{
+    background: #eceff3;
+    color: grey;
+}
+
+.pay_tariff_button{
+    width: 100%;
+    margin-top: 5px;
+    text-align: center;
+    background: #55bb00;
+    color: white;
+}
+
+.selector_item{
+    background: lightgrey;
+    text-align: center;
+    padding:10px;
+    cursor: pointer;
+}
+
+.t_3.active{
+    background: #feae00;
+    color: white;
+}
+
+.t_2.active{
+    background: #3992fd;
+    color: white;
+}
+
+.t_1.active{
+    background: #eceff3;
+    color: grey;
+}

@@ -1,0 +1,59 @@
+<div uk-grid class="tariff_selector">
+    <div class="uk-width-1-3" ><div class="selector_item t_3 {{ tariffId == 3 ? 'active' : '' }}" data-id="3">Премиум размещение 399 руб.</div></div>
+    <div class="uk-width-1-3" ><div class="selector_item t_2 {{ tariffId == 2 ? 'active' : '' }}" data-id="2">Экспресс в категории 199 руб.</div></div>
+    <div class="uk-width-1-3" ><div class="selector_item t_1 {{ tariffId == 1 ? 'active' : '' }}" data-id="1">Обычная публикация</div></div>
+</div>
+
+
+<div id="tariff_3" class="tariff_block {{ tariffId == 3 ? 'active' : '' }}">
+    <div class="tariff_block_inner">
+    <h3>Премиум размещение <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+        {{ card.tariffId is defined and card.tariffId == 3 ? ' - ваш текущий тариф' : '' }}
+    </h3>
+    <div uk-grid>
+        <div class="uk-width-1-2">
+            Ваше объявление в ТОПе сайта. Премиальное размещение<br>
+        +1000 просмотров. Размещение объявления на главной странице
+        </div>
+        <div class="uk-width-1-2 uk-text-center"><img src="{{ asset('assets/images/interface/premium.png') }}" alt=""></div>
+    </div>
+    </div>
+    <button class="uk-button pay_tariff_button" name="change_tariff">Разместить и оплатить 399 руб.</button>
+</div>
+
+
+
+<div id="tariff_2" class="tariff_block {{ tariffId == 2 ? 'active' : '' }}">
+    <div class="tariff_block_inner">
+    <h3>Экспресс в категории <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+    {{ card.tariffId is defined and card.tariffId == 2 ? ' - ваш текущий тариф' : '' }}
+    </h3>
+    <div uk-grid>
+        <div class="uk-width-1-2">
+            Разместите ваше объявление в самом видном месте
+        </div>
+        <div class="uk-width-1-2 uk-text-center"><img src="{{ asset('assets/images/interface/express.png') }}" alt=""></div>
+    </div>
+    </div>
+    <button class="uk-button pay_tariff_button" name="change_tariff">Разместить и оплатить 199 руб.</button>
+</div>
+
+
+
+<div id="tariff_1" class="tariff_block {{ tariffId == 1 ? 'active' : '' }}">
+    <div class="tariff_block_inner">
+    <h3>Обычная публикация
+        {{ card.tariffId is defined and card.tariffId == 1 ? ' - ваш текущий тариф' : '' }}
+    </h3>
+    <div uk-grid>
+        <div class="uk-width-1-2">
+            Разместите ваше объявление
+        </div>
+        <div class="uk-width-1-2"></div>
+    </div>
+    </div>
+    <button class="uk-button pay_tariff_button" name="change_tariff">Разместить бесплатно</button>
+</div>
+
+
+
