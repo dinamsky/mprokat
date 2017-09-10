@@ -8,6 +8,11 @@
             {% for info in user.information %}
                 <div>{{ info.uiKey }}: <input name="{{ info.uiKey }}" value="{{ info.uiValue }}" class="uk-input"></div>
             {% endfor %}
+
+            {#<div>Телефон: <input name="phone" value="{{ user.header }}" class="uk-input"></div>#}
+            {#<div>Website: <input name="website" value="{{ user.header }}" class="uk-input"></div>#}
+
+
             <button class="uk-button uk-button-primary uk-margin-top">Записать</button>
         </form>
     </div>

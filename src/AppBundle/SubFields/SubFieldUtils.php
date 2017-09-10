@@ -101,6 +101,7 @@ class SubFieldUtils extends Controller
                         'subfield_last' => $last,
                         'first' => $first,
                         'level' => $level,
+                        'field_id' => $field->getfieldId()
                     );
                 }
             }

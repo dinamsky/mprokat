@@ -20,7 +20,7 @@ $( document ).ready(function() {
             success: function(html){
                 console.log(html);
                 if (html) {
-                    $(element).attr('name', 'old').attr('class','old_select');
+                    $(element).attr('name', 'old').attr('class','old_select uk-select');
                     $(element).next('select').remove();
                     $(element).after(html);
                 }
