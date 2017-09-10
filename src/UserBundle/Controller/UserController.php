@@ -354,7 +354,7 @@ class UserController extends Controller
 
         $this->addFlash(
             'notice',
-            'Wrong login/password!'
+            'Неправильная пара логин/пароль!'
         );
 
         return $this->redirectToRoute('homepage');
@@ -368,7 +368,7 @@ class UserController extends Controller
         $this->get('session')->remove('logged_user');
         $this->addFlash(
             'notice',
-            'You logged out from system!'
+            'Вы успешно вышли из аккаунта'
         );
         return $this->redirectToRoute('homepage');
     }
@@ -379,23 +379,20 @@ class UserController extends Controller
      */
     public function signUpAction(Request $request, Password $password, \Swift_Mailer $mailer)
     {
-        $users = $this->getDoctrine()
+        $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->findBy(array(
                 'email' => $request->request->get('email')
             ));
 
-        foreach($users as $user){
-
-            if ($password->CheckPassword($request->request->get('password'), $user->getPassword())){
-                $this->addFlash(
-                    'notice',
-                    'User already exist!'
-                );
-                return $this->redirectToRoute('homepage');
-                break;
-            }
+        if ($user) {
+            $this->addFlash(
+                'notice',
+                'Пользователь уже зарегистрирован!'
+            );
+            return $this->redirectToRoute('homepage');
         }
+
 
         $code = md5(rand(0,99999999));
         $user = new User();
@@ -410,7 +407,7 @@ class UserController extends Controller
         $em->persist($user);
         $em->flush();
 
-        $message = (new \Swift_Message('Hello Email'))
+        $message = (new \Swift_Message('Регистрация на сайте multiprokat.com'))
             ->setFrom('robot@multiprokat.com')
             ->setTo($user->getEmail())
             ->setBody(
@@ -427,7 +424,7 @@ class UserController extends Controller
 
         $this->addFlash(
             'notice',
-            'Check your mail, we send you link to activate!'
+            'На вашу почту было отправлено письмо для активации аккаунта!'
         );
         return $this->redirectToRoute('homepage');
     }
@@ -446,10 +443,10 @@ class UserController extends Controller
             ));
 
         if($user){
-            $message = 'Your account is activated!';
+            $message = 'Ваш аккаунт успешно активирован!';
             if ($user->getTempPassword() != '') {
                 $user->setPassword($user->getTempPassword());
-                $message = 'Your new password is activated';
+                $message = 'Ваш новый пароль успешно активирован!';
             }
             $user->setTempPassword('');
             $user->setIsActivated(true);
@@ -466,7 +463,7 @@ class UserController extends Controller
         } else {
             $this->addFlash(
                 'notice',
-                'Error! Try again!'
+                'Произошла ошибка, попробуйте еще раз.'
             );
         }
 
@@ -836,7 +833,7 @@ class UserController extends Controller
 
         $this->addFlash(
             'notice',
-            'Your order successfully paid!'
+            'Ваш новый тариф успешно оплачен!'
         );
 
         return $this->redirectToRoute('homepage');
@@ -849,7 +846,7 @@ class UserController extends Controller
     {
         $this->addFlash(
             'notice',
-            'Something went wrong!'
+            'К сожалению оплата не прошла!'
         );
 
         return $this->redirectToRoute('user_cards');

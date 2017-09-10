@@ -96,8 +96,8 @@ class ProfileController extends Controller
     }
 
     /**
-     * @Route("/user/sendMessage")
-     */
+ * @Route("/user/sendMessage")
+ */
     public function sendMessageAction(Request $request, \Swift_Mailer $mailer)
     {
         $post = $request->request;
@@ -131,7 +131,49 @@ class ProfileController extends Controller
 
         $this->addFlash(
             'notice',
-            'Your message sended!'
+            'Ваше сообщение успешно отправлено!'
+        );
+
+        return $this->redirect('/card/'.$card_id);
+    }
+
+    /**
+     * @Route("/user/contactsMessage")
+     */
+    public function contactsMessageAction(Request $request, \Swift_Mailer $mailer)
+    {
+        $post = $request->request;
+
+        $card_id = $post->get('card_id');
+
+        $card = $this->getDoctrine()
+            ->getRepository(Card::class)
+            ->find($card_id);
+
+        $user = $card->getUser();
+
+        $message = (new \Swift_Message('Сообщение от пользователя'))
+            ->setFrom(['robot@multiprokat.com' => 'Робот Мультипрокат'])
+            ->setTo('mail@multiprokat.com')
+            ->setCc('test.multiprokat@gmail.com')
+            ->setBody(
+                $this->renderView(
+                    'email/request.html.twig',
+                    array(
+                        'header' => $user->getHeader(),
+                        'message' => $post->get('message'),
+                        'email' => $post->get('email'),
+                        'name' => $post->get('name'),
+                        'phone' => $post->get('phone'),
+                    )
+                ),
+                'text/html'
+            );
+        $mailer->send($message);
+
+        $this->addFlash(
+            'notice',
+            'Ваше сообщение успешно отправлено!'
         );
 
         return $this->redirect('/card/'.$card_id);

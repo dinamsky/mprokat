@@ -44,7 +44,7 @@ class AdminController extends Controller
 
         $this->addFlash(
             'notice',
-            'Wrong login/password!'
+            'Неправильная пара логин/пароль!'
         );
 
         return $this->redirectToRoute('homepage');
@@ -58,7 +58,7 @@ class AdminController extends Controller
         $this->get('session')->remove('admin');
         $this->addFlash(
             'notice',
-            'You logged out from system!'
+            'Вы успешно вышли из аккаунта!'
         );
         return $this->redirectToRoute('homepage');
     }
