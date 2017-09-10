@@ -16,6 +16,7 @@ use Doctrine\ORM\EntityManagerInterface as em;
 use AppBundle\Entity\Card;
 use AppBundle\Entity\CardField;
 use AppBundle\Entity\City;
+use AppBundle\Entity\GeneralType;
 use AppBundle\SubFields\SubFieldUtils;
 use Symfony\Component\HttpFoundation\Cookie;
 
@@ -80,6 +81,8 @@ class DefaultController extends Controller
         }
 
 
+
+
         return $this->render('main_page/main.html.twig', [
             'generalTopLevel' => $mgt->getTopLevel(),
             'cards' => '',
@@ -102,6 +105,17 @@ class DefaultController extends Controller
             'regions' => $mc->getRegion($city->getCountry()),
             'cities' => $mc->getCities($city->getParentId()),
             'cityId' => $city->getId(),
+
+            'gtid' => 0,
+            'pgtid' => 0,
+            'generalSecondLevel' => array(),
+
+            'marks' => [],
+            'models' => [],
+            'mark' => ['id'=>0,'groupname'=>''],
+            'model' => ['id'=>0]
+
+
 
         ]);
     }
@@ -161,7 +175,9 @@ class DefaultController extends Controller
         }
 
 
-
+        $general = $this->getDoctrine()
+            ->getRepository(GeneralType::class)
+            ->find($card->getGeneralTypeId());
 
         return $this->render('card/card_show.html.twig', [
 
@@ -192,6 +208,7 @@ class DefaultController extends Controller
             'model' => $model,
             'marks' => $marks,
             'models' => $models,
+            'general' => $general,
 
             'user_foto' => $user_foto
 

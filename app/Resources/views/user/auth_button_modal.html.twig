@@ -20,12 +20,15 @@
         <button class="uk-modal-close-default" type="button" uk-close></button>
         <h2 class="uk-modal-title">Вход</h2>
         <form action="/userSignIn" method="POST">
-            <input type="text" name="email" placeholder="login">
-            <input type="password" name="password" placeholder="password">
+            <input type="text" name="email" placeholder="login" class="uk-input uk-margin-bottom">
+            <input type="password" name="password" placeholder="password" class="uk-input uk-margin-bottom">
             <input type="hidden" name="return" value="{{ app.request.requestUri }}">
-            <button>Войти</button>
+            <div class="uk-clearfix">
+                <div class="uk-float-left"><button class="uk-button uk-button-primary">Войти</button></div>
+                <div class="uk-float-right"><a uk-toggle="target: #pass_recover">Забыли пароль?</a></div>
+            </div>
         </form>
-        <a uk-toggle="target: #pass_recover">Забыли пароль?</a>
+
     </div>
 </div>
 
@@ -33,11 +36,11 @@
     <div class="uk-modal-dialog uk-modal-body">
         <button class="uk-modal-close-default" type="button" uk-close></button>
         <h2 class="uk-modal-title">Регистрация</h2>
-        <form action="/userSignUp" method="POST">
-            <input type="text" name="header" placeholder="name">
-            <input type="text" name="email" placeholder="email" required>
-            <input type="password" name="password" placeholder="password" required>
-            <button>Зарегистрироваться</button>
+        <form id="signUpForm" action="/userSignUp" method="POST" onsubmit="return signup_validate();">
+            <input type="text" name="header" placeholder="name" class="uk-input uk-margin-bottom">
+            <input type="text" name="email" placeholder="email" required class="uk-input uk-margin-bottom">
+            <input type="password" name="password" placeholder="password" required class="uk-input uk-margin-bottom">
+            <button class="uk-button uk-button-primary">Зарегистрироваться</button>
         </form>
     </div>
 </div>
@@ -47,11 +50,11 @@
         <button class="uk-modal-close-default" type="button" uk-close></button>
         <h2 class="uk-modal-title">Новый пароль</h2>
         <form action="/userRecover" method="POST">
-            <input type="text" name="email" placeholder="email">
-            <input type="password" name="password1" placeholder="пароль">
-            <input type="password" name="password2" placeholder="повторите пароль">
+            <input type="text" name="email" placeholder="email" class="uk-input uk-margin-bottom">
+            <input type="password" name="password1" placeholder="пароль" class="uk-input uk-margin-bottom">
+            <input type="password" name="password2" placeholder="повторите пароль" class="uk-input uk-margin-bottom">
             <input type="hidden" name="return" value="{{ app.request.requestUri }}">
-            <button>Сменить пароль</button>
+            <button class="uk-button uk-button-primary">Сменить пароль</button>
         </form>
     </div>
 </div>

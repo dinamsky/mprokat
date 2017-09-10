@@ -1,12 +1,18 @@
 <span class="selector_opener show_mark_selector" uk-toggle="target: #mark_block; cls: is_open">
-    <span class="mark_selector">Марка и модель </span>
+    <span class="mark_selector">
+        {{ mark ? mark.header : 'Марка' }} {{ model ? model.header : '/ модель' }}
+    </span>
     <i uk-icon="icon:chevron-down"></i>
 </span>
 
 <div class="hide_on_click_out" id="mark_block">
     <select class="uk-select" name="groupName" id="markGroupName">
-        {{ include( 'common/ajax_edit_options.html.twig', { 'options': mark_groups, 'id': ''}) }}
+        {{ include( 'common/ajax_edit_options.html.twig', { 'options': mark_groups, 'id': mark.groupname}) }}
     </select>
-    <select class="uk-select" name="mark" id="markId"></select>
-    <select class="uk-select" name="modelId" id="markModelId"></select>
+    <select class="uk-select" name="mark" id="markId">
+        {{ include( 'common/ajax_edit_options.html.twig', { 'options': marks, 'id': mark.id}) }}
+    </select>
+    <select class="uk-select" name="modelId" id="markModelId">
+        {{ include( 'common/ajax_edit_options.html.twig', { 'options': models, 'id': model.id}) }}
+    </select>
 </div>

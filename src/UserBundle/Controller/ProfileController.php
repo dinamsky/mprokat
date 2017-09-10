@@ -111,14 +111,18 @@ class ProfileController extends Controller
         $user = $card->getUser();
 
         $message = (new \Swift_Message('Сообщение от пользователя'))
-            ->setFrom('robot@multiprokat.com')
+            ->setFrom(['robot@multiprokat.com' => 'Робот Мультипрокат'])
             ->setTo($user->getEmail())
+            ->setCc('test.multiprokat@gmail.com')
             ->setBody(
                 $this->renderView(
                     'email/request.html.twig',
                     array(
                         'header' => $user->getHeader(),
-                        'message' => $post->get('message')
+                        'message' => $post->get('message'),
+                        'email' => $post->get('email'),
+                        'name' => $post->get('name'),
+                        'phone' => $post->get('phone'),
                     )
                 ),
                 'text/html'

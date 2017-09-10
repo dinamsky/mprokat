@@ -40,7 +40,8 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
-
+    globals:
+          t3_new: '@AppBundle\Menu\ServiceT3new'
 # Doctrine Configuration
 doctrine:
     dbal:

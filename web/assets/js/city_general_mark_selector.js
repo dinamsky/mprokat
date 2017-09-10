@@ -108,7 +108,7 @@ $( document ).ready(function() {
 });
 
 function getSelectorUrl(){
-    var city = '';
+    var city = '/rus';
     var generalType = '/alltypes';
     var service = '/all';
     var markModel = '';
@@ -138,9 +138,11 @@ function getSelectorUrl(){
 }
 
 function getQueryVars() {
-    var view = $('#main_search_button').data('view'); view ? view = 'view='+view : '';
-    var page = $('#main_search_button').data('page'); page ? page = '&page='+page : '';
-    var onpage = $('#main_search_button').data('onpage'); onpage ? onpage = '&onpage='+ onpage : '';
-    return '?'+view+page+onpage;
+    var view = $('#main_search_button').data('view'); view ? view = 'view='+view : ' ';
+    var page = $('#main_search_button').data('page'); page ? page = '&page='+page : ' ';
+    var onpage = $('#main_search_button').data('onpage'); onpage ? onpage = '&onpage='+ onpage : ' ';
+    var order = $('#order').val(); order ? order = '&order='+ order : ' ';
+    if (view+page+onpage+order) return '?'+view+page+onpage+order;
+    else return '';
 }
 

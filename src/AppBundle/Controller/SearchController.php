@@ -46,6 +46,12 @@ class SearchController extends Controller
         $general_condition = '';
         $mark_condition = '';
         $order = ' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
+        $sort = 0;
+        if (isset($get['order'])){
+            if($get['order'] == 'date_desc') $order = ' ORDER BY c.dateUpdate DESC';
+            if($get['order'] == 'date_asc') $order = ' ORDER BY c.dateUpdate ASC';
+            $sort = $get['order'];
+        }
 
         $pgtId = 0;
         $gtId = 0;
@@ -112,7 +118,7 @@ class SearchController extends Controller
             $mark_condition = ' AND c.modelId IN ('.implode(',',$mark_ids).')';
             $marks = $mm->getMarks($mark->getGroupName());
         } else {
-            $mark = array('id' => 0);
+            $mark = array('id' => 0,'groupname'=>'');
             $marks = array();
         }
 
@@ -153,10 +159,22 @@ class SearchController extends Controller
         $query->setFirstResult($start);
         $cards = $query->getResult();
 
+
+        if (isset($get['order'])){
+            if($get['order'] == 'price_asc'){
+                usort($cards, array('AppBundle\Controller\SearchController','price_sorting_asc'));
+            }
+            if($get['order'] == 'price_desc'){
+                usort($cards, array('AppBundle\Controller\SearchController','price_sorting_desc'));
+            }
+        }
+
+
         return $this->render('search/search_main.html.twig', [
 
             'cards' => $cards,
             'view' => $view,
+            'order' => $sort,
             'get_array' => $get,
             'total_cards' => $total_cards,
             'total_pages' => $total_pages,
@@ -177,6 +195,7 @@ class SearchController extends Controller
             'generalSecondLevel' => $mgt->getSecondLevel($pgtId),
             'pgtid' => $pgtId,
             'gtid' => $gtId,
+            'general' => $general,
 
             'mark_groups' => $mm->getGroups(),
             'mark' => $mark,
@@ -185,6 +204,44 @@ class SearchController extends Controller
             'models' => $models,
 
         ]);
+    }
+
+    private static function price_sorting_asc($a, $b)
+    {
+        $p1 = 0;
+        $p2 = 0;
+
+        foreach($a->getCardPrices() as $ap){
+            if($ap->getPriceId() == 2) $p1 = $ap->getValue();
+        }
+
+        foreach($b->getCardPrices() as $bp){
+            if($bp->getPriceId() == 2) $p2 = $bp->getValue();
+        }
+
+        if ($p1 == $p2) {
+            return 0;
+        }
+        return ($p1 < $p2) ? -1 : 1;
+    }
+
+    private static function price_sorting_desc($a, $b)
+    {
+        $p1 = 0;
+        $p2 = 0;
+
+        foreach($a->getCardPrices() as $ap){
+            if($ap->getPriceId() == 2) $p1 = $ap->getValue();
+        }
+
+        foreach($b->getCardPrices() as $bp){
+            if($bp->getPriceId() == 2) $p2 = $bp->getValue();
+        }
+
+        if ($p1 == $p2) {
+            return 0;
+        }
+        return ($p1 > $p2) ? -1 : 1;
     }
 
 }
