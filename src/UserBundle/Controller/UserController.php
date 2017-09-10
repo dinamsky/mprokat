@@ -681,7 +681,7 @@ class UserController extends Controller
         $em->persist($card);
 
 
-        foreach($post->get('subField') as $fieldId=>$value){
+        foreach($post->get('subField') as $fieldId=>$value) if($value!=0 and $value!=''){
             $subfield = $this->getDoctrine()
                 ->getRepository(FieldType::class)
                 ->find($fieldId);
@@ -690,7 +690,15 @@ class UserController extends Controller
             $query = $em->createQuery($dql);
             $query->setParameter(1, $card->getId());
             $query->setParameter(2, $fieldId);
-            $storage = $query->getSingleResult();
+            try {
+                $storage = $query->getSingleResult();
+            }
+            catch (\Doctrine\ORM\NoResultException $e){
+                $storageTypeName = "\AppBundle\Entity\\".$subfield->getStorageType();
+                $storage = new $storageTypeName();
+                $storage->setCard($card);
+                $storage->setCardFieldId($fieldId);
+            }
 
             $storage->setValue($value);
             $em->persist($storage);

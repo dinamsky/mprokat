@@ -1,5 +1,31 @@
 $( document ).ready(function() {
 
+
+    $('#subfields').on('change', '.subFieldSelect', function(){
+        var subId = $(this).children('option:selected').val();
+        var fieldId = $(this).data('id');
+        var element = $(this);
+        $.ajax({
+            url: '/ajax/getSubField',
+            type: 'POST',
+            data: {subId:subId, fieldId:fieldId},
+            success: function(html){
+                console.log(html);
+                if (html) {
+                    $(element).attr('name', 'old').attr('class','old_select uk-select');
+                    $(element).next('select').remove();
+                    $(element).after(html);
+                }
+                else {
+                    //
+                }
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
+    });
+
     $('.feature_item').on('change',function(){
         if($(this).prop('checked')) $(this).val('1').attr('checked','checked');
         else $(this).val('0').removeAttr('checked');

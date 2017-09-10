@@ -189,14 +189,15 @@
                     {% if subfields %}
                         {% for item in subfields %}
                             <div>
-                                <span>{{ item.label }}: </span>
+                                <div class="uk-text-small">{{ item.label }}</div>
                                 {% if item.subfield_last is defined %}
                                     {{ include(item.template, {
                                         'data': item.data,
                                         'subfield_last':item.subfield_last,
                                         'subfield_first':item.subfield_first,
                                         'first':item.first,
-                                        'level':item.level
+                                        'level':item.level,
+                                        'field_id': item.field_id
                                     }) }}
                                 {% else %}
                                     {{ include(item.template, {
