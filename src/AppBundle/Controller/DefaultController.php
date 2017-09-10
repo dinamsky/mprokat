@@ -112,10 +112,10 @@ class DefaultController extends Controller
 
             'marks' => [],
             'models' => [],
-            'mark' => ['id'=>0,'groupname'=>''],
-            'model' => ['id'=>0]
+            'mark' => ['id'=>0,'groupname'=>'','header'=>false],
+            'model' => ['id'=>0, 'header'=>false],
 
-
+            'general' => false
 
         ]);
     }

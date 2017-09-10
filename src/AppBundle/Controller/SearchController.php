@@ -118,7 +118,7 @@ class SearchController extends Controller
             $mark_condition = ' AND c.modelId IN ('.implode(',',$mark_ids).')';
             $marks = $mm->getMarks($mark->getGroupName());
         } else {
-            $mark = array('id' => 0,'groupname'=>'');
+            $mark = array('id' => 0,'groupname'=>'', 'header'=>false);
             $marks = array();
         }
 
@@ -129,7 +129,7 @@ class SearchController extends Controller
 
             $mark_condition = ' AND c.modelId = '.$model->getId();
         } else {
-            $model = array('groupName' => 'cars','id' => 0);
+            $model = array('groupName' => 'cars','id' => 0,'header'=>false);
             $models = array();
         }
 
