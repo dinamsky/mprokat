@@ -68,11 +68,22 @@ class ProfileController extends Controller
             ->find($this->get('session')->get('logged_user')->getId());
 
         $user->setHeader($post->get('header'));
+
         /**
          * @var $info UserInfo
          */
-        foreach($user->getInformation() as &$info){
-            $info->setUiValue($post->get($info->getUiKey()));
+
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery('DELETE UserBundle\Entity\UserInfo u WHERE u.userId = ?1');
+        $query->setParameter(1, $user->getId());
+        $query->execute();
+
+        foreach($post->get('info') as $uiKey =>$uiValue ){
+            $info = new UserInfo();
+            $info->setUiKey($uiKey);
+            $info->setUiValue($uiValue);
+            $info->setUser($user);
+            $em->persist($info);
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -100,14 +111,18 @@ class ProfileController extends Controller
         $user = $card->getUser();
 
         $message = (new \Swift_Message('Сообщение от пользователя'))
-            ->setFrom('robot@multiprokat.com')
+            ->setFrom(['robot@multiprokat.com' => 'Робот Мультипрокат'])
             ->setTo($user->getEmail())
+            ->setCc('test.multiprokat@gmail.com')
             ->setBody(
                 $this->renderView(
                     'email/request.html.twig',
                     array(
                         'header' => $user->getHeader(),
-                        'message' => $post->get('message')
+                        'message' => $post->get('message'),
+                        'email' => $post->get('email'),
+                        'name' => $post->get('name'),
+                        'phone' => $post->get('phone'),
                     )
                 ),
                 'text/html'

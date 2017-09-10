@@ -5,6 +5,7 @@ namespace AppBundle\EventSubscriber;
 
 
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -37,9 +38,12 @@ class GeoSubscriber implements EventSubscriberInterface
                 $event->getRequest()->getSession()->set('sessId', $sessId);
                 $geo = json_decode(file_get_contents('http://ip-api.com/json/'.$ip.'?lang=ru'), true);
                 $event->getRequest()->getSession()->set('geo', $geo);
-                $event->getRequest()->getSession()->getFlashBag()->add('notice', 'Your city:'.$geo['city']);
+                $event->getRequest()->getSession()->getFlashBag()->add('notice', 'Ваш город был определен как '.$geo['city']);
             }
         }
+
+
+
 
         //dump($event->getRequest());
     }

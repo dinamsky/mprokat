@@ -1,0 +1,23 @@
+{% set main_foto = main_foto(card.getFotos) %}
+
+                                {#{{ dump(main_foto(card.getFotos)) }}#}
+
+                                {% set bgrnd = 'white' %}
+
+                                {% if main_foto and file_exists('./assets/images/cards/'~main_foto.folder~'/t/'~main_foto.id~'.jpg') %}
+                                    {% set bgrnd = 'url(/assets/images/cards/'~main_foto.folder~'/t/'~main_foto.id~'.jpg)' %}
+                                {% else %}
+                                    {% set bgrnd = 'white' %}
+                                {% endif %}
+
+<a href="/card/{{ card.id }}" class="uk-display-block">
+    <div style="background: {{ bgrnd }} center center;
+            background-size: cover;
+            height: 50px;
+            width: 50px;
+            vertical-align: middle;
+            margin-bottom: 5px;
+            display: inline-block;">
+    </div>
+    <div class="uk-display-inline-block c_white">{{ card.header }}</div>
+</a>

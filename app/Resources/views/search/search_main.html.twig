@@ -21,6 +21,14 @@
                             <option value="24" {{ 24 == onpage ? 'selected' : '' }}>24</option>
                             <option value="48" {{ 48 == onpage ? 'selected' : '' }}>48</option>
                         </select>
+                        <span class="uk-display-inline-block">Сортировать</span>
+                        <select name="order" id="order" class="uk-select" form="searchForm" style="width:150px">
+                            <option value="0" {{ not order ? 'selected' : '' }}>по умолчанию</option>
+                            <option value="date_desc" {{ ('date_desc' == order) ? 'selected' : '' }}>по дате: сначала новые</option>
+                            <option value="date_asc" {{ ('date_asc' == order) ? 'selected' : '' }}>по дате: сначала старые</option>
+                            <option value="price_desc" {{ ('price_desc' == order) ? 'selected' : '' }}>по цене: сначала дороже</option>
+                            <option value="price_asc" {{ ('price_asc' == order) ? 'selected' : '' }}>по цене: сначала дешевле</option>
+                        </select>
                     </div>
                     <div class="uk-width-1-4 uk-text-right">
                         <button class="view_select {{ view == 'grid_view' ? 'uk-button-primary' : '' }}" type="button" value="grid_view" uk-icon="icon:grid"></button>
