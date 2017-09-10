@@ -9,6 +9,8 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWdm1zrblFjsdUfi1-6fsPvj30ACCiCxk"></script>
     <script src="{{ asset('assets/js/newCardForm.js') }}"></script>
     <script src="{{ asset('assets/js/editCardForm.js') }}"></script>
+    <script src="{{ asset('assets/js/tariff_selector.js') }}"></script>
+    {% if not subfields %}<script src="{{ asset('assets/js/get_new_subfields.js') }}"></script>{% endif %}
 
 {% endblock %}
 
@@ -35,15 +37,15 @@
 
                 <div class="expandable_block" id="city_selector" hidden>
                     <div class="uk-text-small">Страна</div>
-                    <select name="countryCode" id="countryCode">
+                    <select name="countryCode" id="countryCode" class="uk-select">
                         {{ include( 'common/ajax_edit_options.html.twig', { 'options': countries, 'id': countryCode }) }}
                     </select>
                     <div class="uk-text-small">Регион</div>
-                    <select name="regionId" id="regionId">
+                    <select name="regionId" id="regionId" class="uk-select">
                         {{ include( 'common/ajax_edit_options.html.twig', { 'options': regions, 'id': regionId }) }}
                     </select>
                     <div class="uk-text-small">Город</div>
-                    <select name="cityId" id="cityId">
+                    <select name="cityId" id="cityId" class="uk-select">
                         {{ include( 'common/ajax_edit_options.html.twig', { 'options': cities, 'id': card.cityId }) }}
                     </select>
                     <div class="uk-text-small">Адрес</div>
@@ -52,8 +54,11 @@
                     </div>
                     <div class="uk-text-small" uk-toggle="target: #map_selector" id="show_map">Карта <i uk-icon="icon:chevron-down"></i></div>
                     <div id="map_selector" hidden>
-                        <input name="coords"  value="{{ card.coords  }}">
+                        <input type="hidden" name="coords"  value="{{ card.coords  }}">
                         {% set coords = card.coords|split(",") %}
+                        {% if coords[1] is not defined %}
+                            {% set coords = [55.753410,37.620285] %}
+                        {% endif %}
                         <div id="map" data-lat="{{ coords[0] }}" data-lng="{{ coords[1] }}"></div>
                     </div>
 
@@ -71,13 +76,13 @@
                 <div class="expandable_block" id="general_selector" hidden>
                     <div uk-grid>
                         <div class="uk-width-1-2">
-                            <select name="generalTypeTopLevelId" id="generalTypeTopLevelId">
+                            <select name="generalTypeTopLevelId" id="generalTypeTopLevelId" class="uk-select">
                                 {{ include( 'common/ajax_edit_options.html.twig', { 'options': generalTopLevel, 'id': generalSecondLevel[card.generalTypeId].getParent.id }) }}
                             </select>
                         </div>
 
                         <div class="uk-width-1-2">
-                            <select name="generalTypeId" id="generalTypeId">
+                            <select name="generalTypeId" id="generalTypeId" class="uk-select">
                                 {{ include( 'common/ajax_edit_options.html.twig', { 'options': generalSecondLevel, 'id': generalSecondLevel[card.generalTypeId].id }) }}
                             </select>
                         </div>
@@ -91,21 +96,21 @@
                 <div uk-grid class="uk-grid-small">
                     <div class="uk-width-1-3">
                         <div class="uk-text-small"><span class="red_star">*</span>Группа</div>
-                        <select name="groupName" id="markGroupName">
+                        <select name="groupName" id="markGroupName" class="uk-select">
                             {{ include( 'common/ajax_edit_options.html.twig', { 'options': mark_groups, 'id': model.groupName }) }}
                         </select>
                     </div>
 
                     <div class="uk-width-1-3">
                         <div class="uk-text-small"><span class="red_star">*</span>Марка</div>
-                        <select name="mark" id="markId">
+                        <select name="mark" id="markId" class="uk-select">
                             {{ include( 'common/ajax_edit_options.html.twig', { 'options': marks, 'id': mark.id }) }}
                         </select>
                     </div>
 
                     <div class="uk-width-1-3">
                         <div class="uk-text-small"><span class="red_star">*</span>Модель</div>
-                        <select name="modelId" id="markModelId">
+                        <select name="modelId" id="markModelId" class="uk-select">
                             {{ include( 'common/ajax_edit_options.html.twig', { 'options': models, 'id': model.id }) }}
                         </select>
                     </div>
@@ -181,26 +186,28 @@
 
                 <div class=""><span uk-toggle="target: #subfields">Дополнительно <i uk-icon="icon:chevron-down"></i></span></div>
                 <div class="expandable_block" id="subfields" hidden>
-                    {% for item in subfields %}
-                        <div>
-                            <span>{{ item.label }}: </span>
-                            {% if item.subfield_last is defined %}
-                                {{ include(item.template, {
-                                    'data': item.data,
-                                    'subfield_last':item.subfield_last,
-                                    'subfield_first':item.subfield_first,
-                                    'first':item.first,
-                                    'level':item.level
-                                }) }}
-                            {% else %}
-                                {{ include(item.template, {
-                                    'options': item.value,
-                                    'data': item.data,
-                                    'subfield':item.subfield,
-                                }) }}
-                            {% endif %}
-                        </div>
-                    {% endfor %}
+                    {% if subfields %}
+                        {% for item in subfields %}
+                            <div>
+                                <span>{{ item.label }}: </span>
+                                {% if item.subfield_last is defined %}
+                                    {{ include(item.template, {
+                                        'data': item.data,
+                                        'subfield_last':item.subfield_last,
+                                        'subfield_first':item.subfield_first,
+                                        'first':item.first,
+                                        'level':item.level
+                                    }) }}
+                                {% else %}
+                                    {{ include(item.template, {
+                                        'options': item.value,
+                                        'data': item.data,
+                                        'subfield':item.subfield,
+                                    }) }}
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
                 </div>
 
                 <hr>
@@ -208,7 +215,7 @@
                 <div uk-grid class="uk-grid-small">
                     <div class="uk-width-1-3">
                         <div class="uk-text-small"><span class="red_star">*</span>Состояние</div>
-                        <select name="conditionId">
+                        <select name="conditionId" class="uk-select">
                             {% for condition in conditions %}
                                 <option value="{{ condition.id }}" {{ condition.id == card.conditionId ? 'selected' : '' }}>{{ condition.header }}</option>
                             {% endfor %}
@@ -217,7 +224,7 @@
 
                     <div class="uk-width-1-3">
                         <div class="uk-text-small"><span class="red_star">*</span>Цвет</div>
-                        <select name="colorId">
+                        <select name="colorId" class="uk-select">
                             {% for color in colors %}
                                 <option value="{{ color.id }}" {{ color.id == card.colorId ? 'selected' : '' }}>{{ color.header }}</option>
                             {% endfor %}
@@ -226,7 +233,7 @@
 
                     <div class="uk-width-1-3">
                         <div class="uk-text-small"><span class="red_star">*</span>Год выпуска</div>
-                        <select name="prodYear">
+                        <select name="prodYear" class="uk-select">
                             {% for year in 1950..'now'|date('Y') %}
                                 <option value="{{ year }}" {{  year == card.prodYear  ? 'selected' : ''}}>{{ year }}</option>
                             {% endfor %}
@@ -263,20 +270,20 @@
 
         <hr>
 
-        <div>Тариф:
-            {% for tariff in tariffs %}
-                <label><input type="radio" name="tariffId" value="{{ tariff.id }}" {{ tariff.id == card.tariff.id ? 'checked' : '' }}> {{ tariff.header }}</label>
-            {% endfor %}
+        <div id="change_tariff" hidden>
+            {{ include(':card:tariff_selector.html.twig', {'tariffId':card.tariff.id}) }}
         </div>
 
-        <hr>
 
-        <button class="uk-button uk-button-primary" name="setTariff">Оплатить</button>
-        <hr>
+        <input type="hidden" name="tariffId" value="{{ card.tariff.id }}">
+
         <input type="hidden" name="cardId" value="{{ card.id }}">
 
-        <button class="uk-button uk-button-primary" name="update">Записать</button>
-        <button class="uk-button uk-button-danger" name="delete">Удалить</button>
+        <div class="uk-clearfix uk-margin-top">
+        <button class="uk-button uk-button-primary uk-float-left hide_on_change" name="update">Записать</button>
+        <button id="tariff_changer" type="button" class="uk-button uk-button-secondary uk-float-left" uk-toggle="target: #change_tariff">Сменить тариф</button>
+        <button class="uk-button uk-button-danger uk-float-right" name="delete">Удалить</button>
+        </div>
 
     </form>
 {% endblock %}
