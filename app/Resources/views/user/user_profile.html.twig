@@ -5,12 +5,21 @@
     <div class="standard_wide">
         <form action="/profile/save" method="POST">
             <div>Имя: <input name="header" value="{{ user.header }}" class="uk-input"></div>
+
+            {% set phone = '' %}
+            {% set website = '' %}
+
             {% for info in user.information %}
-                <div>{{ info.uiKey }}: <input name="{{ info.uiKey }}" value="{{ info.uiValue }}" class="uk-input"></div>
+                {% if info.uiKey == 'phone' %}
+                    {% set phone = info.uiValue %}
+                {% endif %}
+                {% if info.uiKey == 'website' %}
+                    {% set website = info.uiValue %}
+                {% endif %}
             {% endfor %}
 
-            {#<div>Телефон: <input name="phone" value="{{ user.header }}" class="uk-input"></div>#}
-            {#<div>Website: <input name="website" value="{{ user.header }}" class="uk-input"></div>#}
+            <div>Телефон: <input name="info[phone]" value="{{ phone }}" class="uk-input"></div>
+            <div>Website: <input name="info[website]" value="{{ website }}" class="uk-input"></div>
 
 
             <button class="uk-button uk-button-primary uk-margin-top">Записать</button>
