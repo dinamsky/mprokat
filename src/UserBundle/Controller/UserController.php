@@ -186,7 +186,8 @@ class UserController extends Controller
 
             $tariff = $this->getDoctrine()
                 ->getRepository(Tariff::class)
-                ->find($post->get('tariffId'));
+                ->find($post->get(1));
+
             $card->setTariff($tariff);
 
             $em->persist($card);
@@ -250,8 +251,12 @@ class UserController extends Controller
 
             $fu->uploadImages($card);
 
-            if ($tariff->getId() == 1) $response = $this->redirectToRoute('user_cards');
+            if ($post->get('tariffId') == 1) $response = $this->redirectToRoute('user_cards');
             else {
+
+                $tariff = $this->getDoctrine()
+                    ->getRepository(Tariff::class)
+                    ->find($post->get('tariffId'));
 
                 $order = new UserOrder();
                 $order->setUser($user);
@@ -826,7 +831,7 @@ class UserController extends Controller
             'Your order successfully paid!'
         );
 
-        return $this->redirectToRoute('user_cards');
+        return $this->redirectToRoute('homepage');
     }
 
     /**
