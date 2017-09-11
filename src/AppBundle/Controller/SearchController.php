@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class SearchController extends Controller
 {
@@ -97,7 +98,7 @@ class SearchController extends Controller
             if($general->getChildren()->isEmpty()){
                 $gtId = $general->getId();
                 $general_condition = 'AND c.generalTypeId = '.$gtId;
-                if (!$general->getParent()) $pgtId = 0;
+                if (!$general->getParent()) $pgtId = $general->getId();
                 else $pgtId = $general->getParent()->getId();
             } else {
                 $generals = $general->getChildren();
@@ -120,9 +121,11 @@ class SearchController extends Controller
             }
             $mark_condition = ' AND c.modelId IN ('.implode(',',$mark_ids).')';
             $marks = $mm->getMarks($mark->getGroupName());
+            $models = $mm->getModels($mark->getId());
         } else {
             $mark = array('id' => 0,'groupname'=>'', 'header'=>false);
             $marks = array();
+            $models = false;
         }
 
         if($model){
@@ -133,7 +136,7 @@ class SearchController extends Controller
             $mark_condition = ' AND c.modelId = '.$model->getId();
         } else {
             $model = array('groupName' => 'cars','id' => 0,'header'=>false);
-            $models = array();
+            if (!$models) $models = array();
         }
 
         $dql = 'SELECT count(c.id) FROM AppBundle:Card c WHERE 1=1 '.$city_condition.$service_condition.$general_condition.$mark_condition;
@@ -160,6 +163,8 @@ class SearchController extends Controller
 
         $query->setMaxResults($cards_per_page);
         $query->setFirstResult($start);
+//        $cards = new Paginator($query, $fetchJoin = true);
+//        $cards = $cards->getIterator();
         $cards = $query->getResult();
 
 

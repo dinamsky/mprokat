@@ -83,10 +83,10 @@
                         <div uk-grid>
                             <div class="uk-width-1-2">
 
-                                <div>Год выпуска: {{ card.prodYear }}</div>
+                                {% if card.prodYear != 0 %}<div>Год выпуска: {{ card.prodYear }}</div>{% endif %}
+
                                 <div>Состояние: {{ card.getCondition.header }}</div>
-                                <div>Марка и
-                                    модель: {{ card.getMarkModel.getParent.header }} {{ card.getMarkModel.header }}</div>
+
                                 <div>Цвет: {{ card.getColor.header }}</div>
 
 
@@ -140,20 +140,21 @@
                 </ul>
 
 
-                <h2 class="pf_style_header"><span>Характеристики</span></h2>
+                {% if card.getCardFeatures is not empty%}
+                    <h2 class="pf_style_header"><span>Характеристики</span></h2>
 
-                <div class="card_blanc">
-                    <div uk-grid>
-                        {% for feature in card.getCardFeatures %}
-                            <div class="">
-                                <span class="check_icon"
-                                      uk-icon="icon:check; ratio: 1"></span>{{ feature.getFeature.header }}
-                            </div>
-                        {% endfor %}
+                    <div class="card_blanc">
+                        <div uk-grid>
+                            {% for feature in card.getCardFeatures %}
+                                <div class="">
+                                    <span class="check_icon"
+                                          uk-icon="icon:check; ratio: 1"></span>{{ feature.getFeature.header }}
+                                </div>
+                            {% endfor %}
+                        </div>
                     </div>
-                </div>
+                {% endif %}
 
-                <hr>
 
 
                 {#<h2 class="pf_style_header"><span>Контакты</span></h2>#}
