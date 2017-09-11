@@ -35,25 +35,38 @@
                         <button class="view_select {{ view == 'list_view' ? 'uk-button-primary' : '' }}" type="button" value="list_view" uk-icon="icon:list"></button>
                     </div>
                 </div>
+
                 {{ include('search/' ~ view ~ '.html.twig') }}
-                <hr>
-                <div id="pager">
-                    {% if total_pages > pages_in_center %}
-                    <button class="uk-button uk-button-default" name="page"  value="{{ current_page-1 }}"><i uk-icon="icon:arrow-left"></i></button>
-                    <button class="uk-button {{ 1 == current_page ? 'uk-button-primary' : 'uk-button-default' }}" name="page"  value="1">1</button>
-                        <span class="uk-display-inline-block"><i uk-icon="icon:more"></i></span>
-                        {% for page in pager_center_start..pager_center_start+pages_in_center-1 %}
-                            <button class="uk-button {{ page == current_page ? 'uk-button-primary' : 'uk-button-default' }}" name="page"  value="{{ page }}">{{ page }}</button>
-                        {% endfor %}
-                        <span class="uk-display-inline-block"><i uk-icon="icon:more"></i></span>
-                    <button class="uk-button {{ total_pages == current_page ? 'uk-button-primary' : 'uk-button-default' }}" name="page"  value="{{ total_pages }}">{{ total_pages }}</button>
-                    <button class="uk-button uk-button-default" name="page"  value="{{ current_page+1 }}"><i uk-icon="icon:arrow-right"></i></button>
-                    {% else %}
-                        {% for page in 1..total_pages %}
-                            <button class="uk-button {{ page == current_page ? 'uk-button-primary' : 'uk-button-default' }}" name="page"  value="{{ page }}">{{ page }}</button>
-                        {% endfor %}
-                    {% endif %}
-                </div>
+
+                {% if total_pages > 1 %}
+                    <hr>
+                    <div id="pager" class="uk-text-center">
+                        {% if total_pages > pages_in_center %}
+
+                        {% if current_page > 1 %}
+                        <button class="uk-button uk-button-default" name="page"  value="{{ current_page-1 }}"><i uk-icon="icon:arrow-left"></i></button>
+                        {% endif %}
+
+                        <button class="uk-button {{ 1 == current_page ? 'uk-button-primary' : 'uk-button-default' }}" name="page"  value="1">1</button>
+                            <span class="uk-display-inline-block"><i uk-icon="icon:more"></i></span>
+                            {% for page in pager_center_start..pager_center_start+pages_in_center-1 %}
+                                <button class="uk-button {{ page == current_page ? 'uk-button-primary' : 'uk-button-default' }}" name="page"  value="{{ page }}">{{ page }}</button>
+                            {% endfor %}
+                            <span class="uk-display-inline-block"><i uk-icon="icon:more"></i></span>
+                        <button class="uk-button {{ total_pages == current_page ? 'uk-button-primary' : 'uk-button-default' }}" name="page"  value="{{ total_pages }}">{{ total_pages }}</button>
+
+                        {% if current_page < total_pages %}
+                        <button class="uk-button uk-button-default" name="page"  value="{{ current_page+1 }}"><i uk-icon="icon:arrow-right"></i></button>
+                        {% endif %}
+
+                        {% else %}
+                            {% for page in 1..total_pages %}
+                                <button class="uk-button {{ page == current_page ? 'uk-button-primary' : 'uk-button-default' }}" name="page"  value="{{ page }}">{{ page }}</button>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                {% endif %}
+
             </div>
             <div class="uk-width-1-4">
                 <h3 class="pf_style_header"><span>Поиск</span></h3>

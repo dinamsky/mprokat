@@ -46,7 +46,7 @@ class SearchController extends Controller
         $general_condition = '';
         $mark_condition = '';
         $order = ' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
-        $sort = 0;
+        $sort = '0';
         if (isset($get['order'])){
             if($get['order'] == 'date_desc') $order = ' ORDER BY c.dateUpdate DESC';
             if($get['order'] == 'date_asc') $order = ' ORDER BY c.dateUpdate ASC';
@@ -87,10 +87,13 @@ class SearchController extends Controller
             $service_condition = ' AND c.serviceTypeId = '.$service;
         }
 
-        if($general){
+
+
+        if($general and $general != ''){
             $general = $this->getDoctrine()
                 ->getRepository(GeneralType::class)
                 ->findOneBy(['url' => $general]);
+            dump($general);
             if($general->getChildren()->isEmpty()){
                 $gtId = $general->getId();
                 $general_condition = 'AND c.generalTypeId = '.$gtId;
@@ -101,7 +104,7 @@ class SearchController extends Controller
                 foreach($generals as $child){
                     $general_ids[] = $child->getId();
                 }
-                $general_condition = ' AND c.generalTypeId IN ('.implode(',',$general_ids).')';
+                $general_condition = ' AND c.generalTypeId IN ('.implode(',',$general_ids).','.$general->getId().')';
                 $pgtId = $general->getId();
                 $gtId = 0;
             }

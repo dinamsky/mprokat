@@ -56,10 +56,14 @@ class GeneralType
      */
     private $parent;
 
-
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Card", mappedBy="generalType", cascade={"remove"}, orphanRemoval=true)
+     */
+    private $cards;
 
     public function __construct() {
         $this->children = new ArrayCollection();
+        $this->cards = new ArrayCollection();
     }
 
     /**
@@ -200,5 +204,39 @@ class GeneralType
     public function getUrl()
     {
         return $this->url;
+    }
+
+    /**
+     * Add card
+     *
+     * @param \AppBundle\Entity\Card $card
+     *
+     * @return GeneralType
+     */
+    public function addCard(\AppBundle\Entity\Card $card)
+    {
+        $this->cards[] = $card;
+
+        return $this;
+    }
+
+    /**
+     * Remove card
+     *
+     * @param \AppBundle\Entity\Card $card
+     */
+    public function removeCard(\AppBundle\Entity\Card $card)
+    {
+        $this->cards->removeElement($card);
+    }
+
+    /**
+     * Get cards
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCards()
+    {
+        return $this->cards;
     }
 }

@@ -93,7 +93,7 @@ class Card
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="GeneralType")
+     * @ORM\ManyToOne(targetEntity="GeneralType", inversedBy="cards")
      * @ORM\JoinColumn(name="general_type_id", referencedColumnName="id")
      */
     private $generalType;

@@ -70,6 +70,9 @@ class DefaultController extends Controller
         $query->setMaxResults(10);
         $yachts = $query->getResult();
 
+        $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g');
+        $generalTypes = $query->getResult();
+
         if($this->get('session')->has('geo')){
 
             $geo = $this->get('session')->get('geo');
@@ -132,7 +135,9 @@ class DefaultController extends Controller
             'mark' => ['id'=>0,'groupname'=>'','header'=>false],
             'model' => ['id'=>0, 'header'=>false],
 
-            'general' => $general
+            'general' => $general,
+
+            'generalTypes' => $generalTypes
 
         ]);
     }
