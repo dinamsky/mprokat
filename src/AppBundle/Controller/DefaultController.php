@@ -31,6 +31,20 @@ class DefaultController extends Controller
         $query->setMaxResults(3);
         $top3 = $query->getResult();
 
+//        $cars = $em->createQueryBuilder()->select('c, f, p, t') // key is to select both entities
+//            ->from('AppBundle:Card', 'c')
+//            ->join('c.fotos', 'f')
+//            ->join('c.cardPrices', 'p')
+//            ->join('c.tariff', 't')
+//            ->where('c.generalTypeId = 2')
+//            ->orderBy('t.weight', 'DESC')
+//            ->orderBy('c.dateTariffStart', 'DESC')
+//            ->orderBy('c.dateUpdate', 'DESC')
+//
+//            ->getQuery()
+//            ->setMaxResults( 10 )
+//            ->getResult();
+
         $query = $em->createQuery('SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId = 2 ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
         $query->setMaxResults(10);
         $cars = $query->getResult();
@@ -81,7 +95,9 @@ class DefaultController extends Controller
         }
 
 
-
+        $general = $this->getDoctrine()
+            ->getRepository(GeneralType::class)
+            ->find(2);
 
         return $this->render('main_page/main.html.twig', [
             'generalTopLevel' => $mgt->getTopLevel(),
@@ -106,16 +122,16 @@ class DefaultController extends Controller
             'cities' => $mc->getCities($city->getParentId()),
             'cityId' => $city->getId(),
 
-            'gtid' => 0,
-            'pgtid' => 0,
-            'generalSecondLevel' => array(),
+            'gtid' => 2,
+            'pgtid' => 1,
+            'generalSecondLevel' => $mgt->getSecondLevel(1),
 
             'marks' => [],
             'models' => [],
             'mark' => ['id'=>0,'groupname'=>'','header'=>false],
             'model' => ['id'=>0, 'header'=>false],
 
-            'general' => false
+            'general' => $general
 
         ]);
     }

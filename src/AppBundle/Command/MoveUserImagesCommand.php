@@ -30,7 +30,7 @@ class MoveUserImagesCommand extends ContainerAwareCommand
         $conn = $wp->getConnection();
         $users = $conn->fetchAll('SELECT * FROM wp_users');
 
-        foreach($users as $user){
+        foreach($users as $user) if ($user['ID'] > 4046) {
             $ids[] = $user['ID'];
         }
         $ids = implode(",",$ids);

@@ -737,12 +737,7 @@ class UserController extends Controller
 
         $fu->uploadImages($card);
 
-        if ($tariff->getId() == $card->getTariffId()){
-            if ($this->get('session')->get('admin') === null) return $this->redirectToRoute('user_cards');
-            else return $this->redirectToRoute('search');
-        }
-        else {
-
+        if ($post->has('change_tariff') and $tariff->getId() > 1){
             $order = new UserOrder();
             $order->setUser($user);
             $order->setCard($card);
@@ -765,9 +760,16 @@ class UserController extends Controller
                 "OutSum=$out_summ&InvId=$inv_id&Desc=$inv_desc&SignatureValue=$crc&IsTest=1";
 
             return new RedirectResponse($url);
+
+        } else {
+            if($post->has('change_tariff') and $tariff->getId() == 1){
+                $card->setTariff($tariff);
+                $em->persist($card);
+                $em->flush();
+            }
+            if ($this->get('session')->get('admin') === null) return $this->redirectToRoute('user_cards');
+            else return $this->redirectToRoute('search');
         }
-
-
     }
 
     /**

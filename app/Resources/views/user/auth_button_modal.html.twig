@@ -12,9 +12,7 @@
 </div>
 
 
-
-
-
+{% if not app.session.has('logged_user') and not app.session.has('admin')%}
 <div id="sign_in" uk-modal>
     <div class="uk-modal-dialog uk-modal-body">
         <button class="uk-modal-close-default" type="button" uk-close></button>
@@ -28,7 +26,6 @@
                 <div class="uk-float-right"><a uk-toggle="target: #pass_recover">Забыли пароль?</a></div>
             </div>
         </form>
-
     </div>
 </div>
 
@@ -58,3 +55,4 @@
         </form>
     </div>
 </div>
+{% endif %}

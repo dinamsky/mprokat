@@ -86,26 +86,26 @@
                             +7(916)455-98-08
                         </div>
                         <div class="uk-width-1-4">
-                            Топ<br>
+                            <div class="uk-margin-bottom">Топ</div>
                             {% for card in t3_new.getTop3 %}
                                 {{ include(':footer:top_new_tpl.html.twig', {'card':card}) }}
                             {% endfor %}
                         </div>
                         <div class="uk-width-1-4">
-                            Новый транспорт<br>
+                            <div class="uk-margin-bottom">Новый транспорт</div>
                             {% for card in t3_new.getNew %}
                                 {{ include(':footer:top_new_tpl.html.twig', {'card':card}) }}
                             {% endfor %}
                         </div>
                         <div class="uk-width-1-4">
                             <div>
-                                <a href="/news">> Новости</a>
+                                <a href="/news" class="c_white">> Новости</a>
                             </div>
                             <div>
-                                <a href="/contacts">> Контакты</a>
+                                <a href="/contacts" class="c_white">> Контакты</a>
                             </div>
                             <div>
-                                <a href="/article/kak-sdavat-avto">> Сдать свой автомобиль</a>
+                                <a href="/article/kak-sdavat-avto" class="c_white">> Сдать свой автомобиль</a>
                             </div>
                         </div>
                     </div>
