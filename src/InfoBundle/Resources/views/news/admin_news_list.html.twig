@@ -4,7 +4,7 @@
 {% block content %}
     <div class="standard_wide">
         {% for news in all_news %}
-            <a href="/adminNewsEdit/{{ news.id }}">{{ news.header }}</a><br>
+            <div><span>{{ news.dateCreate|date('d.m.Y') }}</span> <a href="/adminNewsEdit/{{ news.id }}">{{ news.header }}</a></div>
         {% endfor %}
     </div>
 {% endblock %}

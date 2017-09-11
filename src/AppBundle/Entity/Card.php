@@ -93,7 +93,7 @@ class Card
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="GeneralType")
+     * @ORM\ManyToOne(targetEntity="GeneralType", inversedBy="cards")
      * @ORM\JoinColumn(name="general_type_id", referencedColumnName="id")
      */
     private $generalType;
@@ -247,6 +247,12 @@ class Card
      */
     private $userOrders;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Comment", mappedBy="card", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OrderBy({"dateCreate" = "DESC"})
+     */
+    private $comments;
+
 
     public function __construct() {
         $this->fieldIntegers = new ArrayCollection();
@@ -254,6 +260,7 @@ class Card
         $this->fotos = new ArrayCollection();
         $this->cardPrices = new ArrayCollection();
         $this->userOrders = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -1138,5 +1145,39 @@ class Card
     public function getUserOrders()
     {
         return $this->userOrders;
+    }
+
+    /**
+     * Add comment
+     *
+     * @param \AppBundle\Entity\Comment $comment
+     *
+     * @return Card
+     */
+    public function addComment(\AppBundle\Entity\Comment $comment)
+    {
+        $this->comments[] = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Remove comment
+     *
+     * @param \AppBundle\Entity\Comment $comment
+     */
+    public function removeComment(\AppBundle\Entity\Comment $comment)
+    {
+        $this->comments->removeElement($comment);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 }

@@ -28,7 +28,7 @@ class MoveImagesCommand extends ContainerAwareCommand
             $ids[] = $user['ID'];
         }
 
-        foreach($json['posts'] as $post_id => $post) if (in_array($post['post_author'],$ids) and isset($json['meta'][$post_id])) {
+        foreach($json['posts'] as $post_id => $post) if (in_array($post['post_author'],$ids) and isset($json['meta'][$post_id]) and $post_id > 33143) {
 
             $meta = $json['meta'][$post_id];
 

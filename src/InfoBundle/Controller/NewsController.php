@@ -32,7 +32,7 @@ class NewsController extends Controller
     {
         $news = $this->getDoctrine()
             ->getRepository(News::class)
-            ->findAll();
+            ->findBy([],['dateCreate' => 'DESC']);
 
         return $this->render('InfoBundle:news:all_news.html.twig', [
             'all_news' => $news,

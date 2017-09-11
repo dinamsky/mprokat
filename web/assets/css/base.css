@@ -1,3 +1,7 @@
+body{
+    background: #eaeaea;
+}
+
 #content{
     min-height:500px;
 }
@@ -95,6 +99,7 @@
 
 .bordered{
     border:1px solid lightgray;
+    background: white;
 }
 
 .padding20{
@@ -116,9 +121,12 @@
 }
 
 .user_block{
-    background: #1e87f0;
-    padding: 30px 0;
-    color:white;
+    background: white;
+    padding: 30px 10px;
+    color:grey;
+    -webkit-box-shadow: 1px 1px 1px #9a9a9a;
+    -moz-box-shadow: 1px 1px 1px #9a9a9a;
+    box-shadow: 1px 1px 1px #9a9a9a;
 }
 
 .show_phone{
@@ -139,28 +147,26 @@
 
 #top_selector_block{
     margin-top: 50px;
-    background: #f1f1f1;
+    background: #bcc8d4;
     padding: 30px 0;
     margin-bottom: 30px;
 }
 
 .price_descriptor{
     display: inline-block;
-    width: 55px;
+    width: 85px;
     text-align: left;
 }
 
 .price_value{
     display: inline-block;
-    width: 55px;
+    width: 65px;
     font-weight: bold;
     text-align: right;
 }
 
-.price_highlighted{
-    background: #f0506e;
-    color: white;
-    padding: 5px 0;
+.price_highlighted .price_value, .price_highlighted .price_descriptor {
+    color: #f0506e;
 }
 
 .icon_button{
@@ -261,4 +267,48 @@
     z-index: 100;
     border: 1px solid lightgrey;
     box-shadow: 3px 3px 4px #b7b7b7;
+}
+
+.card_blanc {
+    background: white;
+    padding: 30px;
+    -webkit-box-shadow: 1px 1px 1px #9a9a9a;
+    -moz-box-shadow: 1px 1px 1px #9a9a9a;
+    box-shadow: 1px 1px 1px #9a9a9a;
+}
+
+.uk-tab > .uk-active > a {
+    color: #333;
+    border-color: #ad2424;
+}
+
+.generals_in_main{
+    background: white;
+    padding: 10px;
+    -webkit-box-shadow: 1px 1px 1px #9a9a9a;
+    -moz-box-shadow: 1px 1px 1px #9a9a9a;
+    box-shadow: 1px 1px 1px #9a9a9a;
+    display: block;
+    color: grey;
+}
+
+.gim_text{
+    width: 75%;
+    display: inline-block;
+
+}
+
+.gim_count{
+    width: 25%;
+    display: inline-block;
+    vertical-align: top;
+    text-align: right;
+}
+
+#pager button.uk-button-default{
+      background: white;
+}
+
+#pager button{
+    padding: 0px 15px;
 }

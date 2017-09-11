@@ -46,7 +46,7 @@ class SearchController extends Controller
         $general_condition = '';
         $mark_condition = '';
         $order = ' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
-        $sort = 0;
+        $sort = '0';
         if (isset($get['order'])){
             if($get['order'] == 'date_desc') $order = ' ORDER BY c.dateUpdate DESC';
             if($get['order'] == 'date_asc') $order = ' ORDER BY c.dateUpdate ASC';
@@ -87,10 +87,13 @@ class SearchController extends Controller
             $service_condition = ' AND c.serviceTypeId = '.$service;
         }
 
-        if($general){
+
+
+        if($general and $general != ''){
             $general = $this->getDoctrine()
                 ->getRepository(GeneralType::class)
                 ->findOneBy(['url' => $general]);
+            dump($general);
             if($general->getChildren()->isEmpty()){
                 $gtId = $general->getId();
                 $general_condition = 'AND c.generalTypeId = '.$gtId;
@@ -101,7 +104,7 @@ class SearchController extends Controller
                 foreach($generals as $child){
                     $general_ids[] = $child->getId();
                 }
-                $general_condition = ' AND c.generalTypeId IN ('.implode(',',$general_ids).')';
+                $general_condition = ' AND c.generalTypeId IN ('.implode(',',$general_ids).','.$general->getId().')';
                 $pgtId = $general->getId();
                 $gtId = 0;
             }
@@ -299,73 +302,3 @@ class SearchController extends Controller
 //    );
 //    return strtr($string, $converter);
 //}
-
-
-
-//$get = $request->query->all();
-//
-//if (!$request->query->has('countryCode')) {
-//    $get['countryCode'] = 'RUS';
-//    $get['regionId'] = 0;
-//    $get['cityId'] = 0;
-//}
-//
-//if (!$request->query->has('pgtId')) {
-//    $get['pgtId'] = 0;
-//    $get['gtId'] = 0;
-//}
-//
-//$view = 'grid_view';
-//if ($request->query->has('view') and $get['view'] != '') $view = $get['view'];
-//
-//$cityId = 'RUS';
-//if ($request->query->has('countryCode') and $get['countryCode'] != 0) $cityId = $get['countryCode'];
-//if ($request->query->has('regionId') and $get['regionId'] != 0) $cityId = $get['regionId'];
-//if ($request->query->has('cityId') and $get['cityId'] != 0) $cityId = $get['cityId'];
-//
-//$generalTypeId = 1;
-//if ($request->query->has('pgtId') and $get['pgtId'] != 0) $generalTypeId = $get['pgtId'];
-//if ($request->query->has('gtId') and $get['gtId'] != 0) $generalTypeId = $get['gtId'];
-//
-//if ($request->query->has('order') and $get['order'] != ''){
-//    $order = '';
-//} else {
-//    $order = ' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
-//}
-//
-//
-//if($request->query->has('modelId') and $get['modelId'] != '') {
-//
-//    if ($get['modelId'] == 0){
-//        $mark = $mm->getMark($get['mark']);
-//        $marks = $mm->getMarks($mark->getGroupName());
-//        $models = $mark->getChildren();
-//        foreach($mm->getModels((int)$get['mark']) as $model){
-//            $model_ids[] = $model->getId();
-//        }
-//        $model = new Mark();
-//        $model->setTempId(0);
-//        $model_qry = 'AND c.modelId IN ( '.implode(",",$model_ids). ')';
-//    } else {
-//        $model = $this->getDoctrine()
-//            ->getRepository(Mark::class)
-//            ->find((int)$get['modelId']);
-//        $marks = $mm->getMarks($model->getGroupName());
-//        $mark = $model->getParent();
-//        $models = $mark->getChildren();
-//        $model_qry = 'AND c.modelId = '.(int)$get['modelId'];
-//    }
-//
-//} else {
-//    $marks = $mm->getMarks('cars');
-//    $models = array();
-//    $mark = new Mark();
-//    $mark->setTempId(0);
-//    $model = new Mark();
-//    $model->setTempId(0);
-//    $model_qry = '';
-//}
-//
-//$gt = $mgt->getGeneralTypeMenu();
-//$gt_ids = $mgt->getArrayOfChildIdsOfGeneralTypeMenu($gt, $generalTypeId);
-//$countries = array_keys($mc->getCountry());

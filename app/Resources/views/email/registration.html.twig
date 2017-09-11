@@ -1,8 +1,6 @@
-<h3>You did it! You registered!</h3>
-
-Hi {{ header }}! You're successfully registered.
-
-
-Now, please <a href="{{ url('activate_account',{'code': code}) }}">activate</a> your account
-
-Thanks!
+<h3>Поздравляем!</h3>
+{{ header }}! Вы успешно зарегистрировались.<br>
+<br>
+Перейдите по <a href="{{ url('activate_account',{'code': code}) }}">ссылке</a> для активации вашего аккаунта.<br>
+<br>
+Спасибо!

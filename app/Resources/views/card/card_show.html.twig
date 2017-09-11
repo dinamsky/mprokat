@@ -27,9 +27,9 @@
                 <h1 class="c_white">{{ card.header }}</h1>
                 <div>
                     {% if card.address != '' %}
-                        {{ card.address }}
+                        <i class="fa fa-map-marker"></i> {{ card.address }}
                     {% else %}
-                        {{ card.getCity.header }}, {{ card.getCity.getParent.header }}, {{ card.getCity.country }}
+                        <i class="fa fa-map-marker"></i> {{ card.getCity.header }}, {{ card.getCity.getParent.header }}, {{ card.getCity.country }}
                     {% endif %}
                  </div>
                 <div><i class="fa fa-calendar"></i> {{ card.dateCreate|date("d.m.Y") }} <i class="fa fa-eye"></i> {{ card.views }}</div>
@@ -79,7 +79,7 @@
                 </ul>
 
                 <ul id="cardTabs" class="uk-switcher uk-margin">
-                    <li>
+                    <li class="card_blanc">
                         <div uk-grid>
                             <div class="uk-width-1-2">
 
@@ -109,7 +109,7 @@
                         </div>
 
                     </li>
-                    <li id="card_tab">
+                    <li id="card_tab" class="card_blanc">
                         {% if card.coords != NULL %}
                             {% set coords = card.coords|split(',') %}
                             <div id="map" data-lat="{{ coords[0] }}" data-lng="{{ coords[1] }}"></div>
@@ -120,7 +120,7 @@
 
                     </li>
                     {% if streetView and card.coords != NULL %}
-                        <li>
+                        <li class="card_blanc">
                             <iframe
                                     width="100%"
                                     height="400"
@@ -131,7 +131,7 @@
                         </li>
                     {% endif %}
                     {% if video %}
-                        <li>
+                        <li class="card_blanc">
                             <iframe width="100%" height="400"
                                     src="https://www.youtube.com/embed/{{ video }}?feature=oembed" frameborder="0"
                                     allowfullscreen></iframe>
@@ -142,82 +142,110 @@
 
                 <h2 class="pf_style_header"><span>Характеристики</span></h2>
 
-                <div uk-grid>
-                    {% for feature in card.getCardFeatures %}
-                        <div class="">
-                            <span class="check_icon"
-                                  uk-icon="icon:check; ratio: 1"></span>{{ feature.getFeature.header }}
-                        </div>
-                    {% endfor %}
+                <div class="card_blanc">
+                    <div uk-grid>
+                        {% for feature in card.getCardFeatures %}
+                            <div class="">
+                                <span class="check_icon"
+                                      uk-icon="icon:check; ratio: 1"></span>{{ feature.getFeature.header }}
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
 
                 <hr>
 
 
-                <h2 class="pf_style_header"><span>Контакты</span></h2>
+                {#<h2 class="pf_style_header"><span>Контакты</span></h2>#}
+                {#<div class="card_blanc">#}
+                    {#<div uk-grid>#}
+                        {#<div class="uk-width-1-5">#}
+                            {#<img src="/assets/images/users/t/{% for info in card.user.information if info.uiKey == 'foto' %}{{ info.uiValue }}{% endfor %}.jpg"#}
+                                 {#alt="">#}
+                        {#</div>#}
+                        {#<div class="uk-width-2-5">#}
+                            {#<h4>{{ card.user.header }}</h4>#}
+                            {#{% for info in card.user.information if info.uiKey == 'phone' %}#}
+                                {#<div class="phone_block">#}
+                                    {#{% if app.session.get('phone')[card.user.id] is not defined %}#}
+                                        {#<span class="hidden_phone">#}
+                                            {#<i class="fa fa-phone"></i> {{ info.uiValue|slice(0,5) }}*******#}
+                                        {#</span>#}
+                                        {#<button class="uk-button-primary show_phone" type="button" data-card_id="{{ card.id }}">Показать</button>#}
+                                    {#{% else %}#}
+                                        {#<span class="opened_phone">#}
+                                            {#<i class="fa fa-phone"></i> {{ info.uiValue }}#}
+                                        {#</span>#}
+                                    {#{% endif %}#}
+                                {#</div>#}
+                            {#{% endfor %}#}
+                            {#{% for info in card.user.information if info.uiKey == 'website' %}#}
+                                {#<div><i class="fa fa-globe"></i> {{ info.uiValue }}</div>#}
+                            {#{% endfor %}#}
 
-                <div uk-grid>
-                    <div class="uk-width-1-5">
-                        <img src="/assets/images/users/t/{% for info in card.user.information if info.uiKey == 'foto' %}{{ info.uiValue }}{% endfor %}.jpg"
-                             alt="">
-                    </div>
-                    <div class="uk-width-2-5">
-                        <h4>{{ card.user.header }}</h4>
-                        {% for info in card.user.information if info.uiKey == 'phone' %}
-                            <div class="phone_block">
-                                {% if app.session.get('phone')[card.user.id] is not defined %}
-                                    <span class="hidden_phone">
-                                        <i class="fa fa-phone"></i> {{ info.uiValue|slice(0,5) }}*******
-                                    </span>
-                                    <button class="uk-button-primary show_phone" type="button" data-card_id="{{ card.id }}">Показать</button>
-                                {% else %}
-                                    <span class="opened_phone">
-                                        <i class="fa fa-phone"></i> {{ info.uiValue }}
-                                    </span>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                        {% for info in card.user.information if info.uiKey == 'website' %}
-                            <div><i class="fa fa-globe"></i> {{ info.uiValue }}</div>
-                        {% endfor %}
+                        {#</div>#}
+                        {#<div class="uk-width-2-5">#}
+                            {#<form action="/user/sendMessage" uk-grid class="uk-grid-medium" method="">#}
+                                {#<div class="uk-width-1-2"><input type="text" name="name" class="uk-input" placeholder="Имя"></div>#}
+                                {#<div class="uk-width-1-2"><input type="text" name="phone" class="uk-input uk-width-1-1" placeholder="Телефон"></div>#}
+                                {#<div class="uk-width-1-1"><input type="text" name="email" class="uk-input" placeholder="Email" required></div>#}
+                                {#<div class="uk-width-1-1"><textarea name="message" class="uk-width-1-1 short_textarea" placeholder="Сообщение" required></textarea>#}
+                                {#</div>#}
+                                {#<input type="hidden" name="card_id" value="{{ card.id }}">#}
+                                {#<div class="uk-width-1-1">#}
+                                    {#<button class="uk-button uk-button-default">Отправить</button>#}
+                                {#</div>#}
+                            {#</form>#}
+                        {#</div>#}
+                    {#</div>#}
+                {#</div>#}
 
-                    </div>
-                    <div class="uk-width-2-5">
-                        <form action="/user/sendMessage" uk-grid class="uk-grid-medium" method="">
-                            <div class="uk-width-1-2"><input type="text" name="name" class="uk-input" placeholder="Имя"></div>
-                            <div class="uk-width-1-2"><input type="text" name="phone" class="uk-input uk-width-1-1" placeholder="Телефон"></div>
-                            <div class="uk-width-1-1"><input type="text" name="email" class="uk-input" placeholder="Email" required></div>
-                            <div class="uk-width-1-1"><textarea name="message" class="uk-width-1-1 short_textarea" placeholder="Сообщение" required></textarea>
-                            </div>
+
+                <h2 class="pf_style_header"><span>Комментарии</span></h2>
+
+                <div class="card_blanc">
+                    {% if app.session.has('logged_user') %}
+                        <form action="/userAddComment" method="POST">
+                            <textarea name="comment" class="uk-textarea" placeholder="Ваш комментарий" required></textarea>
+                            <input type="hidden" name="user_id" value="{{ card.user.id }}">
                             <input type="hidden" name="card_id" value="{{ card.id }}">
-                            <div class="uk-width-1-1">
-                                <button class="uk-button uk-button-default">Отправить</button>
-                            </div>
+                            <input type="hidden" name="return" value="{{ app.request.requestUri }}">
+                            <button class="uk-button uk-button-primary uk-margin-top">Отправить</button>
                         </form>
-                    </div>
+
+                        <div class="uk-margin-top">
+                            {% for comment in card.comments %}
+                                <div class="uk-margin-bottom">
+                                    <i class="fa fa-calendar"></i> {{ comment.dateCreate|date('d.m.Y H:i') }}
+                                    <i class="fa fa-user"></i> {{ comment.user.header }}
+                                    <div><i class="fa fa-comment-o"></i> {{ comment.content }}</div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div>
+                            <a uk-toggle="target: #sign_in">Войдите</a> или <a uk-toggle="target: #sign_up">зарегистрируйтесь</a>, чтобы написать комментарий.
+                        </div>
+                    {% endif %}
                 </div>
 
-                <div>
-
-                </div>
-
-                {% if app.session.get('logged_user').header is defined %}
-                    <a class="uk-button uk-button-primary" href="/user/edit/card/{{ card.id }}">Редактировать</a>
+                {% if app.session.has('logged_user') and card.user.id == app.session.get('logged_user').id %}
+                    <hr>
+                    <a class="uk-button uk-button-primary" href="/user/edit/card/{{ card.id }}">Редактировать объявление</a>
                 {% endif %}
             </div>
             <div class="uk-width-1-4">
 
-                <div class="uk-margin-bottom">
+                <div class="uk-margin-bottom card_blanc">
                     {% for price in card.getCardPrices %}
                         <div class="uk-text-center {{ price.priceId == 2 ? 'price_highlighted' : ''}}">
-                            <span class="price_value">{{ price.value|number_format(0,'.','<span class="thousand_separator"></span>')|raw }}</span> ₽ /
-                            <span class="price_descriptor">{{ price.getPrice.header }}</span>
+                            <span class="price_value">{{ price.value|number_format(0,'.','<span class="thousand_separator"></span>')|raw }}</span>
+                            <span class="price_descriptor"> ₽ / {{ price.getPrice.header }}</span>
                         </div>
                     {% endfor %}
                 </div>
 
                 <div class="user_block uk-text-center">
-                    <h3>{{ card.user.header }}</h3>
                     {% if user_foto %}
                     <div style="background: url('{{ user_foto }}') center center no-repeat;
                             background-size: contain;
@@ -228,6 +256,7 @@
                     </div>
                     {% else %}
                     {% endif %}
+                    <h3 class="uk-margin-remove-top">{{ card.user.header }}</h3>
                     <div class="phone_block">
                         {% if app.session.get('phone')[card.user.id] is not defined %}
                             <span class="hidden_phone">
@@ -240,6 +269,26 @@
                             </span>
                         {% endif %}
                     </div>
+
+                    {% for info in card.user.information if info.uiKey == 'website' %}
+                        <hr>
+                        <div><i class="fa fa-globe"></i> {{ info.uiValue }}</div>
+                    {% endfor %}
+
+                </div>
+
+                <div class="card_blanc uk-margin-top">
+                    <form action="/user/sendMessage" uk-grid class="uk-grid-small" method="POST">
+                        <div class="uk-width-1-1"><input type="text" name="name" class="uk-input" placeholder="Имя"></div>
+                        <div class="uk-width-1-1"><input type="text" name="phone" class="uk-input uk-width-1-1" placeholder="Телефон"></div>
+                        <div class="uk-width-1-1"><input type="text" name="email" class="uk-input" placeholder="Email" required></div>
+                        <div class="uk-width-1-1"><textarea name="message" class="uk-width-1-1 short_textarea" placeholder="Сообщение" required></textarea>
+                        </div>
+                        <input type="hidden" name="card_id" value="{{ card.id }}">
+                        <div class="uk-width-1-1">
+                            <button class="uk-button uk-button-default uk-width-1-1">Отправить</button>
+                        </div>
+                    </form>
                 </div>
 
 

@@ -3,8 +3,10 @@
 
 {% block content %}
     <div class="standard_wide">
+        <h1 class="pf_style_header"><span>Новости</span></h1>
+
         {% for news in all_news %}
-            <a href="/news/{{ news.slug }}">{{ news.header }}</a><br>
+            <div><span>{{ news.dateCreate|date('d.m.Y') }}</span> <a href="/news/{{ news.slug }}">{{ news.header }}</a></div>
         {% endfor %}
     </div>
 {% endblock %}

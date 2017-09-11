@@ -3,7 +3,7 @@ function signup_validate(){
     var password = $('#signUpForm').find('input[name="password"]').val();
 
     var message = [];
-    if (!email) message.push('\nТип транспорта');
+    if (!email) message.push('\nemail');
     if (!password) message.push('\nПароль');
 
 
