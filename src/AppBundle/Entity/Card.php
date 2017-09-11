@@ -232,7 +232,7 @@ class Card
     /**
      * @var int
      *
-     * @ORM\Column(name="tariff_id", type="integer", nullable=true)
+     * @ORM\Column(name="tariff_id", type="integer", nullable=true, options={"default" : 1})
      */
     private $tariffId = 1;
 

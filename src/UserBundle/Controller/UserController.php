@@ -777,7 +777,7 @@ class UserController extends Controller
      */
     public function robokassaResultUrlAction(Request $request)
     {
-        $mrh_pass2 = "D1c2CDj17KjESzDgElr7"; //pass2
+        $mrh_pass2 = "sMTO0qtfg6fhxV009rZT"; //pass2
 
         $out_summ = $_REQUEST["OutSum"];
         $inv_id = $_REQUEST["InvId"];
@@ -820,7 +820,7 @@ class UserController extends Controller
  */
     public function robokassaSuccessUrlAction(Request $request)
     {
-        $mrh_pass1 = "DA35YAO3ABGlsM4FeP7z";  // merchant pass1 here
+        $mrh_pass1 = "Wf1bYXSd5V8pKS3ULwb3";  // merchant pass1 here
         $out_summ = $_REQUEST["OutSum"];
         $inv_id = $_REQUEST["InvId"];
         $crc = $_REQUEST["SignatureValue"];
