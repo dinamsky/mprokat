@@ -131,8 +131,8 @@ function getSelectorUrl(){
     if(generalParent) generalType = '/'+generalParent;
     if(general) generalType = '/'+general;
 
-    if(mark) markModel = '/'+mark;
-    if(model) markModel = '/'+mark+'/'+model;
+    if (mark) markModel = '/'+mark;
+    if (model) markModel = '/'+mark+'/'+model;
 
     return '/show'+city+service+generalType+markModel;
 }
