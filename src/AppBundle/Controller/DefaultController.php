@@ -28,49 +28,35 @@ class DefaultController extends Controller
      */
     public function indexAction(MenuGeneralType $mgt, MenuCity $mc, EntityManagerInterface $em, MenuMarkModel $mm)
     {
-        $query = $em->createQuery('SELECT c FROM AppBundle:Card c JOIN c.tariff t ORDER BY t.weight DESC, c.dateTariffStart DESC');
-        $query->setMaxResults(3);
-        $top3 = $query->getResult();
+//        $query = $em->createQuery('SELECT c FROM AppBundle:Card c JOIN c.tariff t ORDER BY t.weight DESC, c.dateTariffStart DESC');
+//        $query->setMaxResults(3);
+//        $top3 = $query->getResult();
 
-//        $cars = $em->createQueryBuilder()->select('c, f, p, t') // key is to select both entities
-//            ->from('AppBundle:Card', 'c')
-//            ->join('c.fotos', 'f')
-//            ->join('c.cardPrices', 'p')
-//            ->join('c.tariff', 't')
-//            ->where('c.generalTypeId = 2')
-//            ->orderBy('t.weight', 'DESC')
-//            ->orderBy('c.dateTariffStart', 'DESC')
-//            ->orderBy('c.dateUpdate', 'DESC')
-//
-//            ->getQuery()
-//            ->setMaxResults( 10 )
-//            ->getResult();
+        $cars = $this->getDoctrine()
+            ->getRepository(Card::class)
+            ->getLimitedSlider(2);
 
-        $query = $em->createQuery('SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId = 2 ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
-        $query->setMaxResults(10);
-        $cars = $query->getResult();
+        $trucks = $this->getDoctrine()
+            ->getRepository(Card::class)
+            ->getLimitedSlider(3);
 
-        $query = $em->createQuery('SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId = 3 ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
-        $query->setMaxResults(10);
-        $trucks = $query->getResult();
+        $segways = $this->getDoctrine()
+            ->getRepository(Card::class)
+            ->getLimitedSlider(14);
 
-        $query = $em->createQuery('SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId = 14 ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
-        $query->setMaxResults(10);
-        $segways = $query->getResult();
+        $bicycles = $this->getDoctrine()
+            ->getRepository(Card::class)
+            ->getLimitedSlider(15);
 
-        $query = $em->createQuery('SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId = 15 ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
-        $query->setMaxResults(10);
-        $bicycles = $query->getResult();
+        $boats = $this->getDoctrine()
+            ->getRepository(Card::class)
+            ->getLimitedSlider(12);
 
-        $query = $em->createQuery('SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId = 12 ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
-        $query->setMaxResults(10);
-        $boats = $query->getResult();
+        $yachts = $this->getDoctrine()
+            ->getRepository(Card::class)
+            ->getLimitedSlider(13);
 
-        $query = $em->createQuery('SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId = 13 ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
-        $query->setMaxResults(10);
-        $yachts = $query->getResult();
-
-        $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g');
+        $query = $em->createQuery('SELECT g,c FROM AppBundle:GeneralType g LEFT JOIN g.cards c');
         $generalTypes = $query->getResult();
 
         if($this->get('session')->has('geo')){
@@ -111,7 +97,7 @@ class DefaultController extends Controller
             'city' => $city,
             'mark_model' => array(),
             'mark_groups' => $mm->getGroups(),
-            'top3' => $top3,
+//            'top3' => $top3,
             'cars' => $cars,
             'trucks' => $trucks,
             'segways' => $segways,

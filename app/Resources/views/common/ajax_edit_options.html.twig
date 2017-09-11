@@ -1,6 +1,9 @@
-<option value="0">- выберите -</option>
+<option value="0">- все -</option>
 {% for option in options %}
-    <option value="{{ option.id }}" {{ option.id == id ? 'selected' : '' }} {% if option.url is defined %} data-url="{{ option.url }}"{% endif %}>
+    <option value="{{ option.id }}" {{ option.id == id ? 'selected' : '' }}
+            {% if option.url is defined %} data-url="{{ option.url }}"{% endif %}
+            {% if option.url is not defined %} data-url="{{ option.header }}"{% endif %}
+    >
         {{ option.header }}
     </option>
 {% endfor %}

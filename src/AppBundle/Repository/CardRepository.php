@@ -10,4 +10,14 @@ namespace AppBundle\Repository;
  */
 class CardRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getLimitedSlider($gt)
+    {
+        $em = $this->getEntityManager();
+        $query = $em->createQuery('SELECT c.id FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId = '.$gt.' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
+        $query->setMaxResults(10);
+        foreach ($query->getScalarResult() as $cars_id) $cars_ids[] = $cars_id['id'];
+        $dql = 'SELECT c,f,p FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.fotos f LEFT JOIN c.cardPrices p WHERE c.generalTypeId = '.$gt.' AND c.id IN ('.implode(",",$cars_ids).') ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
+        $query = $em->createQuery($dql);
+        return $query->getResult();
+    }
 }

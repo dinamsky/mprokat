@@ -22,6 +22,14 @@ class ServiceT3new extends Controller
         $query = $this->em->createQuery('SELECT c FROM AppBundle:Card c JOIN c.tariff t ORDER BY t.weight DESC, c.dateTariffStart DESC');
         $query->setMaxResults(3);
         return $query->getResult();
+
+
+//        $query = $this->em->createQuery('SELECT c.id FROM AppBundle:Card c JOIN c.tariff t ORDER BY t.weight DESC, c.dateTariffStart DESC');
+//        $query->setMaxResults(3);
+//        foreach ($query->getScalarResult() as $cars_id) $cars_ids[] = $cars_id['id'];
+//        $dql = 'SELECT c,f,p FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.fotos f LEFT JOIN c.cardPrices p WHERE c.id IN ('.implode(",",$cars_ids).') ORDER BY t.weight DESC, c.dateTariffStart DESC';
+//        $query = $this->em->createQuery($dql);
+//        return $query->getResult();
     }
 
     public function getNew()
@@ -29,6 +37,13 @@ class ServiceT3new extends Controller
         $query = $this->em->createQuery('SELECT c FROM AppBundle:Card c ORDER BY c.dateCreate DESC');
         $query->setMaxResults(5);
         return $query->getResult();
+
+//        $query = $this->em->createQuery('SELECT c.id FROM AppBundle:Card c JOIN c.tariff t ORDER BY c.dateCreate DESC');
+//        $query->setMaxResults(5);
+//        foreach ($query->getScalarResult() as $cars_id) $cars_ids[] = $cars_id['id'];
+//        $dql = 'SELECT c,f,p FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.fotos f LEFT JOIN c.cardPrices p WHERE c.id IN ('.implode(",",$cars_ids).') ORDER BY c.dateCreate DESC';
+//        $query = $this->em->createQuery($dql);
+//        return $query->getResult();
     }
 
 }
