@@ -186,7 +186,7 @@ class UserController extends Controller
 
             $tariff = $this->getDoctrine()
                 ->getRepository(Tariff::class)
-                ->find($post->get(1));
+                ->find(1);
 
             $card->setTariff($tariff);
 
