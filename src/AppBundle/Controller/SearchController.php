@@ -93,7 +93,7 @@ class SearchController extends Controller
             $general = $this->getDoctrine()
                 ->getRepository(GeneralType::class)
                 ->findOneBy(['url' => $general]);
-            dump($general);
+
             if($general->getChildren()->isEmpty()){
                 $gtId = $general->getId();
                 $general_condition = 'AND c.generalTypeId = '.$gtId;
