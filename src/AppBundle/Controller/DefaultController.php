@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Comment;
 use AppBundle\Entity\Mark;
 use AppBundle\Entity\SubField;
 use AppBundle\Menu\MenuGeneralType;
@@ -194,6 +195,8 @@ class DefaultController extends Controller
         $general = $this->getDoctrine()
             ->getRepository(GeneralType::class)
             ->find($card->getGeneralTypeId());
+
+
 
         return $this->render('card/card_show.html.twig', [
 

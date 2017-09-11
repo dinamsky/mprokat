@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+
+{% block content %}
+    <div class="standard_wide">
+        <h1>Комментарии</h1>
+        {% for comment in comments %}
+            <div class="uk-margin-bottom">
+                <i class="fa fa-calendar"></i> {{ comment.dateCreate|date('d.m.Y H:i') }}
+                <i class="fa fa-user"></i> {{ comment.user.header }}
+                <a href="/card/{{ comment.card.id }}">{{ comment.card.header }}</a>
+                <form action="/adminComments" method="POST" onsubmit="confirm('Вы уверены?');" class="uk-display-inline-block">
+                    <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                    <button class="uk-button uk-button-danger uk-button-small">Удалить</button>
+                </form>
+                <div><i class="fa fa-comment-o"></i> {{ comment.content }}</div>
+            </div>
+            <hr>
+
+        {% endfor %}
+    </div>
+{% endblock %}

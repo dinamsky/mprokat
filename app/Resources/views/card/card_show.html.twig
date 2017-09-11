@@ -197,12 +197,36 @@
                     </div>
                 </div>
 
-                <div>
+                <h2 class="pf_style_header"><span>Комментарии</span></h2>
 
-                </div>
+                {% if app.session.has('logged_user') %}
+                    <form action="/userAddComment" method="POST">
+                        <textarea name="comment" class="uk-textarea" placeholder="Ваш комментарий" required></textarea>
+                        <input type="hidden" name="user_id" value="{{ card.user.id }}">
+                        <input type="hidden" name="card_id" value="{{ card.id }}">
+                        <input type="hidden" name="return" value="{{ app.request.requestUri }}">
+                        <button class="uk-button uk-button-primary uk-margin-top">Отправить</button>
+                    </form>
 
-                {% if app.session.get('logged_user').header is defined %}
-                    <a class="uk-button uk-button-primary" href="/user/edit/card/{{ card.id }}">Редактировать</a>
+                    <div class="uk-margin-top">
+                        {% for comment in card.comments %}
+                            <div class="uk-margin-bottom">
+                                <i class="fa fa-calendar"></i> {{ comment.dateCreate|date('d.m.Y H:i') }}
+                                <i class="fa fa-user"></i> {{ comment.user.header }}
+                                <div><i class="fa fa-comment-o"></i> {{ comment.content }}</div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div>
+                        <a uk-toggle="target: #sign_in">Войдите</a> или <a uk-toggle="target: #sign_up">зарегистрируйтесь</a>, чтобы написать комментарий.
+                    </div>
+                {% endif %}
+
+
+                {% if app.session.has('logged_user') and card.user.id == app.session.get('logged_user').id %}
+                    <hr>
+                    <a class="uk-button uk-button-primary" href="/user/edit/card/{{ card.id }}">Редактировать объявление</a>
                 {% endif %}
             </div>
             <div class="uk-width-1-4">

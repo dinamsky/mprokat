@@ -96,10 +96,16 @@ class User
      */
     private $cards;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Comment", mappedBy="user", cascade={"remove"}, orphanRemoval=true)
+     */
+    private $comments;
+
     public function __construct() {
         $this->information = new ArrayCollection();
         $this->userOrders = new ArrayCollection();
         $this->cards = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -405,5 +411,39 @@ class User
     public function getTempPassword()
     {
         return $this->tempPassword;
+    }
+
+    /**
+     * Add comment
+     *
+     * @param \AppBundle\Entity\Comment $comment
+     *
+     * @return User
+     */
+    public function addComment(\AppBundle\Entity\Comment $comment)
+    {
+        $this->comments[] = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Remove comment
+     *
+     * @param \AppBundle\Entity\Comment $comment
+     */
+    public function removeComment(\AppBundle\Entity\Comment $comment)
+    {
+        $this->comments->removeElement($comment);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 }

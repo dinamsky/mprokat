@@ -2,6 +2,7 @@
 
 namespace AdminBundle\Controller;
 
+use AppBundle\Entity\Comment;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -107,6 +108,34 @@ class AdminController extends Controller
                 'notice',
                 'Новый аккаунт успешно создан!'
             );
+            return $this->redirectToRoute('admin_main');
+        }
+    }
+
+    /**
+     * @Route("/adminComments")
+     */
+    public function commentsAction(Request $request)
+    {
+        if($request->isMethod('GET')) {
+            if ($this->get('session')->get('admin') === null) return $this->render('AdminBundle::admin_enter_form.html.twig');
+            else {
+                $comments = $this->getDoctrine()
+                    ->getRepository(Comment::class)
+                    ->findAll();
+                return $this->render('AdminBundle::admin_comments.html.twig', ['comments' => $comments]);
+            }
+        };
+        if($request->isMethod('POST')) {
+
+            $comment = $this->getDoctrine()
+                ->getRepository(Comment::class)
+                ->find($request->request->get('comment_id'));
+
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($comment);
+            $em->flush();
+
             return $this->redirectToRoute('admin_main');
         }
     }

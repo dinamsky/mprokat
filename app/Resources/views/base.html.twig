@@ -63,7 +63,7 @@
                     <div id="main_message" uk-alert class="uk-position-absolute uk-position-center uk-width-1-3">
                         <a class="uk-alert-close" uk-close></a>
                         <div class="flash-{{ label }}">
-                            {{ message }}
+                            {{ message|raw }}
                         </div>
                     </div>
                 {% endfor %}
