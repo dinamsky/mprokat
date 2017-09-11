@@ -277,7 +277,7 @@ class UserController extends Controller
                 $crc  = md5("$mrh_login:$out_summ:$inv_id:$mrh_pass1");
 
                 $url = "https://auth.robokassa.ru/Merchant/Index.aspx?MrchLogin=$mrh_login&".
-                    "OutSum=$out_summ&InvId=$inv_id&Desc=$inv_desc&SignatureValue=$crc&IsTest=1";
+                    "OutSum=$out_summ&InvId=$inv_id&Desc=$inv_desc&SignatureValue=$crc";
 
                 $response = new RedirectResponse($url);
             }
