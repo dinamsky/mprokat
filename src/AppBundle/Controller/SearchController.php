@@ -125,7 +125,7 @@ class SearchController extends Controller
         } else {
             $mark = array('id' => 0,'groupname'=>'', 'header'=>false);
             $marks = array();
-            $model = false;
+            $models = false;
         }
 
         if($model){
