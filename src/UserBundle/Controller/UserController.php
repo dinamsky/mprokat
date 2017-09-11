@@ -268,8 +268,8 @@ class UserController extends Controller
                 $em->persist($order);
                 $em->flush();
 
-                $mrh_login = "test-multiprokat";
-                $mrh_pass1 = "DA35YAO3ABGlsM4FeP7z";
+                $mrh_login = "multiprokat";
+                $mrh_pass1 = "Wf1bYXSd5V8pKS3ULwb3";
                 $inv_id    = $order->getId();
                 $inv_desc  = "set_tariff";
                 $out_summ  = $tariff->getPrice();
@@ -748,8 +748,8 @@ class UserController extends Controller
             $em->persist($order);
             $em->flush();
 
-            $mrh_login = "test-multiprokat";
-            $mrh_pass1 = "DA35YAO3ABGlsM4FeP7z";
+            $mrh_login = "multiprokat";
+            $mrh_pass1 = "Wf1bYXSd5V8pKS3ULwb3";
             $inv_id    = $order->getId();
             $inv_desc  = "set_tariff";
             $out_summ  = $tariff->getPrice();
@@ -757,7 +757,7 @@ class UserController extends Controller
             $crc  = md5("$mrh_login:$out_summ:$inv_id:$mrh_pass1");
 
             $url = "https://auth.robokassa.ru/Merchant/Index.aspx?MrchLogin=$mrh_login&".
-                "OutSum=$out_summ&InvId=$inv_id&Desc=$inv_desc&SignatureValue=$crc&IsTest=1";
+                "OutSum=$out_summ&InvId=$inv_id&Desc=$inv_desc&SignatureValue=$crc";
 
             return new RedirectResponse($url);
 
