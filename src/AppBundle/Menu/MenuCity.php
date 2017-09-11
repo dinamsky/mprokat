@@ -21,8 +21,8 @@ class MenuCity extends Controller
     {
         $array = array(
             ['id'=>'RUS', 'header'=>'Россия','url' => 'RUS'],
-            ['id'=>'BLR', 'header'=>'Беларусь','url' => 'BLR'],
-            ['id'=>'KAZ', 'header'=>'Казахстан','url' => 'KAZ']
+//            ['id'=>'BLR', 'header'=>'Беларусь','url' => 'BLR'],
+//            ['id'=>'KAZ', 'header'=>'Казахстан','url' => 'KAZ']
         );
         return $array;
     }
