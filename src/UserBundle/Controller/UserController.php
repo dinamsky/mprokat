@@ -41,9 +41,6 @@ class UserController extends Controller
     public function indexAction(MenuMarkModel $markmenu, MenuGeneralType $mgt, MenuCity $mc, Request $request, FotoUtils $fu, EntityManagerInterface $em, \Swift_Mailer $mailer)
     {
 
-// TODO check mark AC in ajax
-
-
         if($this->get('session')->get('logged_user') === null and !$this->get('session')->has('admin')) return new Response("",404);
 
         $card = new Card();
@@ -738,28 +735,36 @@ class UserController extends Controller
         $fu->uploadImages($card);
 
         if ($post->has('change_tariff') and $tariff->getId() > 1){
-            $order = new UserOrder();
-            $order->setUser($user);
-            $order->setCard($card);
-            $order->setTariff($tariff);
-            $order->setPrice($tariff->getPrice());
-            $order->setOrderType('tariff_'.$tariff->getId());
-            $order->setStatus('new');
-            $em->persist($order);
-            $em->flush();
 
-            $mrh_login = "multiprokat";
-            $mrh_pass1 = "Wf1bYXSd5V8pKS3ULwb3";
-            $inv_id    = $order->getId();
-            $inv_desc  = "set_tariff";
-            $out_summ  = $tariff->getPrice();
+            if ($this->get('session')->has('admin')){ // admin able to change tariff without payment
+                $card->setTariff($tariff);
+                $card->setDateTariffStart(new \DateTime());
+                $em->persist($card);
+                $em->flush();
+            } else {
+                $order = new UserOrder();
+                $order->setUser($user);
+                $order->setCard($card);
+                $order->setTariff($tariff);
+                $order->setPrice($tariff->getPrice());
+                $order->setOrderType('tariff_' . $tariff->getId());
+                $order->setStatus('new');
+                $em->persist($order);
+                $em->flush();
 
-            $crc  = md5("$mrh_login:$out_summ:$inv_id:$mrh_pass1");
+                $mrh_login = "multiprokat";
+                $mrh_pass1 = "Wf1bYXSd5V8pKS3ULwb3";
+                $inv_id = $order->getId();
+                $inv_desc = "set_tariff";
+                $out_summ = $tariff->getPrice();
 
-            $url = "https://auth.robokassa.ru/Merchant/Index.aspx?MrchLogin=$mrh_login&".
-                "OutSum=$out_summ&InvId=$inv_id&Desc=$inv_desc&SignatureValue=$crc";
+                $crc = md5("$mrh_login:$out_summ:$inv_id:$mrh_pass1");
 
-            return new RedirectResponse($url);
+                $url = "https://auth.robokassa.ru/Merchant/Index.aspx?MrchLogin=$mrh_login&" .
+                    "OutSum=$out_summ&InvId=$inv_id&Desc=$inv_desc&SignatureValue=$crc";
+
+                return new RedirectResponse($url);
+            }
 
         } else {
             if($post->has('change_tariff') and $tariff->getId() == 1){
