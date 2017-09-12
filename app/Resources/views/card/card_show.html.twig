@@ -186,7 +186,7 @@
                     {% endif %}
                 </div>
 
-                {% if app.session.has('logged_user') and card.user.id == app.session.get('logged_user').id %}
+                {% if app.session.has('admin') or ( app.session.has('logged_user') and card.user.id == app.session.get('logged_user').id ) %}
                     <hr>
                     <a class="uk-button uk-button-primary" href="/user/edit/card/{{ card.id }}">Редактировать объявление</a>
                 {% endif %}
