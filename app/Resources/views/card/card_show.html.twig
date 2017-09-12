@@ -60,8 +60,11 @@
 
                 <div class="owl-carousel owl-theme" data-items="1">
                     {% for foto in card.getFotos %}
-                        <div class="uk-width-1-1" style="height:500px;">
-                            <img src="/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg" alt="" style="max-height: auto">
+                        <div class="uk-width-1-1" style="
+                                background:url('/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg') center center;
+                                background-size: cover;
+                                height:500px;">
+                            {#<img src="/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg" alt="" style="max-height: auto">#}
                         </div>
                     {% endfor %}
                 </div>
@@ -186,7 +189,7 @@
                     {% endif %}
                 </div>
 
-                {% if app.session.has('logged_user') and card.user.id == app.session.get('logged_user').id %}
+                {% if app.session.has('admin') or ( app.session.has('logged_user') and card.user.id == app.session.get('logged_user').id ) %}
                     <hr>
                     <a class="uk-button uk-button-primary" href="/user/edit/card/{{ card.id }}">Редактировать объявление</a>
                 {% endif %}

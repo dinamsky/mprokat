@@ -172,6 +172,18 @@ class FotoUtils extends Controller
         return new Response();
     }
 
+    public function deleteAllFotos(Card $card)
+    {
+
+        $main_dir = $_SERVER['DOCUMENT_ROOT'].'/assets/images/cards';
+
+        foreach ($card->getFotos() as $foto){
+            if (is_file($main_dir.'/'.$foto->getFolder().'/'.$foto->getId().'.jpg')) unlink ($main_dir.'/'.$foto->getFolder().'/'.$foto->getId().'.jpg');
+            if (is_file($main_dir.'/'.$foto->getFolder().'/t/'.$foto->getId().'.jpg')) unlink ($main_dir.'/'.$foto->getFolder().'/t/'.$foto->getId().'.jpg');
+        }
+        return new Response();
+    }
+
     /**
      * @Route("/ajax/mainFoto")
      */

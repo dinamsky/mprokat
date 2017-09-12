@@ -619,6 +619,7 @@ class UserController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         if ($post->has('delete')){
+            $fu->deleteAllFotos($card);
             $em->remove($card);
             $em->flush();
             if ($this->get('session')->get('admin') === null) return $this->redirectToRoute('user_cards');
@@ -741,6 +742,7 @@ class UserController extends Controller
                 $card->setDateTariffStart(new \DateTime());
                 $em->persist($card);
                 $em->flush();
+                return $this->redirectToRoute('search');
             } else {
                 $order = new UserOrder();
                 $order->setUser($user);
