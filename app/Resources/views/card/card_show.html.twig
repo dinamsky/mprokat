@@ -69,7 +69,9 @@
 
                 <ul id="tt" uk-tab>
                     <li><a href="#">Информация</a></li>
+                    {% if card.coords != NULL and card.coords != ''%}
                     <li><a href="#">Карта</a></li>
+                    {% endif %}
                     {% if streetView %}
                         <li><a href="#">Местность</a></li>
                     {% endif %}
@@ -109,16 +111,17 @@
                         </div>
 
                     </li>
+
+                    {% if card.coords != NULL and card.coords != ''%}
                     <li id="card_tab" class="card_blanc">
-                        {% if card.coords != NULL %}
                             {% set coords = card.coords|split(',') %}
                             <div id="map" data-lat="{{ coords[0] }}" data-lng="{{ coords[1] }}"></div>
                             <script async defer
                                     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWdm1zrblFjsdUfi1-6fsPvj30ACCiCxk">
                             </script>
-                        {% endif %}
-
                     </li>
+                    {% endif %}
+
                     {% if streetView and card.coords != NULL %}
                         <li class="card_blanc">
                             <iframe
@@ -154,53 +157,6 @@
                         </div>
                     </div>
                 {% endif %}
-
-
-
-                {#<h2 class="pf_style_header"><span>Контакты</span></h2>#}
-                {#<div class="card_blanc">#}
-                    {#<div uk-grid>#}
-                        {#<div class="uk-width-1-5">#}
-                            {#<img src="/assets/images/users/t/{% for info in card.user.information if info.uiKey == 'foto' %}{{ info.uiValue }}{% endfor %}.jpg"#}
-                                 {#alt="">#}
-                        {#</div>#}
-                        {#<div class="uk-width-2-5">#}
-                            {#<h4>{{ card.user.header }}</h4>#}
-                            {#{% for info in card.user.information if info.uiKey == 'phone' %}#}
-                                {#<div class="phone_block">#}
-                                    {#{% if app.session.get('phone')[card.user.id] is not defined %}#}
-                                        {#<span class="hidden_phone">#}
-                                            {#<i class="fa fa-phone"></i> {{ info.uiValue|slice(0,5) }}*******#}
-                                        {#</span>#}
-                                        {#<button class="uk-button-primary show_phone" type="button" data-card_id="{{ card.id }}">Показать</button>#}
-                                    {#{% else %}#}
-                                        {#<span class="opened_phone">#}
-                                            {#<i class="fa fa-phone"></i> {{ info.uiValue }}#}
-                                        {#</span>#}
-                                    {#{% endif %}#}
-                                {#</div>#}
-                            {#{% endfor %}#}
-                            {#{% for info in card.user.information if info.uiKey == 'website' %}#}
-                                {#<div><i class="fa fa-globe"></i> {{ info.uiValue }}</div>#}
-                            {#{% endfor %}#}
-
-                        {#</div>#}
-                        {#<div class="uk-width-2-5">#}
-                            {#<form action="/user/sendMessage" uk-grid class="uk-grid-medium" method="">#}
-                                {#<div class="uk-width-1-2"><input type="text" name="name" class="uk-input" placeholder="Имя"></div>#}
-                                {#<div class="uk-width-1-2"><input type="text" name="phone" class="uk-input uk-width-1-1" placeholder="Телефон"></div>#}
-                                {#<div class="uk-width-1-1"><input type="text" name="email" class="uk-input" placeholder="Email" required></div>#}
-                                {#<div class="uk-width-1-1"><textarea name="message" class="uk-width-1-1 short_textarea" placeholder="Сообщение" required></textarea>#}
-                                {#</div>#}
-                                {#<input type="hidden" name="card_id" value="{{ card.id }}">#}
-                                {#<div class="uk-width-1-1">#}
-                                    {#<button class="uk-button uk-button-default">Отправить</button>#}
-                                {#</div>#}
-                            {#</form>#}
-                        {#</div>#}
-                    {#</div>#}
-                {#</div>#}
-
 
                 <h2 class="pf_style_header"><span>Комментарии</span></h2>
 
@@ -273,7 +229,7 @@
 
                     {% for info in card.user.information if info.uiKey == 'website' %}
                         <hr>
-                        <div><i class="fa fa-globe"></i> {{ info.uiValue }}</div>
+                        <div class="uk-text-truncate"><i class="fa fa-globe"></i> {{ info.uiValue }}</div>
                     {% endfor %}
 
                 </div>
