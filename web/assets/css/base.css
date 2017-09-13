@@ -247,6 +247,13 @@ body{
     cursor: pointer;
 }
 
+.tariff_block .selector_item{
+    background: transparent;
+    text-align: match-parent;
+    padding:0;
+    cursor: pointer;
+}
+
 .t_3.active{
     background: #feae00;
     color: white;

@@ -7,13 +7,14 @@
 
 <div id="tariff_3" class="tariff_block {{ tariffId == 3 ? 'active' : '' }}">
     <div class="tariff_block_inner">
-    <h3>Премиум размещение <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+    <h3>Премиум продвижение <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
         {{ card.tariffId is defined and card.tariffId == 3 ? ' - ваш текущий тариф' : '' }}
     </h3>
     <div uk-grid>
         <div class="uk-width-1-2">
-            Ваше объявление в ТОПе сайта. Премиальное размещение<br>
-        +1000 просмотров. Размещение объявления на главной странице
+            Ваше объявление на самом заметном месте сайта: на главной странице, на первом месте в выбранной вами категории.<br>
+            Премиум размещение дает плюс 1000 просмотров.<br>
+            Размещение объявления на главной странице сайта привлекает больше просмотров, вы повысите количество клиентов за короткий срок.
         </div>
         <div class="uk-width-1-2 uk-text-center"><img src="{{ asset('assets/images/interface/premium.png') }}" alt=""></div>
     </div>
@@ -25,12 +26,14 @@
 
 <div id="tariff_2" class="tariff_block {{ tariffId == 2 ? 'active' : '' }}">
     <div class="tariff_block_inner">
-    <h3>Экспресс в категории <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+    <h3>Экспресс продвижение <i class="fa fa-star"></i> <i class="fa fa-star"></i>
     {{ card.tariffId is defined and card.tariffId == 2 ? ' - ваш текущий тариф' : '' }}
     </h3>
     <div uk-grid>
         <div class="uk-width-1-2">
-            Разместите ваше объявление в самом видном месте
+            Разместите ваше объявление в разделе «похожие объявления».<br>
+            Ваше объявление в течении 7-ми дней будет размещено в карточках похожих объявлений выбранного региона.<br>
+            Будьте лидером в своем регионе!
         </div>
         <div class="uk-width-1-2 uk-text-center"><img src="{{ asset('assets/images/interface/express.png') }}" alt=""></div>
     </div>
@@ -47,7 +50,10 @@
     </h3>
     <div uk-grid>
         <div class="uk-width-1-2">
-            Разместите ваше объявление
+            Бесплатное размещение вашего объявления на 365 дней<br>
+            Объявление вытесняется другими, не участвует в продвижении на сайте.<br>
+            Нужно больше клиентов в вашем городе?<br>
+            Воспользуйтесь тарифами <a class="selector_item" data-id="3">«Премиум»</a> или <a class="selector_item" data-id="2">«Экспресс»</a>
         </div>
         <div class="uk-width-1-2"></div>
     </div>
