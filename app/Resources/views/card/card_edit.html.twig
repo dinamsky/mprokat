@@ -16,7 +16,7 @@
 
 {% block content %}
 
-    <form action="/card/update" method="POST" enctype="multipart/form-data" class="standard_wide">
+    <form action="/card/update" method="POST" enctype="multipart/form-data" class="standard_wide uk-margin-top">
 
         <div uk-grid>
             <div class="uk-width-1-2">
@@ -145,13 +145,16 @@
                     {% endfor %}
                 </div>
 
+                <hr>
+                <div><textarea name="content" class="uk-textarea" placeholder="Описание">{{ card.content }}</textarea></div>
+
+
+
             </div>
 
             <div id="dop_fields" class="uk-width-1-2">
 
-                <div><textarea name="content" class="uk-textarea" placeholder="Описание">{{ card.content }}</textarea></div>
 
-                <hr>
 
                 <div class=""><span uk-toggle="target: #features_selector">Характеристики  <i uk-icon="icon:chevron-down"></i></span></div>
 

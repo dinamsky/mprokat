@@ -319,3 +319,16 @@ body{
 #pager button{
     padding: 0px 15px;
 }
+
+.expander_button{
+    border: 1px solid lightgrey;
+    padding: 0 5px 3px 5px;
+    cursor: pointer;
+}
+
+.help_text{
+    font-size: 13px;
+    color: grey;
+    margin-bottom: 3px;
+    font-style: italic;
+}

@@ -6,5 +6,6 @@ $( document ).ready(function() {
         $('#tariff_'+tariff_id).addClass('active');
         $('.selector_item.t_'+tariff_id).addClass('active');
         $('input[name="tariffId"]').val(tariff_id);
+        $('.temp_button').remove();
     });
 });
