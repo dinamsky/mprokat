@@ -3,6 +3,7 @@
 namespace AdminBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * admin
@@ -35,6 +36,27 @@ class Admin
      */
     private $password;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="role", type="string", length=255, nullable=true, options={"default" : "cardmaster"})
+     */
+    private $role;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Card", mappedBy="admin", cascade={"remove"}, orphanRemoval=true)
+     */
+    private $cards;
+
+    /**
+     * @ORM\OneToMany(targetEntity="UserBundle\Entity\User", mappedBy="admin", cascade={"remove"}, orphanRemoval=true)
+     */
+    private $users;
+
+    public function __construct() {
+        $this->cards = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -93,5 +115,96 @@ class Admin
     {
         return $this->password;
     }
-}
 
+    /**
+     * Set role
+     *
+     * @param string $role
+     *
+     * @return Admin
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
+    /**
+     * Get role
+     *
+     * @return string
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    /**
+     * Add card
+     *
+     * @param \AppBundle\Entity\Card $card
+     *
+     * @return Admin
+     */
+    public function addCard(\AppBundle\Entity\Card $card)
+    {
+        $this->cards[] = $card;
+
+        return $this;
+    }
+
+    /**
+     * Remove card
+     *
+     * @param \AppBundle\Entity\Card $card
+     */
+    public function removeCard(\AppBundle\Entity\Card $card)
+    {
+        $this->cards->removeElement($card);
+    }
+
+    /**
+     * Get cards
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCards()
+    {
+        return $this->cards;
+    }
+
+    /**
+     * Add user
+     *
+     * @param \UserBundle\Entity\User $user
+     *
+     * @return Admin
+     */
+    public function addUser(\UserBundle\Entity\User $user)
+    {
+        $this->users[] = $user;
+
+        return $this;
+    }
+
+    /**
+     * Remove user
+     *
+     * @param \UserBundle\Entity\User $user
+     */
+    public function removeUser(\UserBundle\Entity\User $user)
+    {
+        $this->users->removeElement($user);
+    }
+
+    /**
+     * Get users
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
+}

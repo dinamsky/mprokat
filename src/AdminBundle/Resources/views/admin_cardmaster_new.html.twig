@@ -1,0 +1,8 @@
+<div>
+    от имени пользователя:
+    <select name="user_email">
+        {% for user in admin.users %}
+            <option value="{{ user.email }}">{{ user.email }}</option>
+        {% endfor %}
+    </select>
+</div>

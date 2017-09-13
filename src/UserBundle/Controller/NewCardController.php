@@ -1,0 +1,311 @@
+<?php
+
+namespace UserBundle\Controller;
+
+use UserBundle\Entity\UserOrder;
+use AppBundle\Entity\CardFeature;
+use AppBundle\Entity\CardPrice;
+use AppBundle\Entity\Feature;
+use AppBundle\Entity\Foto;
+use AppBundle\Entity\Price;
+use AppBundle\Entity\Tariff;
+use AdminBundle\Entity\Admin;
+use AppBundle\Foto\FotoUtils;
+use UserBundle\Entity\User;
+use AppBundle\Entity\Card;
+use AppBundle\Entity\City;
+use AppBundle\Entity\Color;
+use AppBundle\Entity\FieldInteger;
+use AppBundle\Entity\FieldType;
+use AppBundle\Entity\GeneralType;
+use AppBundle\Entity\Mark;
+use AppBundle\Entity\State;
+use AppBundle\Entity\CardField;
+use AppBundle\Menu\MenuCity;
+use AppBundle\Menu\MenuGeneralType;
+use AppBundle\Menu\MenuMarkModel;
+
+use AppBundle\Menu\MenuSubFieldAjax;
+use AppBundle\SubFields\SubFieldUtils;
+use UserBundle\Security\Password;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
+class NewCardController extends Controller
+{
+    /**
+     * @Route("/card/new")
+     */
+    public function indexAction(MenuMarkModel $markmenu, MenuGeneralType $mgt, MenuCity $mc, Request $request, FotoUtils $fu, EntityManagerInterface $em, \Swift_Mailer $mailer)
+    {
+
+        if($this->get('session')->get('logged_user') === null and !$this->get('session')->has('admin')) return new Response("",404);
+
+        $card = new Card();
+
+        $conditions = $this->getDoctrine()
+            ->getRepository(State::class)
+            ->findAll();
+
+        $tariffs = $this->getDoctrine()
+            ->getRepository(Tariff::class)
+            ->findAll();
+
+        $colors = $this->getDoctrine()
+            ->getRepository(Color::class)
+            ->findAll();
+
+        $features = $this->getDoctrine()
+            ->getRepository(Feature::class)
+            ->findBy(['parent'=>null]);
+
+        $prices = $this->getDoctrine()
+            ->getRepository(Price::class)
+            ->findAll();
+
+        if($request->isMethod('GET')) {
+
+
+            if($this->get('session')->has('geo')){
+
+                $geo = $this->get('session')->get('geo');
+
+                $city = $em->getRepository("AppBundle:City")->createQueryBuilder('c')
+                    ->andWhere('c.header LIKE :geoname')
+                    ->setParameter('geoname', '%'.$geo['city'].'%')
+                    ->getQuery()
+                    ->getResult();
+                if ($city) $city = $city[0]; // TODO make easier!
+                else {
+                    $city = new City();
+                    $city->setCountry('RUS');
+                    $city->setParentId(0);
+                    $city->setTempId(0);
+                }
+            } else {
+                $city = new City();
+                $city->setCountry('RUS');
+                $city->setParentId(0);
+                $city->setTempId(0);
+            }
+
+            $gt = $this->getDoctrine()
+                ->getRepository(GeneralType::class)
+                ->find(2);
+
+            if ($this->get('session')->has('admin')) $admin = $this->getDoctrine()
+                                                            ->getRepository(Admin::class)
+                                                            ->find($this->get('session')->get('admin')->getId());
+            else $admin = false;
+
+            $response = $this->render('card/card_new.html.twig', [
+                'generalTopLevel' => $mgt->getTopLevel(),
+                'generalSecondLevel' => $mgt->getSecondLevel(1),
+                'gt' => $gt,
+                'custom_fields' => '',
+                'mark_groups' => $markmenu->getGroups(),
+                'marks' => $markmenu->getMarks('cars'),
+                'conditions' => $conditions,
+                'colors' => $colors,
+                'features' => $features,
+                'prices' => $prices,
+                'tariffs' =>$tariffs,
+
+                'countries' => $mc->getCountry(),
+                'countryCode' => $city->getCountry(),
+                'regionId' => $city->getParentId(),
+                'regions' => $mc->getRegion($city->getCountry()),
+                'cities' => $mc->getCities($city->getParentId()),
+                'cityId' => $city->getId(),
+                'city' => $city,
+
+                'admin' => $admin
+
+            ]);
+        }
+
+        if($request->isMethod('POST')){
+            $em = $this->getDoctrine()->getManager();
+            $post = $request->request;
+            $card->setHeader($post->get('header'));
+            $card->setContent($post->get('content'));
+            $card->setAddress($post->get('address'));
+            $card->setCoords($post->get('coords'));
+            $card->setVideo($post->get('video'));
+            $card->setStreetView($post->get('streetView'));
+
+            if($post->has('noMark')){
+                $modelId = $this->getDoctrine()
+                    ->getRepository(Mark::class)
+                    ->find(1799);
+            } else {
+                $modelId = $this->getDoctrine()
+                    ->getRepository(Mark::class)
+                    ->find($post->get('modelId'));
+            }
+            $card->setMarkModel($modelId);
+
+            $generalType = $this->getDoctrine()
+                ->getRepository(GeneralType::class)
+                ->find($post->get('generalTypeId'));
+            $card->setGeneralType($generalType);
+
+            $city = $this->getDoctrine()
+                ->getRepository(City::class)
+                ->find($post->get('cityId'));
+            $card->setCity($city);
+
+            $card->setProdYear($post->get('prodYear'));
+
+            $condition = $this->getDoctrine()
+                ->getRepository(State::class)
+                ->find($post->get('conditionId'));
+            $card->setCondition($condition);
+
+            $card->setServiceTypeId($post->get('serviceTypeId'));
+
+            if ($post->has('user_email') and $this->get('session')->has('admin')){
+                $user = $this->getDoctrine()
+                    ->getRepository(User::class)
+                    ->findOneBy(array(
+                        'email' => $post->get('user_email')
+                    ));
+            } else {
+                $user = $this->getDoctrine()
+                    ->getRepository(User::class)
+                    ->find($this->get('session')->get('logged_user')->getId());
+            }
+
+            $card->setUser($user);
+
+            $color = $this->getDoctrine()
+                ->getRepository(Color::class)
+                ->find($post->get('colorId'));
+            $card->setColor($color);
+
+            $tariff = $this->getDoctrine()
+                ->getRepository(Tariff::class)
+                ->find(1);
+
+            $card->setTariff($tariff);
+
+            $admin = $this->getDoctrine()
+                ->getRepository(Admin::class)
+                ->find(1);
+
+            $card->setAdmin($admin);
+
+            if ($this->get('session')->has('admin')){
+                $admin = $this->getDoctrine()
+                    ->getRepository(Admin::class)
+                    ->find($this->get('session')->get('admin')->getId());
+                $card->setAdmin($admin);
+            }
+
+            $em->persist($card);
+
+            $em->flush();
+
+
+            if($post->has('noMark')){
+                $message = (new \Swift_Message('Пользователь не нашел свою марку'))
+                    ->setFrom('robot@multiprokat.com')
+                    ->setTo('test.multiprokat@gmail.com')
+                    ->setBody(
+                        $this->renderView(
+                            'email/newmark.html.twig',
+                            array(
+                                'mark' => $post->get('ownMark'),
+                                'card' => $card
+                            )
+                        ),
+                        'text/html'
+                    );
+                $mailer->send($message);
+            }
+
+
+            foreach($post->get('subField') as $fieldId=>$value) if($value!=0 and $value!=''){
+                $subfield = $this->getDoctrine()
+                    ->getRepository(FieldType::class)
+                    ->find($fieldId);
+                $storageTypeName = "\AppBundle\Entity\\".$subfield->getStorageType();
+                $storage = new $storageTypeName();
+                $storage->setCard($card);
+                $storage->setCardFieldId($fieldId);
+                $storage->setValue($value);
+
+                $em->persist($storage);
+            }
+
+            if ($post->has('feature')) foreach ($post->get('feature') as $featureId=>$featureValue){
+                $feature = $this->getDoctrine()
+                    ->getRepository(Feature::class)
+                    ->find($featureId);
+                $cardFeature = new CardFeature();
+                $cardFeature->setCard($card);
+                $cardFeature->setFeature($feature);
+                $em->persist($cardFeature);
+            }
+
+            if ($post->has('price')) foreach ($post->get('price') as $priceId=>$priceValue) if ($priceValue!="") {
+                $price = $this->getDoctrine()
+                    ->getRepository(Price::class)
+                    ->find($priceId);
+                $cardPrice = new CardPrice();
+                $cardPrice->setCard($card);
+                $cardPrice->setPrice($price);
+                $cardPrice->setValue($priceValue);
+                $em->persist($cardPrice);
+            }
+
+            $em->flush();
+
+            $fu->uploadImages($card);
+
+            if ($post->get('tariffId') == 1) {
+                if ($this->get('session')->has('admin')){
+                    $response = $this->redirectToRoute('admin_main');
+                } else {
+                    $response = $this->redirectToRoute('user_cards');
+                }
+            }
+            else {
+
+                $tariff = $this->getDoctrine()
+                    ->getRepository(Tariff::class)
+                    ->find($post->get('tariffId'));
+
+                $order = new UserOrder();
+                $order->setUser($user);
+                $order->setCard($card);
+                $order->setTariff($tariff);
+                $order->setPrice($tariff->getPrice());
+                $order->setOrderType('tariff_'.$tariff->getId());
+                $order->setStatus('new');
+                $em->persist($order);
+                $em->flush();
+
+                $mrh_login = "multiprokat";
+                $mrh_pass1 = "Wf1bYXSd5V8pKS3ULwb3";
+                $inv_id    = $order->getId();
+                $inv_desc  = "set_tariff";
+                $out_summ  = $tariff->getPrice();
+
+                $crc  = md5("$mrh_login:$out_summ:$inv_id:$mrh_pass1");
+
+                $url = "https://auth.robokassa.ru/Merchant/Index.aspx?MrchLogin=$mrh_login&".
+                    "OutSum=$out_summ&InvId=$inv_id&Desc=$inv_desc&SignatureValue=$crc";
+
+                $response = new RedirectResponse($url);
+            }
+        }
+
+        return $response;
+    }
+
+}

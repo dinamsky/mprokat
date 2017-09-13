@@ -4,23 +4,25 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-
         {% block stylesheets %}
             <link href="{{ asset('assets/css/uikit.css') }}" rel="stylesheet" />
             <link href="{{ asset('assets/css/base.css') }}" rel="stylesheet" />
             <link href="{{ asset('assets/css/font-awesome.min.css') }}" rel="stylesheet" />
             <link href="{{ asset('assets/css/colors.css') }}" rel="stylesheet" />
             <link href="{{ asset('assets/css/typo.css') }}" rel="stylesheet" />
+            <link href="{{ asset('assets/css/base-responsive.css') }}" rel="stylesheet" />
         {% endblock %}
+
         <link rel="icon" type="image/x-icon" href="{{ asset('assets/favicon.ico') }}" />
         <title>{% block title %}Мультипрокат{% endblock %}</title>
+
     </head>
     <body>
 
         <header>
             <div class="top_line bg_blue">
                 <div class="standard_wide uk-clearfix">
-                    <div class="uk-float-left top_sc_links">
+                    <div class="uk-float-left top_sc_links uk-visible@s">
                         <a href="https://www.facebook.com/multiprokatcom/"><span uk-icon="icon:facebook"></span></a>
                         <a href="https://twitter.com/multiprokat"><span uk-icon="icon:twitter"></span></a>
                         <a href="https://plus.google.com/u/1/102220936243060868002"><span uk-icon="icon:google-plus"></span></a>
@@ -55,7 +57,7 @@
 
         <div id="content">
 
-            {% block left_block %}{% endblock %}
+            {#{% block left_block %}{% endblock %}#}
 
 
             {% for label, messages in app.flashes %}
@@ -72,7 +74,7 @@
 
             {% block content %}{% endblock %}
 
-            {% block right_block %}{% endblock %}
+            {#{% block right_block %}{% endblock %}#}
 
         </div>
 
@@ -80,24 +82,24 @@
             <div class="footer_info ">
                 <div class="standard_wide c_white">
                     <div uk-grid>
-                        <div class="uk-width-1-4">
+                        <div class="uk-width-1-4@l">
                             МУЛЬТИПРОКАТ<br>
                             Москва, Россия<br>
                             +7(916)455-98-08
                         </div>
-                        <div class="uk-width-1-4">
+                        <div class="uk-width-1-4@l uk-visible@l">
                             <div class="uk-margin-bottom">Топ</div>
                             {% for card in t3_new.getTop3 %}
                                 {{ include(':footer:top_new_tpl.html.twig', {'card':card}) }}
                             {% endfor %}
                         </div>
-                        <div class="uk-width-1-4">
+                        <div class="uk-width-1-4@l uk-visible@l">
                             <div class="uk-margin-bottom">Новый транспорт</div>
                             {% for card in t3_new.getNew %}
                                 {{ include(':footer:top_new_tpl.html.twig', {'card':card}) }}
                             {% endfor %}
                         </div>
-                        <div class="uk-width-1-4">
+                        <div class="uk-width-1-4@l">
                             <div>
                                 <a href="/news" class="c_white">> Новости</a>
                             </div>
@@ -122,21 +124,12 @@
             </div>
         </footer>
 
-                {#{{ include('filter_fields/custom_fields.html.twig', { 'custom_fields': custom_fields }) }}#}
-                {#{{ include('mark/mark_menu.html.twig', { 'mark_model': mark_model, 'city_id': city.id, 'general_type': general_type }) }}#}
-
         {% block javascripts %}
             <script src="{{ asset('assets/js/jquery-3.2.1.min.js') }}"></script>
             <script src="{{ asset('assets/js/uikit.min.js') }}"></script>
             <script src="{{ asset('assets/js/uikit-icons.min.js') }}"></script>
             <script src="{{ asset('assets/js/signup_validate.js') }}"></script>
         {% endblock %}
-
-        {#{% if not app.session.has('ip') %}#}
-            {#<script src="{{ asset('assets/js/front_geo.js') }}"></script>#}
-        {#{% endif %}#}
-
-
 
         {% if app.environment == 'prod' %}
             <!--Start of Zendesk Chat Script-->
@@ -191,7 +184,6 @@
 
             </script>
         {% endif %}
-
 
     </body>
 </html>
