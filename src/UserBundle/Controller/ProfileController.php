@@ -178,4 +178,16 @@ class ProfileController extends Controller
 
         return $this->redirect('/card/'.$card_id);
     }
+
+    /**
+     * @Route("/user/{id}", name="user_page")
+     */
+    public function userPageAction($id)
+    {
+
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find((int)$id);
+        return $this->render('user/profile_main.html.twig',['user' => $user]);
+    }
 }
