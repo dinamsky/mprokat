@@ -159,6 +159,19 @@ class Card
     private $user;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="admin_id", type="integer", nullable=true, options={"default" : 1})
+     */
+    private $adminId = null;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AdminBundle\Entity\Admin", inversedBy="cards")
+     * @ORM\JoinColumn(name="admin_id", referencedColumnName="id")
+     */
+    private $admin;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="is_active", type="boolean", nullable=true)
@@ -1179,5 +1192,53 @@ class Card
     public function getComments()
     {
         return $this->comments;
+    }
+
+    /**
+     * Set adminId
+     *
+     * @param integer $adminId
+     *
+     * @return Card
+     */
+    public function setAdminId($adminId)
+    {
+        $this->adminId = $adminId;
+
+        return $this;
+    }
+
+    /**
+     * Get adminId
+     *
+     * @return integer
+     */
+    public function getAdminId()
+    {
+        return $this->adminId;
+    }
+
+    /**
+     * Set admin
+     *
+     * @param \AdminBundle\Entity\Admin $admin
+     *
+     * @return Card
+     */
+    public function setAdmin(\AdminBundle\Entity\Admin $admin = null)
+    {
+        $this->admin = $admin;
+
+        return $this;
+    }
+
+    /**
+     * Get admin
+     *
+     * @return \AdminBundle\Entity\Admin
+     */
+    public function getAdmin()
+    {
+        return $this->admin;
     }
 }

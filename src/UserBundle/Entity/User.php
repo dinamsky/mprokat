@@ -82,6 +82,19 @@ class User
 
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="admin_id", type="integer", nullable=true, options={"default" : 1})
+     */
+    private $adminId = null;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AdminBundle\Entity\Admin", inversedBy="users")
+     * @ORM\JoinColumn(name="admin_id", referencedColumnName="id")
+     */
+    private $admin;
+
+    /**
      * @ORM\OneToMany(targetEntity="UserBundle\Entity\UserInfo", mappedBy="user")
      */
     private $information;
@@ -445,5 +458,53 @@ class User
     public function getComments()
     {
         return $this->comments;
+    }
+
+    /**
+     * Set adminId
+     *
+     * @param integer $adminId
+     *
+     * @return User
+     */
+    public function setAdminId($adminId)
+    {
+        $this->adminId = $adminId;
+
+        return $this;
+    }
+
+    /**
+     * Get adminId
+     *
+     * @return integer
+     */
+    public function getAdminId()
+    {
+        return $this->adminId;
+    }
+
+    /**
+     * Set admin
+     *
+     * @param \AdminBundle\Entity\Admin $admin
+     *
+     * @return User
+     */
+    public function setAdmin(\AdminBundle\Entity\Admin $admin = null)
+    {
+        $this->admin = $admin;
+
+        return $this;
+    }
+
+    /**
+     * Get admin
+     *
+     * @return \AdminBundle\Entity\Admin
+     */
+    public function getAdmin()
+    {
+        return $this->admin;
     }
 }

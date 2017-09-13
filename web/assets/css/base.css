@@ -247,6 +247,13 @@ body{
     cursor: pointer;
 }
 
+.tariff_block .selector_item{
+    background: transparent;
+    text-align: match-parent;
+    padding:0;
+    cursor: pointer;
+}
+
 .t_3.active{
     background: #feae00;
     color: white;
@@ -311,4 +318,17 @@ body{
 
 #pager button{
     padding: 0px 15px;
+}
+
+.expander_button{
+    border: 1px solid lightgrey;
+    padding: 0 5px 3px 5px;
+    cursor: pointer;
+}
+
+.help_text{
+    font-size: 13px;
+    color: grey;
+    margin-bottom: 3px;
+    font-style: italic;
 }

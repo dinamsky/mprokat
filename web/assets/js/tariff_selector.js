@@ -4,7 +4,8 @@ $( document ).ready(function() {
         $('.tariff_block').removeClass('active');
         $('.selector_item').removeClass('active');
         $('#tariff_'+tariff_id).addClass('active');
-        $(this).addClass('active');
+        $('.selector_item.t_'+tariff_id).addClass('active');
         $('input[name="tariffId"]').val(tariff_id);
+        $('.temp_button').remove();
     });
 });

@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'AdminBundle::admin_base.html.twig' %}
 
 {% block javascripts %}
     {{ parent() }}
@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="standard_wide">
+
         <h1>Создать новый аккаунт</h1>
         <form id="signUpForm" action="/adminNewUser" method="POST" onsubmit="return signup_validate();">
             <input type="text" name="header" class="uk-input uk-width-1-2" placeholder="login" required><br>
@@ -14,5 +14,5 @@
             <input type="text" name="password" class="uk-input uk-width-1-2" placeholder="password" required><br>
             <button class="uk-button uk-button-primary">Создать</button>
         </form>
-    </div>
+
 {% endblock %}

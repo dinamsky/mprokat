@@ -293,4 +293,72 @@ class DefaultController extends Controller
     }
 
 
+    /**
+     * @Route("/listing/{slug}")
+     */
+    public function wpStubAction(MenuGeneralType $mgt, MenuCity $mc, EntityManagerInterface $em, MenuMarkModel $mm)
+    {
+        if($this->get('session')->has('geo')){
+
+            $geo = $this->get('session')->get('geo');
+
+            //dump($geo);
+
+            $city = $em->getRepository("AppBundle:City")->createQueryBuilder('c')
+                ->andWhere('c.header LIKE :geoname')
+                ->setParameter('geoname', '%'.$geo['city'].'%')
+                ->getQuery()
+                ->getResult();
+
+            //dump($city);
+
+            if ($city) $city = $city[0]; // TODO make easier!
+            else $city = $this->getDoctrine()
+                ->getRepository(City::class)
+                ->find(77);
+        } else {
+            $city = new City();
+            $city->setCountry('RUS');
+            $city->setParentId(0);
+            $city->setTempId(0);
+        }
+
+
+        $general = $this->getDoctrine()
+            ->getRepository(GeneralType::class)
+            ->find(2);
+
+        $query = $em->createQuery('SELECT g,c FROM AppBundle:GeneralType g LEFT JOIN g.cards c');
+        $generalTypes = $query->getResult();
+
+        return $this->render('common/wp_stub.html.twig', [
+            'generalTopLevel' => $mgt->getTopLevel(),
+            'cards' => '',
+            'custom_fields' => '',
+            'general_type' => null,
+            'city' => $city,
+            'mark_model' => array(),
+            'mark_groups' => $mm->getGroups(),
+
+            'countries' => $mc->getCountry(),
+            'countryCode' => $city->getCountry(),
+            'regionId' => $city->getParentId(),
+            'regions' => $mc->getRegion($city->getCountry()),
+            'cities' => $mc->getCities($city->getParentId()),
+            'cityId' => $city->getId(),
+
+            'gtid' => 2,
+            'pgtid' => 1,
+            'generalSecondLevel' => $mgt->getSecondLevel(1),
+
+            'marks' => [],
+            'models' => [],
+            'mark' => ['id'=>0,'groupname'=>'','header'=>false],
+            'model' => ['id'=>0, 'header'=>false],
+
+            'general' => $general,
+
+            'generalTypes' => $generalTypes
+        ]);
+    }
 }

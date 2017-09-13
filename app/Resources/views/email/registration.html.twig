@@ -1,6 +1,3 @@
+{% extends ':email:email_base.html.twig' %} {% block content %}
 <h3>Поздравляем!</h3>
-{{ header }}! Вы успешно зарегистрировались.<br>
-<br>
-Перейдите по <a href="{{ url('activate_account',{'code': code}) }}">ссылке</a> для активации вашего аккаунта.<br>
-<br>
-Спасибо!
+{{ header }}! Вы успешно зарегистрировались.<br /> <br /> Перейдите по <a href="{{ url('activate_account',{'code': code}) }}">ссылке</a> для активации вашего аккаунта.<br /> <br /> Спасибо! <br /> <br /> {% endblock %}

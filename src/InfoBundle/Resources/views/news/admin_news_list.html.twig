@@ -1,10 +1,10 @@
-{% extends 'base.html.twig' %}
+{% extends 'AdminBundle::admin_base.html.twig' %}
 
 
 {% block content %}
-    <div class="standard_wide">
+    <h1>Новости</h1>
         {% for news in all_news %}
             <div><span>{{ news.dateCreate|date('d.m.Y') }}</span> <a href="/adminNewsEdit/{{ news.id }}">{{ news.header }}</a></div>
         {% endfor %}
-    </div>
+
 {% endblock %}
