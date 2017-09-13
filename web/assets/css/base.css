@@ -57,15 +57,16 @@ body{
 }
 
 .card_cover_description{
-    background: rgba(0, 0, 0, 0.58);
-    color: white;
     width: 100%;
     padding: 10px 0;
+    position: absolute;
+    bottom: 0;
 }
 
 .breadcrumbs{
     border-bottom: 1px solid lightgrey;
     padding:10px 0;
+    background: #dedede;
 }
 
 .pf_style_header{
@@ -74,7 +75,7 @@ body{
 
 .pf_style_header span{
     display: inline-block;
-    border-bottom: 2px solid #ad2424;
+    border-bottom: 2px solid #06a7ea;
     padding-bottom: 5px;
     position: relative;
     top: 2px;
@@ -107,7 +108,6 @@ body{
 }
 
 .footer_info{
-    background: #283d51;
     padding: 30px 0;
 }
 
@@ -286,7 +286,7 @@ body{
 
 .uk-tab > .uk-active > a {
     color: #333;
-    border-color: #ad2424;
+    border-color: #06a7ea;
 }
 
 .generals_in_main{
@@ -331,4 +331,39 @@ body{
     color: grey;
     margin-bottom: 3px;
     font-style: italic;
+}
+
+.user_page_top_line_1{
+    background-color: #06a7ea;
+    padding-top: 80px;
+    height:80px;
+}
+
+.user_page_top_line_2{
+    background-color: white;
+    height: 120px;
+    padding-top: 20px;
+}
+
+.uk-button-success{
+    background: #25b45b;
+    color:white;
+}
+
+.uk-button-primary{
+    background: #06a7ea;
+    color:white;
+}
+
+.cover_gradient {
+    background: -webkit-linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.9) 70%, white 90%);
+    background: -moz-linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.9) 70%, white 90%);
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.9) 70%, white 90%);
+    bottom: 0;
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 2;
 }
