@@ -106,6 +106,7 @@ class AdminController extends Controller
                         array(
                             'header' => $user->getHeader(),
                             'password' => $request->request->get('password'),
+                            'email' => $user->getEmail()
                         )
                     ),
                     'text/html'
@@ -229,7 +230,7 @@ class AdminController extends Controller
                     ->getRepository(Card::class)
                     ->findOneBy(['adminId' => 1]);
 
-                $message = (new \Swift_Message('Администратор зарегистрировал аккаунт для вас на сайте multiprokat.com'))
+                $message = (new \Swift_Message('Тестовое письмо с multiprokat.com'))
                     ->setFrom('robot@multiprokat.com')
                     ->setTo($request->request->get('check_email'))
                     ->setBody(
