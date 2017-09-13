@@ -24,8 +24,11 @@
     <form id="new_card_form" action="/card/new" method="POST" enctype="multipart/form-data" onsubmit="return new_card_validate();" class="standard_wide">
 
 
-        {% if app.session.has('admin') %}
+        {% if app.session.has('admin') and app.session.get('admin').role == 'superadmin'%}
             {{ include('AdminBundle::admin_card_new.html.twig') }}
+        {% endif %}
+        {% if app.session.has('admin') and app.session.get('admin').role == 'cardmaster'%}
+            {{ include('AdminBundle::admin_cardmaster_new.html.twig') }}
         {% endif %}
 
         <div uk-grid>

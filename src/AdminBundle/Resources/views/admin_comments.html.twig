@@ -1,8 +1,8 @@
-{% extends 'base.html.twig' %}
+{% extends 'AdminBundle::admin_base.html.twig' %}
 
 
 {% block content %}
-    <div class="standard_wide">
+
         <h1>Комментарии</h1>
         {% for comment in comments %}
             <div class="uk-margin-bottom">
@@ -16,7 +16,6 @@
                 <div><i class="fa fa-comment-o"></i> {{ comment.content }}</div>
             </div>
             <hr>
-
         {% endfor %}
-    </div>
+
 {% endblock %}

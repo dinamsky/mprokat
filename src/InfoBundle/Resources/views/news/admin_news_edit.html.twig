@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'AdminBundle::admin_base.html.twig' %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -12,19 +12,19 @@
 {% endblock %}
 
 {% block content %}
-    <div class="standard_wide">
+    <h1>Новость</h1>
         <form action="/adminNewsEdit" method="POST">
-            <div>
+            <div>Заголовок
                 <input type="text" name="header" value="{{ news.header }}" class="uk-input">
             </div>
-            <div>
+            <div class="uk-margin-top">Путь
                 <input type="text" name="slug" value="{{ news.slug }}" class="uk-input">
             </div>
-            <div>
+            <div class="uk-margin-top">
                 <textarea name="content" class="visual_editor">{{ news.content }}</textarea>
             </div>
             <input type="hidden" name="id" value="{{ news.id }}">
             <button class="uk-button uk-button-primary">Записать</button>
         </form>
-    </div>
+
 {% endblock %}
