@@ -22,6 +22,25 @@ use UserBundle\UserBundle;
 class ProfileController extends Controller
 {
     /**
+     * @Route("/user/{id}", name="user_page")
+     */
+    public function userPageAction($id)
+    {
+
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find((int)$id);
+        $user_foto = false;
+        foreach ($user->getInformation() as $info){
+            if($info->getUiKey() == 'foto' and $info->getUiValue()!='') $user_foto =  '/assets/images/users/t/'.$info->getUiValue().'.jpg';
+        }
+        return $this->render('user/user_page.html.twig',[
+            'user' => $user,
+            'user_foto' => $user_foto
+        ]);
+    }
+
+    /**
      * @Route("/user", name="user_main")
      */
     public function indexAction(Password $password)
@@ -179,15 +198,5 @@ class ProfileController extends Controller
         return $this->redirect('/card/'.$card_id);
     }
 
-    /**
-     * @Route("/user/{id}", name="user_page")
-     */
-    public function userPageAction($id)
-    {
 
-        $user = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->find((int)$id);
-        return $this->render('user/profile_main.html.twig',['user' => $user]);
-    }
 }

@@ -42,11 +42,11 @@
                         <div class="uk-width-1-2"><a href="/"><img class="logo" src="/assets/images/interface/logo.png" alt=""></a></div>
                         <div class="uk-width-1-2 uk-text-right">
                             {% if app.session.has('logged_user') %}
-                                <a href="/card/new" class="uk-button uk-button-danger uk-button-small">+ Добавить объявление</a>
+                                <a href="/card/new" class="uk-button uk-button-success uk-button-small">+ Добавить объявление</a>
                             {% elseif app.session.has('admin') %}
-                                <a href="/card/new" class="uk-button uk-button-danger uk-button-small">+ Добавить объявление</a>
+                                <a href="/card/new" class="uk-button uk-button-success uk-button-small">+ Добавить объявление</a>
                             {% else %}
-                                <a uk-toggle="target: #sign_in" class="uk-button uk-button-danger uk-button-small">+ Добавить объявление</a>
+                                <a uk-toggle="target: #sign_in" class="uk-button uk-button-success uk-button-small">+ Добавить объявление</a>
                             {% endif %}
                         </div>
                     </div>
@@ -79,7 +79,7 @@
         </div>
 
         <footer class="uk-margin-top">
-            <div class="footer_info ">
+            <div class="footer_info bg_dark">
                 <div class="standard_wide c_white">
                     <div uk-grid>
                         <div class="uk-width-1-4@l">
@@ -113,7 +113,7 @@
                     </div>
                 </div>
             </div>
-            <div class="bottom_line bg_blue">
+            <div class="bottom_line bg_black">
                 <div class="standard_wide uk-clearfix">
                     <div class="uk-float-left c_white">&copy; {{ date()|date("Y") }} МультиПрокат | Сервис аренды автотранспорта</div>
                     <div class="uk-float-right c_white">
