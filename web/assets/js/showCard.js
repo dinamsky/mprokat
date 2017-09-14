@@ -21,7 +21,7 @@ $( document ).ready(function() {
             type: 'POST',
             data: {card_id:card_id},
             success: function(html){
-                $('.phone_block').html('<span class="opened_phone"><i class="fa fa-phone"></i> '+html+'</span>');
+                $('.phone_block').html('<span class="opened_phone bg_green c_white uk-text-center"><i class="fa fa-phone"></i> '+html+'</span>');
                 yaCounter43151009.reachGoal('PhoneClick', {phone: html, cardId: card_id});
             }
         });

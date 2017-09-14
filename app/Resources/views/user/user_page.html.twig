@@ -45,7 +45,7 @@
                 <div class="uk-width-4-5">
                     <div uk-grid class="uk-grid-collapse">
                         <div class="uk-width-1-6"><i class="fa fa-envelope"></i> Email</div>
-                        <div class="uk-width-1-4">{{ user.email }}</div>
+                        <div class="uk-width-1-4"><a href="mailto:{{ user.email }}">Написать</a></div>
                     </div>
                     <div uk-grid class="uk-grid-collapse">
                         <div class="uk-width-1-6"><i class="fa fa-phone"></i> Телефон</div>
@@ -64,10 +64,12 @@
                             </div>
                         </div>
                     </div>
+                    {% for info in user.information if info.uiKey == 'website' %}
                     <div uk-grid class="uk-grid-collapse">
                         <div class="uk-width-1-6"><i class="fa fa-globe"></i> Website</div>
-                        <div class="uk-width-1-4">{% for info in user.information if info.uiKey == 'website' %}{{ info.uiValue }}{% endfor %}</div>
+                        <div class="uk-width-1-4">{{ info.uiValue }}</div>
                     </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
