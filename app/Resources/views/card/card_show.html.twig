@@ -198,16 +198,9 @@
             </div>
             <div class="uk-width-1-4">
 
-                <div class="uk-margin-bottom card_blanc">
-                    {% for price in card.getCardPrices %}
-                        <div class="uk-text-center {{ price.priceId == 2 ? 'price_highlighted' : ''}}">
-                            <span class="price_value">{{ price.value|number_format(0,'.','<span class="thousand_separator"></span>')|raw }}</span>
-                            <span class="price_descriptor"> ₽ / {{ price.getPrice.header }}</span>
-                        </div>
-                    {% endfor %}
-                </div>
 
-                <div class="user_block uk-text-center">
+
+                <div class="user_block uk-text-center uk-margin-bottom">
                     {% if user_foto %}
                     <div style="background: url('{{ user_foto }}') center center no-repeat;
                             background-size: contain;
@@ -218,41 +211,72 @@
                     </div>
                     {% else %}
                     {% endif %}
-                    <h3 class="uk-margin-remove-top"><a href="/user/{{ card.user.id }}">{{ card.user.header }}</a></h3>
-                    <div class="phone_block">
-                        {% if app.session.get('phone')[card.user.id] is not defined %}
-                            <span class="hidden_phone">
-                                <i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue|slice(0,5) }}*******{% endfor %}
-                            </span>
-                            <button class="uk-button-primary show_phone" type="button" data-card_id="{{ card.id }}">Показать</button>
-                        {% else %}
-                            <span class="opened_phone">
-                                <i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}
-                            </span>
-                        {% endif %}
-                    </div>
+                    <h3 class="uk-margin-remove"><a href="/user/{{ card.user.id }}">{{ card.user.header }}</a></h3>
+                </div>
 
+                <div class="uk-margin-bottom card_page_phone ">
+                    <div uk-grid class="uk-grid-collapse uk-grid-match">
+                        <div class="phone_block uk-width-5-6">
+                            {% if app.session.get('phone')[card.user.id] is not defined %}
+                                <div class="hidden_phone bg_green show_phone uk-text-center c_white" data-card_id="{{ card.id }}">
+                                    <div class="uk-text-center">Показать телефон</div>
+                                    <i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue|slice(0,5) }} XXX-XX-XX{% endfor %}
+                                </div>
+
+                            {% else %}
+                                <span class="opened_phone bg_green c_white uk-text-center">
+                                    <i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}
+                                </span>
+                            {% endif %}
+                        </div>
+                        <div class="uk-width-1-6">
+                            <div class="bg_green user_form_button" uk-toggle="target: #user_message_form"><i class="fa fa-commenting"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="uk-margin-bottom card_blanc">
+                    <div><i class="fa fa-eye c_green"></i> {{ card.views }} <span class="uk-text-small c_grey">просмотров</span></div>
+                    <div><i class="fa fa-heart c_red"></i> 1 <span class="uk-text-small c_grey">лайков</span></div>
+                    <div>
+                        <i class="fa fa-star c_gold"></i> 5/5 <span class="uk-text-small c_grey">звезд из</span> 1
+                        <span class="uk-text-small c_grey">отзывов</span>
+                    </div>
+                    <hr>
+                    <div class="uk-text-center"><a href="/user/{{ card.user.id }}">Все объявления<br>пользователя ({{ card.user.cards|length }})</a></div>
                     {% for info in card.user.information if info.uiKey == 'website' %}
                         <hr>
                         <div class="uk-text-truncate"><i class="fa fa-globe"></i> {{ info.uiValue }}</div>
                     {% endfor %}
-                    <hr></hr>
-                    <div class="uk-margin- uk-text-center"><a href="/user/{{ card.user.id }}">Все объявления<br>пользователя</a></div>
-
                 </div>
 
-                <div class="card_blanc uk-margin-top">
-                    <form action="/user/sendMessage" uk-grid class="uk-grid-small" method="POST">
-                        <div class="uk-width-1-1"><input type="text" name="name" class="uk-input" placeholder="Имя"></div>
-                        <div class="uk-width-1-1"><input type="text" name="phone" class="uk-input uk-width-1-1" placeholder="Телефон"></div>
-                        <div class="uk-width-1-1"><input type="text" name="email" class="uk-input" placeholder="Email" required></div>
-                        <div class="uk-width-1-1"><textarea name="message" class="uk-width-1-1 short_textarea" placeholder="Сообщение" required></textarea>
+
+                <div class="uk-margin-bottom card_blanc">
+                    {% for price in card.getCardPrices %}
+                        <div class="uk-text-center {{ price.priceId == 2 ? 'price_highlighted' : ''}}">
+                            <span class="price_value">{{ price.value|number_format(0,'.','<span class="thousand_separator"></span>')|raw }}</span>
+                            <span class="price_descriptor"> ₽ / {{ price.getPrice.header }}</span>
                         </div>
-                        <input type="hidden" name="card_id" value="{{ card.id }}">
-                        <div class="uk-width-1-1">
-                            <button class="uk-button uk-button-default uk-width-1-1">Отправить</button>
-                        </div>
-                    </form>
+                    {% endfor %}
+                </div>
+
+                <div id="user_message_form" uk-modal>
+                    <div class="uk-modal-dialog uk-modal-body">
+                        <h2 class="uk-modal-title">Сообщение пользователю</h2>
+                        <button class="uk-modal-close-default" type="button" uk-close></button>
+                        <form action="/user/sendMessage" uk-grid class="uk-grid-small" method="POST">
+                            <div class="uk-width-1-1"><input type="text" name="name" class="uk-input" placeholder="Имя"></div>
+                            <div class="uk-width-1-1"><input type="text" name="phone" class="uk-input uk-width-1-1" placeholder="Телефон"></div>
+                            <div class="uk-width-1-1"><input type="text" name="email" class="uk-input" placeholder="Email" required></div>
+                            <div class="uk-width-1-1"><textarea name="message" class="uk-width-1-1 short_textarea" placeholder="Сообщение" required></textarea>
+                            </div>
+                            <input type="hidden" name="card_id" value="{{ card.id }}">
+                            <div class="uk-width-1-1">
+                                <button class="uk-button uk-button-default uk-width-1-1">Отправить</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
 
 

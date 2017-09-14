@@ -17,6 +17,7 @@
     <script src="{{ asset('assets/js/new_card_settings.js') }}"></script>
     <script src="{{ asset('assets/js/newCardForm.js') }}"></script>
     <script src="{{ asset('assets/js/tariff_selector.js') }}"></script>
+    <script src="{{ asset('assets/js/image_upload_preview.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -153,7 +154,8 @@
 
                 <hr>
                 <div>
-                    Фото: <input type="file" name="fotos[]" multiple> (до 5 одновременно)
+                    Фото: <input id="foto_upload" type="file" name="fotos[]" multiple> (до 5 одновременно)
+                    <div id="foto_list_view" uk-grid uk-sortable class="uk-grid-small"></div>
                 </div>
 
                 <hr>

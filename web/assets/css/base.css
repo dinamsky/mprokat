@@ -130,7 +130,7 @@ body{
 }
 
 .show_phone{
-    border:1px solid white;
+
 }
 
 #main_search_form #address_block{
@@ -160,7 +160,7 @@ body{
 
 .price_value{
     display: inline-block;
-    width: 65px;
+    width: 80px;
     font-weight: bold;
     text-align: right;
 }
@@ -366,4 +366,41 @@ body{
     right: 0;
     top: 0;
     z-index: 2;
+}
+
+.card_page_phone{
+
+}
+
+.hidden_phone, .opened_phone{
+    height: 70px;
+    padding: 10px 0;
+    cursor: pointer;
+}
+
+.card_page_phone .opened_phone{
+    line-height: 45px;
+}
+
+.user_form_button{
+    height: 70px;
+    padding: 10px 0;
+    color: white;
+    text-align: center;
+    border-left: 1px solid white;
+    line-height: 45px;
+    cursor: pointer;
+}
+
+.card_page_phone .hidden_phone:hover,.card_page_phone .user_form_button:hover{
+    background: green;
+}
+
+.delete_preview{
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: red;
+    padding: 5px;
+    line-height: 9px;
 }
