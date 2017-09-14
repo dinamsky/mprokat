@@ -1,17 +1,89 @@
 {% extends 'base.html.twig' %}
 
 
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/showCard.js') }}"></script>
+{% endblock %}
+
 {% block content %}
     <div class="user_page_top_line_1">
         <div class="standard_wide">
-            <div></div>
+            <div uk-grid>
+                <div class="uk-width-1-5"></div>
+                <div class="uk-width-4-5"><h1 class="c_white">{{ user.header }}</h1></div>
+            </div>
         </div>
     </div>
     <div class="user_page_top_line_2">
         <div class="standard_wide">
-
+            <div uk-grid>
+                <div class="uk-width-1-5">
+                    {% if user_foto %}
+                        <div style="background: url('{{ user_foto }}') center center no-repeat;
+                                background-size: contain;
+                                width: 200px;
+                                height: 200px;
+                                display: inline-block;
+                                top: -120px;
+                                position: relative;
+                                ">
+                        </div>
+                    {% else %}
+                        <div style="
+                                background-size: contain;
+                                width: 200px;
+                                height: 200px;
+                                display: inline-block;
+                                top: -120px;
+                                position: relative;
+                                border: 1px solid lightgrey;
+                                ">
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="uk-width-4-5">
+                    <div uk-grid class="uk-grid-collapse">
+                        <div class="uk-width-1-6"><i class="fa fa-envelope"></i> Email</div>
+                        <div class="uk-width-1-4">{{ user.email }}</div>
+                    </div>
+                    <div uk-grid class="uk-grid-collapse">
+                        <div class="uk-width-1-6"><i class="fa fa-phone"></i> Телефон</div>
+                        <div class="uk-width-1-4">
+                            <div class="phone_block">
+                            {% if app.session.get('phone')[user.id] is not defined %}
+                                <span class="hidden_phone">
+                                <i class="fa fa-phone"></i> {% for info in user.information if info.uiKey == 'phone' %}{{ info.uiValue|slice(0,5) }}*******{% endfor %}
+                            </span>
+                                <button class="uk-button-primary show_phone" type="button" data-card_id="{{ user.cards[0].id }}">Показать</button>
+                            {% else %}
+                                <span class="opened_phone">
+                                <i class="fa fa-phone"></i> {% for info in user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}
+                            </span>
+                            {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div uk-grid class="uk-grid-collapse">
+                        <div class="uk-width-1-6"><i class="fa fa-globe"></i> Website</div>
+                        <div class="uk-width-1-4">{% for info in user.information if info.uiKey == 'website' %}{{ info.uiValue }}{% endfor %}</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <div class="standard_wide uk-margin-large-bottom">
+        <h2 class="pf_style_header"><span>Объявления пользователя</span></h2>
+        <div uk-grid class="uk-grid-small uk-grid-match">
+            {% for card in user.cards %}
+                <div class="uk-width-1-4">
+                    {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
 
 
 {% endblock %}

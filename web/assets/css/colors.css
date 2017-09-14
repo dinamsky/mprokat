@@ -1,7 +1,15 @@
 .bg_blue{
-    background: #2b78aa;
+    background: #06a7ea;
 }
 
 .c_white{
     color: white;
+}
+
+.bg_dark{
+    background: #282828;
+}
+
+.bg_black{
+    background: black;
 }
