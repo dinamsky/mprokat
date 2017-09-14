@@ -22,7 +22,7 @@ use UserBundle\UserBundle;
 class ProfileController extends Controller
 {
     /**
-     * @Route("/user/{id}", name="user_page")
+     * @Route("/user/{id}", name="user_page", requirements={"id": "\d+"})
      */
     public function userPageAction($id)
     {
