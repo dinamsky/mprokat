@@ -32,9 +32,12 @@ class FotoUtils extends Controller
         $is_main = false;
         if($card->getFotos()->isEmpty()) $is_main = true;
 
+        dump($_FILES);
+        dump($_POST['to_upload']);
+
         foreach($_FILES[$ff]['name'] as $k=>$v)
         {
-            if (!empty($_FILES[$ff]['name'][$k]))
+            if (!empty($_FILES[$ff]['name'][$k]) and in_array($_FILES[$ff]['name'][$k],$_POST['to_upload'],true))
             {
                 $ext = explode(".",basename($_FILES[$ff]['name'][$k]));
                 $ext = strtolower($ext[(count($ext)-1)]);
