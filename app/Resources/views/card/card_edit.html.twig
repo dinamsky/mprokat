@@ -10,6 +10,8 @@
     <script src="{{ asset('assets/js/newCardForm.js') }}"></script>
     <script src="{{ asset('assets/js/editCardForm.js') }}"></script>
     <script src="{{ asset('assets/js/tariff_selector.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.damnUploader.min.js') }}"></script>
+    <script src="{{ asset('assets/js/image_upload_preview.js') }}"></script>
     {% if not subfields %}<script src="{{ asset('assets/js/get_new_subfields.js') }}"></script>{% endif %}
 
 {% endblock %}
@@ -120,7 +122,8 @@
 
                 <hr>
                 <div>
-                    Фото: <input type="file" name="fotos[]" multiple> (до 5 одновременно)
+                    <div>Фото: <input id="foto_upload" type="file" name="fotos[]" multiple> (до 5 одновременно)</div>
+                    <div id="foto_list_view" uk-grid uk-sortable class="uk-grid-small"></div>
                 </div>
 
                 <hr>

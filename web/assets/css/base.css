@@ -395,3 +395,12 @@ body{
 .card_page_phone .hidden_phone:hover,.card_page_phone .user_form_button:hover{
     background: green;
 }
+
+.delete_preview{
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: red;
+    padding: 5px;
+    line-height: 9px;
+}
