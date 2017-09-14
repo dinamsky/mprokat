@@ -13,3 +13,22 @@
 .bg_black{
     background: black;
 }
+
+.bg_green{
+    background: #25b45b;
+}
+.c_red{
+    color: red;
+}
+
+.c_green{
+    color: #25b45b;
+}
+
+.c_grey{
+    color:grey;
+}
+
+.c_gold{
+    color:gold;
+}
