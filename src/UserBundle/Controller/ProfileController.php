@@ -234,8 +234,8 @@ class ProfileController extends Controller
         $fu->uploadImage(
             'foto',
             'user_'.$post->get('user_id'),
-            $_SERVER['DOCUMENT_ROOT'].'/assets/images/users/',
-            $_SERVER['DOCUMENT_ROOT'].'/assets/images/users/t/');
+            $_SERVER['DOCUMENT_ROOT'].'/assets/images/users',
+            $_SERVER['DOCUMENT_ROOT'].'/assets/images/users/t');
 
         return $this->redirectToRoute('user_profile');
     }
