@@ -59,6 +59,9 @@ class SubFieldUtils extends Controller
             $query = $this->em->createQuery('SELECT f, t FROM AppBundle:CardField f JOIN f.fieldType t WHERE f.generalTypeId = ?1');
             $query->setParameter(1, $card->getGeneralTypeId());
             $fields = $query->getResult();
+
+            $result = [];
+
             foreach ($fields as $field) {
 
                 $query = $this->em->createQuery('SELECT s FROM AppBundle:SubField s WHERE s.id = ?1');

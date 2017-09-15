@@ -11,7 +11,18 @@
         <div class="standard_wide">
             <div uk-grid>
                 <div class="uk-width-1-5"></div>
-                <div class="uk-width-4-5"><h1 class="c_white">{{ user.header }}</h1></div>
+                <div class="uk-width-4-5">
+                    <h1 class="c_white uk-margin-remove">{{ user.header }}</h1>
+                    {% for info in user.information %}
+                        {% if info.uiKey == 'vk' %}<a href="{{ info.uiValue }}" class="c_white padding0-10"><i class="fa fa-vk"></i></a>{% endif %}
+                        {% if info.uiKey == 'fb' %}<a href="{{ info.uiValue }}" class="c_white padding0-10"><i class="fa fa-facebook"></i></a>{% endif %}
+                        {% if info.uiKey == 'ok' %}<a href="{{ info.uiValue }}" class="c_white padding0-10"><i class="fa fa-odnoklassniki"></i></a>{% endif %}
+                        {% if info.uiKey == 'tw' %}<a href="{{ info.uiValue }}" class="c_white padding0-10"><i class="fa fa-twitter"></i></a>{% endif %}
+                        {% if info.uiKey == 'gp' %}<a href="{{ info.uiValue }}" class="c_white padding0-10"><i class="fa fa-google-plus"></i></a>{% endif %}
+                        {% if info.uiKey == 'ig' %}<a href="{{ info.uiValue }}" class="c_white padding0-10"><i class="fa fa-instagram"></i></a>{% endif %}
+                        {% if info.uiKey == 'yt' %}<a href="{{ info.uiValue }}" class="c_white padding0-10"><i class="fa fa-youtube"></i></a>{% endif %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
@@ -22,8 +33,8 @@
                     {% if user_foto %}
                         <div style="background: url('{{ user_foto }}') center center no-repeat;
                                 background-size: contain;
-                                width: 200px;
-                                height: 200px;
+                                width: 155px;
+                                height: 155px;
                                 display: inline-block;
                                 top: -120px;
                                 position: relative;
@@ -32,8 +43,8 @@
                     {% else %}
                         <div style="
                                 background-size: contain;
-                                width: 200px;
-                                height: 200px;
+                                width: 155px;
+                                height: 155px;
                                 display: inline-block;
                                 top: -120px;
                                 position: relative;
@@ -75,9 +86,9 @@
         </div>
     </div>
 
-    <div class="standard_wide uk-margin-large-bottom">
-        <h2 class="pf_style_header"><span>Объявления пользователя</span></h2>
-        <div uk-grid class="uk-grid-small uk-grid-match">
+    <div class="standard_wide uk-margin-large">
+        <h2 class="pf_style_header"><span>Объявления пользователя: {{ user.cards|length }}</span></h2>
+        <div uk-grid class="uk-grid-small uk-grid-match uk-margin-large-bottom">
             {% for card in user.cards %}
                 <div class="uk-width-1-4">
                     {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}

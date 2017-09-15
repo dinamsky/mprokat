@@ -10,3 +10,7 @@
 .undln{
     text-decoration: underline;
 }
+
+.micro{
+    font-size:11px !important;
+}

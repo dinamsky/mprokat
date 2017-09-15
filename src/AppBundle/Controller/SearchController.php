@@ -131,7 +131,7 @@ class SearchController extends Controller
         if($model){
             $model = $this->getDoctrine()
                 ->getRepository(Mark::class)
-                ->findOneBy(['header' => $model]);
+                ->findOneBy(['header' => $model, 'parentId' => $mark->getId()]);
 
             $mark_condition = ' AND c.modelId = '.$model->getId();
         } else {

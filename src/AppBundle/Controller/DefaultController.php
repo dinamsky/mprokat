@@ -32,6 +32,10 @@ class DefaultController extends Controller
 //        $query->setMaxResults(3);
 //        $top3 = $query->getResult();
 
+        $topSlider = $this->getDoctrine()
+            ->getRepository(Card::class)
+            ->getTopSlider();
+
         $cars = $this->getDoctrine()
             ->getRepository(Card::class)
             ->getLimitedSlider(2);
@@ -84,6 +88,20 @@ class DefaultController extends Controller
             $city->setTempId(0);
         }
 
+        $query = $em->createQuery('SELECT COUNT(c.id) FROM AppBundle:Card c');
+        $totalCards = $query->getSingleScalarResult();
+
+        $query = $em->createQuery('SELECT COUNT(u.id) FROM UserBundle:User u');
+        $totalUsers = $query->getSingleScalarResult();
+
+        $query = $em->createQuery('SELECT COUNT(g.id) FROM AppBundle:GeneralType g');
+        $totalCategories = $query->getSingleScalarResult();
+
+        $total = array(
+            'cards' => $totalCards,
+            'users' => $totalUsers,
+            'categories' => $totalCategories
+            );
 
         $general = $this->getDoctrine()
             ->getRepository(GeneralType::class)
@@ -97,7 +115,7 @@ class DefaultController extends Controller
             'city' => $city,
             'mark_model' => array(),
             'mark_groups' => $mm->getGroups(),
-//            'top3' => $top3,
+            'topSlider' => $topSlider,
             'cars' => $cars,
             'trucks' => $trucks,
             'segways' => $segways,
@@ -123,7 +141,9 @@ class DefaultController extends Controller
 
             'general' => $general,
 
-            'generalTypes' => $generalTypes
+            'generalTypes' => $generalTypes,
+
+            'total' => $total
 
         ]);
     }
@@ -188,6 +208,9 @@ class DefaultController extends Controller
             ->find($card->getGeneralTypeId());
 
 
+        $pgtid = $card->getGeneralType()->getParentId();
+        if($pgtid == null) $pgtid = $card->getGeneralTypeId();
+
 
         return $this->render('card/card_show.html.twig', [
 
@@ -209,7 +232,7 @@ class DefaultController extends Controller
 
             'generalTopLevel' => $mgt->getTopLevel(),
             'generalSecondLevel' => $mgt->getSecondLevel($card->getGeneralType()->getParentId()),
-            'pgtid' => $card->getGeneralType()->getParentId(),
+            'pgtid' => $pgtid,
             'gtid' => $card->getGeneralTypeId(),
             'similar' => $similar,
 

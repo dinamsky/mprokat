@@ -21,7 +21,9 @@
     </div>
     <button class="uk-button pay_tariff_button" name="change_tariff">Разместить и оплатить 399 руб.</button>
 </div>
+{% if edit is not defined %}
 <button class="uk-button pay_tariff_button temp_button" name="change_tariff">Разместить и оплатить 399 руб.</button>
+{% endif %}
 
 
 <div id="tariff_2" class="tariff_block {{ tariffId == 2 ? 'active' : '' }}">

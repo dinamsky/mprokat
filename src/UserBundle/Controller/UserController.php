@@ -431,7 +431,7 @@ class UserController extends Controller
         $em->persist($card);
 
 
-        foreach($post->get('subField') as $fieldId=>$value) if($value!=0 and $value!=''){
+        if ($post->get('subField') !== null) foreach($post->get('subField') as $fieldId=>$value) if($value!=0 and $value!=''){
             $subfield = $this->getDoctrine()
                 ->getRepository(FieldType::class)
                 ->find($fieldId);
