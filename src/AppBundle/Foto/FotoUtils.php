@@ -32,8 +32,8 @@ class FotoUtils extends Controller
         $is_main = false;
         if($card->getFotos()->isEmpty()) $is_main = true;
 
-        dump($_FILES);
-        dump($_POST['to_upload']);
+        //dump($_FILES);
+        //dump($_POST['to_upload']);
 
         foreach($_FILES[$ff]['name'] as $k=>$v)
         {
@@ -144,6 +144,64 @@ class FotoUtils extends Controller
             imagefill($image_p, 0, 0, $bgColor);
             imagecopyresampled($image_p, $im1, 0, 0, 0, 0, $width, $height, $w_src1, $h_src1);
             imagejpeg($image_p, $to_thumb_img);
+        }
+    }
+
+
+    public function uploadImage($foto_var, $new_name, $target_folder = '', $thumb_folder = '')
+    {
+        $main_dir = $target_folder;
+        $thumbs = $thumb_folder;
+        if ($target_folder != '') @mkdir($main_dir,'0755', true);
+        if ($thumb_folder != '') @mkdir($thumbs,'0755', true);
+        $ff = $foto_var;
+
+        if ($_FILES[$ff]['tmp_name']!='') {
+
+            $file = file_get_contents($_FILES[$ff]['tmp_name']);
+
+            $im1 = imagecreatefromstring($file);
+            if ($im1 !== false) {
+                if ($target_folder != '') {
+                    $width = 1280;
+                    $height = 900;
+
+                    $w_src1 = imagesx($im1);
+                    $h_src1 = imagesy($im1);
+                    $ratio = $w_src1 / $h_src1;
+                    if ($width / $height > $ratio) {
+                        $width = $height * $ratio;
+                    } else {
+                        $height = $width / $ratio;
+                    }
+                    $image_p = imagecreatetruecolor($width, $height);
+                    $bgColor = imagecolorallocate($image_p, 255, 255, 255);
+                    imagefill($image_p, 0, 0, $bgColor);
+                    imagecopyresampled($image_p, $im1, 0, 0, 0, 0, $width, $height, $w_src1, $h_src1);
+
+                    imagejpeg($image_p, $main_dir . '/' . $new_name . '.jpg');
+
+                }
+                if ($thumb_folder != '') {
+                    $width = 400;
+                    $height = 300;
+
+                    $w_src1 = imagesx($im1);
+                    $h_src1 = imagesy($im1);
+                    $ratio = $w_src1 / $h_src1;
+                    if ($width / $height > $ratio) {
+                        $width = $height * $ratio;
+                    } else {
+                        $height = $width / $ratio;
+                    }
+                    $image_p = imagecreatetruecolor($width, $height);
+                    $bgColor = imagecolorallocate($image_p, 255, 255, 255);
+                    imagefill($image_p, 0, 0, $bgColor);
+                    imagecopyresampled($image_p, $im1, 0, 0, 0, 0, $width, $height, $w_src1, $h_src1);
+                    imagejpeg($image_p, $thumbs . '/' . $new_name . '.jpg');
+                }
+                unlink($_FILES[$ff]['tmp_name']);
+            }
         }
     }
 

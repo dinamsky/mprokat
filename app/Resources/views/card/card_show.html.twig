@@ -204,14 +204,25 @@
                     {% if user_foto %}
                     <div style="background: url('{{ user_foto }}') center center no-repeat;
                             background-size: contain;
-                            width: 100px;
-                            height: 100px;
+                            width: 155px;
+                            height: 155px;
                             display: inline-block;
                             ">
                     </div>
                     {% else %}
                     {% endif %}
                     <h3 class="uk-margin-remove"><a href="/user/{{ card.user.id }}">{{ card.user.header }}</a></h3>
+                    <div class="uk-margin-top">
+                        {% for info in card.user.information %}
+                            {% if info.uiKey == 'vk' %}<a href="{{ info.uiValue }}" class="card_soc_icon s_vk"><i class="fa fa-vk"></i></a>{% endif %}
+                            {% if info.uiKey == 'fb' %}<a href="{{ info.uiValue }}" class="card_soc_icon s_fb"><i class="fa fa-facebook"></i></a>{% endif %}
+                            {% if info.uiKey == 'ok' %}<a href="{{ info.uiValue }}" class="card_soc_icon s_ok"><i class="fa fa-odnoklassniki"></i></a>{% endif %}
+                            {% if info.uiKey == 'tw' %}<a href="{{ info.uiValue }}" class="card_soc_icon s_tw"><i class="fa fa-twitter"></i></a>{% endif %}
+                            {% if info.uiKey == 'gp' %}<a href="{{ info.uiValue }}" class="card_soc_icon s_gp"><i class="fa fa-google-plus"></i></a>{% endif %}
+                            {% if info.uiKey == 'ig' %}<a href="{{ info.uiValue }}" class="card_soc_icon s_ig"><i class="fa fa-instagram"></i></a>{% endif %}
+                            {% if info.uiKey == 'yt' %}<a href="{{ info.uiValue }}" class="card_soc_icon s_yt"><i class="fa fa-youtube"></i></a>{% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
 
                 <div class="uk-margin-bottom card_page_phone ">

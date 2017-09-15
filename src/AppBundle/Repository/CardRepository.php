@@ -20,4 +20,15 @@ class CardRepository extends \Doctrine\ORM\EntityRepository
         $query = $em->createQuery($dql);
         return $query->getResult();
     }
+
+    public function getTopSlider()
+    {
+        $em = $this->getEntityManager();
+        $query = $em->createQuery('SELECT c.id FROM AppBundle:Card c JOIN c.tariff t ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
+        $query->setMaxResults(20);
+        foreach ($query->getScalarResult() as $cars_id) $cars_ids[] = $cars_id['id'];
+        $dql = 'SELECT c,f,p FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.fotos f LEFT JOIN c.cardPrices p WHERE c.id IN ('.implode(",",$cars_ids).') ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
+        $query = $em->createQuery($dql);
+        return $query->getResult();
+    }
 }

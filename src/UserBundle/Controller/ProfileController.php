@@ -3,6 +3,7 @@
 namespace UserBundle\Controller;
 
 use AppBundle\Entity\Card;
+use AppBundle\Foto\FotoUtils;
 use UserBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface as em;
 use AppBundle\Menu\MenuCity;
@@ -93,8 +94,9 @@ class ProfileController extends Controller
          */
 
         $em = $this->getDoctrine()->getManager();
-        $query = $em->createQuery('DELETE UserBundle\Entity\UserInfo u WHERE u.userId = ?1');
+        $query = $em->createQuery('DELETE UserBundle\Entity\UserInfo u WHERE u.userId = ?1 AND u.uiKey != ?2');
         $query->setParameter(1, $user->getId());
+        $query->setParameter(2, 'foto');
         $query->execute();
 
         foreach($post->get('info') as $uiKey =>$uiValue ){
@@ -198,5 +200,43 @@ class ProfileController extends Controller
         return $this->redirect('/card/'.$card_id);
     }
 
+    /**
+     * @Route("/profile/saveFoto")
+     */
+    public function saveFotoAction(Request $request, FotoUtils $fu)
+    {
+        $post = $request->request;
+        $em = $this->getDoctrine()->getManager();
 
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($post->get('user_id'));
+
+
+        $query = $em->createQuery('DELETE UserBundle\Entity\UserInfo u WHERE u.userId = ?1 AND u.uiKey = ?2');
+        $query->setParameter(1, $post->get('user_id'));
+        $query->setParameter(2, 'foto');
+        $query->execute();
+        if (is_file($_SERVER['DOCUMENT_ROOT'].'/assets/images/users/'.$post->get('user_id')))
+            unlink ($_SERVER['DOCUMENT_ROOT'].'/assets/images/users/'.$post->get('user_id'));
+
+        if($post->has('delete')) return $this->redirectToRoute('user_profile');
+
+        $userInfo = new UserInfo();
+        $userInfo->setUser($user);
+        $userInfo->setUiKey('foto');
+        $userInfo->setUiValue('user_'.$post->get('user_id'));
+        $em->persist($userInfo);
+        $em->flush();
+
+
+
+        $fu->uploadImage(
+            'foto',
+            'user_'.$post->get('user_id'),
+            $_SERVER['DOCUMENT_ROOT'].'/assets/images/users/',
+            $_SERVER['DOCUMENT_ROOT'].'/assets/images/users/t/');
+
+        return $this->redirectToRoute('user_profile');
+    }
 }
