@@ -14,6 +14,11 @@ function new_card_validate(){
     var subfields = [];
 
     var message = [];
+
+    if($('#foto_upload').val().length || $('#foto_upload').val() === ''){
+        message.push('\nФотографии');
+    }
+
     if (!general_type) message.push('\nТип транспорта');
     if (!header) message.push('\nЗаголовок');
     if (!model || model === 0) {
