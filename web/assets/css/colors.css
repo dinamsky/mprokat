@@ -2,10 +2,6 @@
     background: #06a7ea;
 }
 
-.c_white{
-    color: white;
-}
-
 .bg_dark{
     background: #282828;
 }
@@ -17,6 +13,11 @@
 .bg_green{
     background: #25b45b;
 }
+
+.bg_red{
+    background: red;
+}
+
 .c_red{
     color: red;
 }
@@ -31,4 +32,8 @@
 
 .c_gold{
     color:gold;
+}
+
+.c_white{
+    color: white;
 }

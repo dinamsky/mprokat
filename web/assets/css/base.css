@@ -2,6 +2,11 @@ body{
     background: #f9f9f9;
 }
 
+button{
+    border:0;
+    cursor: pointer;
+}
+
 #content{
     min-height:500px;
 }
@@ -107,6 +112,10 @@ body{
     padding:20px;
 }
 
+.padding0-10{
+    padding:0 10px;
+}
+
 .footer_info{
     padding: 30px 0;
 }
@@ -146,7 +155,7 @@ body{
 }
 
 #top_selector_block{
-    margin-top: 50px;
+
     background: #bcc8d4;
     padding: 30px 0;
     margin-bottom: 30px;
@@ -336,7 +345,7 @@ body{
 .user_page_top_line_1{
     background-color: #06a7ea;
     padding-top: 80px;
-    height:80px;
+    height:90px;
 }
 
 .user_page_top_line_2{
@@ -403,4 +412,81 @@ body{
     color: red;
     padding: 5px;
     line-height: 9px;
+}
+
+.card_soc_icon{
+    width: 24px;
+    text-align: center;
+    display: inline-block;
+    background: lightgrey;
+    border-radius: 12px;
+    color: white;
+}
+
+.card_soc_icon i{
+    font-size:16px;
+    line-height: 16px;
+}
+
+.card_soc_icon.s_fb{
+    background: #1d6e94;
+}
+
+.card_soc_icon.s_vk{
+    background: #194e90;
+}
+
+.card_soc_icon.s_ok{
+    background: #f99229;
+}
+
+.card_soc_icon.s_tw{
+    background: #5a82a5;
+}
+
+.card_soc_icon.s_gp{
+    background: #c11111;
+}
+
+.card_soc_icon.s_yt{
+    background: red;
+}
+
+.card_soc_icon.s_ig{
+    background: #9db736;
+}
+
+.topPlus{
+    border: 1px solid lightgrey;
+    display: block;
+    color: black;
+    background: white;
+    padding: 10px 0;
+    position: relative;
+    top: 50%;
+    margin-top: -75px;
+}
+
+.top_counter{
+    padding: 20px 0;
+    font-size: 30px;
+    line-height: 35px;
+}
+
+.top_counter_desc{
+    font-size: 18px;
+    line-height: 10px;
+}
+
+.add_card_button{
+    padding: 10px 18%;
+}
+
+.top_sticky.uk-active .add_card_button{
+    padding: 0 18%;
+}
+
+.add_card_button:hover{
+    color: white;
+    background: green;
 }
