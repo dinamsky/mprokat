@@ -85,5 +85,11 @@ $( document ).ready(function() {
         else $(this).html('Сменить тариф');
     });
 
+    $('.service_selector button').on('click', function(){
+        $('input[name="serviceTypeId"]').val($(this).val());
+        $('.service_selector button').removeClass('uk-button-primary');
+        $(this).addClass('uk-button-primary');
+    });
+
 });
 
