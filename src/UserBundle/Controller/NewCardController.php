@@ -75,7 +75,8 @@ class NewCardController extends Controller
                 $geo = $this->get('session')->get('geo');
 
                 $city = $em->getRepository("AppBundle:City")->createQueryBuilder('c')
-                    ->andWhere('c.header LIKE :geoname')
+                    ->where('c.header LIKE :geoname')
+                    ->andWhere('c.parentId IS NOT NULL')
                     ->setParameter('geoname', '%'.$geo['city'].'%')
                     ->getQuery()
                     ->getResult();
