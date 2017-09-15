@@ -15,7 +15,7 @@ function new_card_validate(){
 
     var message = [];
 
-    if($('#foto_upload').val().length || $('#foto_upload').val() === ''){
+    if($('#foto_upload').val() === ''){
         message.push('\nФотографии');
     }
 
