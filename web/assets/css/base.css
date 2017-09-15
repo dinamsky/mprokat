@@ -29,6 +29,11 @@ button{
     text-align: center;
     vertical-align: top;
     padding: 1px 0 6px 0;
+    float: left;
+}
+
+.top_sc_links a:hover{
+    background: #0079ab;
 }
 
 .top_sticky{
@@ -59,6 +64,11 @@ button{
     padding: 1px 5px 6px 5px;
     background: transparent;
     cursor: pointer;
+    float: left;
+}
+
+.top_user_actions a:hover, .top_user_actions_button:hover{
+    background: #0079ab;
 }
 
 .card_cover_description{
@@ -106,6 +116,10 @@ button{
 .bordered{
     border:1px solid lightgray;
     background: white;
+}
+
+.bordered:hover{
+    border: 1px solid #25b45b;
 }
 
 .padding20{
@@ -468,9 +482,14 @@ button{
 }
 
 .top_counter{
-    padding: 20px 0;
+    padding: 10px 0;
     font-size: 30px;
-    line-height: 35px;
+    line-height: 30px;
+    background: white;
+}
+
+.top_counter i{
+    font-size: 24px;
 }
 
 .top_counter_desc{
