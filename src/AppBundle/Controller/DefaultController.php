@@ -208,6 +208,9 @@ class DefaultController extends Controller
             ->find($card->getGeneralTypeId());
 
 
+        $pgtid = $card->getGeneralType()->getParentId();
+        if($pgtid == null) $pgtid = $card->getGeneralTypeId();
+
 
         return $this->render('card/card_show.html.twig', [
 
@@ -229,7 +232,7 @@ class DefaultController extends Controller
 
             'generalTopLevel' => $mgt->getTopLevel(),
             'generalSecondLevel' => $mgt->getSecondLevel($card->getGeneralType()->getParentId()),
-            'pgtid' => $card->getGeneralType()->getParentId(),
+            'pgtid' => $pgtid,
             'gtid' => $card->getGeneralTypeId(),
             'similar' => $similar,
 

@@ -131,17 +131,17 @@ function getSelectorUrl(){
     if(generalParent) generalType = '/'+generalParent;
     if(general) generalType = '/'+general;
 
-    if (mark) markModel = '/'+mark;
-    if (model) markModel = '/'+mark+'/'+model;
+    if (mark && mark !== '-------') markModel = '/'+mark;
+    if (model && model!== '---' && model!== '-------') markModel = '/'+mark+'/'+model;
 
     return '/show'+city+service+generalType+markModel;
 }
 
 function getQueryVars() {
-    var view = $('#main_search_button').data('view'); view ? view = 'view='+view : ' ';
-    var page = $('#main_search_button').data('page'); page ? page = '&page='+page : ' ';
-    var onpage = $('#main_search_button').data('onpage'); onpage ? onpage = '&onpage='+ onpage : ' ';
-    var order = $('#order').val(); order ? order = '&order='+ order : ' ';
+    var view = $('#main_search_button').data('view'); view ? view = 'view='+view : view = '';
+    var page = $('#main_search_button').data('page'); page ? page = '&page='+page : page = '';
+    var onpage = $('#main_search_button').data('onpage'); onpage ? onpage = '&onpage='+onpage : onpage = '';
+    var order = $('#order').find('option:selected').val(); order ? order = '&order='+ order : order = '';
     if (view+page+onpage+order) return '?'+view+page+onpage+order;
     else return '';
 }
