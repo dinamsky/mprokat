@@ -7,6 +7,7 @@ use AppBundle\Entity\Comment;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use UserBundle\Entity\UserInfo;
 use UserBundle\Security\Password;
 use UserBundle\Entity\User;
 use AdminBundle\Entity\Admin;
@@ -94,6 +95,13 @@ class AdminController extends Controller
             $user->setAdmin($admin);
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
+            $em->flush();
+
+            $userinfo = new UserInfo();
+            $userinfo->setUser($user);
+            $userinfo->setUiKey('phone');
+            $userinfo->setUiValue($request->request->get('phone'));
+            $em->persist($userinfo);
             $em->flush();
 
             $message = (new \Swift_Message('Администратор зарегистрировал аккаунт для вас на сайте multiprokat.com'))
