@@ -45,11 +45,11 @@
 <div id="pass_recover" uk-modal>
     <div class="uk-modal-dialog uk-modal-body">
         <button class="uk-modal-close-default" type="button" uk-close></button>
-        <h2 class="uk-modal-title">Новый пароль</h2>
+        <h2 class="uk-modal-title">Смена пароля</h2>
         <form action="/userRecover" method="POST">
-            <input type="text" name="email" placeholder="email" class="uk-input uk-margin-bottom">
-            <input type="password" name="password1" placeholder="пароль" class="uk-input uk-margin-bottom">
-            <input type="password" name="password2" placeholder="повторите пароль" class="uk-input uk-margin-bottom">
+            <input type="text" name="email" placeholder="Введите email использованный при регистрации" class="uk-input uk-margin-bottom">
+            <input type="password" name="password1" placeholder="Придумайте новый пароль" class="uk-input uk-margin-bottom">
+            <input type="password" name="password2" placeholder="Повторите новый пароль" class="uk-input uk-margin-bottom">
             <input type="hidden" name="return" value="{{ app.request.requestUri }}">
             <button class="uk-button uk-button-primary">Сменить пароль</button>
         </form>
