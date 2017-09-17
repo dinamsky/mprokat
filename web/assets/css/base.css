@@ -498,11 +498,11 @@ button{
 }
 
 .add_card_button{
-    padding: 10px 18%;
+    width: 290px;
 }
 
 .top_sticky.uk-active .add_card_button{
-    padding: 0 18%;
+    width: 290px;
 }
 
 .add_card_button:hover{

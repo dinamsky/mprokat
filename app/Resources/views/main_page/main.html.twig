@@ -22,21 +22,21 @@
 
     <div class="standard_wide uk-margin-large-top">
 
-        <div uk-grid class="uk-grid-small">
-            <div class="uk-width-5-6">
-                <div class="owl-carousel owl-theme uk-width-1-1" data-items="5">
+        <div >
+            <div class="">
+                <div class="owl-carousel owl-theme uk-width-1-1" data-items="6">
                     {% for card in topSlider %}
-                        {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px', 'micro':true}) }}
+                        {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px', 'micro':true}) }}
                     {% endfor %}
                 </div>
             </div>
-            <div class="uk-width-1-6">
-                <a class="topPlus" href="/article/kak_popast_v_top">
-                    <div class="uk-text-center uk-margin-bottom"><i uk-icon="icon:plus"></i></div>
-                    <div class="uk-text-center">Как попасть<br>в ТОП?</div>
-                </a>
-            </div>
         </div>
+        {#<div class="uk-width-1-6">#}
+            {#<a class="topPlus" href="/article/kak_popast_v_top">#}
+                {#<div class="uk-text-center uk-margin-bottom"><i uk-icon="icon:plus"></i></div>#}
+                {#<div class="uk-text-center">Как попасть<br>в ТОП?</div>#}
+            {#</a>#}
+        {#</div>#}
 
     </div>
 
