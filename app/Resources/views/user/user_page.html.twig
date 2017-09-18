@@ -62,10 +62,10 @@
                         <div class="uk-width-1-6"><i class="fa fa-phone"></i> Телефон</div>
                         <div class="uk-width-1-4">
                             <div class="phone_block">
-                            {% if app.session.get('phone')[user.id] is not defined %}
+                            {% if app.session.get('phone')[user.id] is not defined and user.cards[0] is defined %}
                                 <span class="hidden_phone">
-                                <i class="fa fa-phone"></i> {% for info in user.information if info.uiKey == 'phone' %}{{ info.uiValue|slice(0,5) }}*******{% endfor %}
-                            </span>
+                                    <i class="fa fa-phone"></i> {% for info in user.information if info.uiKey == 'phone' %}{{ info.uiValue|slice(0,5) }}*******{% endfor %}
+                                </span>
                                 <button class="uk-button-primary show_phone" type="button" data-card_id="{{ user.cards[0].id }}">Показать</button>
                             {% else %}
                                 <span class="opened_phone">
