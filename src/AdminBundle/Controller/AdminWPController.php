@@ -230,38 +230,37 @@ WHERE user_id IN ($ids)");
         return $new_conn->fetchColumn("SELECT id FROM mark WHERE parent_id=$parent_id AND header='---'");
     }
 
-    private function fillMark($header) // ready
+    private function fillModel($header) // ready
     {
-        $mark = 1799;
+        $model = 20991;
         $header = explode(" ", $header);
-        $parent = $this->checkCount($header,NULL);
-        if ($parent != 0){
-            //echo 'parent - '.$header[$parent[1]].'<br>';
-            unset($header[$parent[1]]);
-            $model = $this->checkCount($header,$parent[0]);
-            if ($model == 0){
 
-                $mark = $this->getNonModel($parent[0]);
-                //echo 'no model, set:'.$mark.'<br>';
+        $marks = $this->checkCount($header,NULL);
+        if ($marks != 0) {
+            //echo 'parent - '.$header[$parent[1]].'<br>';
+            unset($header[$marks[1]]);
+            foreach ($marks[0] as $mark) {
+                $model = $this->checkCount($header, $mark['id']);
+                if ($model == 0) {
+
+                    //$mark = $this->getNonModel($parent[0]);
+                    //echo 'no model, set:'.$mark.'<br>';
+                } else {
+                    $model = $model[0][0]['id'];
+                    return $model;
+                }
             }
-            else{
-                $mark = $model[0];
-                //echo 'model is:'.$mark.'<br>';
-            }
-        }
-        else{
+        } else {
             //echo 'no parent<br>';
             $model = $this->checkCount($header,'all');
             if ($model != 0){
-                $mark = $model[0];
+                $model = $model[0][0]['id'];
                 //echo 'set:'.$mark.'<br>';
             }
         }
-        return $mark;
+        if ($model == 0) $model = 20991;
+        return $model;
     }
-
-
-
 
     private function checkCount($array, $parent_id){
 
@@ -273,37 +272,41 @@ WHERE user_id IN ($ids)");
 
             if(mb_strlen($mark_name,'UTF-8')>2) {
 
-                $sql = "SELECT id FROM mark WHERE parent_id=$parent_id AND header LIKE '%" . $mark_name . "%' AND header!='Автокам'";
-                if ($parent_id == NULL) $sql = "SELECT id FROM mark WHERE parent_id IS NULL AND header LIKE '%" . $mark_name . "%' AND header!='Автокам'";
-                if ($parent_id == 'all') $sql = "SELECT id FROM mark WHERE parent_id IS NOT NULL AND header LIKE '%" . $mark_name . "%' AND header!='Автокам'";
+                $sql = "SELECT id FROM car_model WHERE car_mark_id=$parent_id AND header LIKE '%" . $mark_name . "%'";
+                if ($parent_id == NULL) $sql = "SELECT id FROM car_mark WHERE header LIKE '%" . $mark_name . "%'";
+                if ($parent_id == 'all') $sql = "SELECT id FROM car_model WHERE header LIKE '%" . $mark_name . "%'";
 
                 $result = $new_conn->fetchAll($sql);
                 if (count($result) > 0)  {
-                    return array($result[count($result)-1]['id'],$key);
+                    return array($result,$key);
                 }
             }
         }
         return 0;
     }
 
-//    /**
-//     * @Route("/extMarks555")
-//     */
-//    public function extMarks() // ready
-//    {
-//        $em = $this->get('doctrine')->getManager();
-//        $new_conn = $em->getConnection();
-//
-//        $marks = $new_conn->fetchAll('SELECT id FROM mark WHERE parent_id IS NULL');
-//        foreach($marks as $mark) {
-//            $p = $mark['id'];
-//            $new_conn->query("INSERT INTO mark SET group_name='cars', parent_id=$p, header = '---'");
-//        }
-//
-//        echo 'marks inserted!';
-//
-//        return new Response();
-//    }
+
+
+    /**
+     * @Route("/wpModelSet")
+     */
+    public function wpModelSet()
+    {
+
+        $em = $this->get('doctrine')->getManager();
+        $conn = $em->getConnection();
+
+        $cards = $conn->fetchAll('SELECT id,header FROM card');
+        foreach ($cards as $card) {
+            $model_id = $this->fillModel($card['header']);
+            $id = $card['id'];
+            $sql = "UPDATE card SET model_id = $model_id WHERE id=$id";
+            $conn->query($sql);
+        }
+
+    }
+
+
 
     /**
      * @Route("/wpInsert")
