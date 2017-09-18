@@ -30,7 +30,7 @@ class GeoSubscriber implements EventSubscriberInterface
             if ($ip == '127.0.0.1') {
                 $geo = ['city' => 'Уфа'];
                 $event->getRequest()->getSession()->set('geo', $geo);
-                $event->getRequest()->getSession()->getFlashBag()->add('notice', 'Ваш город был определен как ' . $geo['city']);
+
             } else {
 
                 $sessId = $event->getRequest()->getSession()->getId();
