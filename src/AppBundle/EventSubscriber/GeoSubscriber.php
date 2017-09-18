@@ -27,18 +27,28 @@ class GeoSubscriber implements EventSubscriberInterface
             if ($ip == 'unknown') {
                 $ip = $_SERVER['REMOTE_ADDR'];
             }
-            if ($ip == '127.0.0.1') $ip = '94.41.250.18';
-
-            $sessId = $event->getRequest()->getSession()->getId();
-
-            if ($event->getRequest()->getSession()->has('ip')) {
-                $sessIP = $event->getRequest()->getSession()->get('ip');
-            } else {
-                $event->getRequest()->getSession()->set('ip', $ip);
-                $event->getRequest()->getSession()->set('sessId', $sessId);
-                $geo = json_decode(file_get_contents('http://ip-api.com/json/'.$ip.'?lang=ru'), true);
+            if ($ip == '127.0.0.1') {
+                $geo = ['city' => 'Уфа'];
                 $event->getRequest()->getSession()->set('geo', $geo);
-                $event->getRequest()->getSession()->getFlashBag()->add('notice', 'Ваш город был определен как '.$geo['city']);
+                $event->getRequest()->getSession()->getFlashBag()->add('notice', 'Ваш город был определен как ' . $geo['city']);
+            } else {
+
+                $sessId = $event->getRequest()->getSession()->getId();
+
+                if ($event->getRequest()->getSession()->has('ip')) {
+                    $sessIP = $event->getRequest()->getSession()->get('ip');
+                } else {
+                    $event->getRequest()->getSession()->set('ip', $ip);
+                    $event->getRequest()->getSession()->set('sessId', $sessId);
+                    $get = file_get_contents('http://ip-api.com/json/' . $ip . '?lang=ru');
+                    if ($get) {
+                        $geo = json_decode($get, true);
+                    } else {
+                        $geo = ['city' => 'Москва'];
+                    }
+                    $event->getRequest()->getSession()->set('geo', $geo);
+                    $event->getRequest()->getSession()->getFlashBag()->add('notice', 'Ваш город был определен как ' . $geo['city']);
+                }
             }
         }
 
