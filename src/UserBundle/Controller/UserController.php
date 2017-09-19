@@ -87,6 +87,8 @@ class UserController extends Controller
         $query->setParameter(1, $request->request->get('email'));
         $users = $query->getResult();
 
+
+
         foreach($users as $user){
 
             if ($password->CheckPassword($request->request->get('password'), $user->getPassword())){
@@ -96,6 +98,12 @@ class UserController extends Controller
                     'notice',
                     'Вы успешно вошли в аккаунт!'
                 );
+
+                $this->get('session')->set('user_pic', false);
+                foreach($user->getInformation() as $info){
+                    if($info->getUiKey() == 'foto') $this->get('session')->set('user_pic', $info->getUiValue());
+                }
+
                 return $this->redirect($request->request->get('return'));
                 break;
             }
