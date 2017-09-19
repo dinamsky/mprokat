@@ -1,0 +1,34 @@
+<header>
+    <div class="top_line bg_blue">
+        <div class="standard_wide uk-clearfix" uk-height-match style="min-height: 31px">
+            <div class="uk-float-left top_sc_links uk-visible@s">
+                <a href="https://www.facebook.com/multiprokatcom/"><span uk-icon="icon:facebook"></span></a>
+                <a href="https://twitter.com/multiprokat"><span uk-icon="icon:twitter"></span></a>
+                <a href="https://plus.google.com/u/1/102220936243060868002"><span uk-icon="icon:google-plus"></span></a>
+                <a href="https://www.instagram.com/multiprokat/"><span uk-icon="icon:instagram"></span></a>
+                <a href="https://vk.com/multiprokatcom"><span class="fa fa-vk"></span></a>
+                <a href="https://www.youtube.com/channel/UCj-igu9KFIbzdzVCezy1qFg"><span uk-icon="icon:youtube"></span></a>
+                <a href="mailto:mail@multiprokat.com"><span uk-icon="icon:mail"></span></a>
+            </div>
+            <div class="uk-float-right top_line_right" >
+                {{ include('user/auth_button_modal.html.twig') }}
+            </div>
+        </div>
+    </div>
+    <div class="top_sticky" uk-sticky>
+        <div class="standard_wide">
+            <div uk-grid>
+                <div class="uk-width-1-2"><a href="/"><img class="logo" src="/assets/images/interface/logo.png" alt=""></a></div>
+                <div class="uk-width-1-2 uk-text-right">
+                    {% if app.session.has('logged_user') %}
+                        <a href="/card/new" class="uk-button uk-button-success add_card_button">+ Добавить объявление</a>
+                    {% elseif app.session.has('admin') %}
+                        <a href="/card/new" class="uk-button uk-button-success add_card_button">+ Добавить объявление</a>
+                    {% else %}
+                        <a uk-toggle="target: #sign_in" class="uk-button uk-button-success add_card_button">+ Добавить объявление</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

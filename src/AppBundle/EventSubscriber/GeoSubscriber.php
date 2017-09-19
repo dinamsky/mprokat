@@ -28,7 +28,7 @@ class GeoSubscriber implements EventSubscriberInterface
                 $ip = $_SERVER['REMOTE_ADDR'];
             }
             if ($ip == '127.0.0.1') {
-                $geo = ['city' => 'Уфа'];
+                $geo = ['city' => 'Москва','lat'=>'55.753410','lon'=>'37.620285'];
                 $event->getRequest()->getSession()->set('geo', $geo);
 
             } else {
@@ -44,7 +44,7 @@ class GeoSubscriber implements EventSubscriberInterface
                     if ($get) {
                         $geo = json_decode($get, true);
                     } else {
-                        $geo = ['city' => 'Москва'];
+                        $geo = ['city' => 'Москва','lat'=>'55.753410','lon'=>'37.620285'];
                     }
                     $event->getRequest()->getSession()->set('geo', $geo);
                     $event->getRequest()->getSession()->getFlashBag()->add('notice', 'Ваш город был определен как ' . $geo['city']);

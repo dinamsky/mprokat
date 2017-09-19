@@ -1,0 +1,45 @@
+<footer class="uk-margin-top">
+    <div class="footer_info bg_dark">
+        <div class="standard_wide c_white">
+            <div uk-grid>
+                <div class="uk-width-1-4@l">
+                    МУЛЬТИПРОКАТ<br>
+                    Москва, Россия<br>
+                    +7(916)455-98-08
+                </div>
+                <div class="uk-width-1-4@l uk-visible@l">
+                    <div class="uk-margin-bottom">Топ</div>
+                    {% for card in t3_new.getTop3 %}
+                        {{ include(':footer:top_new_tpl.html.twig', {'card':card}) }}
+                    {% endfor %}
+                </div>
+                <div class="uk-width-1-4@l uk-visible@l">
+                    <div class="uk-margin-bottom">Новый транспорт</div>
+                    {% for card in t3_new.getNew %}
+                        {{ include(':footer:top_new_tpl.html.twig', {'card':card}) }}
+                    {% endfor %}
+                </div>
+                <div class="uk-width-1-4@l">
+                    <div>
+                        <a href="/news" class="c_white">> Новости</a>
+                    </div>
+                    <div>
+                        <a href="/contacts" class="c_white">> Контакты</a>
+                    </div>
+                    <div>
+                        <a href="/article/kak-sdavat-avto" class="c_white">> Сдать свой автомобиль</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom_line bg_black">
+        <div class="standard_wide uk-clearfix">
+            <div class="uk-float-left c_white">&copy; {{ date()|date("Y") }} МультиПрокат | Сервис аренды автотранспорта</div>
+            <div class="uk-float-right c_white">
+                <a href="/article/term-conditions" class="c_white">Условия и положения</a> /
+                <a href="/article/politika-konfidentsialnosti" class="c_white">Конфиденциальность</a>
+            </div>
+        </div>
+    </div>
+</footer>
