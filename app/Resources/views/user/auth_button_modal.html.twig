@@ -1,10 +1,16 @@
-<div class="top_user_actions">
+<div class="top_user_actions" uk-height-match>
     {% if app.session.get('logged_user').header is defined %}
-        <a href="/user"><span uk-icon="icon:user"></span> {{ app.session.get('logged_user').header }}</a>
-        <a href="/userLogout" class=""><span uk-icon="icon:sign-out"></span> Выход</a>
+        <a href="/user"><img src="/assets/images/users/t/{{ app.session.get('user_pic') }}.jpg" alt="" style="height: 40px"> {{ app.session.get('logged_user').header }}</a>
+
+
+        <div uk-drop="offset: 0" class="user_top_drop bg_blue" style="height: 40px">
+            <a href="/profile">Профиль</a><br>
+            <a href="/user/cards">Объявления</a>
+        </div>
+        <a href="/userLogout" class="uk-position-relative right_quit"><span><i uk-icon="icon:sign-out"></i> Выход</span></a>
     {% elseif app.session.get('admin').email is defined %}
         <a href="/admin"><span uk-icon="icon:user"></span> {{ app.session.get('admin').email }}</a>
-        <a href="/adminLogout" class=""><span uk-icon="icon:sign-out"></span> Выход</a>
+        <a href="/adminLogout" class=""><span><i uk-icon="icon:sign-out"></i> Выход</span></a>
     {% else %}
         <div  uk-toggle="target: #sign_in" class="top_user_actions_button"><span uk-icon="icon:sign-in"></span> Войти</div>
         <div  uk-toggle="target: #sign_up" class="top_user_actions_button"><span uk-icon="icon:lock"></span>Регистрация</div>

@@ -19,6 +19,7 @@ button{
 
 .top_sc_links{
     border-left:1px solid white;
+    min-height: inherit;
 }
 
 .top_sc_links a{
@@ -28,12 +29,34 @@ button{
     width: 45px;
     text-align: center;
     vertical-align: top;
-    padding: 1px 0 6px 0;
     float: left;
+    min-height: inherit;
+    position: relative;
 }
 
 .top_sc_links a:hover{
     background: #0079ab;
+}
+
+
+.right_quit {
+    width: 100px;
+}
+
+.right_quit span{
+    position: absolute;
+    top: 50%;
+    margin-top: -14px;
+    width: 100%;
+    left: 0;
+}
+
+.top_sc_links span{
+    position: absolute;
+    top: 50%;
+    margin-top: -10px;
+    width: 100%;
+    left: 0;
 }
 
 .top_sticky{
@@ -50,8 +73,9 @@ button{
     width: 200px;
 }
 
-.top_user_actions{
+.top_line_right{
     border-right:1px solid white;
+
 }
 
 .top_user_actions a, .top_user_actions_button{
@@ -61,14 +85,16 @@ button{
     display: inline-block;
     text-align: center;
     vertical-align: top;
-    padding: 1px 5px 6px 5px;
+    padding: 0 5px 0 5px;
     background: transparent;
     cursor: pointer;
     float: left;
+    min-height: inherit;
 }
 
 .top_user_actions a:hover, .top_user_actions_button:hover{
     background: #0079ab;
+    text-decoration: none;
 }
 
 .card_cover_description{
@@ -508,4 +534,19 @@ button{
 .add_card_button:hover{
     color: white;
     background: green;
+}
+
+.user_top_drop.uk-open{
+    padding: 10px;
+    width: 150px;
+    height: auto !important;
+}
+
+.user_top_drop a{
+    color: white;
+    border:0;
+}
+
+.user_drop_boundary{
+
 }
