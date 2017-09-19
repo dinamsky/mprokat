@@ -7,7 +7,7 @@
 
 <div class="hide_on_click_out" id="mark_block">
     <select class="uk-select" name="groupName" id="markGroupName">
-        {{ include( 'common/ajax_edit_options.html.twig', { 'options': mark_groups, 'id': mark.groupname}) }}
+        {{ include( 'common/ajax_edit_options.html.twig', { 'options': mark_groups, 'id': mark.carTypeId}) }}
     </select>
     <select class="uk-select" name="mark" id="markId">
         {{ include( 'common/ajax_edit_options.html.twig', { 'options': marks, 'id': mark.id}) }}

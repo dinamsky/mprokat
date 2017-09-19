@@ -137,7 +137,7 @@ class DefaultController extends Controller
 
             'marks' => [],
             'models' => [],
-            'mark' => ['id'=>0,'groupname'=>'','header'=>false],
+            'mark' => ['id'=>0,'groupname'=>'','header'=>false, 'carTypeId'=>0],
             'model' => ['id'=>0, 'header'=>false],
 
             'general' => $general,
@@ -193,10 +193,10 @@ class DefaultController extends Controller
         $query->setMaxResults(10);
         $similar = $query->getResult();
 
-        $model = $mm->getMark($card->getModelId());
-        $mark = $model->getParent();
-        $models = $mark->getChildren();
-        $marks = $mm->getMarks($model->getGroupName());
+        $model = $mm->getModel($card->getModelId());
+        $mark = $mm->getMark($model->getCarMarkId());
+        $models = $mm->getModels($model->getCarMarkId());
+        $marks = $mm->getMarks($model->getCarTypeId());
 
         $user_foto = false;
         foreach ($card->getUser()->getInformation() as $info){
@@ -211,6 +211,11 @@ class DefaultController extends Controller
 
         $pgtid = $card->getGeneralType()->getParentId();
         if($pgtid == null) $pgtid = $card->getGeneralTypeId();
+
+        $mainFoto = '';
+        foreach($card->getFotos() as $foto){
+            if ($foto->getIsMain()) $mainFoto = '/assets/images/cards/'.$foto->getFolder().'/'.$foto->getId().'.jpg';
+        }
 
 
         return $this->render('card/card_show.html.twig', [
@@ -244,7 +249,8 @@ class DefaultController extends Controller
             'models' => $models,
             'general' => $general,
 
-            'user_foto' => $user_foto
+            'user_foto' => $user_foto,
+            'mainFoto' => $mainFoto
 
         ]);
     }
@@ -318,7 +324,7 @@ class DefaultController extends Controller
 
 
     /**
-     * @Route("/listing/{slug}")
+     * @Route("/listing/{slug}/")
      */
     public function wpStubAction(MenuGeneralType $mgt, MenuCity $mc, EntityManagerInterface $em, MenuMarkModel $mm)
     {

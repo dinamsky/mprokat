@@ -39,6 +39,13 @@ class MenuMarkModel extends Controller
         return $query->getResult();
     }
 
+    public function getModel($modelId)
+    {
+        $query = $this->em->createQuery('SELECT m FROM MarkBundle:CarModel m WHERE m.id = ?1');
+        $query->setParameter(1, $modelId);
+        return $query->getSingleResult();
+    }
+
     public function getModels($markId)
     {
         $query = $this->em->createQuery('SELECT m FROM MarkBundle:CarModel m WHERE m.carMarkId = ?1');
