@@ -16,6 +16,8 @@ use AppBundle\Menu\MenuGeneralType;
 use AppBundle\Menu\MenuMarkModel;
 use AppBundle\Menu\MenuSubFieldAjax;
 use AppBundle\SubFields\SubFieldUtils;
+use MarkBundle\Entity\CarMark;
+use MarkBundle\Entity\CarModel;
 use UserBundle\Security\Password;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -113,25 +115,25 @@ class SearchController extends Controller
 
         if($mark){
             $mark = $this->getDoctrine()
-                ->getRepository(Mark::class)
-                ->findOneBy(['header' => $mark, 'parentId' => NULL]);
-            $models = $mark->getChildren();
+                ->getRepository(CarMark::class)
+                ->findOneBy(['header' => $mark, 'carTypeId' => explode(",",$general->getCarTypeIds())]);
+            $models = $mm->getModels($mark->getId());
             foreach($models as $child){
                 $mark_ids[] = $child->getId();
             }
             $mark_condition = ' AND c.modelId IN ('.implode(',',$mark_ids).')';
-            $marks = $mm->getMarks($mark->getGroupName());
-            $models = $mm->getModels($mark->getId());
+            $marks = $mm->getMarks($mark->getCarTypeId());
+            //$models = $mm->getModels($mark->getId());
         } else {
-            $mark = array('id' => 0,'groupname'=>'', 'header'=>false);
+            $mark = array('id' => 0,'groupname'=>'', 'header'=>false, 'carTypeId'=>0);
             $marks = array();
             $models = false;
         }
 
         if($model){
             $model = $this->getDoctrine()
-                ->getRepository(Mark::class)
-                ->findOneBy(['header' => $model, 'parentId' => $mark->getId()]);
+                ->getRepository(CarModel::class)
+                ->findOneBy(['header' => $model, 'carMarkId' => $mark->getId()]);
 
             $mark_condition = ' AND c.modelId = '.$model->getId();
         } else {

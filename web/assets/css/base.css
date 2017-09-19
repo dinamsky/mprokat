@@ -89,7 +89,7 @@ button{
     background: transparent;
     cursor: pointer;
     float: left;
-    min-height: inherit;
+    min-height: 31px;
 }
 
 .top_user_actions a:hover, .top_user_actions_button:hover{
