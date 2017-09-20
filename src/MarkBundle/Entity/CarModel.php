@@ -44,6 +44,12 @@ class CarModel
 
 
     /**
+     * @ORM\ManyToOne(targetEntity="MarkBundle\Entity\CarMark")
+     * @ORM\JoinColumn(name="car_mark_id", referencedColumnName="id")
+     */
+    private $mark;
+
+    /**
      * Get id
      *
      * @return int
@@ -124,5 +130,28 @@ class CarModel
     {
         return $this->header;
     }
-}
 
+    /**
+     * Set mark
+     *
+     * @param \MarkBundle\Entity\CarMark $mark
+     *
+     * @return CarModel
+     */
+    public function setMark(\MarkBundle\Entity\CarMark $mark = null)
+    {
+        $this->mark = $mark;
+
+        return $this;
+    }
+
+    /**
+     * Get mark
+     *
+     * @return \MarkBundle\Entity\CarMark
+     */
+    public function getMark()
+    {
+        return $this->mark;
+    }
+}
