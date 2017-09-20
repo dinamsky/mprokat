@@ -79,13 +79,13 @@
                     <div uk-grid>
                         <div class="uk-width-1-2">
                             <select name="generalTypeTopLevelId" id="generalTypeTopLevelId" class="uk-select">
-                                {{ include( 'common/ajax_edit_options.html.twig', { 'options': generalTopLevel, 'id': generalSecondLevel[card.generalTypeId].getParent.id }) }}
+                                {{ include( 'common/ajax_edit_options.html.twig', { 'options': generalTopLevel, 'id': pgtid }) }}
                             </select>
                         </div>
 
                         <div class="uk-width-1-2">
                             <select name="generalTypeId" id="generalTypeId" class="uk-select">
-                                {{ include( 'common/ajax_edit_options.html.twig', { 'options': generalSecondLevel, 'id': generalSecondLevel[card.generalTypeId].id }) }}
+                                {{ include( 'common/ajax_edit_options.html.twig', { 'options': generalSecondLevel, 'id': gtid }) }}
                             </select>
                         </div>
                     </div>
