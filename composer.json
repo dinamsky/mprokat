@@ -8,7 +8,8 @@
             "AppBundle\\": "src/AppBundle",
             "UserBundle\\": "src/UserBundle",
             "AdminBundle\\": "src/AdminBundle",
-            "InfoBundle\\": "src/InfoBundle"
+            "InfoBundle\\": "src/InfoBundle",
+            "MarkBundle\\": "src/MarkBundle"
         },
         "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
     },

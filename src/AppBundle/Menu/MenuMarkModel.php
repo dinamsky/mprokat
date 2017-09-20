@@ -5,7 +5,9 @@ namespace AppBundle\Menu;
 use Doctrine\ORM\EntityManagerInterface as em;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\Mark;
+use MarkBundle\Entity\CarType;
+use MarkBundle\Entity\CarMark;
+use MarkBundle\Entity\CarModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class MenuMarkModel extends Controller
@@ -19,59 +21,63 @@ class MenuMarkModel extends Controller
 
     public function getGroups()
     {
-        $array = array(
-            ['id'=>'cars', 'header'=>'Легковые автомобили','url' => 'cars'],
-            ['id'=>'trucks', 'header'=>'Грузовые автомобили','url' => 'trucks']
-        );
-        return $array;
+        $query = $this->em->createQuery('SELECT g FROM MarkBundle:CarType g');
+        return $query->getResult();
     }
 
     public function getMark($mark_id)
     {
-        $query = $this->em->createQuery('SELECT m FROM AppBundle:Mark m WHERE m.id=?1');
+        $query = $this->em->createQuery('SELECT m FROM MarkBundle:CarMark m WHERE m.id=?1');
         $query->setParameter(1, $mark_id);
         return $query->getSingleResult();
     }
 
-    public function getMarks($groupName)
+    public function getMarks($groupId)
     {
-        $query = $this->em->createQuery('SELECT m FROM AppBundle:Mark m WHERE m.groupName = ?1 AND m.parentId IS NULL');
-        $query->setParameter(1, $groupName);
+        $query = $this->em->createQuery('SELECT m FROM MarkBundle:CarMark m WHERE m.carTypeId = ?1');
+        $query->setParameter(1, $groupId);
         return $query->getResult();
     }
 
-    public function getModels($parentId)
+    public function getModel($modelId)
     {
-        $query = $this->em->createQuery('SELECT m FROM AppBundle:Mark m WHERE m.parentId = ?1');
-        $query->setParameter(1, $parentId);
+        $query = $this->em->createQuery('SELECT m FROM MarkBundle:CarModel m WHERE m.id = ?1');
+        $query->setParameter(1, $modelId);
+        return $query->getSingleResult();
+    }
+
+    public function getModels($markId)
+    {
+        $query = $this->em->createQuery('SELECT m FROM MarkBundle:CarModel m WHERE m.carMarkId = ?1');
+        $query->setParameter(1, $markId);
         return $query->getResult();
     }
 
-    public function getLimitedArray($ids)
-    {
-        $mark = array();
-        $query = $this->em->createQuery('SELECT m FROM AppBundle:Mark m WHERE m.id IN ( :ids )');
-        $query->setParameter('ids', $ids);
-        foreach ($query->getResult() as $row){
-            $mark[$row->getParentId()][] = $row;
-        }
-        foreach ($mark as $id=>$models){
-            $result[] = array(
-                'object' => $this->getMark($id),
-                'childs' => $models
-            );
-        }
-        return $result;
-    }
+//    public function getLimitedArray($ids)
+//    {
+//        $mark = array();
+//        $query = $this->em->createQuery('SELECT m FROM MarkBundle:CarMark m WHERE m.id IN ( :ids )');
+//        $query->setParameter('ids', $ids);
+//        foreach ($query->getResult() as $row){
+//            $mark[$row->getParentId()][] = $row;
+//        }
+//        foreach ($mark as $id=>$models){
+//            $result[] = array(
+//                'object' => $this->getMark($id),
+//                'childs' => $models
+//            );
+//        }
+//        return $result;
+//    }
 
     /**
      * @Route("/ajax/getMarks")
      */
     public function getMarksAction(Request $request)
     {
-        $groupName = $request->request->get('groupName');
+        $groupId = $request->request->get('groupId');
         return $this->render('common/ajax_options_url.html.twig', [
-            'options' => $this->getMarks($groupName)
+            'options' => $this->getMarks($groupId)
         ]);
     }
 

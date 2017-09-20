@@ -1,3 +1,8 @@
+mark:
+    resource: "@MarkBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 info:
     resource: "@InfoBundle/Controller/"
     type:     annotation

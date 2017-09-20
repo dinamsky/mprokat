@@ -120,7 +120,7 @@ class Card
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="Mark")
+     * @ORM\ManyToOne(targetEntity="MarkBundle\Entity\CarModel")
      * @ORM\JoinColumn(name="model_id", referencedColumnName="id")
      */
     private $markModel;
@@ -128,7 +128,7 @@ class Card
     /**
      * @var int
      *
-     * @ORM\Column(name="model_id", type="bigint", nullable=true)
+     * @ORM\Column(name="model_id", type="integer", nullable=true)
      */
     private $modelId = null;
 
@@ -747,11 +747,11 @@ class Card
     /**
      * Set markModel
      *
-     * @param \AppBundle\Entity\Mark $markModel
+     * @param \MarkBundle\Entity\CarModel $markModel
      *
      * @return Card
      */
-    public function setMarkModel(\AppBundle\Entity\Mark $markModel = null)
+    public function setMarkModel(\MarkBundle\Entity\CarModel $markModel = null)
     {
         $this->markModel = $markModel;
 
@@ -761,7 +761,7 @@ class Card
     /**
      * Get markModel
      *
-     * @return \AppBundle\Entity\Mark
+     * @return \MarkBundle\Entity\CarModel
      */
     public function getMarkModel()
     {

@@ -53,12 +53,12 @@ $( document ).ready(function() {
     });
 
     $('#markGroupName').on('change',function(){
-        var groupName = $(this).find('option:selected').val();
+        var groupId = $(this).find('option:selected').val();
         $('.mark_selector').html($(this).find('option:selected').html());
         $.ajax({
             url: '/ajax/getMarks',
             type: 'POST',
-            data: {groupName:groupName},
+            data: {groupId:groupId},
             success: function(html){
                 //alert(html);
                 $('#markId').html(html);

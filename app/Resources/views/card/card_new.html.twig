@@ -121,21 +121,21 @@
 
                     <input type="hidden" name="groupName" value="cars">
 
-                    {#<div class="uk-width-1-3">#}
-                        {#<div class="uk-text-small"><span class="red_star">*</span>Группа</div>#}
-                        {#<select name="groupName" id="markGroupName" class="uk-select">#}
-                            {#{{ include( 'common/ajax_edit_options.html.twig', { 'options': mark_groups, 'id': 'cars' }) }}#}
-                        {#</select>#}
-                    {#</div>#}
+                    <div class="uk-width-1-3">
+                        <div class="uk-text-small"><span class="red_star">*</span>Группа</div>
+                        <select name="groupName" id="markGroupName" class="uk-select">
+                            {{ include( 'common/ajax_edit_options.html.twig', { 'options': mark_groups, 'id': 1 }) }}
+                        </select>
+                    </div>
 
-                    <div class="uk-width-1-2">
+                    <div class="uk-width-1-3">
                         <div class="uk-text-small"><span class="red_star">*</span>Марка</div>
                         <select name="mark" id="markId" class="uk-select">
                             {{ include( 'common/ajax_edit_options.html.twig', { 'options': marks, 'id': 0 }) }}
                         </select>
                     </div>
 
-                    <div class="uk-width-1-2">
+                    <div class="uk-width-1-3">
                         <div class="uk-text-small"><span class="red_star">*</span>Модель</div>
                         <select name="modelId" id="markModelId" class="uk-select"></select>
                     </div>

@@ -14,13 +14,13 @@
                 <div class="uk-width-4-5">
                     <h1 class="c_white uk-margin-remove">{{ user.header }}</h1>
                     {% for info in user.information %}
-                        {% if info.uiKey == 'vk' and info.uiValue != '' %}<a href="{{ info.uiValue }}" class="c_white padding0-10"><i class="fa fa-vk"></i></a>{% endif %}
-                        {% if info.uiKey == 'fb' and info.uiValue != '' %}<a href="{{ info.uiValue }}" class="c_white padding0-10"><i class="fa fa-facebook"></i></a>{% endif %}
-                        {% if info.uiKey == 'ok' and info.uiValue != '' %}<a href="{{ info.uiValue }}" class="c_white padding0-10"><i class="fa fa-odnoklassniki"></i></a>{% endif %}
-                        {% if info.uiKey == 'tw' and info.uiValue != '' %}<a href="{{ info.uiValue }}" class="c_white padding0-10"><i class="fa fa-twitter"></i></a>{% endif %}
-                        {% if info.uiKey == 'gp' and info.uiValue != '' %}<a href="{{ info.uiValue }}" class="c_white padding0-10"><i class="fa fa-google-plus"></i></a>{% endif %}
-                        {% if info.uiKey == 'ig' and info.uiValue != '' %}<a href="{{ info.uiValue }}" class="c_white padding0-10"><i class="fa fa-instagram"></i></a>{% endif %}
-                        {% if info.uiKey == 'yt' and info.uiValue != '' %}<a href="{{ info.uiValue }}" class="c_white padding0-10"><i class="fa fa-youtube"></i></a>{% endif %}
+                        {% if info.uiKey == 'vk' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="c_white padding0-10"><i class="fa fa-vk"></i></a>{% endif %}
+                        {% if info.uiKey == 'fb' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="c_white padding0-10"><i class="fa fa-facebook"></i></a>{% endif %}
+                        {% if info.uiKey == 'ok' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="c_white padding0-10"><i class="fa fa-odnoklassniki"></i></a>{% endif %}
+                        {% if info.uiKey == 'tw' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="c_white padding0-10"><i class="fa fa-twitter"></i></a>{% endif %}
+                        {% if info.uiKey == 'gp' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="c_white padding0-10"><i class="fa fa-google-plus"></i></a>{% endif %}
+                        {% if info.uiKey == 'ig' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="c_white padding0-10"><i class="fa fa-instagram"></i></a>{% endif %}
+                        {% if info.uiKey == 'yt' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="c_white padding0-10"><i class="fa fa-youtube"></i></a>{% endif %}
                     {% endfor %}
                 </div>
             </div>
@@ -78,7 +78,7 @@
                     {% for info in user.information if info.uiKey == 'website' %}
                     <div uk-grid class="uk-grid-collapse">
                         <div class="uk-width-1-6"><i class="fa fa-globe"></i> Website</div>
-                        <div class="uk-width-1-4">{{ info.uiValue }}</div>
+                        <div class="uk-width-1-4"><a rel="nofollow" href="{{ info.uiValue }}">{{ info.uiValue }}</a></div>
                     </div>
                     {% endfor %}
                 </div>

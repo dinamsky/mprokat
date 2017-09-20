@@ -14,11 +14,17 @@
     <script src="{{ asset('assets/js/sliderSettings.js') }}"></script>
 {% endblock %}
 
+{% block openGraph %}
+    {{ parent() }}
+    <meta property="og:image" content="{{ app.request.getSchemeAndHttpHost() ~ mainFoto }}">
+    <meta property="og:title" content="{{ card.header }}">
+{% endblock %}
+
 {% block content %}
 
 
     <div class="uk-flex uk-flex-bottom card_cover"
-         style="background:url('/assets/images/cards/{% for foto in card.getFotos if foto.isMain %}{{ foto.folder }}/{{ foto.id }}.jpg{% endfor %}') center center;
+         style="background:url('{{ mainFoto }}') center center;
                  background-size: cover;
                  height: 500px;
                  position: relative;">
@@ -214,13 +220,13 @@
                     <h3 class="uk-margin-remove"><a href="/user/{{ card.user.id }}">{{ card.user.header }}</a></h3>
                     <div class="uk-margin-top">
                         {% for info in card.user.information %}
-                            {% if info.uiKey == 'vk' and info.uiValue != '' %}<a href="{{ info.uiValue }}" class="card_soc_icon s_vk"><i class="fa fa-vk"></i></a>{% endif %}
-                            {% if info.uiKey == 'fb' and info.uiValue != '' %}<a href="{{ info.uiValue }}" class="card_soc_icon s_fb"><i class="fa fa-facebook"></i></a>{% endif %}
-                            {% if info.uiKey == 'ok' and info.uiValue != '' %}<a href="{{ info.uiValue }}" class="card_soc_icon s_ok"><i class="fa fa-odnoklassniki"></i></a>{% endif %}
-                            {% if info.uiKey == 'tw' and info.uiValue != '' %}<a href="{{ info.uiValue }}" class="card_soc_icon s_tw"><i class="fa fa-twitter"></i></a>{% endif %}
-                            {% if info.uiKey == 'gp' and info.uiValue != '' %}<a href="{{ info.uiValue }}" class="card_soc_icon s_gp"><i class="fa fa-google-plus"></i></a>{% endif %}
-                            {% if info.uiKey == 'ig' and info.uiValue != '' %}<a href="{{ info.uiValue }}" class="card_soc_icon s_ig"><i class="fa fa-instagram"></i></a>{% endif %}
-                            {% if info.uiKey == 'yt' and info.uiValue != '' %}<a href="{{ info.uiValue }}" class="card_soc_icon s_yt"><i class="fa fa-youtube"></i></a>{% endif %}
+                            {% if info.uiKey == 'vk' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_vk"><i class="fa fa-vk"></i></a>{% endif %}
+                            {% if info.uiKey == 'fb' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_fb"><i class="fa fa-facebook"></i></a>{% endif %}
+                            {% if info.uiKey == 'ok' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_ok"><i class="fa fa-odnoklassniki"></i></a>{% endif %}
+                            {% if info.uiKey == 'tw' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_tw"><i class="fa fa-twitter"></i></a>{% endif %}
+                            {% if info.uiKey == 'gp' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_gp"><i class="fa fa-google-plus"></i></a>{% endif %}
+                            {% if info.uiKey == 'ig' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_ig"><i class="fa fa-instagram"></i></a>{% endif %}
+                            {% if info.uiKey == 'yt' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_yt"><i class="fa fa-youtube"></i></a>{% endif %}
                         {% endfor %}
                     </div>
                 </div>

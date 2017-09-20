@@ -11,8 +11,13 @@
             <link href="{{ asset('assets/css/typo.css') }}" rel="stylesheet" />
             <link href="{{ asset('assets/css/base-responsive.css') }}" rel="stylesheet" />
         {% endblock %}
+
+        {% block openGraph %}
+        {% endblock %}
+
         <link rel="icon" type="image/x-icon" href="{{ asset('assets/favicon.ico') }}" />
         <title>{% block title %}Мультипрокат{% endblock %}</title>
+
     </head>
     <body>
         {{ include('header.html.twig') }}

@@ -1,10 +1,10 @@
 $( document ).ready(function() {
     $('#markGroupName').on('change',function(){
-        var groupName = $(this).children('option:selected').val();
+        var groupId = $(this).children('option:selected').val();
         $.ajax({
             url: '/ajax/getMarks',
             type: 'POST',
-            data: {groupName:groupName},
+            data: {groupId:groupId},
             success: function(html){
                 //alert(html);
                 $('#markId').html(html);

@@ -1,27 +1,41 @@
 <?php
 
-namespace AdminBundle\Controller;
+namespace AppBundle\Command;
 
-use AppBundle\Foto\FotoUtils;
-use AppBundle\Menu\MenuCity;
-use AppBundle\Menu\MenuGeneralType;
-use AppBundle\Menu\MenuMarkModel;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
-class AdminWPController extends Controller
+class MarkSetCommand extends ContainerAwareCommand
 {
-
-    /**
-     * @Route("/wp")
-     */
-    public function wpAction()
+    protected function configure()
     {
-        echo 'ok';
-        return new Response();
+        $this->setName('app:mark-set');
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+
+        $em = $this->getContainer()->get('doctrine')->getManager();
+
+
+
+        $conn = $em->getConnection();
+
+        $cards = $conn->fetchAll('SELECT id,header,general_type_id FROM card');
+        foreach ($cards as $card) {
+            $gt = $card['general_type_id'];
+            $type_ids = $conn->fetchColumn('SELECT car_type_ids FROM general_type WHERE id='.$gt);
+
+            $model_id = $this->fillModel($card['header'],$type_ids);
+            $id = $card['id'];
+            $sql = "UPDATE card SET model_id = $model_id WHERE id=$id";
+            $conn->query($sql);
+        }
+
+
+        $output->writeln('All done!');
     }
 
     private function fillModel($header, $type_ids) // ready
@@ -58,7 +72,7 @@ class AdminWPController extends Controller
 
     private function checkCount($array, $parent_id, $type_ids){
 
-        $em = $this->get('doctrine')->getManager();
+        $em = $this->getContainer()->get('doctrine')->getManager();
         $new_conn = $em->getConnection();
 
         foreach ($array as $key=>$mark_name){
@@ -77,28 +91,5 @@ class AdminWPController extends Controller
             }
         }
         return 0;
-    }
-
-    /**
-     * @Route("/wpModelSet")
-     */
-    public function wpModelSet()
-    {
-
-        $em = $this->get('doctrine')->getManager();
-        $conn = $em->getConnection();
-
-        $cards = $conn->fetchAll('SELECT id,header,general_type_id FROM card');
-        foreach ($cards as $card) {
-            $gt = $card['general_type_id'];
-            $type_ids = $conn->fetchColumn('SELECT car_type_ids FROM general_type WHERE id='.$gt);
-
-            $model_id = $this->fillModel($card['header'],$type_ids);
-            $id = $card['id'];
-            $sql = "UPDATE card SET model_id = $model_id WHERE id=$id";
-            $conn->query($sql);
-        }
-        echo 'done!';
-        return new Response();
     }
 }

@@ -39,6 +39,13 @@ class GeneralType
     /**
      * @var string
      *
+     * @ORM\Column(name="car_type_ids", type="string", length=255)
+     */
+    private $carTypeIds;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="url", type="string", length=255)
      */
     private $url;
@@ -238,5 +245,29 @@ class GeneralType
     public function getCards()
     {
         return $this->cards;
+    }
+
+    /**
+     * Set carTypeIds
+     *
+     * @param string $carTypeIds
+     *
+     * @return GeneralType
+     */
+    public function setCarTypeIds($carTypeIds)
+    {
+        $this->carTypeIds = $carTypeIds;
+
+        return $this;
+    }
+
+    /**
+     * Get carTypeIds
+     *
+     * @return string
+     */
+    public function getCarTypeIds()
+    {
+        return $this->carTypeIds;
     }
 }

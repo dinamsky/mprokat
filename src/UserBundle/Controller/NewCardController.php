@@ -2,6 +2,7 @@
 
 namespace UserBundle\Controller;
 
+use MarkBundle\Entity\CarModel;
 use UserBundle\Entity\UserOrder;
 use AppBundle\Entity\CardFeature;
 use AppBundle\Entity\CardPrice;
@@ -109,7 +110,7 @@ class NewCardController extends Controller
                 'gt' => $gt,
                 'custom_fields' => '',
                 'mark_groups' => $markmenu->getGroups(),
-                'marks' => $markmenu->getMarks('cars'),
+                'marks' => $markmenu->getMarks(1),
                 'conditions' => $conditions,
                 'colors' => $colors,
                 'features' => $features,
@@ -140,15 +141,15 @@ class NewCardController extends Controller
             $card->setStreetView($post->get('streetView'));
 
             if($post->has('noMark')){
-                $modelId = $this->getDoctrine()
+                $model = $this->getDoctrine()
                     ->getRepository(Mark::class)
-                    ->find(1799);
+                    ->find(20991);
             } else {
-                $modelId = $this->getDoctrine()
-                    ->getRepository(Mark::class)
+                $model = $this->getDoctrine()
+                    ->getRepository(CarModel::class)
                     ->find($post->get('modelId'));
             }
-            $card->setMarkModel($modelId);
+            $card->setMarkModel($model);
 
             $generalType = $this->getDoctrine()
                 ->getRepository(GeneralType::class)
