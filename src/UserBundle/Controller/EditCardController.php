@@ -108,6 +108,9 @@ class EditCardController extends Controller
         if ($card->getFieldIntegers()->isEmpty()) $subfields = false;
         else $subfields = $sf->getSubFieldsEdit($card);
 
+        $gtid = $card->getGeneralTypeId();
+        $pgtid = $card->getGeneralType()->getParentId();
+        if($pgtid == null) $pgtid = $card->getGeneralTypeId();
 
         return $this->render('card/card_edit.html.twig',[
             'card' => $card,
@@ -116,6 +119,9 @@ class EditCardController extends Controller
             'generalTopLevel' => $mgt->getTopLevel(),
             'generalSecondLevel' => $mgt->getSecondLevel($generalType->getParentId()),
             'gt' => $gt,
+            'gtid' => $gtid,
+            'pgtid' => $pgtid,
+
             'countries' => $mc->getCountry(),
             'mark' => $mark,
             'model' => $model,
@@ -168,9 +174,12 @@ class EditCardController extends Controller
             ->find($post->get('modelId'));
         $card->setMarkModel($model);
 
+        if ($post->get('generalTypeId') == 0) $gt = $post->get('generalTypeTopLevelId');
+        else $gt = $post->get('generalTypeId');
+
         $generalType = $this->getDoctrine()
             ->getRepository(GeneralType::class)
-            ->find($post->get('generalTypeId'));
+            ->find($gt);
         $card->setGeneralType($generalType);
 
         $city = $this->getDoctrine()

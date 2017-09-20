@@ -151,9 +151,13 @@ class NewCardController extends Controller
             }
             $card->setMarkModel($model);
 
+
+            if ($post->get('generalTypeId') == 0) $gt = $post->get('generalTypeTopLevelId');
+            else $gt = $post->get('generalTypeId');
+
             $generalType = $this->getDoctrine()
                 ->getRepository(GeneralType::class)
-                ->find($post->get('generalTypeId'));
+                ->find($gt);
             $card->setGeneralType($generalType);
 
             $city = $this->getDoctrine()
