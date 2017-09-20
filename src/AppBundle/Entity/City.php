@@ -51,6 +51,13 @@ class City
     private $url;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="gde", type="string", length=255)
+     */
+    private $gde;
+
+    /**
      * One Category has Many Categories.
      * @ORM\OneToMany(targetEntity="City", mappedBy="parent")
      */
@@ -236,5 +243,29 @@ class City
     public function getUrl()
     {
         return $this->url;
+    }
+
+    /**
+     * Set gde
+     *
+     * @param string $gde
+     *
+     * @return City
+     */
+    public function setGde($gde)
+    {
+        $this->gde = $gde;
+
+        return $this;
+    }
+
+    /**
+     * Get gde
+     *
+     * @return string
+     */
+    public function getGde()
+    {
+        return $this->gde;
     }
 }

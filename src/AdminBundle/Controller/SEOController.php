@@ -15,30 +15,33 @@ use AdminBundle\Entity\Admin;
 class SEOController extends Controller
 {
     /**
-     * @Route("/adminSEOPatterns")
+     * @Route("/adminSEOPatterns", name="adminSEOPatterns")
      */
     public function SEOPatternsAction(Request $request)
     {
+        $path = '../app/Resources/views/seo_templates/';
         if($request->isMethod('GET')) {
             if ($this->get('session')->get('admin') === null) return $this->render('AdminBundle::admin_enter_form.html.twig');
             else {
-                $comments = $this->getDoctrine()
-                    ->getRepository(Comment::class)
-                    ->findAll();
-                return $this->render('AdminBundle::admin_seo_patterns.html.twig', ['comments' => $comments]);
+                return $this->render('AdminBundle::admin_seo_patterns.html.twig', [
+                    'p_title' => @file_get_contents($path.'p_title.html.twig'),
+                    'p_description' => @file_get_contents($path.'p_description.html.twig'),
+                    'c_title' => @file_get_contents($path.'c_title.html.twig'),
+                    'c_description' => @file_get_contents($path.'c_description.html.twig'),
+                ]);
             }
         };
         if($request->isMethod('POST')) {
-
-            $comment = $this->getDoctrine()
-                ->getRepository(Comment::class)
-                ->find($request->request->get('comment_id'));
-
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($comment);
-            $em->flush();
-
-            return $this->redirectToRoute('admin_main');
+            $post = $request->request;
+            file_put_contents($path.'p_title.html.twig', $post->get('p_title'));
+            file_put_contents($path.'p_description.html.twig', $post->get('p_description'));
+            file_put_contents($path.'c_title.html.twig', $post->get('c_title'));
+            file_put_contents($path.'c_description.html.twig', $post->get('c_description'));
+            $this->addFlash(
+                'notice',
+                'Шаблоны успешно сохранены!'
+            );
+            return $this->redirectToRoute('adminSEOPatterns');
         }
     }
 

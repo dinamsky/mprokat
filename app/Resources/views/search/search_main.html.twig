@@ -6,6 +6,7 @@
     <script src="{{ asset('assets/js/search_page.js') }}"></script>
 {% endblock %}
 
+{% block title %}{{ include(':seo_templates:c_title.html.twig') }}{% endblock %}
 
 {% block content %}
 
@@ -28,6 +29,12 @@
                             <option value="date_asc" {{ ('date_asc' == order) ? 'selected' : '' }}>по дате: сначала старые</option>
                             <option value="price_desc" {{ ('price_desc' == order) ? 'selected' : '' }}>по цене: сначала дороже</option>
                             <option value="price_asc" {{ ('price_asc' == order) ? 'selected' : '' }}>по цене: сначала дешевле</option>
+                        </select>
+                        <span class="uk-display-inline-block">Услуга</span>
+                        <select name="service" id="service" class="uk-select" form="searchForm" style="width:150px">
+                            <option value="all" {{ service == 'all' ? 'selected' : '' }}>прокат и аренда</option>
+                            <option value="prokat" {{ service == 'prokat' ? 'selected' : '' }}>прокат</option>
+                            <option value="arenda" {{ service == 'arenda' ? 'selected' : '' }}>аренда</option>
                         </select>
                     </div>
                     <div class="uk-width-1-4 uk-text-right">
