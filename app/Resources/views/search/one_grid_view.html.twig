@@ -8,7 +8,7 @@
 
     {% set bgrnd = 'white' %}
 
-    {% if main_foto and file_exists('./assets/images/cards/'~main_foto.folder~'/t/'~main_foto.id~'.jpg') %}
+    {% if main_foto  %}
         {% set bgrnd = 'url(/assets/images/cards/'~main_foto.folder~'/t/'~main_foto.id~'.jpg)' %}
     {% else %}
         {% set bgrnd = 'url(/assets/images/interface/no_image.jpg)' %}

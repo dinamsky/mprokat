@@ -26,24 +26,6 @@ class DefaultController extends Controller
 {
 
     /**
-     * @Route("/mainCitySelector")
-     */
-    public function citySelectorAction(Request $request)
-    {
-        $post = $request->request;
-        $countryCode = $post->get('countryCode');
-        $regionId = $post->get('regionId');
-        $cityId = $post->get('cityId');
-        $general_type = $post->get('general_type');
-
-        if (isset($countryCode)) $return = $countryCode;
-        if (isset($regionId) and $regionId != 0 ) $return = $regionId;
-        if (isset($cityId) and $cityId != 0) $return = $cityId;
-        //dump($request);
-        return $this->redirect('/type/'.$return.'/'.$general_type);
-    }
-
-    /**
      * @Route("/ajax/showPhone")
      */
     public function showPhoneAction(Request $request)
@@ -69,60 +51,13 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/ajax/frontGeo")
-     */
-    public function frontGeoAction(Request $request, Response $response, EntityManagerInterface $em)
-    {
-        $post = $request->request;
-        $geo = json_decode($post->get('geo'), true);
-        $this->get('session')->set('geo', $geo);
-        $this->get('session')->set('ip', $geo['ip']);
-        $this->get('session')->set('sessId', $this->get('session')->getId());
-
-        $city = $em->getRepository("AppBundle:City")->createQueryBuilder('c')
-            ->where('c.header LIKE :geoname')
-            ->setParameter('geoname', '%'.$geo['city']['name_ru'].'%')
-            ->getQuery()
-            ->getResult();
-        if ($city) $cityId = $city[0]->getId();
-        else $cityId = 77;
-
-        $response = new Response();
-        $response->headers->setCookie(new Cookie('geo', $cityId));
-        $response->send();
-    }
-
-
-    /**
      * @Route("/listing/{slug}/")
      */
     public function wpStubAction(MenuGeneralType $mgt, MenuCity $mc, EntityManagerInterface $em, MenuMarkModel $mm)
     {
-        if($this->get('session')->has('geo')){
-
-            $geo = $this->get('session')->get('geo');
-
-            //dump($geo);
-
-            $city = $em->getRepository("AppBundle:City")->createQueryBuilder('c')
-                ->andWhere('c.header LIKE :geoname')
-                ->setParameter('geoname', '%'.$geo['city'].'%')
-                ->getQuery()
-                ->getResult();
-
-            //dump($city);
-
-            if ($city) $city = $city[0]; // TODO make easier!
-            else $city = $this->getDoctrine()
-                ->getRepository(City::class)
-                ->find(77);
-        } else {
-            $city = new City();
-            $city->setCountry('RUS');
-            $city->setParentId(0);
-            $city->setTempId(0);
-        }
-
+        $city = $this->getDoctrine()
+            ->getRepository(City::class)
+            ->find(77);
 
         $general = $this->getDoctrine()
             ->getRepository(GeneralType::class)
