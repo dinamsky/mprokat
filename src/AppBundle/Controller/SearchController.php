@@ -9,6 +9,7 @@ use AppBundle\Entity\FieldInteger;
 use AppBundle\Entity\FieldType;
 use AppBundle\Entity\GeneralType;
 use AppBundle\Entity\Mark;
+use AppBundle\Entity\Seo;
 use AppBundle\Entity\State;
 use AppBundle\Entity\CardField;
 use AppBundle\Menu\MenuCity;
@@ -205,11 +206,13 @@ class SearchController extends Controller
             $seo['city']['chto'] = $city->getHeader();
             $seo['city']['gde'] = $city->getGde();
         } else {
-            $seo['city']['chto'] = '';
-            $seo['city']['gde'] = '';
+            $seo['city']['chto'] = 'России';
+            $seo['city']['gde'] = 'России';
         }
 
-
+        $custom_seo = $this->getDoctrine()
+            ->getRepository(Seo::class)
+            ->findOneBy(['url' => $request->getPathInfo()]);
 
 
         return $this->render('search/search_main.html.twig', [
@@ -246,7 +249,8 @@ class SearchController extends Controller
             'marks' => $marks,
             'models' => $models,
 
-            'seo' => $seo
+            'seo' => $seo,
+            'custom_seo' => $custom_seo
 
         ]);
     }

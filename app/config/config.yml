@@ -98,3 +98,9 @@ swiftmailer:
     username: '%mailer_user%'
     password: '%mailer_password%'
     spool: { type: memory }
+
+services:
+    twig.extension.stringloader:
+        class: Twig_Extension_StringLoader
+        tags: { name: twig.extension }
+
