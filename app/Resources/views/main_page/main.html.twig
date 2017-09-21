@@ -15,6 +15,16 @@
     <script src="{{ asset('assets/js/sliderSettings.js') }}"></script>
 {% endblock %}
 
+{% block metaTags %}
+    {{ parent() }}
+    {% if custom_seo and custom_seo.description != ''%}
+        <meta name="description" content="{% include(template_from_string(custom_seo.description)) %}">
+    {% endif %}
+{% endblock %}
+
+{% block title %}{% if custom_seo and custom_seo.title != ''%}{% include(template_from_string(custom_seo.title)) %}{% else %}Мультипрокат{% endif %}{% endblock %}
+
+
 {% block content %}
 
 
@@ -44,7 +54,13 @@
 
     <div id="top_selector_block" class="uk-margin-large-top">
         <div class="standard_wide">
-            <h1 class="uk-text-center">Большой выбор транспорта в аренду</h1>
+
+            {% if custom_seo and custom_seo.h1 != ''%}
+                <h1 class="uk-text-center">{% include(template_from_string(custom_seo.h1)) %}</h1>
+            {% else %}
+                <h1 class="uk-text-center">Большой выбор транспорта в аренду</h1>
+            {% endif %}
+
             <div class="uk-margin-auto uk-width-3-4 uk-margin-bottom">
                 <form uk-grid id="main_search_form">
                     <div class="uk-width-1-4@l uk-position-relative">
@@ -168,6 +184,13 @@
 
     </div>
 
-
+    {% set seo_text = '' %}
+    {% if custom_seo and custom_seo.seoText != ''%}
+        {% set seo_text = custom_seo.seoText %}
+    {% endif %}
+    {% if seo_text != '' %}
+        <hr>
+        <div class="standard_wide">{{ seo_text }}</div>
+    {% endif %}
 
 {% endblock %}

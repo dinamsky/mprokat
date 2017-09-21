@@ -123,6 +123,10 @@ function getSelectorUrl(){
     var mark = $('#markId').find('option:selected').data('url');
     var model = $('#markModelId').find('option:selected').data('url');
 
+    service = $('#service').find('option:selected').val();
+
+    if(service) service = '/'+service;
+    else service = '/all';
 
     if(country) city = '/'+country;
     if(regionId) city = '/'+regionId;
@@ -133,6 +137,11 @@ function getSelectorUrl(){
 
     if (mark && mark !== '-------') markModel = '/'+mark;
     if (model && model!== '---' && model!== '-------') markModel = '/'+mark+'/'+model;
+
+    if (service === '/all' && generalType === '/alltypes' && markModel === ''){
+        service = '';
+        generalType = '';
+    }
 
     return '/show'+city+service+generalType+markModel;
 }

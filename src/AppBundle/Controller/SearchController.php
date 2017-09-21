@@ -9,6 +9,7 @@ use AppBundle\Entity\FieldInteger;
 use AppBundle\Entity\FieldType;
 use AppBundle\Entity\GeneralType;
 use AppBundle\Entity\Mark;
+use AppBundle\Entity\Seo;
 use AppBundle\Entity\State;
 use AppBundle\Entity\CardField;
 use AppBundle\Menu\MenuCity;
@@ -180,6 +181,40 @@ class SearchController extends Controller
         }
 
 
+        if (!$service) $p_service = 'all';
+        else {
+            if ($service == 1) $p_service = 'prokat';
+            else $p_service = 'arenda';
+        }
+
+        $seo = [];
+        if ($p_service == 'all') $seo['service'] = 'Прокат и аренда';
+        if ($p_service == 'prokat') $seo['service'] = 'Прокат';
+        if ($p_service == 'arenda') $seo['service'] = 'Аренда';
+        if (!$general) {
+            $seo['type']['singular'] = 'транспорта';
+            $seo['type']['plural'] = 'транспорта';
+        } else {
+            $seo['type']['singular'] = $general->getChegoSingular();
+            $seo['type']['plural'] = $general->getChegoPlural();
+        }
+        if (!is_array($mark)) $seo['mark'] = $mark->getHeader();
+        else $seo['mark'] = '';
+        if (!is_array($model)) $seo['model'] = $model->getHeader();
+        else $seo['model'] = '';
+        if ($city) {
+            $seo['city']['chto'] = $city->getHeader();
+            $seo['city']['gde'] = $city->getGde();
+        } else {
+            $seo['city']['chto'] = 'России';
+            $seo['city']['gde'] = 'России';
+        }
+
+        $custom_seo = $this->getDoctrine()
+            ->getRepository(Seo::class)
+            ->findOneBy(['url' => $request->getPathInfo()]);
+
+
         return $this->render('search/search_main.html.twig', [
 
             'cards' => $cards,
@@ -192,6 +227,7 @@ class SearchController extends Controller
             'pages_in_center' => $pages_in_center,
             'current_page' => $page,
             'onpage' => $cards_per_page,
+            'service' => $p_service,
 
             'countries' => $mc->getCountry(),
             'countryCode' => $countryCode,
@@ -212,6 +248,9 @@ class SearchController extends Controller
             'model' => $model,
             'marks' => $marks,
             'models' => $models,
+
+            'seo' => $seo,
+            'custom_seo' => $custom_seo
 
         ]);
     }

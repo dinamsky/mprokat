@@ -1,3 +1,8 @@
+h1{
+    font-size: 2rem;
+    line-height: 1.2;
+}
+
 .thousand_separator{
     display: inline-block;
     width:5px;
