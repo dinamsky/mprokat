@@ -171,34 +171,22 @@ class SearchController extends Controller
             }
         }
 
-        $dql = 'SELECT c,p.value FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.cardPrices p WITH p.priceId = 2 WHERE 1=1 '.$city_condition.$service_condition.$general_condition.$mark_condition.$order;
+        $dql = 'SELECT c.id FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.cardPrices p WITH p.priceId = 2 WHERE 1=1 '.$city_condition.$service_condition.$general_condition.$mark_condition.$order;
         $query = $em->createQuery($dql);
 
         $query->setMaxResults($cards_per_page);
         $query->setFirstResult($start);
 
-        $card_ids = new Paginator($query, $fetchJoinCollection = true);
 
-        //$card_ids = $query->getResult();
+
+        $card_ids = $query->getResult();
         foreach ($card_ids as $c_id) $ids[] = $c_id['id'];
         $ids = implode(",",$ids);
 
 
-        $dql = 'SELECT c,p,f FROM AppBundle:Card c LEFT JOIN c.cardPrices p LEFT JOIN c.fotos f WHERE c.id IN ('.$ids.')';
+        $dql = 'SELECT c,p,f FROM AppBundle:Card c LEFT JOIN c.cardPrices p WITH p.priceId = 2 LEFT JOIN c.fotos f WHERE c.id IN ('.$ids.')'.$order;
         $query = $em->createQuery($dql);
         $cards = $query->getResult();
-
-        //$cards = new Paginator($query, $fetchJoinCollection = true);
-
-//        if (isset($get['order'])){
-//            if($get['order'] == 'price_asc'){
-//                usort($cards, array('AppBundle\Controller\SearchController','price_sorting_asc'));
-//            }
-//            if($get['order'] == 'price_desc'){
-//                usort($cards, array('AppBundle\Controller\SearchController','price_sorting_desc'));
-//            }
-//        }
-
 
         if (!$service) $p_service = 'all';
         else {
