@@ -63,26 +63,13 @@ doctrine:
                 #   2. Uncomment database_path in parameters.yml.dist
                 #   3. Uncomment next line:
                 #path: '%database_path%'
-            wpcon:
-                driver: pdo_mysql
-                host: '194.58.123.237'
-                port: '3306'
-                dbname: 'multiprokat_mult'
-                user: 'dumper'
-                password: '366774home'
-                charset: UTF8
-
     orm:
         default_entity_manager: default
         entity_managers:
             default:
                 connection: default
-
-
                 naming_strategy: doctrine.orm.naming_strategy.underscore
                 auto_mapping: true
-            wpcon:
-                connection: wpcon
         auto_generate_proxy_classes: '%kernel.debug%'
 
 #stof

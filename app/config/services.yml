@@ -45,9 +45,11 @@ services:
     #         $someArgument: 'some_value'
     AppBundle\Menu\:
         resource: '../../src/AppBundle/Menu'
+        public: true
 
     AppBundle\SubFields\:
             resource: '../../src/AppBundle/SubFields'
+            public: true
 
     AppBundle\Foto\:
             resource: '../../src/AppBundle/Foto'
@@ -55,7 +57,8 @@ services:
             tags: ['controller.service_arguments']
 
     UserBundle\Security\:
-                resource: '../../src/UserBundle/Security'
+            resource: '../../src/UserBundle/Security'
+            public: true
 
     AppBundle\Twig\Extension\:
             resource: '../../src/AppBundle/Twig/Extension'

@@ -94,6 +94,18 @@ class ShowCardController extends Controller
         $seo['city']['chto'] = $city->getHeader();
         $seo['city']['gde'] = $city->getGde();
 
+        if($city->getId() != null) $mark_arr = $mm->getExistMarks($city->getId());
+        else $mark_arr = $mm->getExistMarks();
+        $mark_arr_sorted = $mark_arr['sorted_marks'];
+        $mark_arr_typed = $mark_arr['typed_marks'];
+        $models_in_mark = $mark_arr['models_in_mark'];
+
+        $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.total DESC, c.header ASC');
+        $popular_city = $query->getResult();
+
+        $query = $em->createQuery('SELECT g,COUNT(c.id) as counter FROM AppBundle:GeneralType g LEFT JOIN g.cards c GROUP BY g.id ORDER BY counter DESC');
+        $generalTypes = $query->getResult();
+
         return $this->render('card/card_show.html.twig', [
 
             'card' => $card,
@@ -127,7 +139,15 @@ class ShowCardController extends Controller
 
             'user_foto' => $user_foto,
             'mainFoto' => $mainFoto,
-            'seo' => $seo
+            'seo' => $seo,
+
+            'popular_city' => $popular_city,
+
+            'mark_arr_sorted' => $mark_arr_sorted,
+            'models_in_mark' => $models_in_mark,
+
+            'generalTypes' => $generalTypes,
+            'car_type_id' => $mark->getCarTypeId(),
 
         ]);
     }

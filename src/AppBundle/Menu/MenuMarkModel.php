@@ -91,4 +91,94 @@ class MenuMarkModel extends Controller
             'options' => $this->getModels($markId)
         ]);
     }
+
+    /**
+     * @Route("/ajax/getExistModels")
+     */
+    public function getExistModelsAction(Request $request)
+    {
+        $markId = $request->request->get('markId');
+        $cityId = $request->request->get('cityId');
+        $models = $this->getExistMarks($cityId)['models_in_mark'];
+        return $this->render('selector/model_block.html.twig', [
+            'model_arr'=>$models,
+            'mark_id'=>$markId,
+            'model'=>$models[$markId][0]
+        ]);
+    }
+
+    /**
+     * @Route("/ajax/getExistMarks")
+     */
+    public function getExistMarksAction(Request $request)
+    {
+        $cityId = $request->request->get('cityId');
+        $gtURL = $request->request->get('gtURL');
+        $marks = $this->getExistMarks($cityId)['sorted_marks'];
+
+        $query = $this->em->createQuery('SELECT t FROM MarkBundle:CarType t WHERE t.url = ?1');
+        $query->setParameter(1, $gtURL);
+        $result = $query->getResult();
+
+        //dump($marks[$result[0]->getId()][0]['mark']);
+
+        return $this->render('selector/mark_block.html.twig', [
+            'mark_arr'=>$this->getExistMarks($cityId)['sorted_marks'],
+            'mark'=>$marks[$result[0]->getId()][0]['mark'],
+            'type'=>$result[0]->getId()
+        ]);
+    }
+
+    public function updateModelTotal($modelId)
+    {
+        $query = $this->em->createQuery('UPDATE MarkBundle:CarModel m SET m.total = m.total +1 WHERE m.id = ?1');
+        $query->setParameter(1, $modelId);
+        $query->execute();
+    }
+
+    public function getExistMarks($cityId = '')
+    {
+
+        $mark_arr = [];
+        $new_mark_arr = [];
+        $mark_total = [];
+
+        if ($cityId!='') {
+            $query = $this->em->createQuery('SELECT c FROM AppBundle:Card c WHERE c.cityId='.$cityId);
+            foreach ($query->getResult() as $row){
+                $ids[] = $row->getModelId();
+            }
+            $ids = array_unique($ids);
+            $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.total > 0 AND m.id IN ('.implode(",",$ids).') ORDER BY m.total DESC, m.header ASC');
+
+        } else {
+            $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.total > 0 ORDER BY m.total DESC, m.header ASC');
+        }
+
+        foreach($query->getResult() as $qm){
+            if(!isset($mark_arr[$qm->getCarTypeId()][$qm->getCarMarkId()])){
+                $mark_arr[$qm->getCarTypeId()][$qm->getCarMarkId()] = [
+                    'total' => 0,
+                    'mark' => $qm->getMark(),
+                    'models' => []
+                ];
+            }
+            $mark_arr[$qm->getCarTypeId()][$qm->getCarMarkId()]['total'] = $mark_arr[$qm->getCarTypeId()][$qm->getCarMarkId()]['total'] + $qm->getTotal();
+            $mark_arr[$qm->getCarTypeId()][$qm->getCarMarkId()]['models'][] = $qm;
+            $models_in_mark[$qm->getCarMarkId()][] = $qm;
+        }
+        $i = 0;
+        foreach($mark_arr as $type=>$mas){
+            foreach($mas as $id=>$ma) {
+                $mark_total[$type][$i] = $ma['total'];
+                $new_mark_arr[$type][$i] = $ma;
+                $types[$type] = 1;
+                $i++;
+            }
+        }
+        foreach(array_keys($types) as $type) {
+            array_multisort($mark_total[$type], SORT_DESC, $new_mark_arr[$type]);
+        }
+        return ['sorted_marks'=>$new_mark_arr, 'typed_marks'=>$mark_arr, 'models_in_mark'=>$models_in_mark];
+    }
 }
