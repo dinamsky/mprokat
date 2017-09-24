@@ -25,32 +25,60 @@ class MainPageController extends Controller
             ->getRepository(Card::class)
             ->getTopSlider();
 
+//        $cars = $this->getDoctrine()
+//            ->getRepository(Card::class)
+//            ->getLimitedSlider(2);
+
+//        $trucks = $this->getDoctrine()
+//            ->getRepository(Card::class)
+//            ->getLimitedSlider(3);
+
+//        $segways = $this->getDoctrine()
+//            ->getRepository(Card::class)
+//            ->getLimitedSlider(14);
+//
+//        $bicycles = $this->getDoctrine()
+//            ->getRepository(Card::class)
+//            ->getLimitedSlider(15);
+//
+//        $boats = $this->getDoctrine()
+//            ->getRepository(Card::class)
+//            ->getLimitedSlider(12);
+//
+//        $yachts = $this->getDoctrine()
+//            ->getRepository(Card::class)
+//            ->getLimitedSlider(13);
+
+
         $cars = $this->getDoctrine()
             ->getRepository(Card::class)
-            ->getLimitedSlider(2);
-
+            ->getTopOne(2);
         $trucks = $this->getDoctrine()
             ->getRepository(Card::class)
-            ->getLimitedSlider(3);
-
-        $segways = $this->getDoctrine()
+            ->getTopOne(3);
+        $moto = $this->getDoctrine()
             ->getRepository(Card::class)
-            ->getLimitedSlider(14);
-
+            ->getTopOne(8);
         $bicycles = $this->getDoctrine()
             ->getRepository(Card::class)
-            ->getLimitedSlider(15);
-
-        $boats = $this->getDoctrine()
-            ->getRepository(Card::class)
-            ->getLimitedSlider(12);
-
+            ->getTopOne(15);
         $yachts = $this->getDoctrine()
             ->getRepository(Card::class)
-            ->getLimitedSlider(13);
+            ->getTopOne(13);
+        $snow = $this->getDoctrine()
+            ->getRepository(Card::class)
+            ->getTopOne(10);
+        $heli = $this->getDoctrine()
+            ->getRepository(Card::class)
+            ->getTopOne(17);
+        $quad = $this->getDoctrine()
+            ->getRepository(Card::class)
+            ->getTopOne(9);
 
-        $query = $em->createQuery('SELECT g,c FROM AppBundle:GeneralType g LEFT JOIN g.cards c');
+        $query = $em->createQuery('SELECT g,COUNT(c.id) as counter FROM AppBundle:GeneralType g LEFT JOIN g.cards c GROUP BY g.id ORDER BY counter DESC');
         $generalTypes = $query->getResult();
+
+        //dump($generalTypes);
 
         if($this->get('session')->has('geo')){
 
@@ -97,6 +125,14 @@ class MainPageController extends Controller
             ->getRepository(Seo::class)
             ->findOneBy(['url' => 'main']);
 
+        $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.total DESC, c.header ASC');
+        $popular_city = $query->getResult();
+
+        $mark_arr = $mm->getExistMarks($city->getId());
+        $mark_arr_sorted = $mark_arr['sorted_marks'];
+        $mark_arr_typed = $mark_arr['typed_marks'];
+        $models_in_mark = $mark_arr['models_in_mark'];
+
         return $this->render('main_page/main.html.twig', [
             'generalTopLevel' => $mgt->getTopLevel(),
             'cards' => '',
@@ -108,10 +144,12 @@ class MainPageController extends Controller
             'topSlider' => $topSlider,
             'cars' => $cars,
             'trucks' => $trucks,
-            'segways' => $segways,
+            'heli' => $heli,
             'bicycles' => $bicycles,
-            'boats' => $boats,
+            'snow' => $snow,
             'yachts' => $yachts,
+            'moto' => $moto,
+            'quad' => $quad,
 
             'countries' => $mc->getCountry(),
             'countryCode' => $city->getCountry(),
@@ -126,8 +164,8 @@ class MainPageController extends Controller
 
             'marks' => [],
             'models' => [],
-            'mark' => ['id'=>0,'groupname'=>'','header'=>false, 'carTypeId'=>0],
-            'model' => ['id'=>0, 'header'=>false],
+            'mark' => $mark_arr_sorted[1][0]['mark'],
+            'model' => $mark_arr_sorted[1][0]['models'][0],
 
             'general' => $general,
 
@@ -135,7 +173,11 @@ class MainPageController extends Controller
 
             'total' => $total,
 
-            'custom_seo' => $custom_seo
+            'custom_seo' => $custom_seo,
+
+            'popular_city' => $popular_city,
+            'mark_arr_sorted' => $mark_arr_sorted,
+            'models_in_mark' => $models_in_mark
         ]);
     }
 }

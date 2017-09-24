@@ -58,6 +58,20 @@ class City
     private $gde;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="total", type="integer")
+     */
+    private $total;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="models", type="text")
+     */
+    private $models;
+
+    /**
      * One Category has Many Categories.
      * @ORM\OneToMany(targetEntity="City", mappedBy="parent")
      */
@@ -267,5 +281,53 @@ class City
     public function getGde()
     {
         return $this->gde;
+    }
+
+    /**
+     * Set total
+     *
+     * @param integer $total
+     *
+     * @return City
+     */
+    public function setTotal($total)
+    {
+        $this->total = $total;
+
+        return $this;
+    }
+
+    /**
+     * Get total
+     *
+     * @return integer
+     */
+    public function getTotal()
+    {
+        return $this->total;
+    }
+
+    /**
+     * Set models
+     *
+     * @param string $models
+     *
+     * @return City
+     */
+    public function setModels($models)
+    {
+        $this->models = $models;
+
+        return $this;
+    }
+
+    /**
+     * Get models
+     *
+     * @return string
+     */
+    public function getModels()
+    {
+        return $this->models;
     }
 }

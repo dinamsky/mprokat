@@ -196,7 +196,7 @@ button{
 
 #top_selector_block{
 
-    background: #bcc8d4;
+    background: gold;
     padding: 30px 0;
 
 }
@@ -559,4 +559,57 @@ footer hr{
 
 footer a:hover{
     text-decoration: none;
+}
+
+.top_selector_box{
+    background: white;
+    padding: 8px 20px;
+    cursor: pointer;
+}
+
+.mark_block:hover, .model_block:hover, .city_block:hover{
+    background: gold;
+    cursor: pointer;
+}
+
+.more_cities_button{
+    position: relative;
+    border: 1px solid #c3c3c3;
+    background: white;
+    cursor: pointer;
+    top: -9px;
+}
+
+.gt_selector:hover .inner{
+    outline: 1px solid rgba(111, 111, 111, 0.39);
+    outline-offset: 4px;
+    cursor: pointer;
+}
+
+.gt_selector .inner.active{
+    color: white;
+}
+
+.cursor-pointer{
+    cursor:pointer;
+}
+
+#top_selector_block hr{
+    border-color: rgba(111, 111, 111, 0.39);
+}
+
+.top_slider_block{
+    padding: 40px 0;
+    padding-top: 80px;
+}
+
+.cat_main_header:hover{
+    color: white;
+    background: green;
+    text-decoration: none;
+}
+
+#gt_popular .gt_selector:hover{
+    background: gold;
+    cursor: pointer;
 }
