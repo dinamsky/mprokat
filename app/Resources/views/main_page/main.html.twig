@@ -32,15 +32,12 @@
 <div class="top_slider_block bg_blue">
     <div class="standard_wide uk-position-relative">
 
-
         <div class="c_white uk-text-center tx_24 uk-margin-bottom">Лучшие предложения</div>
         <div class="owl-carousel owl-theme uk-width-1-1" data-items="6">
             {% for card in topSlider %}
                 {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px', 'micro':true}) }}
             {% endfor %}
         </div>
-
-
 
         {% if app.session.has('logged_user') %}
             <a href="/card/new" class="topPlus" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip><i uk-icon="icon:plus"></i></a>
@@ -50,20 +47,12 @@
             <div class="topPlus" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip uk-toggle="target: #sign_in_or_up"><i uk-icon="icon:plus"></i></div>
         {% endif %}
 
-
-        {#<div class="uk-width-1-6">#}
-            {#<a class="topPlus" href="/article/kak_popast_v_top">#}
-                {#<div class="uk-text-center uk-margin-bottom"><i uk-icon="icon:plus"></i></div>#}
-                {#<div class="uk-text-center">Как попасть<br>в ТОП?</div>#}
-            {#</a>#}
-        {#</div>#}
-
     </div>
 </div>
 
-    <div style="background: url('/assets/images/interface/banner.jpg') center center; height:90px;">
+    {#<div style="background: url('/assets/images/interface/banner.jpg') center center; height:90px;">#}
 
-    </div>
+    {#</div>#}
 
     <div id="top_selector_block" class="">
         <div class="standard_wide">
