@@ -210,8 +210,8 @@ function getSelectorUrl(){
     if (generalParent) generalType = '/'+generalParent;
     if (general) generalType = '/'+general;
 
-    if (mark) markModel = '/'+mark;
-    if (model) markModel = '/'+mark+'/'+model;
+    if (mark && mark !== 'Любая марка') markModel = '/'+mark;
+    if (mark && model && mark !== 'Любая марка' && model !== 'Любая модель') markModel = '/'+mark+'/'+model;
 
     if (service === '/all' && generalType === '/alltypes' && markModel === ''){
         service = '';
