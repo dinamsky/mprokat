@@ -36,5 +36,5 @@ class FixCrimeaCommand extends ContainerAwareCommand
         $output->writeln('All done!');
     }
 
-
+    //
 }
