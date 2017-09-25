@@ -12,6 +12,10 @@ h1{
     font-size: 16px;
 }
 
+.tx_24{
+    font-size: 24px;
+}
+
 .undln{
     text-decoration: underline;
 }
@@ -19,3 +23,4 @@ h1{
 .micro{
     font-size:11px !important;
 }
+
