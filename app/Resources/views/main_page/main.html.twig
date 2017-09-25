@@ -110,16 +110,6 @@
                 </div>
             </div>
 
-
-            {#<div class="uk-margin-top">#}
-                {#<div uk-grid class="uk-grid-small">#}
-                    {#{% for gt in generalTypes if gt[0].cards is not empty%}#}
-                        {#<div class="uk-width-1-4@l uk-width-1-2">#}
-                            {#<a href="/show/rus/all/{{ gt[0].url }}" class="generals_in_main"><span class="gim_text uk-text-truncate">{{ gt[0].header }}</span><span class="gim_count">{{ gt.counter }}</span></a>#}
-                        {#</div>#}
-                    {#{% endfor %}#}
-                {#</div>#}
-            {#</div>#}
         </div>
     </div>
 
@@ -158,54 +148,6 @@
             {#<h2>Легковые авто <a class="tx_16 undln" href="/show/rus/all/cars">показать все</a></h2>#}
             {#<div class="owl-carousel owl-theme uk-width-1-1" data-items="4">#}
                 {#{% for card in cars %}#}
-                    {#{{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}#}
-                {#{% endfor %}#}
-            {#</div>#}
-        {#</div>#}
-
-        {#<div class="uk-margin-large">#}
-            {#<h2>Грузовые авто <a class="tx_16 undln" href="/show/rus/all/trucks">показать все</a></h2>#}
-            {#<div class="owl-carousel owl-theme uk-width-1-1" data-items="4">#}
-                {#{% for card in trucks %}#}
-                    {#{{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}#}
-                {#{% endfor %}#}
-            {#</div>#}
-        {#</div>#}
-
-        {#<div class="uk-margin-large">#}
-            {#<div uk-grid>#}
-                {#<div class="uk-width-1-2@l">#}
-                    {#<h2>Сигвеи <a class="tx_16 undln" href="/show/rus/all/segways">показать все</a></h2>#}
-                    {#<div class="owl-carousel owl-theme uk-width-1-1" data-items="2">#}
-                        {#{% for card in segways %}#}
-                            {#{{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}#}
-                        {#{% endfor %}#}
-                    {#</div>#}
-                {#</div>#}
-                {#<div class="uk-width-1-2@l">#}
-                    {#<h2>Велосипеды <a class="tx_16 undln" href="/show/rus/all/bicycles">показать все</a></h2>#}
-                    {#<div class="owl-carousel owl-theme uk-width-1-1" data-items="2">#}
-                        {#{% for card in bicycles %}#}
-                            {#{{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}#}
-                        {#{% endfor %}#}
-                    {#</div>#}
-                {#</div>#}
-            {#</div>#}
-        {#</div>#}
-
-        {#<div class="uk-margin-large">#}
-            {#<h2>Катера <a class="tx_16 undln" href="/show/rus/all/boats">показать все</a></h2>#}
-            {#<div class="owl-carousel owl-theme uk-width-1-1" data-items="4">#}
-                {#{% for card in boats %}#}
-                    {#{{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}#}
-                {#{% endfor %}#}
-            {#</div>#}
-        {#</div>#}
-
-        {#<div class="uk-margin-large">#}
-            {#<h2>Яхты <a class="tx_16 undln" href="/show/rus/all/yachts">показать все</a></h2>#}
-            {#<div class="owl-carousel owl-theme uk-width-1-1" data-items="4">#}
-                {#{% for card in yachts %}#}
                     {#{{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}#}
                 {#{% endfor %}#}
             {#</div>#}

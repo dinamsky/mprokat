@@ -154,9 +154,12 @@ class MenuMarkModel extends Controller
             foreach ($query->getResult() as $row){
                 $ids[] = $row->getModelId();
             }
-            $ids = array_unique($ids);
-            $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.total > 0 AND m.id IN ('.implode(",",$ids).') ORDER BY m.total DESC, m.header ASC');
-
+            if(isset($ids)) {
+                $ids = array_unique($ids);
+                $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.total > 0 AND m.id IN (' . implode(",", $ids) . ') ORDER BY m.total DESC, m.header ASC');
+            } else {
+                $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.total > 0 ORDER BY m.total DESC, m.header ASC');
+            }
         } else {
             $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.total > 0 ORDER BY m.total DESC, m.header ASC');
         }
