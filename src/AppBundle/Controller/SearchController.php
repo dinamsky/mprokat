@@ -9,6 +9,7 @@ use AppBundle\Entity\FieldInteger;
 use AppBundle\Entity\FieldType;
 use AppBundle\Entity\GeneralType;
 use AppBundle\Entity\Mark;
+use AppBundle\Entity\Seo;
 use AppBundle\Entity\State;
 use AppBundle\Entity\CardField;
 use AppBundle\Menu\MenuCity;
@@ -83,6 +84,10 @@ class SearchController extends Controller
             $regionId = 0;
             $cities = array();
             $cityId = 0;
+            $city = new City();
+            $city->setHeader('Россия');
+            $city->setUrl('rus');
+            $city->setGde('России');
         }
 
         if($service){
@@ -125,7 +130,15 @@ class SearchController extends Controller
             $marks = $mm->getMarks($mark->getCarTypeId());
             //$models = $mm->getModels($mark->getId());
         } else {
-            $mark = array('id' => 0,'groupname'=>'', 'header'=>false, 'carTypeId'=>0);
+            //$mark = array('id' => 0,'groupname'=>'', 'header'=>false, 'carTypeId'=>0);
+            $mark = new CarMark();
+            if ($general) $mark->setCarTypeId($general->getCarTypeIds());
+            else {
+                $mark->setCarTypeId(1);
+
+            }
+            $mark->setHeader('');
+
             $marks = array();
             $models = false;
         }
@@ -137,7 +150,7 @@ class SearchController extends Controller
 
             $mark_condition = ' AND c.modelId = '.$model->getId();
         } else {
-            $model = array('groupName' => 'cars','id' => 0,'header'=>false);
+            $model = array('groupName' => 'cars','id' => 0,'header'=>'Любая модель');
             if (!$models) $models = array();
         }
 
@@ -160,25 +173,89 @@ class SearchController extends Controller
             if ($pager_center_start == 1) $pager_center_start = 2;
         }
 
-        $dql = 'SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE 1=1 '.$city_condition.$service_condition.$general_condition.$mark_condition.$order;
+
+        if (isset($get['order'])){
+            if($get['order'] == 'price_asc'){
+                $order = ' ORDER BY p.value ASC';
+            }
+            if($get['order'] == 'price_desc'){
+                $order = ' ORDER BY p.value DESC';
+            }
+        }
+
+        $query = $em->createQuery('SELECT g,COUNT(c.id) as counter FROM AppBundle:GeneralType g LEFT JOIN g.cards c GROUP BY g.id ORDER BY counter DESC');
+        $generalTypes = $query->getResult();
+
+        $dql = 'SELECT c.id FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.cardPrices p WITH p.priceId = 2 WHERE 1=1 '.$city_condition.$service_condition.$general_condition.$mark_condition.$order;
         $query = $em->createQuery($dql);
 
         $query->setMaxResults($cards_per_page);
         $query->setFirstResult($start);
-//        $cards = new Paginator($query, $fetchJoin = true);
-//        $cards = $cards->getIterator();
-        $cards = $query->getResult();
 
 
-        if (isset($get['order'])){
-            if($get['order'] == 'price_asc'){
-                usort($cards, array('AppBundle\Controller\SearchController','price_sorting_asc'));
-            }
-            if($get['order'] == 'price_desc'){
-                usort($cards, array('AppBundle\Controller\SearchController','price_sorting_desc'));
-            }
+
+        $card_ids = $query->getResult();
+        if($card_ids) {
+            foreach ($card_ids as $c_id) $ids[] = $c_id['id'];
+            $ids = implode(",", $ids);
+        } else {
+            $ids = 1;
         }
 
+
+        $dql = 'SELECT c,p,f FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.cardPrices p WITH p.priceId = 2 LEFT JOIN c.fotos f WHERE c.id IN ('.$ids.')'.$order;
+        $query = $em->createQuery($dql);
+        $cards = $query->getResult();
+
+        if (!$service) $p_service = 'all';
+        else {
+            if ($service == 1) $p_service = 'prokat';
+            else $p_service = 'arenda';
+        }
+
+        $seo = [];
+        if ($p_service == 'all') $seo['service'] = 'Прокат и аренда';
+        if ($p_service == 'prokat') $seo['service'] = 'Прокат';
+        if ($p_service == 'arenda') $seo['service'] = 'Аренда';
+        if (!$general) {
+            $seo['type']['singular'] = 'транспорта';
+            $seo['type']['plural'] = 'транспорта';
+        } else {
+            $seo['type']['singular'] = $general->getChegoSingular();
+            $seo['type']['plural'] = $general->getChegoPlural();
+        }
+        if (!is_array($mark)) $seo['mark'] = $mark->getHeader();
+        else $seo['mark'] = '';
+        if (!is_array($model)) $seo['model'] = $model->getHeader();
+        else $seo['model'] = '';
+        if ($city) {
+            $seo['city']['chto'] = $city->getHeader();
+            $seo['city']['gde'] = $city->getGde();
+        } else {
+            $seo['city']['chto'] = 'России';
+            $seo['city']['gde'] = 'России';
+        }
+
+        $custom_seo = $this->getDoctrine()
+            ->getRepository(Seo::class)
+            ->findOneBy(['url' => $request->getPathInfo()]);
+
+        $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.total DESC, c.header ASC');
+        $popular_city = $query->getResult();
+
+
+        if($city->getId() != null) $mark_arr = $mm->getExistMarks($city->getId());
+        else $mark_arr = $mm->getExistMarks();
+        $mark_arr_sorted = $mark_arr['sorted_marks'];
+        $mark_arr_typed = $mark_arr['typed_marks'];
+        $models_in_mark = $mark_arr['models_in_mark'];
+
+        if($mark->getHeader() == '') {
+            $mark = $mark_arr_sorted[$mark->getCarTypeId()][0]['mark'];
+            $mark->setHeader('Любая марка');
+        }
+
+        if(!$general) $general = ['url'=>'alltypes','header'=>'Любой тип транспорта'];
 
         return $this->render('search/search_main.html.twig', [
 
@@ -192,6 +269,7 @@ class SearchController extends Controller
             'pages_in_center' => $pages_in_center,
             'current_page' => $page,
             'onpage' => $cards_per_page,
+            'service' => $p_service,
 
             'countries' => $mc->getCountry(),
             'countryCode' => $countryCode,
@@ -212,6 +290,17 @@ class SearchController extends Controller
             'model' => $model,
             'marks' => $marks,
             'models' => $models,
+            'car_type_id' => $mark->getCarTypeId(),
+
+            'seo' => $seo,
+            'custom_seo' => $custom_seo,
+            'popular_city' => $popular_city,
+
+            'mark_arr_sorted' => $mark_arr_sorted,
+            'models_in_mark' => $models_in_mark,
+
+            'generalTypes' => $generalTypes,
+
 
         ]);
     }

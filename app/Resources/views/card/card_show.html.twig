@@ -20,6 +20,13 @@
     <meta property="og:title" content="{{ card.header }}">
 {% endblock %}
 
+{% block metaTags %}
+    {{ parent() }}
+    <meta name="description" content="{% include ':seo_templates:p_description.html.twig' %}">
+{% endblock %}
+
+{% block title %}{{ include(':seo_templates:p_title.html.twig') }}{% endblock %}
+
 {% block content %}
 
 
@@ -31,7 +38,7 @@
         <div class="cover_gradient">
             <div class="card_cover_description">
                 <div class="standard_wide">
-                    <h1>{{ card.header }}</h1>
+                    <h1>{{ include(':seo_templates:p_h1.html.twig') }}</h1>
                     <div>
                         {% if card.address != '' %}
                             <i class="fa fa-map-marker"></i> {{ card.address }}

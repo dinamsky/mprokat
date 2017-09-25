@@ -42,6 +42,12 @@ class CarModel
      */
     private $header;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="total", type="integer")
+     */
+    private $total;
 
     /**
      * @ORM\ManyToOne(targetEntity="MarkBundle\Entity\CarMark")
@@ -153,5 +159,29 @@ class CarModel
     public function getMark()
     {
         return $this->mark;
+    }
+
+    /**
+     * Set total
+     *
+     * @param integer $total
+     *
+     * @return CarModel
+     */
+    public function setTotal($total)
+    {
+        $this->total = $total;
+
+        return $this;
+    }
+
+    /**
+     * Get total
+     *
+     * @return integer
+     */
+    public function getTotal()
+    {
+        return $this->total;
     }
 }

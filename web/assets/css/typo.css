@@ -1,3 +1,8 @@
+h1{
+    font-size: 2rem;
+    line-height: 1.2;
+}
+
 .thousand_separator{
     display: inline-block;
     width:5px;
@@ -7,6 +12,10 @@
     font-size: 16px;
 }
 
+.tx_24{
+    font-size: 24px;
+}
+
 .undln{
     text-decoration: underline;
 }
@@ -14,3 +23,4 @@
 .micro{
     font-size:11px !important;
 }
+

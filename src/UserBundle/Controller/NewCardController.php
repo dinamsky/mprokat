@@ -273,6 +273,9 @@ class NewCardController extends Controller
 
             $fu->uploadImages($card);
 
+            $mc->updateCityTotal($card->getCityId());
+            $markmenu->updateModelTotal($card->getModelId());
+
             if ($post->get('tariffId') == 1) {
                 if ($this->get('session')->has('admin')){
                     $response = $this->redirectToRoute('admin_main');

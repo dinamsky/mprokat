@@ -20,4 +20,9 @@ $( document ).ready(function() {
         document.location.href = getSelectorUrl() + getQueryVars();
     });
 
+    $('#service').on('change', function () {
+        $('#main_search_button').attr('data-service',$(this).find('option:selected').val());
+        document.location.href = getSelectorUrl() + getQueryVars();
+    });
+
 });

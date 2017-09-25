@@ -51,6 +51,27 @@ class GeneralType
     private $url;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="chego_singular", type="string", length=255)
+     */
+    private $chegoSingular;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="chego_plural", type="string", length=255)
+     */
+    private $chegoPlural;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="icon", type="string", length=255)
+     */
+    private $icon;
+
+    /**
      * One Category has Many Categories.
      * @ORM\OneToMany(targetEntity="GeneralType", mappedBy="parent")
      */
@@ -269,5 +290,77 @@ class GeneralType
     public function getCarTypeIds()
     {
         return $this->carTypeIds;
+    }
+
+    /**
+     * Set chegoSingular
+     *
+     * @param string $chegoSingular
+     *
+     * @return GeneralType
+     */
+    public function setChegoSingular($chegoSingular)
+    {
+        $this->chegoSingular = $chegoSingular;
+
+        return $this;
+    }
+
+    /**
+     * Get chegoSingular
+     *
+     * @return string
+     */
+    public function getChegoSingular()
+    {
+        return $this->chegoSingular;
+    }
+
+    /**
+     * Set chegoPlural
+     *
+     * @param string $chegoPlural
+     *
+     * @return GeneralType
+     */
+    public function setChegoPlural($chegoPlural)
+    {
+        $this->chegoPlural = $chegoPlural;
+
+        return $this;
+    }
+
+    /**
+     * Get chegoPlural
+     *
+     * @return string
+     */
+    public function getChegoPlural()
+    {
+        return $this->chegoPlural;
+    }
+
+    /**
+     * Set icon
+     *
+     * @param string $icon
+     *
+     * @return GeneralType
+     */
+    public function setIcon($icon)
+    {
+        $this->icon = $icon;
+
+        return $this;
+    }
+
+    /**
+     * Get icon
+     *
+     * @return string
+     */
+    public function getIcon()
+    {
+        return $this->icon;
     }
 }
