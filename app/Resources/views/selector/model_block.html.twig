@@ -12,9 +12,11 @@
 
         <div class="uk-column-1-5">
             <div class="model_block uk-margin-bottom" data-url="" data-header="Любая модель">Любая модель</div>
+            {% if model_arr[mark_id] is defined %}
             {% for model in model_arr[mark_id] %}
                 <div class="model_block" data-url="{{ model.header }}" data-header="{{ model.header }}">{{ model.header }} {{ model.total }}</div>
             {% endfor %}
+            {% endif %}
         </div>
     </div>
 </div>
