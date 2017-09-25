@@ -251,7 +251,9 @@ class SearchController extends Controller
         $models_in_mark = $mark_arr['models_in_mark'];
 
         if($mark->getHeader() == '') {
-            $mark = $mark_arr_sorted[$mark->getCarTypeId()][0]['mark'];
+            if(isset($mark_arr_sorted[$mark->getCarTypeId()])) $mark = $mark_arr_sorted[$mark->getCarTypeId()][0]['mark'];
+            else $mark = new CarMark();
+            $mark->setCarTypeId(1);
             $mark->setHeader('Любая марка');
         }
 

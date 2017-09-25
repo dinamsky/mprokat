@@ -80,6 +80,8 @@ class MainPageController extends Controller
 
         //dump($generalTypes);
 
+        $in_city = 'rus';
+
         if($this->get('session')->has('geo')){
 
             $geo = $this->get('session')->get('geo');
@@ -91,10 +93,15 @@ class MainPageController extends Controller
                 ->getQuery()
                 ->getResult();
 
-            if ($city) $city = $city[0]; // TODO make easier!
-            else $city = $this->getDoctrine()
-                ->getRepository(City::class)
-                ->find(77);
+            if ($city) {
+                $city = $city[0];
+            }
+            else {
+                $city = $this->getDoctrine()
+                    ->getRepository(City::class)
+                    ->find(77);
+            }
+            $in_city = $city->getUrl();
         } else {
             $city = new City();
             $city->setCountry('RUS');
@@ -177,7 +184,8 @@ class MainPageController extends Controller
 
             'popular_city' => $popular_city,
             'mark_arr_sorted' => $mark_arr_sorted,
-            'models_in_mark' => $models_in_mark
+            'models_in_mark' => $models_in_mark,
+            'in_city' => $in_city
         ]);
     }
 }
