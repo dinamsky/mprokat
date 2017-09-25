@@ -30,17 +30,27 @@
 
 
 <div class="top_slider_block bg_blue">
-    <div class="standard_wide">
+    <div class="standard_wide uk-position-relative">
 
-        <div >
-            <div class="">
-                <div class="owl-carousel owl-theme uk-width-1-1" data-items="6">
-                    {% for card in topSlider %}
-                        {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px', 'micro':true}) }}
-                    {% endfor %}
-                </div>
-            </div>
+
+
+        <div class="owl-carousel owl-theme uk-width-1-1" data-items="6">
+            {% for card in topSlider %}
+                {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px', 'micro':true}) }}
+            {% endfor %}
         </div>
+
+
+
+        {% if app.session.has('logged_user') %}
+            <a href="/card/new" class="topPlus" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip><i uk-icon="icon:plus"></i></a>
+
+        {% else %}
+
+            <div class="topPlus" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip uk-toggle="target: #sign_in_or_up"><i uk-icon="icon:plus"></i></div>
+        {% endif %}
+
+
         {#<div class="uk-width-1-6">#}
             {#<a class="topPlus" href="/article/kak_popast_v_top">#}
                 {#<div class="uk-text-center uk-margin-bottom"><i uk-icon="icon:plus"></i></div>#}

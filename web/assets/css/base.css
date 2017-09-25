@@ -497,14 +497,17 @@ button{
 }
 
 .topPlus{
-    border: 1px solid lightgrey;
-    display: block;
-    color: black;
-    background: white;
-    padding: 10px 0;
-    position: relative;
-    top: 50%;
-    margin-top: -75px;
+    position: absolute;
+    bottom: -12px;
+    right: 0;
+    background: #25b45b;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    line-height: 17px;
+    cursor: pointer;
+    border: 1px solid white;
+    z-index: 2;
 }
 
 .top_counter{
