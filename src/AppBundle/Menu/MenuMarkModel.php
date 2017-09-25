@@ -122,7 +122,7 @@ class MenuMarkModel extends Controller
             $query->setParameter(1, $gtURL);
             $result = $query->getResult();
 
-            if(isset($marks[$result[0]->getId()])) {
+            if($result and isset($marks[$result[0]->getId()])) {
 
                 return $this->render('selector/mark_block.html.twig', [
                     'mark_arr' => $this->getExistMarks($cityId)['sorted_marks'],
