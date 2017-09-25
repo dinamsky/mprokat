@@ -9,6 +9,7 @@ use MarkBundle\Entity\CarType;
 use MarkBundle\Entity\CarMark;
 use MarkBundle\Entity\CarModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Response;
 
 class MenuMarkModel extends Controller
 {
@@ -116,17 +117,22 @@ class MenuMarkModel extends Controller
         $gtURL = $request->request->get('gtURL');
         $marks = $this->getExistMarks($cityId)['sorted_marks'];
 
-        $query = $this->em->createQuery('SELECT t FROM MarkBundle:CarType t WHERE t.url = ?1');
-        $query->setParameter(1, $gtURL);
-        $result = $query->getResult();
+        if($marks) {
+            $query = $this->em->createQuery('SELECT t FROM MarkBundle:CarType t WHERE t.url = ?1');
+            $query->setParameter(1, $gtURL);
+            $result = $query->getResult();
 
-        //dump($marks[$result[0]->getId()][0]['mark']);
+            if(isset($marks[$result[0]->getId()])) {
 
-        return $this->render('selector/mark_block.html.twig', [
-            'mark_arr'=>$this->getExistMarks($cityId)['sorted_marks'],
-            'mark'=>$marks[$result[0]->getId()][0]['mark'],
-            'type'=>$result[0]->getId()
-        ]);
+                return $this->render('selector/mark_block.html.twig', [
+                    'mark_arr' => $this->getExistMarks($cityId)['sorted_marks'],
+                    'mark' => $marks[$result[0]->getId()][0]['mark'],
+                    'type' => $result[0]->getId()
+                ]);
+            } else return new Response();
+        } else {
+            return new Response();
+        }
     }
 
     public function updateModelTotal($modelId)
@@ -155,30 +161,35 @@ class MenuMarkModel extends Controller
             $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.total > 0 ORDER BY m.total DESC, m.header ASC');
         }
 
-        foreach($query->getResult() as $qm){
-            if(!isset($mark_arr[$qm->getCarTypeId()][$qm->getCarMarkId()])){
-                $mark_arr[$qm->getCarTypeId()][$qm->getCarMarkId()] = [
-                    'total' => 0,
-                    'mark' => $qm->getMark(),
-                    'models' => []
-                ];
+        $result = $query->getResult();
+        if(!empty($result)) {
+            foreach ($result as $qm) {
+                if (!isset($mark_arr[$qm->getCarTypeId()][$qm->getCarMarkId()])) {
+                    $mark_arr[$qm->getCarTypeId()][$qm->getCarMarkId()] = [
+                        'total' => 0,
+                        'mark' => $qm->getMark(),
+                        'models' => []
+                    ];
+                }
+                $mark_arr[$qm->getCarTypeId()][$qm->getCarMarkId()]['total'] = $mark_arr[$qm->getCarTypeId()][$qm->getCarMarkId()]['total'] + $qm->getTotal();
+                $mark_arr[$qm->getCarTypeId()][$qm->getCarMarkId()]['models'][] = $qm;
+                $models_in_mark[$qm->getCarMarkId()][] = $qm;
             }
-            $mark_arr[$qm->getCarTypeId()][$qm->getCarMarkId()]['total'] = $mark_arr[$qm->getCarTypeId()][$qm->getCarMarkId()]['total'] + $qm->getTotal();
-            $mark_arr[$qm->getCarTypeId()][$qm->getCarMarkId()]['models'][] = $qm;
-            $models_in_mark[$qm->getCarMarkId()][] = $qm;
-        }
-        $i = 0;
-        foreach($mark_arr as $type=>$mas){
-            foreach($mas as $id=>$ma) {
-                $mark_total[$type][$i] = $ma['total'];
-                $new_mark_arr[$type][$i] = $ma;
-                $types[$type] = 1;
-                $i++;
+            $i = 0;
+            foreach ($mark_arr as $type => $mas) {
+                foreach ($mas as $id => $ma) {
+                    $mark_total[$type][$i] = $ma['total'];
+                    $new_mark_arr[$type][$i] = $ma;
+                    $types[$type] = 1;
+                    $i++;
+                }
             }
+            foreach (array_keys($types) as $type) {
+                array_multisort($mark_total[$type], SORT_DESC, $new_mark_arr[$type]);
+            }
+            return ['sorted_marks' => $new_mark_arr, 'typed_marks' => $mark_arr, 'models_in_mark' => $models_in_mark];
+        } else {
+            return false;
         }
-        foreach(array_keys($types) as $type) {
-            array_multisort($mark_total[$type], SORT_DESC, $new_mark_arr[$type]);
-        }
-        return ['sorted_marks'=>$new_mark_arr, 'typed_marks'=>$mark_arr, 'models_in_mark'=>$models_in_mark];
     }
 }
