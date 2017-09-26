@@ -1,6 +1,8 @@
 $( document ).ready(function() {
     $(".owl-carousel").each(function() {
         var items = $(this).data('items');
+        var dots = $(this).data('dots');
+        if(dots === 0) dots = false; else dots = true;
         var margin = 0;
         if(items>1) margin = 20;
         $(this).owlCarousel({
@@ -9,6 +11,7 @@ $( document ).ready(function() {
             'slideBy' : items,
             'navText': ['<i uk-icon="icon:chevron-left"></i>', '<i uk-icon="icon:chevron-right"></i>'],
             'autoHeight': true,
+            'dots': dots,
             responsive:{
                 0:{
                     items:1
