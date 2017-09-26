@@ -72,6 +72,13 @@ class GeneralType
     private $icon;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="total", type="integer")
+     */
+    private $total;
+
+    /**
      * One Category has Many Categories.
      * @ORM\OneToMany(targetEntity="GeneralType", mappedBy="parent")
      */
@@ -362,5 +369,29 @@ class GeneralType
     public function getIcon()
     {
         return $this->icon;
+    }
+
+    /**
+     * Set total
+     *
+     * @param integer $total
+     *
+     * @return GeneralType
+     */
+    public function setTotal($total)
+    {
+        $this->total = $total;
+
+        return $this;
+    }
+
+    /**
+     * Get total
+     *
+     * @return integer
+     */
+    public function getTotal()
+    {
+        return $this->total;
     }
 }

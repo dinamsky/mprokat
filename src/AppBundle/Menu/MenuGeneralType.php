@@ -68,4 +68,10 @@ class MenuGeneralType extends Controller
             'options' => $this->getSecondLevel($generalTypeTopLevelId)
         ]);
     }
+
+    public function updateTotal($gtId)
+    {
+        $query = $this->em->createQuery('UPDATE AppBundle:GeneralType g SET g.total = g.total + 1 WHERE g.id ='.$gtId);
+        $query->execute();
+    }
 }

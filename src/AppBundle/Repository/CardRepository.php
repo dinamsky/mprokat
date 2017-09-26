@@ -35,9 +35,12 @@ class CardRepository extends \Doctrine\ORM\EntityRepository
     public function getTopOne($gt)
     {
         $em = $this->getEntityManager();
-        $dql = 'SELECT c,f,p FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.fotos f LEFT JOIN c.cardPrices p WHERE c.generalTypeId = '.$gt.' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
-        $query = $em->createQuery($dql);
-        $result =  $query->getResult();
-        return $result[0];
+        $query = $em->createQuery('SELECT c,f,p FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.fotos f LEFT JOIN c.cardPrices p WHERE c.generalTypeId = '.$gt.' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.views DESC');
+        $query->setMaxResults(1);
+//        $q = $query->getResult();
+//        $dql = 'SELECT c,f,p FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.fotos f LEFT JOIN c.cardPrices p WHERE c.id = '.$q[0]->getId();
+//        $query = $em->createQuery($dql);
+        $res = $query->getResult();
+        return $res[0];
     }
 }
