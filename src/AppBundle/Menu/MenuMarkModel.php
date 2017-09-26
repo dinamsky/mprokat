@@ -150,9 +150,10 @@ class MenuMarkModel extends Controller
         $mark_total = [];
 
         if ($cityId!='') {
-            $query = $this->em->createQuery('SELECT c FROM AppBundle:Card c WHERE c.cityId='.$cityId);
-            foreach ($query->getResult() as $row){
-                $ids[] = $row->getModelId();
+            $query = $this->em->createQuery('SELECT c.modelId FROM AppBundle:Card c WHERE c.cityId='.$cityId);
+
+            foreach ($query->getScalarResult() as $row){
+                $ids[] = $row['modelId'];
             }
             if(isset($ids)) {
                 $ids = array_unique($ids);

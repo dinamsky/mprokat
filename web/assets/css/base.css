@@ -60,8 +60,12 @@ button{
 }
 
 .top_sticky{
-    padding: 30px 0;
+    padding: 10px 0;
     background: rgba(255, 255, 255, 0.86);
+}
+
+.top_sticky .logo{
+    width: 200px;
 }
 
 .top_sticky.uk-active{
@@ -527,11 +531,14 @@ button{
 }
 
 .add_card_button{
-    width: 290px;
+    width: 200px;
+    font-size: 13px;
+    padding: 0;
+    text-align: center;
 }
 
 .top_sticky.uk-active .add_card_button{
-    width: 290px;
+    width: 200px;
 }
 
 .add_card_button:hover{
@@ -583,10 +590,14 @@ footer a:hover{
     top: -9px;
 }
 
+.gt_selector .inner{
+    color: #444;
+}
 .gt_selector:hover .inner{
     outline: 1px solid rgba(111, 111, 111, 0.39);
     outline-offset: 4px;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .gt_selector .inner.active{
@@ -602,7 +613,7 @@ footer a:hover{
 }
 
 .top_slider_block{
-    padding: 50px 0 40px 0;
+    padding: 10px 0 15px 0;
 
 }
 

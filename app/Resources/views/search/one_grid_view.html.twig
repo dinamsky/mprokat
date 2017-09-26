@@ -1,10 +1,6 @@
 <div class="bordered uk-position-relative">
 
-
-
     {% set main_foto = main_foto(card.getFotos) %}
-
-    {#{{ dump(main_foto(card.getFotos)) }}#}
 
     {% set bgrnd = 'white' %}
 
@@ -15,11 +11,16 @@
     {% endif %}
 
 
-    <a href="/card/{{ card.id }}" style="background: {{ bgrnd }} center center;
+
+    <a id="card_img_{{ card.id }}" href="/card/{{ card.id }}" style="background: {{ bgrnd }} center center;
             background-size: cover;
             height: {{ height }};
             display: block;">
     </a>
+
+
+
+
     <div class="padding20">
         <a class="uk-text-truncate uk-display-block" href="/card/{{ card.id }}">{{ card.header }}</a>
         <div class="uk-text-truncate uk-text-small c_grey"><i class="fa fa-map-marker"></i> {{ card.city.header }}</div>

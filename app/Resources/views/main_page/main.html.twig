@@ -31,22 +31,19 @@
 
 <div class="top_slider_block bg_blue">
     <div class="standard_wide uk-position-relative">
-
         <div class="c_white uk-text-center tx_24 uk-margin-bottom">Лучшие предложения</div>
-        <div class="owl-carousel owl-theme uk-width-1-1" data-items="6">
+        <div class="owl-carousel owl-theme uk-width-1-1" data-items="6" data-dots="0">
             {% for card in topSlider %}
                 {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px', 'micro':true}) }}
             {% endfor %}
         </div>
-
-        {% if app.session.has('logged_user') %}
-            <a href="/card/new" class="topPlus" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip><i uk-icon="icon:plus"></i></a>
-
-        {% else %}
-
-            <div class="topPlus" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip uk-toggle="target: #sign_in_or_up"><i uk-icon="icon:plus"></i></div>
-        {% endif %}
-
+        <div class="uk-text-center">
+            {% if app.session.has('logged_user') %}
+                <a href="/card/new" class="c_white" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip>Разместить объявление в ТОП</a>
+            {% else %}
+                <a class="c_white" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip uk-toggle="target: #sign_in_or_up">Разместить объявление в ТОП</a>
+            {% endif %}
+        </div>
     </div>
 </div>
 
@@ -69,10 +66,6 @@
                         <div class="top_selector_box">{{ include('selector/adress_block.html.twig') }}</div>
                     </div>
 
-                    {#<div class="uk-position-relative">#}
-                        {#{{ include('selector/general_block.html.twig') }}#}
-                    {#</div>#}
-
                     <input type="hidden" name="gtURL" id="gtURL" value="cars">
 
                     <div class="uk-position-relative" >
@@ -92,19 +85,17 @@
             <hr>
             <div class="uk-margin-top">
                 <div uk-grid class="uk-flex uk-flex-center">
-                    {% for gt in generalTypes|slice(0,4)%}
-                        <div class="gt_selector" data-url="{{ gt[0].url }}">
-                            {#<a href="/show/rus/all/{{ gt[0].url }}" class="generals_in_main"><span class="gim_text uk-text-truncate">{{ gt[0].header }}</span><span class="gim_count">{{ gt.counter }}</span></a>#}
-                            <div class="inner {{ gt[0].url == 'cars' ? 'active' }}"><i class="fa fa-{{ gt[0].icon }}"></i> {{ gt[0].header }}</div>
+                    {% for gt in generalTypes|slice(0,4) if gt.carTypeIds%}
+                        <div class="gt_selector" data-url="{{ gt.url }}">
+                            <a href="/show/{{ in_city }}/all/{{ gt.url }}" class="inner"><i class="fa fa-{{ gt.icon }}"></i> {{ gt.header }}</a>
                         </div>
                     {% endfor %}
                 </div>
                 <div class="uk-text-center uk-margin-top cursor-pointer" uk-toggle="target: #more_gt">еще категории <i uk-icon="icon:chevron-down"></i></div>
-                <div id="more_gt" uk-grid class="uk-flex uk-flex-center uk-margin-top" hidden>
-                    {% for gt in generalTypes|slice(4) if gt[0].cards is not empty %}
-                        <div class="gt_selector uk-width-1-4" data-url="{{ gt[0].url }}">
-                            {#<a href="/show/rus/all/{{ gt[0].url }}" class="generals_in_main"><span class="gim_text uk-text-truncate">{{ gt[0].header }}</span><span class="gim_count">{{ gt.counter }}</span></a>#}
-                            <div class="inner"><i class="fa fa-{{ gt[0].icon }}"></i> {{ gt[0].header }}</div>
+                <div id="more_gt" uk-grid class="uk-flex uk-flex-center uk-margin-top uk-grid-medium" hidden>
+                    {% for gt in generalTypes|slice(4) if gt.carTypeIds %}
+                        <div class="gt_selector" data-url="{{ gt.url }}">
+                            <a href="/show/{{ in_city }}/all/{{ gt.url }}" class="inner"><i class="fa fa-{{ gt.icon }}"></i> {{ gt.header }}</a>
                         </div>
                     {% endfor %}
                 </div>

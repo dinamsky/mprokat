@@ -75,39 +75,41 @@ class MainPageController extends Controller
             ->getRepository(Card::class)
             ->getTopOne(9);
 
-        $query = $em->createQuery('SELECT g,COUNT(c.id) as counter FROM AppBundle:GeneralType g LEFT JOIN g.cards c GROUP BY g.id ORDER BY counter DESC');
+        $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.total DESC');
         $generalTypes = $query->getResult();
 
-        //dump($generalTypes);
 
-        $in_city = 'rus';
 
-        if($this->get('session')->has('geo')){
 
-            $geo = $this->get('session')->get('geo');
-
-            $city = $em->getRepository("AppBundle:City")->createQueryBuilder('c')
-                ->where('c.header LIKE :geoname')
-                ->andWhere('c.parentId IS NOT NULL')
-                ->setParameter('geoname', '%'.$geo['city'].'%')
-                ->getQuery()
-                ->getResult();
-
-            if ($city) {
-                $city = $city[0];
+        if(!$this->get('session')->has('city')){
+            if($this->get('session')->has('geo')){
+                $geo = $this->get('session')->get('geo');
+                $city = $em->getRepository("AppBundle:City")->createQueryBuilder('c')
+                    ->where('c.header LIKE :geoname')
+                    ->andWhere('c.parentId IS NOT NULL')
+                    ->setParameter('geoname', '%'.$geo['city'].'%')
+                    ->getQuery()
+                    ->getResult();
+                if ($city) {
+                    $city = $city[0];
+                }
+                else {
+                    $city = $this->getDoctrine()
+                        ->getRepository(City::class)
+                        ->find(77);
+                }
+            } else {
+                $city = new City();
+                $city->setCountry('RUS');
+                $city->setParentId(0);
+                $city->setTempId(0);
             }
-            else {
-                $city = $this->getDoctrine()
-                    ->getRepository(City::class)
-                    ->find(77);
-            }
-            $in_city = $city->getUrl();
+            $this->get('session')->set('city', $city);
         } else {
-            $city = new City();
-            $city->setCountry('RUS');
-            $city->setParentId(0);
-            $city->setTempId(0);
+            $city = $this->get('session')->get('city');
         }
+        $in_city = $city->getUrl();
+
 
         $query = $em->createQuery('SELECT COUNT(c.id) FROM AppBundle:Card c');
         $totalCards = $query->getSingleScalarResult();
@@ -124,9 +126,9 @@ class MainPageController extends Controller
             'categories' => $totalCategories
             );
 
-        $general = $this->getDoctrine()
-            ->getRepository(GeneralType::class)
-            ->find(2);
+//        $general = $this->getDoctrine()
+//            ->getRepository(GeneralType::class)
+//            ->find(2);
 
         $custom_seo = $this->getDoctrine()
             ->getRepository(Seo::class)
@@ -135,19 +137,21 @@ class MainPageController extends Controller
         $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.total DESC, c.header ASC');
         $popular_city = $query->getResult();
 
+
         $mark_arr = $mm->getExistMarks($city->getId());
+
         $mark_arr_sorted = $mark_arr['sorted_marks'];
         $mark_arr_typed = $mark_arr['typed_marks'];
         $models_in_mark = $mark_arr['models_in_mark'];
 
         return $this->render('main_page/main.html.twig', [
-            'generalTopLevel' => $mgt->getTopLevel(),
-            'cards' => '',
-            'custom_fields' => '',
-            'general_type' => null,
+//            'generalTopLevel' => $mgt->getTopLevel(),
+//            'cards' => '',
+//            'custom_fields' => '',
+//            'general_type' => null,
             'city' => $city,
-            'mark_model' => array(),
-            'mark_groups' => $mm->getGroups(),
+//            'mark_model' => array(),
+//            'mark_groups' => $mm->getGroups(),
             'topSlider' => $topSlider,
             'cars' => $cars,
             'trucks' => $trucks,
@@ -158,23 +162,23 @@ class MainPageController extends Controller
             'moto' => $moto,
             'quad' => $quad,
 
-            'countries' => $mc->getCountry(),
-            'countryCode' => $city->getCountry(),
-            'regionId' => $city->getParentId(),
-            'regions' => $mc->getRegion($city->getCountry()),
-            'cities' => $mc->getCities($city->getParentId()),
+//            'countries' => $mc->getCountry(),
+//            'countryCode' => $city->getCountry(),
+//            'regionId' => $city->getParentId(),
+//            'regions' => $mc->getRegion($city->getCountry()),
+//            'cities' => $mc->getCities($city->getParentId()),
             'cityId' => $city->getId(),
 
-            'gtid' => 2,
-            'pgtid' => 1,
-            'generalSecondLevel' => $mgt->getSecondLevel(1),
+//            'gtid' => 2,
+//            'pgtid' => 1,
+//            'generalSecondLevel' => $mgt->getSecondLevel(1),
 
             'marks' => [],
             'models' => [],
             'mark' => $mark_arr_sorted[1][0]['mark'],
             'model' => $mark_arr_sorted[1][0]['models'][0],
 
-            'general' => $general,
+//            'general' => $general,
 
             'generalTypes' => $generalTypes,
 
