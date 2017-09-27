@@ -273,7 +273,8 @@ class NewCardController extends Controller
 
             $fu->uploadImages($card);
 
-            $mc->updateCityTotal($card->getCityId());
+            $mc->updateCityTotal($card->getCityId(),$card->getModelId());
+
             $markmenu->updateModelTotal($card->getModelId());
 
             if ($post->get('tariffId') == 1) {
