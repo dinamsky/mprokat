@@ -83,11 +83,11 @@
             </div>
 
             <hr>
-            <div class="uk-margin-top">
+            <div class="uk-margin-top main_gt_block">
                 <div uk-grid class="uk-flex uk-flex-center">
                     {% for gt in generalTypes|slice(0,4) if gt.carTypeIds%}
                         <div class="gt_selector" data-url="{{ gt.url }}">
-                            <a href="/show/{{ in_city }}/all/{{ gt.url }}" class="inner"><i class="fa fa-{{ gt.icon }}"></i> {{ gt.header }}</a>
+                            <span href="/show/{{ in_city }}/all/{{ gt.url }}" class="inner"><i class="fa fa-{{ gt.icon }}"></i> {{ gt.header }}</span>
                         </div>
                     {% endfor %}
                 </div>
@@ -95,10 +95,13 @@
                 <div id="more_gt" uk-grid class="uk-flex uk-flex-center uk-margin-top uk-grid-medium" hidden>
                     {% for gt in generalTypes|slice(4) if gt.carTypeIds %}
                         <div class="gt_selector" data-url="{{ gt.url }}">
-                            <a href="/show/{{ in_city }}/all/{{ gt.url }}" class="inner"><i class="fa fa-{{ gt.icon }}"></i> {{ gt.header }}</a>
+                            <span href="/show/{{ in_city }}/all/{{ gt.url }}" class="inner"><i class="fa fa-{{ gt.icon }}"></i> {{ gt.header }}</span>
                         </div>
                     {% endfor %}
                 </div>
+
+                {{ include('selector/gt_adress_block.html.twig') }}
+
             </div>
 
         </div>

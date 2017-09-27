@@ -132,7 +132,10 @@ class SearchController extends Controller
         } else {
             //$mark = array('id' => 0,'groupname'=>'', 'header'=>false, 'carTypeId'=>0);
             $mark = new CarMark();
-            if ($general) $mark->setCarTypeId($general->getCarTypeIds());
+            if ($general) {
+                $mark->setCarTypeId($general->getCarTypeIds());
+                $mark->setHeader('');
+            }
             else {
                 $mark->setCarTypeId(1);
 
@@ -244,18 +247,24 @@ class SearchController extends Controller
         $popular_city = $query->getResult();
 
 
-        if($city->getId() != null) $mark_arr = $mm->getExistMarks($city->getId());
-        else $mark_arr = $mm->getExistMarks();
-        $mark_arr_sorted = $mark_arr['sorted_marks'];
-        $mark_arr_typed = $mark_arr['typed_marks'];
-        $models_in_mark = $mark_arr['models_in_mark'];
+//        if($city->getId() != null) $mark_arr = $mm->getExistMarks($city->getId());
+//        else $mark_arr = $mm->getExistMarks();
+//        $mark_arr_sorted = $mark_arr['sorted_marks'];
+//        $mark_arr_typed = $mark_arr['typed_marks'];
+//        $models_in_mark = $mark_arr['models_in_mark'];
+//
+//        if($mark->getHeader() == '') {
+//            if(isset($mark_arr_sorted[$mark->getCarTypeId()])) $mark = $mark_arr_sorted[$mark->getCarTypeId()][0]['mark'];
+//            else $mark = new CarMark();
+//            $mark->setCarTypeId(1);
+//            $mark->setHeader('Любая марка');
+//        }
 
-        if($mark->getHeader() == '') {
-            if(isset($mark_arr_sorted[$mark->getCarTypeId()])) $mark = $mark_arr_sorted[$mark->getCarTypeId()][0]['mark'];
-            else $mark = new CarMark();
-            $mark->setCarTypeId(1);
-            $mark->setHeader('Любая марка');
-        }
+
+        $mark_arr = $mm->getExistMarks();
+        //dump($mark_arr);
+        $mark_arr_sorted = $mark_arr['typed_marks'];
+        $models_in_mark = $mark_arr['models_in_mark'];
 
         if(!$general) $general = ['url'=>'alltypes','header'=>'Любой тип транспорта'];
 
@@ -273,21 +282,21 @@ class SearchController extends Controller
             'onpage' => $cards_per_page,
             'service' => $p_service,
 
-            'countries' => $mc->getCountry(),
+//            'countries' => $mc->getCountry(),
             'countryCode' => $countryCode,
             'regionId' => $regionId,
-            'regions' => $mc->getRegion($countryCode),
+//            'regions' => $mc->getRegion($countryCode),
             'cities' => $cities,
             'cityId' => $cityId,
             'city' => $city,
 
-            'generalTopLevel' => $mgt->getTopLevel(),
-            'generalSecondLevel' => $mgt->getSecondLevel($pgtId),
-            'pgtid' => $pgtId,
-            'gtid' => $gtId,
+//            'generalTopLevel' => $mgt->getTopLevel(),
+//            'generalSecondLevel' => $mgt->getSecondLevel($pgtId),
+//            'pgtid' => $pgtId,
+//            'gtid' => $gtId,
             'general' => $general,
 
-            'mark_groups' => $mm->getGroups(),
+//            'mark_groups' => $mm->getGroups(),
             'mark' => $mark,
             'model' => $model,
             'marks' => $marks,
@@ -306,45 +315,6 @@ class SearchController extends Controller
 
         ]);
     }
-
-    private static function price_sorting_asc($a, $b)
-    {
-        $p1 = 0;
-        $p2 = 0;
-
-        foreach($a->getCardPrices() as $ap){
-            if($ap->getPriceId() == 2) $p1 = $ap->getValue();
-        }
-
-        foreach($b->getCardPrices() as $bp){
-            if($bp->getPriceId() == 2) $p2 = $bp->getValue();
-        }
-
-        if ($p1 == $p2) {
-            return 0;
-        }
-        return ($p1 < $p2) ? -1 : 1;
-    }
-
-    private static function price_sorting_desc($a, $b)
-    {
-        $p1 = 0;
-        $p2 = 0;
-
-        foreach($a->getCardPrices() as $ap){
-            if($ap->getPriceId() == 2) $p1 = $ap->getValue();
-        }
-
-        foreach($b->getCardPrices() as $bp){
-            if($bp->getPriceId() == 2) $p2 = $bp->getValue();
-        }
-
-        if ($p1 == $p2) {
-            return 0;
-        }
-        return ($p1 > $p2) ? -1 : 1;
-    }
-
 }
 
 
