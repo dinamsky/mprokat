@@ -52,7 +52,7 @@
     </script>
 
 
-    {% if total_cards == 0 %}
+    {% if total_cards is defined and total_cards == 0 %}
         <script type="text/javascript">
             window.onload = function() {
                 window.yaCounter43151009.reachGoal('theEmptyPage')
