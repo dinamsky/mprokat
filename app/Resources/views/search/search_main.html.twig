@@ -34,6 +34,16 @@
                 {% include 'search/' ~ view ~ '.html.twig' %}
                 {% include 'search/search_pager.html.twig' %}
 
+                {% if total_cards == 0 %}
+                    {% if app.session.has('logged_user') %}
+                        <a href="/card/new" class="uk-button uk-button-success ">Будь первым - добавь объявление!</a>
+                    {% elseif app.session.has('admin') %}
+                        <a href="/card/new" class="uk-button uk-button-success ">Будь первым - добавь объявление!</a>
+                    {% else %}
+                        <a uk-toggle="target: #sign_in" class="uk-button uk-button-success ">Будь первым - добавь объявление!</a>
+                    {% endif %}
+                {% endif %}
+
                 {% set seo_text %}{% include 'seo_templates/c_text.html.twig' %}{% endset %}
 
                 {% if custom_seo and custom_seo.seoText != ''%}

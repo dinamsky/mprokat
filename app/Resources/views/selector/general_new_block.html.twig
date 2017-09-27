@@ -11,9 +11,9 @@
         <h2 class="uk-modal-title">Выберите тип транспорта</h2>
 
         <div class="uk-column-1-5">
-            <div class="gt_selector uk-margin-bottom" data-id="0" data-url="" data-header="Любой тип транспорта">Любой тип транспорта</div>
-            {% for gt in generalTypes %}
-                <div class="gt_selector" data-id="{{ gt.id }}" data-url="{{ gt.url }}" data-header="{{ gt.header }}"><i class="fa fa-{{ gt.icon }}"></i> {{ gt.header }}</div>
+            <a class="gt_selector uk-display-block c_grey uk-margin-bottom"  href="/show/{{ city.url }}">Любой тип транспорта</a>
+            {% for gt in generalTypes if gt.total>0 %}
+                <a class="gt_selector uk-display-block c_grey uk-margin-bottom" href="/show/{{ city.url }}/all/{{ gt.url }}"><i class="fa fa-{{ gt.icon }}"></i> {{ gt.header }}</a>
             {% endfor %}
         </div>
 
