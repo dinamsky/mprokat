@@ -12,10 +12,18 @@
 
         <div class="uk-column-1-5">
             <div class="mark_block uk-margin-bottom" data-id="0" data-url="" data-header="Любая марка">Любая марка</div>
-            {% for mark in mark_arr[type] %}
+            {% for mark in mark_arr[type]|slice(0,50) %}
                 <div class="mark_block" data-id="{{ mark.mark.id }}" data-url="{{ mark.mark.header }}" data-header="{{ mark.mark.header }}">{{ mark.mark.header }} </div>
             {% endfor %}
         </div>
-
+        <hr>
+        <button uk-toggle="target: #more_marks" type="button" class="more_cities_button">показать все марки</button>
+        <div id="more_marks" hidden>
+            <div class="uk-column-1-5">
+                {% for mark in mark_arr[type]|slice(50) %}
+                    <div class="mark_block" data-id="{{ mark.mark.id }}" data-url="{{ mark.mark.header }}" data-header="{{ mark.mark.header }}">{{ mark.mark.header }} </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 </div>

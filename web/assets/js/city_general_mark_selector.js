@@ -149,41 +149,11 @@ $( document ).ready(function() {
     });
 
 
-    $('.gt_selector').on('click', function () {
-        // var gtURL = $(this).data('url');
-        // var cityId = $('#cityId').val();
-        // if ($("#gt_popular").length > 0) UIkit.modal('#gt_popular').hide();
-        //
-        // $('.pop_gt_selector').html($(this).data('header'));
-        //
-        // $.ajax({
-        //     url: '/ajax/getExistMarks',
-        //     type: 'POST',
-        //     data: {cityId:cityId,gtURL:gtURL},
-        //     success: function(html){
-        //         //alert(html);
-        //         if(html) {
-        //             $('.gt_selector .inner').removeClass('active');
-        //             $('.gt_selector[data-url="'+gtURL+'"] .inner').addClass('active');
-        //             $('#gtURL').val(gtURL);
-        //             $('#mark_placement').html(html);
-        //             $.ajax({
-        //                 url: '/ajax/getExistModels',
-        //                 type: 'POST',
-        //                 data: {markId: $('#markURL').data('id'), cityId: cityId},
-        //                 success: function (html) {
-        //                     $('#model_placement').html(html);
-        //                 }
-        //             });
-        //         } else {
-        //             //alert('Данного типа транспорта нет в выбранном городе!');
-        //         }
-        //     }
-        // });
-    });
+
 
     $('.main_gt_block .gt_selector').on('click', function () {
         var gtURL = $(this).data('url');
+        $('#gt_city_header').html($(this).data('header'));
         $('.gt_city_block').each(function(){
             $(this).attr('href',$(this).data('def')+'/'+gtURL);
         });
