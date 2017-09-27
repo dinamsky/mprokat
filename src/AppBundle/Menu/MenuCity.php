@@ -82,19 +82,19 @@ class MenuCity extends Controller
         ]);
     }
 
-    public function updateCityTotal($cityId,$modelId)
+    public function updateCityTotal($cityId,$modelId = '')
     {
-        $query = $this->em->createQuery('SELECT c FROM AppBundle:City c WHERE c.id = ?1');
-        $query->setParameter(1, $cityId);
-        $result = $query->getResult();
-
-        $ids = explode(",",$result[0]->getModels());
-        if (!in_array($modelId,$ids,true)) $ids[] = $modelId;
+//        $query = $this->em->createQuery('SELECT c FROM AppBundle:City c WHERE c.id = ?1');
+//        $query->setParameter(1, $cityId);
+//        $result = $query->getResult();
+//
+//        $ids = explode(",",$result[0]->getModels());
+//        if (!in_array($modelId,$ids,true)) $ids[] = $modelId;
 
         //echo implode(",",$ids).'\r\n';
-        $query = $this->em->createQuery('UPDATE AppBundle:City c SET c.total = c.total +1, c.models = ?1 WHERE c.id = ?2');
-        $query->setParameter(1, implode(",",$ids));
-        $query->setParameter(2, $cityId);
+        $query = $this->em->createQuery('UPDATE AppBundle:City c SET c.total = c.total + 1 WHERE c.id = ?1');
+        //$query->setParameter(1, implode(",",$ids));
+        $query->setParameter(1, $cityId);
         $query->execute();
     }
 }
