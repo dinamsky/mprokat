@@ -12,8 +12,8 @@
 
         <div class="uk-column-1-5">
             <div class="gt_selector uk-margin-bottom" data-id="0" data-url="" data-header="Любой тип транспорта">Любой тип транспорта</div>
-            {% for gt in generalTypes if gt[0].cards is not empty %}
-                <div class="gt_selector" data-id="{{ gt[0].id }}" data-url="{{ gt[0].url }}" data-header="{{ gt[0].header }}"><i class="fa fa-{{ gt[0].icon }}"></i> {{ gt[0].header }}</div>
+            {% for gt in generalTypes %}
+                <div class="gt_selector" data-id="{{ gt.id }}" data-url="{{ gt.url }}" data-header="{{ gt.header }}"><i class="fa fa-{{ gt.icon }}"></i> {{ gt.header }}</div>
             {% endfor %}
         </div>
 
