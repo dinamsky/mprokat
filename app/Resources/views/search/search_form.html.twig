@@ -1,15 +1,15 @@
 <form id="searchForm" action="/search" method="GET">
 
 
-    <div>{{ include('selector/adress_block.html.twig') }}</div>
+    <div class="cursor-pointer">{{ include('selector/adress_block.html.twig') }}</div>
 
-    <div>{{ include('selector/general_new_block.html.twig') }}</div>
+    <div class="cursor-pointer">{{ include('selector/general_new_block.html.twig') }}</div>
 
-    <div id="mark_placement">{{ include('selector/mark_block.html.twig', {'mark_arr':mark_arr_sorted,'type':car_type_id}) }}</div>
+    <div class="cursor-pointer" id="mark_placement">{{ include('selector/mark_block.html.twig', {'mark_arr':mark_arr_sorted,'type':car_type_id}) }}</div>
 
 
 
-    <div id="model_placement">{{ include('selector/model_block.html.twig', {'model_arr':models_in_mark, 'mark_id':mark.id}) }}</div>
+    <div class="cursor-pointer" id="model_placement">{{ include('selector/model_block.html.twig', {'model_arr':models_in_mark, 'mark_id':mark.id}) }}</div>
 
 
 

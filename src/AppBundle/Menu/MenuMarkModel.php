@@ -116,7 +116,7 @@ class MenuMarkModel extends Controller
         $cityId = $request->request->get('cityId');
         $gtURL = $request->request->get('gtURL');
         $marks = $this->getExistMarks($cityId)['sorted_marks'];
-
+dump($marks);
         if($marks) {
             $query = $this->em->createQuery('SELECT t FROM MarkBundle:CarType t WHERE t.url = ?1');
             $query->setParameter(1, $gtURL);
@@ -149,22 +149,24 @@ class MenuMarkModel extends Controller
         $new_mark_arr = [];
         $mark_total = [];
 
-        if ($cityId!='') {
-            $query = $this->em->createQuery('SELECT c.modelId FROM AppBundle:Card c WHERE c.cityId='.$cityId);
+//        if ($cityId!='') {
+//            $query = $this->em->createQuery('SELECT c.modelId FROM AppBundle:Card c WHERE c.cityId='.$cityId);
+//
+//            foreach ($query->getScalarResult() as $row){
+//                $ids[] = $row['modelId'];
+//            }
+//            //dump($ids);
+//            if(isset($ids)) {
+//                $ids = array_unique($ids);
+//                $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.id IN (' . implode(",", $ids) . ') ORDER BY m.total DESC, m.header ASC');
+//            } else {
+//                $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.total > 0 ORDER BY m.total DESC, m.header ASC');
+//            }
+//        } else {
+//
+//        }
 
-            foreach ($query->getScalarResult() as $row){
-                $ids[] = $row['modelId'];
-            }
-            //dump($ids);
-            if(isset($ids)) {
-                $ids = array_unique($ids);
-                $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.id IN (' . implode(",", $ids) . ') ORDER BY m.total DESC, m.header ASC');
-            } else {
-                $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.total > 0 ORDER BY m.total DESC, m.header ASC');
-            }
-        } else {
-            $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.total > 0 ORDER BY m.total DESC, m.header ASC');
-        }
+        $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.total > 0 ORDER BY m.total DESC, m.header ASC');
 
         //dump($query);
         $result = $query->getResult();
