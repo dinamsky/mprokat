@@ -100,10 +100,13 @@ class ShowCardController extends Controller
         $mark_arr_typed = $mark_arr['typed_marks'];
         $models_in_mark = $mark_arr['models_in_mark'];
 
+        //dump($city);
+        //dump($mark_arr);
+
         $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.total DESC, c.header ASC');
         $popular_city = $query->getResult();
 
-        $query = $em->createQuery('SELECT g,COUNT(c.id) as counter FROM AppBundle:GeneralType g LEFT JOIN g.cards c GROUP BY g.id ORDER BY counter DESC');
+        $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g ORDER BY g.total DESC');
         $generalTypes = $query->getResult();
 
         return $this->render('card/card_show.html.twig', [
@@ -117,17 +120,17 @@ class ShowCardController extends Controller
 //            'general_type' => $card->getGeneralTypeId(),
             'city' => $city,
 
-            'countries' => $mc->getCountry(),
-            'countryCode' => $city->getCountry(),
-            'regionId' => $city->getParentId(),
-            'regions' => $mc->getRegion($city->getCountry()),
-            'cities' => $mc->getCities($city->getParentId()),
+//            'countries' => $mc->getCountry(),
+//            'countryCode' => $city->getCountry(),
+//            'regionId' => $city->getParentId(),
+//            'regions' => $mc->getRegion($city->getCountry()),
+//            'cities' => $mc->getCities($city->getParentId()),
             'cityId' => $card->getCityId(),
 
-            'generalTopLevel' => $mgt->getTopLevel(),
-            'generalSecondLevel' => $mgt->getSecondLevel($card->getGeneralType()->getParentId()),
-            'pgtid' => $pgtid,
-            'gtid' => $card->getGeneralTypeId(),
+//            'generalTopLevel' => $mgt->getTopLevel(),
+//            'generalSecondLevel' => $mgt->getSecondLevel($card->getGeneralType()->getParentId()),
+//            'pgtid' => $pgtid,
+//            'gtid' => $card->getGeneralTypeId(),
             'similar' => $similar,
 
             'mark_groups' => $mm->getGroups(),
