@@ -142,35 +142,20 @@ class MenuMarkModel extends Controller
         $query->execute();
     }
 
-    public function getExistMarks($cityId = '')
+    public function getExistMarks($cityId = '',$carTypeId = '')
     {
 
         $mark_arr = [];
         $new_mark_arr = [];
         $mark_total = [];
 
-//        if ($cityId!='') {
-//            $query = $this->em->createQuery('SELECT c.modelId FROM AppBundle:Card c WHERE c.cityId='.$cityId);
-//
-//            foreach ($query->getScalarResult() as $row){
-//                $ids[] = $row['modelId'];
-//            }
-//            //dump($ids);
-//            if(isset($ids)) {
-//                $ids = array_unique($ids);
-//                $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.id IN (' . implode(",", $ids) . ') ORDER BY m.total DESC, m.header ASC');
-//            } else {
-//                $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.total > 0 ORDER BY m.total DESC, m.header ASC');
-//            }
-//        } else {
-//
-//        }
-
         $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.total >= 0 ORDER BY m.total DESC, m.header ASC');
+        if ($carTypeId != ''){
+            $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.carTypeId='.$carTypeId.' ORDER BY m.total DESC, m.header ASC');
+        }
 
-        //dump($query);
         $result = $query->getResult();
-        //dump($result);
+
         if(!empty($result)) {
             foreach ($result as $qm) {
                 if (!isset($mark_arr[$qm->getCarTypeId()][$qm->getCarMarkId()])) {
