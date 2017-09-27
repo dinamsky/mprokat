@@ -155,9 +155,10 @@ class MenuMarkModel extends Controller
             foreach ($query->getScalarResult() as $row){
                 $ids[] = $row['modelId'];
             }
+            //dump($ids);
             if(isset($ids)) {
                 $ids = array_unique($ids);
-                $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.total > 0 AND m.id IN (' . implode(",", $ids) . ') ORDER BY m.total DESC, m.header ASC');
+                $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.id IN (' . implode(",", $ids) . ') ORDER BY m.total DESC, m.header ASC');
             } else {
                 $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.total > 0 ORDER BY m.total DESC, m.header ASC');
             }
@@ -165,7 +166,9 @@ class MenuMarkModel extends Controller
             $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.total > 0 ORDER BY m.total DESC, m.header ASC');
         }
 
+        //dump($query);
         $result = $query->getResult();
+        //dump($result);
         if(!empty($result)) {
             foreach ($result as $qm) {
                 if (!isset($mark_arr[$qm->getCarTypeId()][$qm->getCarMarkId()])) {
