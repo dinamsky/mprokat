@@ -182,6 +182,14 @@ $( document ).ready(function() {
         // });
     });
 
+    $('.main_gt_block .gt_selector').on('click', function () {
+        var gtURL = $(this).data('url');
+        $('.gt_city_block').each(function(){
+            $(this).attr('href',$(this).data('def')+'/'+gtURL);
+        });
+        UIkit.modal('#gt_city_popular').show();
+    });
+
 });
 
 function getSelectorUrl(){

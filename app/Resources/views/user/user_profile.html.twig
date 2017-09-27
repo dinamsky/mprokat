@@ -10,6 +10,7 @@
     <div class="">
         <div uk-grid>
             <div class="uk-width-1-2">
+                <div class="uk-margin-bottom">email: {{ user.email }}</div>
                 <form id="save_profile" action="/profile/save" method="POST">
                     <div>Имя: <input name="header" value="{{ user.header }}" class="uk-input"></div>
 

@@ -1,7 +1,7 @@
 <input type="hidden" id="markURL" name="markURL" value="{{ mark.header }}" data-id="{{ mark.id }}">
 
 <div uk-toggle="target: #mark_popular">
-    <span  class="mark_selector">{{ mark ? mark.header : 'Марка' }}</span>
+    <span  class="mark_selector">{{ mark and mark.header ? mark.header : 'Любая марка' }}</span>
     <i uk-icon="icon:chevron-down"></i>
 </div>
 
@@ -13,7 +13,7 @@
         <div class="uk-column-1-5">
             <div class="mark_block uk-margin-bottom" data-id="0" data-url="" data-header="Любая марка">Любая марка</div>
             {% for mark in mark_arr[type] %}
-                <div class="mark_block" data-id="{{ mark.mark.id }}" data-url="{{ mark.mark.header }}" data-header="{{ mark.mark.header }}">{{ mark.mark.header }} {{ mark.total }}</div>
+                <div class="mark_block" data-id="{{ mark.mark.id }}" data-url="{{ mark.mark.header }}" data-header="{{ mark.mark.header }}">{{ mark.mark.header }} </div>
             {% endfor %}
         </div>
 

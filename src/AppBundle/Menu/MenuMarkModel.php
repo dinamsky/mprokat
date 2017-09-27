@@ -166,7 +166,7 @@ dump($marks);
 //
 //        }
 
-        $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.total > 0 ORDER BY m.total DESC, m.header ASC');
+        $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.total >= 0 ORDER BY m.total DESC, m.header ASC');
 
         //dump($query);
         $result = $query->getResult();
