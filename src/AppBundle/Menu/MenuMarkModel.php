@@ -116,7 +116,7 @@ class MenuMarkModel extends Controller
         $cityId = $request->request->get('cityId');
         $gtURL = $request->request->get('gtURL');
         $marks = $this->getExistMarks($cityId)['sorted_marks'];
-dump($marks);
+
         if($marks) {
             $query = $this->em->createQuery('SELECT t FROM MarkBundle:CarType t WHERE t.url = ?1');
             $query->setParameter(1, $gtURL);
