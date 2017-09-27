@@ -138,7 +138,7 @@ class MainPageController extends Controller
         $popular_city = $query->getResult();
 
 
-        $mark_arr = $mm->getExistMarks($city->getId());
+        $mark_arr = $mm->getExistMarks('',1);
 
         $mark_arr_sorted = $mark_arr['sorted_marks'];
         $mark_arr_typed = $mark_arr['typed_marks'];
