@@ -198,12 +198,7 @@ button{
     position: absolute;
 }
 
-#top_selector_block{
 
-    /*background: gold;*/
-    padding: 30px 0;
-
-}
 
 .price_descriptor{
     display: inline-block;
@@ -661,8 +656,23 @@ footer a:hover{
     height:100%;
 }
 
+#top_selector_block{
+
+    background: #1976d2;
+    padding: 30px 0;
+
+}
+
+#top_selector_block h1,#top_selector_block .main_gt_block span{
+    color: white;
+}
+
+#top_selector_block hr{
+    border-color: rgba(255,255,255, 0.39);
+}
+
 .top_selector_all{
-    border: 10px solid #25b45b;
-    padding: 30px;
-    background: white;
+    /*border: 10px solid #25b45b;*/
+    /*padding: 30px;*/
+    /*background: white;*/
 }
