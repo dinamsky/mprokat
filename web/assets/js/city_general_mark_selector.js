@@ -203,7 +203,11 @@ function getSelectorUrl(){
         generalType = '';
     }
 
-    return '/show'+city+service+generalType+markModel;
+    if (generalType === '/alltypes'){
+        generalType = '';
+    }
+
+    return '/rent'+city+service+generalType+markModel;
 }
 
 function getQueryVars() {

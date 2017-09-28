@@ -30,7 +30,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 class SearchController extends Controller
 {
     /**
-     * @Route("/show/{city}/{service}/{general}/{mark}/{model}", name="search")
+     * @Route("/rent/{city}/{service}/{general}/{mark}/{model}", name="search")
      */
     public function showCardsAction(
         $city = false, $service = false, $general = false, $mark = false, $model = false, $card = false,
@@ -119,16 +119,21 @@ class SearchController extends Controller
         }
 
         if($mark){
-            $mark = $this->getDoctrine()
-                ->getRepository(CarMark::class)
-                ->findOneBy(['header' => $mark, 'carTypeId' => explode(",",$general->getCarTypeIds())]);
+            if($general) {
+                $mark = $this->getDoctrine()
+                    ->getRepository(CarMark::class)
+                    ->findOneBy(['header' => $mark, 'carTypeId' => explode(",", $general->getCarTypeIds())]);
+            } else {
+                $mark = $this->getDoctrine()
+                    ->getRepository(CarMark::class)
+                    ->findOneBy(['header' => $mark]);
+            }
             $models = $mm->getModels($mark->getId());
-            foreach($models as $child){
+            foreach ($models as $child) {
                 $mark_ids[] = $child->getId();
             }
-            $mark_condition = ' AND c.modelId IN ('.implode(',',$mark_ids).')';
+            $mark_condition = ' AND c.modelId IN (' . implode(',', $mark_ids) . ')';
             $marks = $mm->getMarks($mark->getCarTypeId());
-            //$models = $mm->getModels($mark->getId());
         } else {
             //$mark = array('id' => 0,'groupname'=>'', 'header'=>false, 'carTypeId'=>0);
             $mark = new CarMark();
@@ -268,6 +273,10 @@ class SearchController extends Controller
 
         if(!$general) $general = ['url'=>'alltypes','header'=>'Любой тип транспорта'];
 
+        $gtm_ids = $mm->getExistMarkGtId();
+        $all_gts = $mm->getExistGt($gtm_ids['gts']);
+        $all_marks = $mm->getExistMark($gtm_ids['models']);
+
         return $this->render('search/search_main.html.twig', [
 
             'cards' => $cards,
@@ -311,6 +320,8 @@ class SearchController extends Controller
             'models_in_mark' => $models_in_mark,
 
             'generalTypes' => $generalTypes,
+            'all_gts' => $all_gts,
+            'all_marks' => $all_marks
 
 
         ]);

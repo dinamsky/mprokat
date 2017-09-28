@@ -186,4 +186,33 @@ class MenuMarkModel extends Controller
             return false;
         }
     }
+
+    public function getExistMarkGtId()
+    {
+        $gt_ids = $model_ids = [];
+        $query = $this->em->createQuery('SELECT c.modelId,c.generalTypeId FROM AppBundle:Card c');
+        $result = $query->getScalarResult();
+        foreach ($result as $row){
+            $gt_ids[] = $row['generalTypeId'];
+            $model_ids[] = $row['modelId'];
+        }
+        return array('gts' => array_unique($gt_ids), 'models' => array_unique($model_ids));
+    }
+
+    public function getExistGt($gt_ids)
+    {
+        $query = $this->em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.id IN ('.implode(",",$gt_ids).')');
+        return $query->getResult();
+    }
+
+    public function getExistMark($model_ids)
+    {
+        $mark_ids = [];
+        $query = $this->em->createQuery('SELECT m.carMarkId FROM MarkBundle:CarModel m WHERE m.id IN ('.implode(",",$model_ids).')');
+        foreach($query->getScalarResult() as $row){
+            $mark_ids[] = $row['carMarkId'];
+        }
+        $query = $this->em->createQuery('SELECT m FROM MarkBundle:CarMark m WHERE m.id IN ('.implode(",",$mark_ids).')');
+        return $query->getResult();
+    }
 }
