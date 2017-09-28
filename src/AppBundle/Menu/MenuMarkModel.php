@@ -149,7 +149,7 @@ class MenuMarkModel extends Controller
         $new_mark_arr = [];
         $mark_total = [];
 
-        $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.total >= 0 ORDER BY m.total DESC, m.header ASC');
+        $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k ORDER BY m.total DESC, m.header ASC');
         if ($carTypeId != ''){
             $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.carTypeId='.$carTypeId.' ORDER BY m.total DESC, m.header ASC');
         }
@@ -187,10 +187,10 @@ class MenuMarkModel extends Controller
         }
     }
 
-    public function getExistMarkGtId()
+    public function getExistMarkGtId($cityId)
     {
         $gt_ids = $model_ids = [];
-        $query = $this->em->createQuery('SELECT c.modelId,c.generalTypeId FROM AppBundle:Card c');
+        $query = $this->em->createQuery('SELECT c.modelId,c.generalTypeId FROM AppBundle:Card c WHERE c.cityId = '.$cityId);
         $result = $query->getScalarResult();
         foreach ($result as $row){
             $gt_ids[] = $row['generalTypeId'];

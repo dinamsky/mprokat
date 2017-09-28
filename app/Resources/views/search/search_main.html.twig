@@ -34,15 +34,23 @@
                 {% include 'search/' ~ view ~ '.html.twig' %}
                 {% include 'search/search_pager.html.twig' %}
 
-                {% if app.request.pathinfo == '/rent/rus' %}
-                    {{ include('search/city_block.html.twig') }}
-                {% endif %}
+                {#{% if app.request.pathinfo == '/rent/rus' %}#}
+                    {#{{ include('search/city_block.html.twig') }}#}
+                {#{% endif %}#}
 
 
                 {% set x_uri = app.request.pathinfo|split('/') %}
 
                 {% if x_uri[2] is defined and x_uri[2] != 'rus' and x_uri|length == 3 %}
                     {{ include('search/gt_block.html.twig') }}
+                {% endif %}
+
+                {% if x_uri[2] is defined and x_uri[2] != 'rus' and x_uri|length == 5 %}
+                    {{ include('search/mark_block.html.twig') }}
+                {% endif %}
+
+                {% if x_uri[2] is defined and x_uri[2] != 'rus' and x_uri|length == 6 %}
+                    {{ include('search/model_block.html.twig') }}
                 {% endif %}
 
                 {% if total_cards == 0 %}

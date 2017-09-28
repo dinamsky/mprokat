@@ -35,6 +35,11 @@ class CarMark
      */
     private $header;
 
+    /**
+     * @ORM\OneToMany(targetEntity="MarkBundle\Entity\CarModel", mappedBy="mark", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OrderBy({"header" = "ASC"})
+     */
+    private $models;
 
     /**
      * Get id
@@ -93,5 +98,45 @@ class CarMark
     {
         return $this->header;
     }
-}
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->models = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
+    /**
+     * Add model
+     *
+     * @param \MarkBundle\Entity\CarModel $model
+     *
+     * @return CarMark
+     */
+    public function addModel(\MarkBundle\Entity\CarModel $model)
+    {
+        $this->models[] = $model;
+
+        return $this;
+    }
+
+    /**
+     * Remove model
+     *
+     * @param \MarkBundle\Entity\CarModel $model
+     */
+    public function removeModel(\MarkBundle\Entity\CarModel $model)
+    {
+        $this->models->removeElement($model);
+    }
+
+    /**
+     * Get models
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getModels()
+    {
+        return $this->models;
+    }
+}
