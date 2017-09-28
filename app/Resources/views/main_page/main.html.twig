@@ -13,6 +13,9 @@
     <script src="{{ asset('assets/js/mainPage.js') }}"></script>
     <script src="{{ asset('assets/js/city_general_mark_selector.js') }}"></script>
     <script src="{{ asset('assets/js/sliderSettings.js') }}"></script>
+    <script src="{{ asset('assets/html5_banner/createjs-2015.11.26.min.js') }}"></script>
+    <script src="{{ asset('assets/html5_banner/body.js') }}"></script>
+    <script src="{{ asset('assets/html5_banner/init.js') }}"></script>
 {% endblock %}
 
 {% block metaTags %}
@@ -24,6 +27,7 @@
 
 {% block title %}{% if custom_seo and custom_seo.title != ''%}{% include(template_from_string(custom_seo.title)) %}{% else %}Мультипрокат{% endif %}{% endblock %}
 
+{% block bodyVars %}onload="html5_init();"{% endblock %}
 
 {% block content %}
 
@@ -47,9 +51,13 @@
     </div>
 </div>
 
-    {#<div style="background: url('/assets/images/interface/banner.jpg') center center; height:90px;">#}
 
-    {#</div>#}
+        <div id="animation_container" style="background-color:rgba(255, 255, 255, 1.00); width:100%; height:90px">
+            <canvas id="canvas" width="100%" height="90" style="position: absolute; display: block; background-color:rgba(255, 255, 255, 1.00);"></canvas>
+            <div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:100%; height:90px; position: absolute; left: 0px; top: 0px; display: block;">
+            </div>
+        </div>
+
 
     <div id="top_selector_block" class="">
         <div class="standard_wide top_selector_all">
