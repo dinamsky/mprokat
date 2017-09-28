@@ -637,6 +637,7 @@ footer a:hover{
 .top_slider_block .owl-next i svg{
     width: 100%;
     height:100%;
+    color: grey;
 }
 
 .top_slider_block .owl-prev{
@@ -651,6 +652,13 @@ footer a:hover{
 .top_slider_block .owl-prev i svg{
     width: 100%;
     height:100%;
+    color: grey;
+}
+
+.top_slider_block{
+    padding: 10px 0 15px 0;
+    /*background: #1976d2;*/
+    background: white;
 }
 
 #top_selector_block{
@@ -674,7 +682,3 @@ footer a:hover{
     /*background: white;*/
 }
 
-.top_slider_block{
-    padding: 10px 0 15px 0;
-    background: #1976d2;
-}
