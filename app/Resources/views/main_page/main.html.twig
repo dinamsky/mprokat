@@ -3,6 +3,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
+    <link href="{{ asset('assets/css/main_page/top_slider.css') }}" rel="stylesheet"/>
     <link href="{{ asset('assets/css/owl.carousel.min.css') }}" rel="stylesheet"/>
     <link href="{{ asset('assets/css/owl.theme.default.css') }}" rel="stylesheet"/>
 {% endblock %}
@@ -13,6 +14,9 @@
     <script src="{{ asset('assets/js/mainPage.js') }}"></script>
     <script src="{{ asset('assets/js/city_general_mark_selector.js') }}"></script>
     <script src="{{ asset('assets/js/sliderSettings.js') }}"></script>
+    <script src="{{ asset('assets/html5_banner/createjs-2015.11.26.min.js') }}"></script>
+    <script src="{{ asset('assets/html5_banner/body.js') }}"></script>
+    <script src="{{ asset('assets/html5_banner/init.js') }}"></script>
 {% endblock %}
 
 {% block metaTags %}
@@ -24,14 +28,15 @@
 
 {% block title %}{% if custom_seo and custom_seo.title != ''%}{% include(template_from_string(custom_seo.title)) %}{% else %}Мультипрокат{% endif %}{% endblock %}
 
+{% block bodyVars %}onload="html5_init();"{% endblock %}
 
 {% block content %}
 
 
 
-<div class="top_slider_block bg_blue">
+<div class="top_slider_block">
     <div class="standard_wide uk-position-relative">
-        <div class="c_white uk-text-center tx_24 uk-margin-bottom">Лучшие предложения</div>
+        <div class="uk-text-center tx_24 uk-margin-bottom">Лучшие предложения</div>
         <div class="owl-carousel owl-theme uk-width-1-1" data-items="6" data-dots="0">
             {% for card in topSlider %}
                 {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px', 'micro':true}) }}
@@ -39,20 +44,24 @@
         </div>
         <div class="uk-text-center">
             {% if app.session.has('logged_user') %}
-                <a href="/card/new" class="c_white" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip>Разместить объявление в ТОП</a>
+                <a href="/card/new" class="" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip>Разместить объявление в ТОП</a>
             {% else %}
-                <a class="c_white" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip uk-toggle="target: #sign_in_or_up">Разместить объявление в ТОП</a>
+                <a class="" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip uk-toggle="target: #sign_in_or_up">Разместить объявление в ТОП</a>
             {% endif %}
         </div>
     </div>
 </div>
 
-    {#<div style="background: url('/assets/images/interface/banner.jpg') center center; height:90px;">#}
 
-    {#</div>#}
+        <div id="animation_container" style="background-color:rgba(255, 255, 255, 1.00); width:100%; height:90px">
+            <canvas id="canvas" width="100%" height="90" style="position: absolute; display: block; background-color:rgba(255, 255, 255, 1.00);"></canvas>
+            <div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:100%; height:90px; position: absolute; left: 0px; top: 0px; display: block;">
+            </div>
+        </div>
+
 
     <div id="top_selector_block" class="">
-        <div class="standard_wide">
+        <div class="standard_wide top_selector_all">
 
             {% if custom_seo and custom_seo.h1 != ''%}
                 <h1 class="uk-text-center">{% include(template_from_string(custom_seo.h1)) %}</h1>
@@ -91,7 +100,7 @@
                         </div>
                     {% endfor %}
                 </div>
-                <div class="uk-text-center uk-margin-top cursor-pointer" uk-toggle="target: #more_gt">еще категории <i uk-icon="icon:chevron-down"></i></div>
+                <div class="uk-text-center uk-margin-top cursor-pointer c_white" uk-toggle="target: #more_gt">еще категории <i uk-icon="icon:chevron-down"></i></div>
                 <div id="more_gt" uk-grid class="uk-flex uk-flex-center uk-margin-top uk-grid-medium" hidden>
                     {% for gt in generalTypes|slice(4) if gt.carTypeIds %}
                         <div class="gt_selector" data-url="{{ gt.url }}" data-header="{{ gt.header }}">
