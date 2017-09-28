@@ -271,11 +271,16 @@ class SearchController extends Controller
         $mark_arr_sorted = $mark_arr['typed_marks'];
         $models_in_mark = $mark_arr['models_in_mark'];
 
-        if(!$general) $general = ['url'=>'alltypes','header'=>'Любой тип транспорта'];
+
+
+
 
         $gtm_ids = $mm->getExistMarkGtId($city->getId());
         $all_gts = $mm->getExistGt($gtm_ids['gts']);
-        $all_marks = $mm->getExistMark($gtm_ids['models']);
+        if ($general) $all_marks = $mm->getExistMark($gtm_ids['models'],$general);
+        else $all_marks = '';
+
+        if(!$general) $general = ['url'=>'alltypes','header'=>'Любой тип транспорта'];
 
         return $this->render('search/search_main.html.twig', [
 
