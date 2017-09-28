@@ -273,7 +273,7 @@ class SearchController extends Controller
 
         if(!$general) $general = ['url'=>'alltypes','header'=>'Любой тип транспорта'];
 
-        $gtm_ids = $mm->getExistMarkGtId();
+        $gtm_ids = $mm->getExistMarkGtId($city->getId());
         $all_gts = $mm->getExistGt($gtm_ids['gts']);
         $all_marks = $mm->getExistMark($gtm_ids['models']);
 
@@ -321,7 +321,8 @@ class SearchController extends Controller
 
             'generalTypes' => $generalTypes,
             'all_gts' => $all_gts,
-            'all_marks' => $all_marks
+            'all_marks' => $all_marks,
+            'gtm_ids' => $gtm_ids
 
 
         ]);
