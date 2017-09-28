@@ -165,13 +165,13 @@ class ProfileController extends Controller
     {
         $post = $request->request;
 
-        $card_id = $post->get('card_id');
-
-        $card = $this->getDoctrine()
-            ->getRepository(Card::class)
-            ->find($card_id);
-
-        $user = $card->getUser();
+//        $card_id = $post->get('card_id');
+//
+//        $card = $this->getDoctrine()
+//            ->getRepository(Card::class)
+//            ->find($card_id);
+//
+//        $user = $card->getUser();
 
         $message = (new \Swift_Message('Сообщение от пользователя'))
             ->setFrom(['robot@multiprokat.com' => 'Робот Мультипрокат'])
@@ -181,7 +181,7 @@ class ProfileController extends Controller
                 $this->renderView(
                     'email/request.html.twig',
                     array(
-                        'header' => $user->getHeader(),
+                        'header' => 'Админ',
                         'message' => $post->get('message'),
                         'email' => $post->get('email'),
                         'name' => $post->get('name'),
@@ -197,7 +197,7 @@ class ProfileController extends Controller
             'Ваше сообщение успешно отправлено!'
         );
 
-        return $this->redirect('/card/'.$card_id);
+        return $this->redirect('/');
     }
 
     /**
