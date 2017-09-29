@@ -1,0 +1,53 @@
+{% if not app.session.has('logged_user') and not app.session.has('admin')%}
+    <div id="sign_in" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+            <h2 class="uk-modal-title">Вход</h2>
+            <form action="/userSignIn" method="POST">
+                <input type="text" name="email" placeholder="login" class="uk-input uk-margin-bottom">
+                <input type="password" name="password" placeholder="password" class="uk-input uk-margin-bottom">
+                <input type="hidden" name="return" value="{{ app.request.requestUri }}">
+                <div class="uk-clearfix">
+                    <div class="uk-float-left"><button class="uk-button uk-button-primary">Войти</button></div>
+                    <div class="uk-float-right"><a uk-toggle="target: #pass_recover">Забыли пароль?</a></div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="sign_up" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+            <h2 class="uk-modal-title">Регистрация</h2>
+            <form id="signUpForm" action="/userSignUp" method="POST" onsubmit="return signup_validate();">
+                <input type="text" name="header" placeholder="name" class="uk-input uk-margin-bottom">
+                <input type="text" name="email" placeholder="email" required class="uk-input uk-margin-bottom">
+                <input type="password" name="password" placeholder="password" required class="uk-input uk-margin-bottom">
+                <button class="uk-button uk-button-primary">Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="pass_recover" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+            <h2 class="uk-modal-title">Смена пароля</h2>
+            <form action="/userRecover" method="POST">
+                <input type="text" name="email" placeholder="Введите email использованный при регистрации" class="uk-input uk-margin-bottom">
+                <input type="password" name="password1" placeholder="Придумайте новый пароль" class="uk-input uk-margin-bottom">
+                <input type="password" name="password2" placeholder="Повторите новый пароль" class="uk-input uk-margin-bottom">
+                <input type="hidden" name="return" value="{{ app.request.requestUri }}">
+                <button class="uk-button uk-button-primary">Сменить пароль</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="sign_in_or_up" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+            <h2 class="uk-modal-title">Что дальше?</h2>
+            <div><a uk-toggle="target: #sign_in">Войдите</a> или пройдите <a uk-toggle="target: #sign_up">быструю регистрацию</a> чтобы разместить ваше объявление.</div>
+            <div>Выберите пакет "Премиум", чтобы попасть в ТОП.</div>
+        </div>
+    </div>
+{% endif %}

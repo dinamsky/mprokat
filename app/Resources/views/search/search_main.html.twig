@@ -38,21 +38,6 @@
                     {#{{ include('search/city_block.html.twig') }}#}
                 {#{% endif %}#}
 
-
-                {% set x_uri = app.request.pathinfo|split('/') %}
-
-                {% if x_uri[2] is defined and x_uri[2] != 'rus' and x_uri|length == 3 %}
-                    {{ include('search/gt_block.html.twig') }}
-                {% endif %}
-
-                {% if x_uri[2] is defined and x_uri[2] != 'rus' and x_uri|length == 5 %}
-                    {{ include('search/mark_block.html.twig') }}
-                {% endif %}
-
-                {% if x_uri[2] is defined and x_uri[2] != 'rus' and x_uri|length == 6 %}
-                    {{ include('search/model_block.html.twig') }}
-                {% endif %}
-
                 {% if total_cards == 0 %}
                     {% if app.session.has('logged_user') %}
                         <a href="/card/new" class="uk-button uk-button-success ">Будь первым - добавь объявление!</a>
@@ -62,6 +47,22 @@
                         <a uk-toggle="target: #sign_in" class="uk-button uk-button-success ">Будь первым - добавь объявление!</a>
                     {% endif %}
                 {% endif %}
+
+                {% set x_uri = app.request.pathinfo|split('/') %}
+
+                {% if x_uri[2] is defined and x_uri[2] != 'rus' and x_uri|length == 3 %}
+                    {{ include('search/gt_block.html.twig') }}
+                {% endif %}
+
+                {% if x_uri[2] is defined and x_uri[2] != 'rus' and x_uri|length > 4 and mark.id == null %}
+                    {{ include('search/mark_block.html.twig') }}
+                {% endif %}
+
+                {% if x_uri[2] is defined and x_uri[2] != 'rus' and x_uri|length > 5 and model.id == null %}
+                    {{ include('search/model_block.html.twig') }}
+                {% endif %}
+
+
 
                 {% set seo_text %}{% include 'seo_templates/c_text.html.twig' %}{% endset %}
 
@@ -77,6 +78,18 @@
             <div class="uk-width-1-4">
                 <h3 class="pf_style_header"><span>Поиск</span></h3>
                 {{ include('search/search_form.html.twig') }}
+
+
+
+                {% if bodyTypes and model.id == null %}
+                    {% for body in bodyTypes %}
+                        {% if mark.id == null %}
+                            <div><a href="/rent/{{ x_uri[2] }}/{{ x_uri[3] }}/{{ x_uri[4] }}/{{ body.url }}">{{ body.header }}</a></div>
+                        {% else %}
+                            <div><a href="/rent/{{ x_uri[2] }}/{{ x_uri[3] }}/{{ x_uri[4] }}/{{ x_uri[5] }}/{{ body.url }}">{{ body.header }}</a></div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
     </div>

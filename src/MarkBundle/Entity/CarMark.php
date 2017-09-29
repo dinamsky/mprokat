@@ -36,7 +36,7 @@ class CarMark
     private $header;
 
     /**
-     * @ORM\OneToMany(targetEntity="MarkBundle\Entity\CarModel", mappedBy="mark", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MarkBundle\Entity\CarModel", mappedBy="mark", fetch="EXTRA_LAZY", cascade={"remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"header" = "ASC"})
      */
     private $models;
