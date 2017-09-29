@@ -11,6 +11,11 @@
     {% endif %}
 
 
+    {% set serviceType = 'Прокат' %}
+    {% if card.serviceTypeId == 2  %}
+        {% set serviceType = 'Аренда' %}
+    {% endif %}
+
 
     <a id="card_img_{{ card.id }}" href="/card/{{ card.id }}" style="background: {{ bgrnd }} center center;
             background-size: cover;
@@ -22,7 +27,7 @@
 
 
     <div class="padding20">
-        <a class="uk-text-truncate uk-display-block" href="/card/{{ card.id }}">{{ card.header }}</a>
+        <a class="uk-text-truncate uk-display-block" href="/card/{{ card.id }}">{{ serviceType }} {{ card.markModel.Mark.header }} {{ card.markModel.header }} в {{ card.city.gde }}</a>
         <div class="uk-text-truncate uk-text-small c_grey"><i class="fa fa-map-marker"></i> {{ card.city.header }}</div>
         <div class="uk-clearfix">
             <div class="uk-float-left uk-text-small {{ micro is defined ? 'micro' }}">

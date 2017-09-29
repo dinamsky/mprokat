@@ -17,7 +17,7 @@
 {% block openGraph %}
     {{ parent() }}
     <meta property="og:image" content="{{ app.request.getSchemeAndHttpHost() ~ mainFoto }}">
-    <meta property="og:title" content="{{ card.header }}">
+    <meta property="og:title" content="{{ include(':seo_templates:p_h1.html.twig') }}">
 {% endblock %}
 
 {% block metaTags %}

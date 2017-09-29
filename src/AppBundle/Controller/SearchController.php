@@ -45,10 +45,13 @@ class SearchController extends Controller
 
 
 
+
+
         $city_condition = '';
         $service_condition = '';
         $general_condition = '';
         $mark_condition = '';
+        $body_condition = '';
         $order = ' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
         $sort = '0';
         if (isset($get['order'])){
@@ -118,6 +121,32 @@ class SearchController extends Controller
             }
         }
 
+
+        if ($general->getUrl() == 'cars') {
+            $query = $em->createQuery('SELECT s FROM AppBundle:SubField s WHERE s.fieldId = 3 AND s.parentId = 1');
+            $bodyTypes = $query->getResult();
+            foreach($bodyTypes as $bt){
+                $bodyTypeArray[] = $bt->getUrl();
+                $bodyTypeEntity[$bt->getUrl()] = $bt;
+            }
+        } else $bodyTypes = false;
+
+
+        if(($mark and in_array($mark,$bodyTypeArray)) or ($model and in_array($model,$bodyTypeArray))){
+            if (in_array($mark,$bodyTypeArray)) $bt_value = $bodyTypeEntity[$mark]->getId();
+            if (in_array($model,$bodyTypeArray)) $bt_value = $bodyTypeEntity[$model]->getId();
+            $query = $em->createQuery('SELECT f.cardId FROM AppBundle:FieldInteger f WHERE f.value = '.$bt_value.' AND f.cardFieldId = 3');
+
+            $result = $query->getScalarResult();
+            $bt_ids = [0];
+            foreach ($result as $row){
+                $bt_ids[] = $row['cardId'];
+            }
+            $body_condition = 'AND c.id IN ('.implode(",",$bt_ids).')';
+            if (in_array($mark,$bodyTypeArray)) $mark = false;
+            if (in_array($model,$bodyTypeArray)) $model = false;
+        }
+
         if($mark){
             if($general) {
                 $mark = $this->getDoctrine()
@@ -162,7 +191,7 @@ class SearchController extends Controller
             if (!$models) $models = array();
         }
 
-        $dql = 'SELECT count(c.id) FROM AppBundle:Card c WHERE 1=1 '.$city_condition.$service_condition.$general_condition.$mark_condition;
+        $dql = 'SELECT count(c.id) FROM AppBundle:Card c WHERE 1=1 '.$city_condition.$service_condition.$general_condition.$mark_condition.$body_condition;
         $query = $em->createQuery($dql);
 
         $total_cards = $query->getSingleScalarResult();
@@ -194,7 +223,7 @@ class SearchController extends Controller
         $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g ORDER BY g.total DESC');
         $generalTypes = $query->getResult();
 
-        $dql = 'SELECT c.id FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.cardPrices p WITH p.priceId = 2 WHERE 1=1 '.$city_condition.$service_condition.$general_condition.$mark_condition.$order;
+        $dql = 'SELECT c.id FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.cardPrices p WITH p.priceId = 2 WHERE 1=1 '.$city_condition.$service_condition.$general_condition.$mark_condition.$body_condition.$order;
         $query = $em->createQuery($dql);
 
         $query->setMaxResults($cards_per_page);
@@ -251,29 +280,17 @@ class SearchController extends Controller
         $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.total DESC, c.header ASC');
         $popular_city = $query->getResult();
 
+        if($general) {
+            $query = $em->createQuery('SELECT t FROM MarkBundle:CarType t WHERE t.url = ?1');
+            $query->setParameter(1, $general->getUrl());
+            $carType = $query->getResult();
+            $carType = $carType[0]->getId();
+        } else $carType = '';
 
-//        if($city->getId() != null) $mark_arr = $mm->getExistMarks($city->getId());
-//        else $mark_arr = $mm->getExistMarks();
-//        $mark_arr_sorted = $mark_arr['sorted_marks'];
-//        $mark_arr_typed = $mark_arr['typed_marks'];
-//        $models_in_mark = $mark_arr['models_in_mark'];
-//
-//        if($mark->getHeader() == '') {
-//            if(isset($mark_arr_sorted[$mark->getCarTypeId()])) $mark = $mark_arr_sorted[$mark->getCarTypeId()][0]['mark'];
-//            else $mark = new CarMark();
-//            $mark->setCarTypeId(1);
-//            $mark->setHeader('Любая марка');
-//        }
+        $mark_arr = $mm->getExistMarks("",$carType);
 
-
-        $mark_arr = $mm->getExistMarks();
-        //dump($mark_arr);
         $mark_arr_sorted = $mark_arr['typed_marks'];
         $models_in_mark = $mark_arr['models_in_mark'];
-
-
-
-
 
         $gtm_ids = $mm->getExistMarkGtId($city->getId());
         $all_gts = $mm->getExistGt($gtm_ids['gts']);
@@ -296,21 +313,15 @@ class SearchController extends Controller
             'onpage' => $cards_per_page,
             'service' => $p_service,
 
-//            'countries' => $mc->getCountry(),
             'countryCode' => $countryCode,
             'regionId' => $regionId,
-//            'regions' => $mc->getRegion($countryCode),
+
             'cities' => $cities,
             'cityId' => $cityId,
             'city' => $city,
 
-//            'generalTopLevel' => $mgt->getTopLevel(),
-//            'generalSecondLevel' => $mgt->getSecondLevel($pgtId),
-//            'pgtid' => $pgtId,
-//            'gtid' => $gtId,
             'general' => $general,
 
-//            'mark_groups' => $mm->getGroups(),
             'mark' => $mark,
             'model' => $model,
             'marks' => $marks,
@@ -327,8 +338,9 @@ class SearchController extends Controller
             'generalTypes' => $generalTypes,
             'all_gts' => $all_gts,
             'all_marks' => $all_marks,
-            'gtm_ids' => $gtm_ids
+            'gtm_ids' => $gtm_ids,
 
+            'bodyTypes' => $bodyTypes
 
         ]);
     }

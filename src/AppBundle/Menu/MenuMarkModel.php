@@ -149,9 +149,14 @@ class MenuMarkModel extends Controller
         $new_mark_arr = [];
         $mark_total = [];
 
-        $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k ORDER BY m.total DESC, m.header ASC');
+//        $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k ORDER BY m.total DESC, m.header ASC');
+//        if ($carTypeId != ''){
+//            $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.carTypeId='.$carTypeId.' ORDER BY m.total DESC, m.header ASC');
+//        }
+
+        $query = $this->em->createQuery('SELECT m FROM MarkBundle:CarModel m ORDER BY m.total DESC, m.header ASC');
         if ($carTypeId != ''){
-            $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.carTypeId='.$carTypeId.' ORDER BY m.total DESC, m.header ASC');
+            $query = $this->em->createQuery('SELECT m FROM MarkBundle:CarModel m WHERE m.carTypeId='.$carTypeId.' ORDER BY m.total DESC, m.header ASC');
         }
 
         $result = $query->getResult();
@@ -212,10 +217,12 @@ class MenuMarkModel extends Controller
         $query->setParameter(1, $general->getUrl());
         $carType = $query->getResult();
         $carType = $carType[0];
-        $query = $this->em->createQuery('SELECT m.carMarkId FROM MarkBundle:CarModel m WHERE m.carTypeId = '.$carType->getId().' AND m.id IN ('.implode(",",$model_ids).')');
+        sort($model_ids);
+        $query = $this->em->createQuery('SELECT m.carMarkId FROM MarkBundle:CarModel m WHERE m.carTypeId = '.$carType->getId().' AND m.id IN ('.implode(",",$model_ids).') ORDER BY m.carMarkId');
         foreach($query->getScalarResult() as $row){
             $mark_ids[] = $row['carMarkId'];
         }
+        $mark_ids = array_unique($mark_ids);
         if(!empty($mark_ids)) {
             $query = $this->em->createQuery('SELECT m FROM MarkBundle:CarMark m WHERE m.id IN (' . implode(",", $mark_ids) . ')');
             return $query->getResult();
