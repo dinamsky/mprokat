@@ -7,7 +7,7 @@ $( document ).ready(function() {
             "searchreplace visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
             "table contextmenu template textcolor paste textcolor colorpicker textpattern autoresize"
         ],
-        toolbar1: "removeformat | bold italic underline | alignleft aligncenter alignright alignjustify | formatselect | bullist numlist | link unlink image",
+        toolbar1: "code | removeformat | bold italic underline | alignleft aligncenter alignright alignjustify | formatselect | bullist numlist | link unlink image",
         menubar: false,
         fontsize_formats: '10px 14px 16px 24px 32px',
         file_browser_callback: RoxyFileBrowser,
