@@ -154,9 +154,9 @@ class MenuMarkModel extends Controller
 //            $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.carTypeId='.$carTypeId.' ORDER BY m.total DESC, m.header ASC');
 //        }
 
-        $query = $this->em->createQuery('SELECT m FROM MarkBundle:CarModel m ORDER BY m.total DESC, m.header ASC');
+        $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k ORDER BY m.total DESC, m.header ASC');
         if ($carTypeId != ''){
-            $query = $this->em->createQuery('SELECT m FROM MarkBundle:CarModel m WHERE m.carTypeId='.$carTypeId.' ORDER BY m.total DESC, m.header ASC');
+            $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.carTypeId='.$carTypeId.' ORDER BY m.total DESC, m.header ASC');
         }
 
         $result = $query->getResult();

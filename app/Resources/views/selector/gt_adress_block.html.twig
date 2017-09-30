@@ -1,11 +1,11 @@
 <div id="gt_city_popular" class="uk-modal-container" uk-modal>
     <div class="uk-modal-dialog uk-modal-body">
         <button class="uk-modal-close-default" type="button" uk-close></button>
-        <h2 class="uk-modal-title"><a class="gt_city_block" href="/show/{{ city.url }}/all" data-def="/show/{{ city.url }}/all"><span id="gt_city_header"></span> в {{ city.gde }}</a></h2>
+        <h2 class="uk-modal-title"><a class="gt_city_block" href="/rent/{{ city.url }}/all" data-def="/rent/{{ city.url }}/all"><span id="gt_city_header"></span> в {{ city.gde }}</a></h2>
         <div class="uk-column-1-5">
-            <div class="city_block uk-margin-bottom" data-url="rus" data-header="Россия"><a class="gt_city_block" href="/show/rus/all" data-def="/show/rus/all">В России</a></div>
+            <div class="city_block uk-margin-bottom" data-url="rus" data-header="Россия"><a class="gt_city_block" href="/rent/rus/all" data-def="/rent/rus/all">В России</a></div>
             {% for gt_city in popular_city if  gt_city.total >= 10 and city.url != gt_city.url %}
-                <a class="gt_city_block uk-display-block" href="/show/{{ gt_city.url }}/all" data-def="/show/{{ gt_city.url }}/all">В {{ gt_city.gde }}</a>
+                <a class="gt_city_block uk-display-block" href="/rent/{{ gt_city.url }}/all" data-def="/rent/{{ gt_city.url }}/all">В {{ gt_city.gde }}</a>
             {% endfor %}
         </div>
         <hr>
@@ -13,7 +13,7 @@
         <div id="more_cities2" hidden>
             <div class="uk-column-1-5">
                 {% for gt_city in popular_city if gt_city.total < 10 and city.url != gt_city.url %}
-                    <a class="gt_city_block uk-display-block" href="/show/{{ gt_city.url }}/all" data-def="/show/{{ gt_city.url }}/all">В {{ gt_city.gde }}</a>
+                    <a class="gt_city_block uk-display-block" href="/rent/{{ gt_city.url }}/all" data-def="/rent/{{ gt_city.url }}/all">В {{ gt_city.gde }}</a>
                 {% endfor %}
             </div>
         </div>

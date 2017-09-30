@@ -82,6 +82,7 @@
 
 
                 {% if bodyTypes and model.id == null %}
+                    <h3 class="pf_style_header"><span>Поиск по типу кузова</span></h3>
                     {% for body in bodyTypes %}
                         {% if mark.id == null %}
                             <div><a href="/rent/{{ x_uri[2] }}/{{ x_uri[3] }}/{{ x_uri[4] }}/{{ body.url }}">{{ body.header }}</a></div>

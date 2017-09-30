@@ -58,11 +58,11 @@
             <a href="/">Главная</a>
             {% if card.generalType.getParent is not null %}
             <i uk-icon="icon:chevron-right"></i>
-            <a href="/show/rus/all/{{ card.generalType.getParent.url }}">{{ card.generalType.getParent.header }}</a>
+            <a href="/rent/rus/all/{{ card.generalType.getParent.url }}">{{ card.generalType.getParent.header }}</a>
             {% endif %}
 
             <i uk-icon="icon:chevron-right"></i>
-            <a href="/show/rus/all/{{ card.generalType.url }}">{{ card.generalType.header }}</a>
+            <a href="/rent/rus/all/{{ card.generalType.url }}">{{ card.generalType.header }}</a>
 
         </div>
     </div>
