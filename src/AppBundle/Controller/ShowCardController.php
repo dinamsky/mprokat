@@ -122,6 +122,14 @@ class ShowCardController extends Controller
         $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g ORDER BY g.total DESC');
         $generalTypes = $query->getResult();
 
+        $star = 0;
+        $total_opinions = 0;
+        foreach($card->getOpinions() as $op){
+            $star = $star + $op->getStars();
+            $total_opinions++;
+        }
+        $opinions = round($star/$total_opinions, 1);
+
         return $this->render('card/card_show.html.twig', [
 
             'card' => $card,
@@ -164,6 +172,8 @@ class ShowCardController extends Controller
 
             'generalTypes' => $generalTypes,
             'car_type_id' => $mark->getCarTypeId(),
+            'opinions' => $opinions,
+            'total_opinions' => $total_opinions
 
         ]);
     }
