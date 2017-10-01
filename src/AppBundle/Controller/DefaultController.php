@@ -143,6 +143,7 @@ class DefaultController extends Controller
      */
     public function plusLikeAction(Request $request)
     {
+        $res = '';
         $post = $request->request;
         $card = $this->getDoctrine()
             ->getRepository(Card::class)
@@ -153,17 +154,19 @@ class DefaultController extends Controller
             if(!isset($array[$card->getId()])) {
                 $array[$card->getId()] = 1;
                 $card->setLikes($card->getLikes() + 1);
+                $res = 'ok';
             }
             $this->get('session')->set('likes', $array);
         } else {
             $this->get('session')->set('likes', [$card->getId() => 1]);
             $card->setLikes($card->getLikes() + 1);
+            $res = 'ok';
         }
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($card);
         $em->flush();
 
-        return new Response('', 200);
+        return new Response($res, 200);
     }
 }

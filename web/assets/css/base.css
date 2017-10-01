@@ -658,3 +658,21 @@ footer a:hover{
     padding: 5px;
     cursor: pointer;
 }
+
+.star{
+    font-size:30px;
+    cursor: pointer;
+}
+
+.star.active{
+    color:gold;
+}
+
+.star.hover i{
+    text-shadow: 0 0 3px red;
+}
+
+#stars{
+    margin-left: 20px;
+    font-size: 30px;
+}

@@ -274,6 +274,11 @@ class Card
      */
     private $comments;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Opinion", mappedBy="card", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OrderBy({"dateCreate" = "DESC"})
+     */
+    private $opinions;
 
     public function __construct() {
         $this->fieldIntegers = new ArrayCollection();
@@ -282,6 +287,7 @@ class Card
         $this->cardPrices = new ArrayCollection();
         $this->userOrders = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->opinions = new ArrayCollection();
     }
 
     /**
@@ -1272,5 +1278,39 @@ class Card
     public function getLikes()
     {
         return $this->likes;
+    }
+
+    /**
+     * Add opinion
+     *
+     * @param \AppBundle\Entity\Opinion $opinion
+     *
+     * @return Card
+     */
+    public function addOpinion(\AppBundle\Entity\Opinion $opinion)
+    {
+        $this->opinions[] = $opinion;
+
+        return $this;
+    }
+
+    /**
+     * Remove opinion
+     *
+     * @param \AppBundle\Entity\Opinion $opinion
+     */
+    public function removeOpinion(\AppBundle\Entity\Opinion $opinion)
+    {
+        $this->opinions->removeElement($opinion);
+    }
+
+    /**
+     * Get opinions
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOpinions()
+    {
+        return $this->opinions;
     }
 }
