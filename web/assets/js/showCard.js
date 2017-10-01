@@ -13,7 +13,7 @@ $( document ).ready(function() {
         }
     });
 
-    $('.show_phone').on('click', function (element) {
+    $('.show_phone').on('click', function () {
         var card_id = $(this).data('card_id');
         var t = $(this);
         $.ajax({
@@ -23,6 +23,21 @@ $( document ).ready(function() {
             success: function(html){
                 $('.phone_block').html('<span class="opened_phone bg_green c_white uk-text-center"><i class="fa fa-phone"></i> '+html+'</span>');
                 yaCounter43151009.reachGoal('PhoneClick', {phone: html, cardId: card_id});
+            }
+        });
+    });
+
+    $('.likes').on('click', function () {
+        var card_id = $(this).data('card_id');
+        var t = $(this);
+        $.ajax({
+            url: '/ajax/plusLike',
+            type: 'POST',
+            data: {card_id:card_id},
+            success: function(html){
+                $(t).find('i').attr('class','fa fa-heart c_red');
+                var l = $('#card_likes').html()-0;
+                $('#card_likes').html(l+1);
             }
         });
     });

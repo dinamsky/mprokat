@@ -56,10 +56,10 @@
     <div class="breadcrumbs uk-margin-bottom">
         <div class="standard_wide">
             <a href="/">Главная</a>
-            {% if card.generalType.getParent is not null %}
-            <i uk-icon="icon:chevron-right"></i>
-            <a href="/rent/rus/all/{{ card.generalType.getParent.url }}">{{ card.generalType.getParent.header }}</a>
-            {% endif %}
+            {#{% if card.generalType.getParent is not null %}#}
+            {#<i uk-icon="icon:chevron-right"></i>#}
+            {#<a href="/rent/rus/all/{{ card.generalType.getParent.url }}">{{ card.generalType.getParent.header }}</a>#}
+            {#{% endif %}#}
 
             <i uk-icon="icon:chevron-right"></i>
             <a href="/rent/rus/all/{{ card.generalType.url }}">{{ card.generalType.header }}</a>
@@ -70,7 +70,15 @@
     <div class="standard_wide">
 
         <div uk-grid>
-            <div class="uk-width-3-4">
+            <div class="uk-width-3-4 uk-position-relative">
+
+                <div class="likes" data-card_id="{{ card.id }}">
+                    {% if app.session.has('likes') and app.session.get('likes')[card.id] is defined %}
+                        <i class="fa fa-heart c_red"></i>
+                    {% else %}
+                        <i class="fa fa-heart-o c_white t_shadowed"></i>
+                    {% endif %}
+                </div>
 
                 <div class="owl-carousel owl-theme" data-items="1">
                     {% for foto in card.getFotos %}
@@ -262,7 +270,7 @@
 
                 <div class="uk-margin-bottom card_blanc">
                     <div><i class="fa fa-eye c_green"></i> {{ card.views }} <span class="uk-text-small c_grey">просмотров</span></div>
-                    <div><i class="fa fa-heart c_red"></i> 1 <span class="uk-text-small c_grey">лайков</span></div>
+                    <div><i class="fa fa-heart c_red"></i> <span id="card_likes">{{ card.likes }}</span> <span class="uk-text-small c_grey">лайков</span></div>
                     <div>
                         <i class="fa fa-star c_gold"></i> 5/5 <span class="uk-text-small c_grey">звезд из</span> 1
                         <span class="uk-text-small c_grey">отзывов</span>

@@ -222,6 +222,13 @@ class Card
     private $views = 0;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="likes", type="integer")
+     */
+    private $likes = 0;
+
+    /**
      * @ORM\OneToMany(targetEntity="FieldInteger", mappedBy="card", cascade={"remove"}, orphanRemoval=true)
      */
     private $fieldIntegers;
@@ -1241,5 +1248,29 @@ class Card
     public function getAdmin()
     {
         return $this->admin;
+    }
+
+    /**
+     * Set likes
+     *
+     * @param integer $likes
+     *
+     * @return Card
+     */
+    public function setLikes($likes)
+    {
+        $this->likes = $likes;
+
+        return $this;
+    }
+
+    /**
+     * Get likes
+     *
+     * @return integer
+     */
+    public function getLikes()
+    {
+        return $this->likes;
     }
 }
