@@ -143,9 +143,20 @@ class SearchController extends Controller
                 $bt_ids[] = $row['cardId'];
             }
             $body_condition = 'AND c.id IN ('.implode(",",$bt_ids).')';
-            if (in_array($mark,$bodyTypeArray)) $mark = false;
-            if (in_array($model,$bodyTypeArray)) $model = false;
+
+            $query = $em->createQuery('SELECT s FROM AppBundle:SubField s WHERE s.url = ?1');
+            if (in_array($mark,$bodyTypeArray)) {
+                $query->setParameter(1, $mark);
+                $mark = false;
+            }
+            if (in_array($model,$bodyTypeArray)) {
+                $query->setParameter(1, $model);
+                $model = false;
+            }
+            $bodyType = $query->getResult()[0];
         }
+
+
 
         if($mark){
             if($general) {
@@ -271,6 +282,11 @@ class SearchController extends Controller
         } else {
             $seo['city']['chto'] = 'России';
             $seo['city']['gde'] = 'России';
+        }
+        if ($body_condition != ''){
+            $seo['bodyType'] = $bodyType->getChego();
+        } else {
+            $seo['bodyType'] = '';
         }
 
         $custom_seo = $this->getDoctrine()
