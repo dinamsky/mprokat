@@ -53,11 +53,25 @@ class ShowCardController extends Controller
         if ($card->getStreetView() != '') $streetView = unserialize($card->getStreetView());
         else $streetView = false;
 
-        $dql = 'SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId = '.$card->getGeneralTypeId().' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
         $em = $this->get('doctrine')->getManager();
+        $dql = 'SELECT c.id FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId = '.$card->getGeneralTypeId().' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
+
         $query = $em->createQuery($dql);
         $query->setMaxResults(10);
+        foreach($query->getScalarResult() as $row){
+            $sim_ids[] = $row['id'];
+        }
+        $sim_ids = implode(",",$sim_ids);
+
+
+        $dql = 'SELECT c,p,f FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.cardPrices p LEFT JOIN c.fotos f WHERE c.id IN ('.$sim_ids.') ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
+
+        $query = $em->createQuery($dql);
+
         $similar = $query->getResult();
+
+
+
 
         $model = $mm->getModel($card->getModelId());
         $mark = $mm->getMark($model->getCarMarkId());
@@ -94,8 +108,7 @@ class ShowCardController extends Controller
         $seo['city']['chto'] = $city->getHeader();
         $seo['city']['gde'] = $city->getGde();
 
-        if($city->getId() != null) $mark_arr = $mm->getExistMarks($city->getId());
-        else $mark_arr = $mm->getExistMarks();
+        $mark_arr = $mm->getExistMarks('',$mark->getCarTypeId());
         $mark_arr_sorted = $mark_arr['sorted_marks'];
         $mark_arr_typed = $mark_arr['typed_marks'];
         $models_in_mark = $mark_arr['models_in_mark'];
@@ -108,6 +121,14 @@ class ShowCardController extends Controller
 
         $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g ORDER BY g.total DESC');
         $generalTypes = $query->getResult();
+
+        $star = 0;
+        $total_opinions = 0;
+        foreach($card->getOpinions() as $op){
+            $star = $star + $op->getStars();
+            $total_opinions++;
+        }
+        $opinions = round($star/$total_opinions, 1);
 
         return $this->render('card/card_show.html.twig', [
 
@@ -151,6 +172,8 @@ class ShowCardController extends Controller
 
             'generalTypes' => $generalTypes,
             'car_type_id' => $mark->getCarTypeId(),
+            'opinions' => $opinions,
+            'total_opinions' => $total_opinions
 
         ]);
     }

@@ -41,3 +41,7 @@
 .c_white{
     color: white;
 }
+
+.t_shadowed{
+    text-shadow: 0 0 1px #000;
+}

@@ -56,10 +56,10 @@
     <div class="breadcrumbs uk-margin-bottom">
         <div class="standard_wide">
             <a href="/">Главная</a>
-            {% if card.generalType.getParent is not null %}
-            <i uk-icon="icon:chevron-right"></i>
-            <a href="/rent/rus/all/{{ card.generalType.getParent.url }}">{{ card.generalType.getParent.header }}</a>
-            {% endif %}
+            {#{% if card.generalType.getParent is not null %}#}
+            {#<i uk-icon="icon:chevron-right"></i>#}
+            {#<a href="/rent/rus/all/{{ card.generalType.getParent.url }}">{{ card.generalType.getParent.header }}</a>#}
+            {#{% endif %}#}
 
             <i uk-icon="icon:chevron-right"></i>
             <a href="/rent/rus/all/{{ card.generalType.url }}">{{ card.generalType.header }}</a>
@@ -70,7 +70,15 @@
     <div class="standard_wide">
 
         <div uk-grid>
-            <div class="uk-width-3-4">
+            <div class="uk-width-3-4 uk-position-relative">
+
+                <div class="likes" data-card_id="{{ card.id }}">
+                    {% if app.session.has('likes') and app.session.get('likes')[card.id] is defined %}
+                        <i class="fa fa-heart c_red"></i>
+                    {% else %}
+                        <i class="fa fa-heart-o c_white t_shadowed"></i>
+                    {% endif %}
+                </div>
 
                 <div class="owl-carousel owl-theme" data-items="1">
                     {% for foto in card.getFotos %}
@@ -182,7 +190,7 @@
                     {% if app.session.has('logged_user') %}
                         <form action="/userAddComment" method="POST">
                             <textarea name="comment" class="uk-textarea" placeholder="Ваш комментарий" required></textarea>
-                            <input type="hidden" name="user_id" value="{{ card.user.id }}">
+                            <input type="hidden" name="user_id" value="{{ app.session.get('logged_user').id }}">
                             <input type="hidden" name="card_id" value="{{ card.id }}">
                             <input type="hidden" name="return" value="{{ app.request.requestUri }}">
                             <button class="uk-button uk-button-primary uk-margin-top">Отправить</button>
@@ -203,6 +211,44 @@
                         </div>
                     {% endif %}
                 </div>
+
+                <h2 class="pf_style_header"><span>Отзывы</span></h2>
+
+                <div class="card_blanc">
+                    {% if app.session.has('logged_user') %}
+                        <form action="/userAddOpinion" method="POST">
+                            <div class="stars uk-margin-bottom">
+                                {% for i in 1..5 %}
+                                    <span class="star {{ i == 1 ? 'active' }}" data-star="{{ i }}"><i class="fa fa-star"></i></span>
+                                {% endfor %}
+                                <span id="stars">1</span>
+                            </div>
+                            <textarea name="content" class="uk-textarea" placeholder="Ваш отзыв" required></textarea>
+                            <input type="hidden" name="stars" value="1">
+                            <input type="hidden" name="user_id" value="{{ app.session.get('logged_user').id }}">
+                            <input type="hidden" name="card_id" value="{{ card.id }}">
+                            <input type="hidden" name="return" value="{{ app.request.requestUri }}">
+                            <button class="uk-button uk-button-primary uk-margin-top">Отправить</button>
+                        </form>
+                        <div class="uk-margin-top">
+                            {% for opinion in card.opinions %}
+                                <div class="uk-margin-bottom">
+                                    <i class="fa fa-calendar"></i> {{ opinion.dateCreate|date('d.m.Y H:i') }}
+                                    <i class="fa fa-user"></i> {{ opinion.user.header }}
+                                    <i class="fa fa-star c_gold"></i> {{ opinion.stars }}
+                                    <div><i class="fa fa-comment-o"></i> {{ opinion.content }}</div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                    {% else %}
+                        <div>
+                            <a uk-toggle="target: #sign_in">Войдите</a> или <a uk-toggle="target: #sign_up">зарегистрируйтесь</a>, чтобы оставить отзыв.
+                        </div>
+                    {% endif %}
+                </div>
+
+
 
                 {% if app.session.has('admin') or ( app.session.has('logged_user') and card.user.id == app.session.get('logged_user').id ) %}
                     <hr>
@@ -262,9 +308,9 @@
 
                 <div class="uk-margin-bottom card_blanc">
                     <div><i class="fa fa-eye c_green"></i> {{ card.views }} <span class="uk-text-small c_grey">просмотров</span></div>
-                    <div><i class="fa fa-heart c_red"></i> 1 <span class="uk-text-small c_grey">лайков</span></div>
+                    <div><i class="fa fa-heart c_red"></i> <span id="card_likes">{{ card.likes }}</span> <span class="uk-text-small c_grey">лайков</span></div>
                     <div>
-                        <i class="fa fa-star c_gold"></i> 5/5 <span class="uk-text-small c_grey">звезд из</span> 1
+                        <i class="fa fa-star c_gold"></i> {{ opinions }}/5 <span class="uk-text-small c_grey">звезд из</span> {{ total_opinions }}
                         <span class="uk-text-small c_grey">отзывов</span>
                     </div>
                     <hr>

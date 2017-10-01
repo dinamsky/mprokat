@@ -137,4 +137,36 @@ class DefaultController extends Controller
             'region' => $region
         ]);
     }
+
+    /**
+     * @Route("/ajax/plusLike")
+     */
+    public function plusLikeAction(Request $request)
+    {
+        $res = '';
+        $post = $request->request;
+        $card = $this->getDoctrine()
+            ->getRepository(Card::class)
+            ->find($post->get('card_id'));
+
+        if($this->get('session')->has('likes')){
+            $array = $this->get('session')->get('likes');
+            if(!isset($array[$card->getId()])) {
+                $array[$card->getId()] = 1;
+                $card->setLikes($card->getLikes() + 1);
+                $res = 'ok';
+            }
+            $this->get('session')->set('likes', $array);
+        } else {
+            $this->get('session')->set('likes', [$card->getId() => 1]);
+            $card->setLikes($card->getLikes() + 1);
+            $res = 'ok';
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($card);
+        $em->flush();
+
+        return new Response($res, 200);
+    }
 }
