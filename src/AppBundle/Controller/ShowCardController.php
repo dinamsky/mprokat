@@ -128,7 +128,8 @@ class ShowCardController extends Controller
             $star = $star + $op->getStars();
             $total_opinions++;
         }
-        $opinions = round($star/$total_opinions, 1);
+        if ($total_opinions > 0) $opinions = round($star/$total_opinions, 1);
+        else $opinions = 0;
 
         return $this->render('card/card_show.html.twig', [
 
