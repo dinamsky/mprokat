@@ -21,7 +21,7 @@
 
     <div class="standard_wide">
         <div uk-grid>
-            <div class="uk-width-3-4">
+            <div class="uk-width-3-4@s">
 
                 {% if custom_seo and custom_seo.h1 != ''%}
                     <h1>{% include(template_from_string(custom_seo.h1)) %}</h1>
@@ -29,7 +29,14 @@
                     <h1>{% include 'seo_templates/c_h1.html.twig' %}</h1>
                 {% endif %}
 
-                <h3 class="pf_style_header"><span>Результаты: {{ total_cards }}</span></h3>
+                <div uk-grid>
+                    <div class="uk-width-expand"><h3 class="pf_style_header"><span>Результаты: {{ total_cards }}</span></h3></div>
+                    <div class="uk-width-auto uk-text-right">
+                        <button class="view_select {{ view == 'grid_view' ? 'uk-button-primary' : '' }}" type="button" value="grid_view" uk-icon="icon:grid"></button>
+                        <button class="view_select {{ view == 'list_view' ? 'uk-button-primary' : '' }}" type="button" value="list_view" uk-icon="icon:list"></button>
+                    </div>
+                </div>
+
                 {% include 'search/search_top_sort.html.twig' %}
                 {% include 'search/' ~ view ~ '.html.twig' %}
                 {% include 'search/search_pager.html.twig' %}
@@ -75,7 +82,7 @@
                     <div>{{ seo_text }}</div>
                 {% endif %}
             </div>
-            <div class="uk-width-1-4">
+            <div class="uk-width-1-4@s">
                 <h3 class="pf_style_header"><span>Поиск</span></h3>
                 {{ include('search/search_form.html.twig') }}
 

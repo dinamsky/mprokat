@@ -70,7 +70,7 @@
     <div class="standard_wide">
 
         <div uk-grid>
-            <div class="uk-width-3-4 uk-position-relative">
+            <div class="uk-width-3-4@s uk-position-relative">
 
                 <div class="likes" data-card_id="{{ card.id }}">
                     {% if app.session.has('likes') and app.session.get('likes')[card.id] is defined %}
@@ -80,9 +80,9 @@
                     {% endif %}
                 </div>
 
-                <div class="owl-carousel owl-theme" data-items="1">
+                <div id="page_slider" class="owl-carousel owl-theme" data-items="1">
                     {% for foto in card.getFotos %}
-                        <div class="uk-width-1-1" style="
+                        <div class="slide uk-width-1-1" style="
                                 background:url('/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg') center center;
                                 background-size: cover;
                                 height:500px;
@@ -109,7 +109,7 @@
                 <ul id="cardTabs" class="uk-switcher uk-margin">
                     <li class="card_blanc">
                         <div uk-grid>
-                            <div class="uk-width-1-2">
+                            <div class="uk-width-1-2@s">
 
                                 {% if card.prodYear != 0 %}<div>Год выпуска: {{ card.prodYear }}</div>{% endif %}
 
@@ -131,7 +131,7 @@
 
 
                             </div>
-                            <div class="uk-width-1-2">
+                            <div class="uk-width-1-2@s">
                                 <div>{{ card.content|raw }}</div>
                             </div>
                         </div>
@@ -255,7 +255,7 @@
                     <a class="uk-button uk-button-primary" href="/user/edit/card/{{ card.id }}">Редактировать объявление</a>
                 {% endif %}
             </div>
-            <div class="uk-width-1-4">
+            <div class="uk-width-1-4@s">
 
 
 
@@ -355,8 +355,8 @@
                         <div class="modal_name"><i class="fa fa-user"></i> {{ card.user.header }}</div>
                         <div class="modal_phone"></div>
                         <hr>
-                        <div class="modal_text">
-                            Пожалуйста, скажите, что вы звоните по объявлению с сайта Multiprokat.com
+                        <div class="modal_text tx_19">
+                            Не забудьте сообщить владельцу, что звоните с сайта Multiprokat.com и спросить скидку!
                         </div>
                     </div>
                 </div>

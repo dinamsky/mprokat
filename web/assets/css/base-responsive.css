@@ -16,9 +16,42 @@
         width: auto;
     }
     .top_line{
-        height:31px;
+        height:40px;
     }
     .top_sticky .logo{
         width: 200px;
+    }
+
+    #page_slider .slide{
+        height:300px !important;
+    }
+
+    .user_page_top_line_1 {
+        background-color: #06a7ea;
+        padding-top: 10px;
+        height: auto;
+        padding-bottom: 10px;
+    }
+
+    .user_page_top_line_2 {
+        background-color: white;
+        height: auto;
+        padding-top: 10px;
+    }
+
+    .top_user_actions a img{
+        height: 40px !important;
+    }
+
+    .tariff_block_inner{
+        height: auto;
+    }
+
+    .top_line_right {
+        border-right: 0;
+    }
+
+    .edit_bottom .uk-button{
+        padding: 0 10px;
     }
 }
