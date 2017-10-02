@@ -9,6 +9,16 @@
     }
     .add_card_button{
         width: auto;
-        content:"+";
+        font-size: 9px;
+        padding: 0 5px;
+    }
+    .top_sticky.uk-active .add_card_button{
+        width: auto;
+    }
+    .top_line{
+        height:31px;
+    }
+    .top_sticky .logo{
+        width: 200px;
     }
 }

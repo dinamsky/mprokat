@@ -14,7 +14,8 @@ $( document ).ready(function() {
             'dots': dots,
             responsive:{
                 0:{
-                    items:1
+                    items:1,
+                    stagePadding:50
                 },
                 600:{
                     items:items
