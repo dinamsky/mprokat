@@ -53,7 +53,7 @@
 </div>
 
 
-        <div id="animation_container" style="background-color:rgba(255, 255, 255, 1.00); width:100%; height:90px">
+        <div id="animation_container" style="background-color:rgba(255, 255, 255, 1.00); width:100%; height:90px" class="uk-visible@s">
             <canvas id="canvas" width="100%" height="90" style="position: absolute; display: block; background-color:rgba(255, 255, 255, 1.00);"></canvas>
             <div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:100%; height:90px; position: absolute; left: 0px; top: 0px; display: block;">
             </div>
@@ -116,7 +116,7 @@
         </div>
     </div>
 
-    <div class="top_counter bg_white c_green uk-margin-large-bottom">
+    <div class="top_counter bg_white c_green uk-margin-large-bottom uk-visible@s">
         <div class="standard_wide">
             <div uk-grid class="uk-grid-divider">
                 <div class="uk-width-1-3">
@@ -157,49 +157,49 @@
         {#</div>#}
 
         <div uk-grid class="uk-grid-small uk-margin-large-bottom">
-            <div class="uk-width-1-4">
+            <div class="uk-width-1-4@s">
                 <a href="/rent/{{ in_city }}/all/cars" class="cat_main_header padding20 bg_green c_white uk-display-block uk-text-center uk-margin-bottom">Легковые автомобили</a>
                 <div>
                     {{ include('search/one_grid_view.html.twig', {'card':cars, 'height':'150px'}) }}
                 </div>
             </div>
-            <div class="uk-width-1-4">
+            <div class="uk-width-1-4@s">
                 <a href="/rent/{{ in_city }}/all/bikes" class="cat_main_header padding20 bg_green c_white uk-display-block uk-text-center uk-margin-bottom">Мотоциклы</a>
                 <div>
                     {{ include('search/one_grid_view.html.twig', {'card':moto, 'height':'150px'}) }}
                 </div>
             </div>
-            <div class="uk-width-1-4">
+            <div class="uk-width-1-4@s">
                 <a href="/rent/{{ in_city }}/all/trucks" class="cat_main_header padding20 bg_green c_white uk-display-block uk-text-center uk-margin-bottom">Грузовые автомобили</a>
                 <div>
                     {{ include('search/one_grid_view.html.twig', {'card':trucks, 'height':'150px'}) }}
                 </div>
             </div>
-            <div class="uk-width-1-4">
+            <div class="uk-width-1-4@s">
                 <a href="/rent/{{ in_city }}/all/bikes" class="cat_main_header padding20 bg_green c_white uk-display-block uk-text-center uk-margin-bottom">Велосипеды</a>
                 <div>
                     {{ include('search/one_grid_view.html.twig', {'card':bicycles, 'height':'150px'}) }}
                 </div>
             </div>
-            <div class="uk-width-1-4">
+            <div class="uk-width-1-4@s">
                 <a href="/rent/{{ in_city }}/all/helicopters" class="cat_main_header padding20 bg_green c_white uk-display-block uk-text-center uk-margin-bottom">Воздушные прогулки</a>
                 <div>
                     {{ include('search/one_grid_view.html.twig', {'card':heli, 'height':'150px'}) }}
                 </div>
             </div>
-            <div class="uk-width-1-4">
+            <div class="uk-width-1-4@s">
                 <a href="/rent/{{ in_city }}/all/quadro" class="cat_main_header padding20 bg_green c_white uk-display-block uk-text-center uk-margin-bottom">Гонки по бездорожью</a>
                 <div>
                     {{ include('search/one_grid_view.html.twig', {'card':quad, 'height':'150px'}) }}
                 </div>
             </div>
-            <div class="uk-width-1-4">
+            <div class="uk-width-1-4@s">
                 <a href="/rent/{{ in_city }}/all/snowride" class="cat_main_header padding20 bg_green c_white uk-display-block uk-text-center uk-margin-bottom">Снежные приключения</a>
                 <div>
                     {{ include('search/one_grid_view.html.twig', {'card':snow, 'height':'150px'}) }}
                 </div>
             </div>
-            <div class="uk-width-1-4">
+            <div class="uk-width-1-4@s">
                 <a href="/rent/{{ in_city }}/all/yachts" class="cat_main_header padding20 bg_green c_white uk-display-block uk-text-center uk-margin-bottom">Морские прогулки</a>
                 <div>
                     {{ include('search/one_grid_view.html.twig', {'card':yachts, 'height':'150px'}) }}

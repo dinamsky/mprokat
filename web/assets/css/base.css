@@ -676,3 +676,8 @@ footer a:hover{
     margin-left: 20px;
     font-size: 30px;
 }
+
+.modal_phone{
+    font-weight: bold;
+    font-size: 30px;
+}
