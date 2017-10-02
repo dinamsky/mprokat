@@ -1,7 +1,7 @@
 <input type="hidden" id="markURL" name="markURL" value="{{ mark.header }}" data-id="{{ mark.id }}">
 
 <div uk-toggle="target: #mark_popular">
-    <span  class="mark_selector">{{ mark and mark.header ? mark.header : 'Любая марка' }}</span>
+    <span  class="mark_selector uk-text-truncate">{{ mark and mark.header ? mark.header : 'Любая марка' }}</span>
     <i uk-icon="icon:chevron-down"></i>
 </div>
 

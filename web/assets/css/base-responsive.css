@@ -54,4 +54,32 @@
     .edit_bottom .uk-button{
         padding: 0 10px;
     }
+
+    .mark_selector{
+         width: 75%;
+         display: inline-block;
+         vertical-align: top;
+     }
+
+    .model_selector{
+        width: 75%;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .top_selector_box{
+        padding: 8px;
+    }
+
+    .main_h1{
+        font-size: 21px;
+    }
+
+    .cat_main_header{
+        margin-bottom:0 !important;
+    }
+
+    #top_selector_block{
+        margin-bottom:10px;
+    }
 }
