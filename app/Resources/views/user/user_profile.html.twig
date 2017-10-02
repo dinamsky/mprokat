@@ -9,7 +9,7 @@
     <h1>Мой профиль</h1>
     <div class="">
         <div uk-grid>
-            <div class="uk-width-1-2">
+            <div class="uk-width-1-2@s">
                 <div class="uk-margin-bottom">email: {{ user.email }}</div>
                 <form id="save_profile" action="/profile/save" method="POST">
                     <div>Имя: <input name="header" value="{{ user.header }}" class="uk-input"></div>
@@ -63,7 +63,7 @@
                     <button class="uk-button uk-button-primary uk-margin-top">Сохранить</button>
                 </form>
             </div>
-            <div class="uk-width-1-2">
+            <div class="uk-width-1-2@s">
                 <div class="uk-position-relative">
                     {% if foto != '' %}
                     <img src="/assets/images/users/t/{{ foto }}.jpg" alt="" style="height: 150px">

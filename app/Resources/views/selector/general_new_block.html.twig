@@ -10,7 +10,7 @@
         <button class="uk-modal-close-default" type="button" uk-close></button>
         <h2 class="uk-modal-title">Выберите тип транспорта</h2>
 
-        <div class="uk-column-1-5">
+        <div class="uk-column-1-1 uk-column-1-5@s">
             <a class="gt_selector uk-display-block c_grey uk-margin-bottom"  href="/rent/{{ city.url }}">Любой тип транспорта</a>
             {% for gt in generalTypes if gt.total>0 %}
                 <a class="gt_selector uk-display-block c_grey uk-margin-bottom" href="/rent/{{ city.url }}/all/{{ gt.url }}"><i class="fa fa-{{ gt.icon }}"></i> {{ gt.header }}</a>

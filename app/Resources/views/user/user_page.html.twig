@@ -10,8 +10,8 @@
     <div class="user_page_top_line_1">
         <div class="standard_wide">
             <div uk-grid>
-                <div class="uk-width-1-5"></div>
-                <div class="uk-width-4-5">
+                <div class="uk-visible@s uk-width-1-5@s" ></div>
+                <div class="uk-width-4-5@s">
                     <h1 class="c_white uk-margin-remove">{{ user.header }}</h1>
                     {% for info in user.information %}
                         {% if info.uiKey == 'vk' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="c_white padding0-10"><i class="fa fa-vk"></i></a>{% endif %}
@@ -29,7 +29,7 @@
     <div class="user_page_top_line_2">
         <div class="standard_wide">
             <div uk-grid>
-                <div class="uk-width-1-5">
+                <div class="uk-visible@s uk-width-1-5@s">
                     {% if user_foto %}
                         <div style="background: url('{{ user_foto }}') center center no-repeat;
                                 background-size: contain;
@@ -53,14 +53,14 @@
                         </div>
                     {% endif %}
                 </div>
-                <div class="uk-width-4-5">
+                <div class="uk-width-4-5@s">
                     <div uk-grid class="uk-grid-collapse">
-                        <div class="uk-width-1-6"><i class="fa fa-envelope"></i> Email</div>
-                        <div class="uk-width-1-4"><a href="mailto:{{ user.email }}">Написать</a></div>
+                        <div class="uk-width-1-4 uk-width-1-6@s"><i class="fa fa-envelope"></i> Email</div>
+                        <div class="uk-width-3-4"><a href="mailto:{{ user.email }}">Написать</a></div>
                     </div>
                     <div uk-grid class="uk-grid-collapse">
-                        <div class="uk-width-1-6"><i class="fa fa-phone"></i> Телефон</div>
-                        <div class="uk-width-1-4">
+                        <div class="uk-width-1-4 uk-width-1-6@s"><i class="fa fa-phone"></i> Телефон</div>
+                        <div class="uk-width-3-4">
                             <div class="phone_block">
                             {% if app.session.get('phone')[user.id] is not defined and user.cards[0] is defined %}
                                 <span class="hidden_phone">
@@ -77,8 +77,8 @@
                     </div>
                     {% for info in user.information if info.uiKey == 'website' %}
                     <div uk-grid class="uk-grid-collapse">
-                        <div class="uk-width-1-6"><i class="fa fa-globe"></i> Website</div>
-                        <div class="uk-width-1-4"><a rel="nofollow" href="{{ info.uiValue }}">{{ info.uiValue }}</a></div>
+                        <div class="uk-width-1-4 uk-width-1-6@s"><i class="fa fa-globe"></i> Website</div>
+                        <div class="uk-width-3-4"><a rel="nofollow" href="{{ info.uiValue }}">{{ info.uiValue }}</a></div>
                     </div>
                     {% endfor %}
                 </div>
@@ -90,7 +90,7 @@
         <h2 class="pf_style_header"><span>Объявления пользователя: {{ user.cards|length }}</span></h2>
         <div uk-grid class="uk-grid-small uk-grid-match uk-margin-large-bottom">
             {% for card in user.cards %}
-                <div class="uk-width-1-4">
+                <div class="uk-width-1-4@s">
                     {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}
                 </div>
             {% endfor %}
