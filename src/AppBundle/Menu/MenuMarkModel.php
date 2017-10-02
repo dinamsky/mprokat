@@ -196,6 +196,7 @@ class MenuMarkModel extends Controller
     {
         $gt_ids = $model_ids = [];
         $query = $this->em->createQuery('SELECT c.modelId,c.generalTypeId FROM AppBundle:Card c WHERE c.cityId = '.$cityId);
+        if ($cityId == '') $query = $this->em->createQuery('SELECT c.modelId,c.generalTypeId FROM AppBundle:Card c ');
         $result = $query->getScalarResult();
         foreach ($result as $row){
             $gt_ids[] = $row['generalTypeId'];
