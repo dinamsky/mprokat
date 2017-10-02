@@ -44,6 +44,20 @@ class SubField
     private $header;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="url", type="string", length=255)
+     */
+    private $url;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="chego", type="string", length=255)
+     */
+    private $chego;
+
+    /**
      * One Category has Many Categories.
      * @ORM\OneToMany(targetEntity="SubField", mappedBy="parent")
      */
@@ -200,5 +214,53 @@ class SubField
     public function getParent()
     {
         return $this->parent;
+    }
+
+    /**
+     * Set url
+     *
+     * @param string $url
+     *
+     * @return SubField
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get url
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * Set chego
+     *
+     * @param string $chego
+     *
+     * @return SubField
+     */
+    public function setChego($chego)
+    {
+        $this->chego = $chego;
+
+        return $this;
+    }
+
+    /**
+     * Get chego
+     *
+     * @return string
+     */
+    public function getChego()
+    {
+        return $this->chego;
     }
 }

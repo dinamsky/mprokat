@@ -18,7 +18,12 @@
     <div class="top_sticky" uk-sticky>
         <div class="standard_wide">
             <div uk-grid>
-                <div class="uk-width-1-2"><a href="/"><img class="logo" src="/assets/images/interface/logo.png" alt=""></a></div>
+                <div class="uk-width-1-2">
+                    <a href="/">
+                        <img class="logo" src="/assets/images/interface/logo.png" alt="">
+                    </a>
+
+                </div>
                 <div class="uk-width-1-2 uk-text-right">
                     {% if app.session.has('logged_user') %}
                         <a href="/card/new" class="uk-button uk-button-success add_card_button">+ Добавить объявление</a>

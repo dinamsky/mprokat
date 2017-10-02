@@ -17,7 +17,7 @@
 {% block openGraph %}
     {{ parent() }}
     <meta property="og:image" content="{{ app.request.getSchemeAndHttpHost() ~ mainFoto }}">
-    <meta property="og:title" content="{{ card.header }}">
+    <meta property="og:title" content="{{ include(':seo_templates:p_h1.html.twig') }}">
 {% endblock %}
 
 {% block metaTags %}
@@ -56,13 +56,13 @@
     <div class="breadcrumbs uk-margin-bottom">
         <div class="standard_wide">
             <a href="/">Главная</a>
-            {% if card.generalType.getParent is not null %}
-            <i uk-icon="icon:chevron-right"></i>
-            <a href="/show/rus/all/{{ card.generalType.getParent.url }}">{{ card.generalType.getParent.header }}</a>
-            {% endif %}
+            {#{% if card.generalType.getParent is not null %}#}
+            {#<i uk-icon="icon:chevron-right"></i>#}
+            {#<a href="/rent/rus/all/{{ card.generalType.getParent.url }}">{{ card.generalType.getParent.header }}</a>#}
+            {#{% endif %}#}
 
             <i uk-icon="icon:chevron-right"></i>
-            <a href="/show/rus/all/{{ card.generalType.url }}">{{ card.generalType.header }}</a>
+            <a href="/rent/rus/all/{{ card.generalType.url }}">{{ card.generalType.header }}</a>
 
         </div>
     </div>
@@ -70,11 +70,19 @@
     <div class="standard_wide">
 
         <div uk-grid>
-            <div class="uk-width-3-4">
+            <div class="uk-width-3-4@s uk-position-relative">
 
-                <div class="owl-carousel owl-theme" data-items="1">
+                <div class="likes" data-card_id="{{ card.id }}">
+                    {% if app.session.has('likes') and app.session.get('likes')[card.id] is defined %}
+                        <i class="fa fa-heart c_red"></i>
+                    {% else %}
+                        <i class="fa fa-heart-o c_white t_shadowed"></i>
+                    {% endif %}
+                </div>
+
+                <div id="page_slider" class="owl-carousel owl-theme" data-items="1">
                     {% for foto in card.getFotos %}
-                        <div class="uk-width-1-1" style="
+                        <div class="slide uk-width-1-1" style="
                                 background:url('/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg') center center;
                                 background-size: cover;
                                 height:500px;
@@ -101,7 +109,7 @@
                 <ul id="cardTabs" class="uk-switcher uk-margin">
                     <li class="card_blanc">
                         <div uk-grid>
-                            <div class="uk-width-1-2">
+                            <div class="uk-width-1-2@s">
 
                                 {% if card.prodYear != 0 %}<div>Год выпуска: {{ card.prodYear }}</div>{% endif %}
 
@@ -123,7 +131,7 @@
 
 
                             </div>
-                            <div class="uk-width-1-2">
+                            <div class="uk-width-1-2@s">
                                 <div>{{ card.content|raw }}</div>
                             </div>
                         </div>
@@ -182,7 +190,7 @@
                     {% if app.session.has('logged_user') %}
                         <form action="/userAddComment" method="POST">
                             <textarea name="comment" class="uk-textarea" placeholder="Ваш комментарий" required></textarea>
-                            <input type="hidden" name="user_id" value="{{ card.user.id }}">
+                            <input type="hidden" name="user_id" value="{{ app.session.get('logged_user').id }}">
                             <input type="hidden" name="card_id" value="{{ card.id }}">
                             <input type="hidden" name="return" value="{{ app.request.requestUri }}">
                             <button class="uk-button uk-button-primary uk-margin-top">Отправить</button>
@@ -204,12 +212,50 @@
                     {% endif %}
                 </div>
 
+                <h2 class="pf_style_header"><span>Отзывы</span></h2>
+
+                <div class="card_blanc">
+                    {% if app.session.has('logged_user') %}
+                        <form action="/userAddOpinion" method="POST">
+                            <div class="stars uk-margin-bottom">
+                                {% for i in 1..5 %}
+                                    <span class="star {{ i == 1 ? 'active' }}" data-star="{{ i }}"><i class="fa fa-star"></i></span>
+                                {% endfor %}
+                                <span id="stars">1</span>
+                            </div>
+                            <textarea name="content" class="uk-textarea" placeholder="Ваш отзыв" required></textarea>
+                            <input type="hidden" name="stars" value="1">
+                            <input type="hidden" name="user_id" value="{{ app.session.get('logged_user').id }}">
+                            <input type="hidden" name="card_id" value="{{ card.id }}">
+                            <input type="hidden" name="return" value="{{ app.request.requestUri }}">
+                            <button class="uk-button uk-button-primary uk-margin-top">Отправить</button>
+                        </form>
+                        <div class="uk-margin-top">
+                            {% for opinion in card.opinions %}
+                                <div class="uk-margin-bottom">
+                                    <i class="fa fa-calendar"></i> {{ opinion.dateCreate|date('d.m.Y H:i') }}
+                                    <i class="fa fa-user"></i> {{ opinion.user.header }}
+                                    <i class="fa fa-star c_gold"></i> {{ opinion.stars }}
+                                    <div><i class="fa fa-comment-o"></i> {{ opinion.content }}</div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                    {% else %}
+                        <div>
+                            <a uk-toggle="target: #sign_in">Войдите</a> или <a uk-toggle="target: #sign_up">зарегистрируйтесь</a>, чтобы оставить отзыв.
+                        </div>
+                    {% endif %}
+                </div>
+
+
+
                 {% if app.session.has('admin') or ( app.session.has('logged_user') and card.user.id == app.session.get('logged_user').id ) %}
                     <hr>
                     <a class="uk-button uk-button-primary" href="/user/edit/card/{{ card.id }}">Редактировать объявление</a>
                 {% endif %}
             </div>
-            <div class="uk-width-1-4">
+            <div class="uk-width-1-4@s">
 
 
 
@@ -262,9 +308,9 @@
 
                 <div class="uk-margin-bottom card_blanc">
                     <div><i class="fa fa-eye c_green"></i> {{ card.views }} <span class="uk-text-small c_grey">просмотров</span></div>
-                    <div><i class="fa fa-heart c_red"></i> 1 <span class="uk-text-small c_grey">лайков</span></div>
+                    <div><i class="fa fa-heart c_red"></i> <span id="card_likes">{{ card.likes }}</span> <span class="uk-text-small c_grey">лайков</span></div>
                     <div>
-                        <i class="fa fa-star c_gold"></i> 5/5 <span class="uk-text-small c_grey">звезд из</span> 1
+                        <i class="fa fa-star c_gold"></i> {{ opinions }}/5 <span class="uk-text-small c_grey">звезд из</span> {{ total_opinions }}
                         <span class="uk-text-small c_grey">отзывов</span>
                     </div>
                     <hr>
@@ -300,6 +346,18 @@
                                 <button class="uk-button uk-button-default uk-width-1-1">Отправить</button>
                             </div>
                         </form>
+                    </div>
+                </div>
+
+                <div id="user_phone_form" uk-modal>
+                    <div class="uk-modal-dialog uk-modal-body">
+                        <button class="uk-modal-close-default" type="button" uk-close></button>
+                        <div class="modal_name"><i class="fa fa-user"></i> {{ card.user.header }}</div>
+                        <div class="modal_phone"></div>
+                        <hr>
+                        <div class="modal_text tx_19">
+                            Не забудьте сообщить владельцу, что звоните с сайта Multiprokat.com и спросить скидку!
+                        </div>
                     </div>
                 </div>
 

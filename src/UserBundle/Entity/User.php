@@ -114,11 +114,17 @@ class User
      */
     private $comments;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Opinion", mappedBy="user", cascade={"remove"}, orphanRemoval=true)
+     */
+    private $opinions;
+
     public function __construct() {
         $this->information = new ArrayCollection();
         $this->userOrders = new ArrayCollection();
         $this->cards = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->opinions = new ArrayCollection();
     }
 
     /**
@@ -506,5 +512,39 @@ class User
     public function getAdmin()
     {
         return $this->admin;
+    }
+
+    /**
+     * Add opinion
+     *
+     * @param \AppBundle\Entity\Opinion $opinion
+     *
+     * @return User
+     */
+    public function addOpinion(\AppBundle\Entity\Opinion $opinion)
+    {
+        $this->opinions[] = $opinion;
+
+        return $this;
+    }
+
+    /**
+     * Remove opinion
+     *
+     * @param \AppBundle\Entity\Opinion $opinion
+     */
+    public function removeOpinion(\AppBundle\Entity\Opinion $opinion)
+    {
+        $this->opinions->removeElement($opinion);
+    }
+
+    /**
+     * Get opinions
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOpinions()
+    {
+        return $this->opinions;
     }
 }

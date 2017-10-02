@@ -648,3 +648,36 @@ footer a:hover{
     /*background: white;*/
 }
 
+.likes{
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 10;
+    font-size: 30px;
+    line-height: 30px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.star{
+    font-size:30px;
+    cursor: pointer;
+}
+
+.star.active{
+    color:gold;
+}
+
+.star.hover i{
+    text-shadow: 0 0 3px red;
+}
+
+#stars{
+    margin-left: 20px;
+    font-size: 30px;
+}
+
+.modal_phone{
+    font-weight: bold;
+    font-size: 30px;
+}

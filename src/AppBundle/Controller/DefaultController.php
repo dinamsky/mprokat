@@ -96,4 +96,77 @@ class DefaultController extends Controller
             'generalTypes' => $generalTypes
         ]);
     }
+
+    /**
+     * @Route("/regions")
+     */
+    public function showRegionsAction(EntityManagerInterface $em)
+    {
+        $query = $em->createQuery('SELECT c.cityId FROM AppBundle:Card c ');
+        foreach($query->getScalarResult() as $row){
+            $city_ids[] = $row['cityId'];
+        }
+        $query = $em->createQuery('SELECT c.parentId FROM AppBundle:City c WHERE c.parentId IS NOT NULL AND c.id IN ('.implode(",",$city_ids).')');
+        foreach($query->getScalarResult() as $row){
+            $region_ids[] = $row['parentId'];
+        }
+        $region_ids = array_unique($region_ids);
+        $query = $em->createQuery('SELECT r FROM AppBundle:City r WHERE r.id IN ('.implode(",",$region_ids).')');
+        $regions = $query->getResult();
+        return $this->render('main_page/regions.html.twig', [
+            'regions' => $regions
+        ]);
+    }
+
+    /**
+     * @Route("/region/{id}")
+     */
+    public function showRegionAction($id, EntityManagerInterface $em)
+    {
+        $region = $this->getDoctrine()
+            ->getRepository(City::class)
+            ->find($id);
+        $query = $em->createQuery('SELECT c.cityId FROM AppBundle:Card c ');
+        foreach($query->getScalarResult() as $row){
+            $city_ids[] = $row['cityId'];
+        }
+        $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.parentId ='.$id.' AND c.id IN ('.implode(",",$city_ids).')');
+        $cities = $query->getResult();
+        return $this->render('main_page/cities.html.twig', [
+            'cities' => $cities,
+            'region' => $region
+        ]);
+    }
+
+    /**
+     * @Route("/ajax/plusLike")
+     */
+    public function plusLikeAction(Request $request)
+    {
+        $res = '';
+        $post = $request->request;
+        $card = $this->getDoctrine()
+            ->getRepository(Card::class)
+            ->find($post->get('card_id'));
+
+        if($this->get('session')->has('likes')){
+            $array = $this->get('session')->get('likes');
+            if(!isset($array[$card->getId()])) {
+                $array[$card->getId()] = 1;
+                $card->setLikes($card->getLikes() + 1);
+                $res = 'ok';
+            }
+            $this->get('session')->set('likes', $array);
+        } else {
+            $this->get('session')->set('likes', [$card->getId() => 1]);
+            $card->setLikes($card->getLikes() + 1);
+            $res = 'ok';
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($card);
+        $em->flush();
+
+        return new Response($res, 200);
+    }
 }

@@ -149,7 +149,12 @@ class MenuMarkModel extends Controller
         $new_mark_arr = [];
         $mark_total = [];
 
-        $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.total >= 0 ORDER BY m.total DESC, m.header ASC');
+//        $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k ORDER BY m.total DESC, m.header ASC');
+//        if ($carTypeId != ''){
+//            $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.carTypeId='.$carTypeId.' ORDER BY m.total DESC, m.header ASC');
+//        }
+
+        $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k ORDER BY m.total DESC, m.header ASC');
         if ($carTypeId != ''){
             $query = $this->em->createQuery('SELECT m,k FROM MarkBundle:CarModel m LEFT JOIN m.mark k WHERE m.carTypeId='.$carTypeId.' ORDER BY m.total DESC, m.header ASC');
         }
@@ -185,5 +190,43 @@ class MenuMarkModel extends Controller
         } else {
             return false;
         }
+    }
+
+    public function getExistMarkGtId($cityId)
+    {
+        $gt_ids = $model_ids = [];
+        $query = $this->em->createQuery('SELECT c.modelId,c.generalTypeId FROM AppBundle:Card c WHERE c.cityId = '.$cityId);
+        if ($cityId == '') $query = $this->em->createQuery('SELECT c.modelId,c.generalTypeId FROM AppBundle:Card c ');
+        $result = $query->getScalarResult();
+        foreach ($result as $row){
+            $gt_ids[] = $row['generalTypeId'];
+            $model_ids[] = $row['modelId'];
+        }
+        return array('gts' => array_unique($gt_ids), 'models' => array_unique($model_ids));
+    }
+
+    public function getExistGt($gt_ids)
+    {
+        $query = $this->em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.id IN ('.implode(",",$gt_ids).')');
+        return $query->getResult();
+    }
+
+    public function getExistMark($model_ids,$general)
+    {
+        $mark_ids = [];
+        $query = $this->em->createQuery('SELECT t FROM MarkBundle:CarType t WHERE t.url = ?1');
+        $query->setParameter(1, $general->getUrl());
+        $carType = $query->getResult();
+        $carType = $carType[0];
+        sort($model_ids);
+        $query = $this->em->createQuery('SELECT m.carMarkId FROM MarkBundle:CarModel m WHERE m.carTypeId = '.$carType->getId().' AND m.id IN ('.implode(",",$model_ids).') ORDER BY m.carMarkId');
+        foreach($query->getScalarResult() as $row){
+            $mark_ids[] = $row['carMarkId'];
+        }
+        $mark_ids = array_unique($mark_ids);
+        if(!empty($mark_ids)) {
+            $query = $this->em->createQuery('SELECT m FROM MarkBundle:CarMark m WHERE m.id IN (' . implode(",", $mark_ids) . ')');
+            return $query->getResult();
+        } else return [];
     }
 }

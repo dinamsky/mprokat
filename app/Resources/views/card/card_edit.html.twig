@@ -7,6 +7,7 @@
     <script src="{{ asset('assets/tinymce/tinymce.min.js') }}"></script>
     <script src="{{ asset('assets/js/visual_editor.js') }}"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWdm1zrblFjsdUfi1-6fsPvj30ACCiCxk"></script>
+    <script src="{{ asset('assets/js/edit_card_validate.js') }}"></script>
     <script src="{{ asset('assets/js/newCardForm.js') }}"></script>
     <script src="{{ asset('assets/js/editCardForm.js') }}"></script>
     <script src="{{ asset('assets/js/tariff_selector.js') }}"></script>
@@ -18,10 +19,10 @@
 
 {% block content %}
 
-    <form action="/card/update" method="POST" enctype="multipart/form-data" class="standard_wide uk-margin-top">
+    <form id="edit_card_form" action="/card/update" method="POST" enctype="multipart/form-data" class="standard_wide uk-margin-top" onsubmit="return edit_card_validate();">
 
         <div uk-grid>
-            <div class="uk-width-1-2">
+            <div class="uk-width-1-2@s">
                 <div class="uk-margin-bottom"><input type="text" name="header" placeholder="Заголовок" class="uk-input" value="{{ card.header }}"></div>
                 <div uk-grid class="service_selector">
                     <div class="uk-width-1-2">
@@ -155,7 +156,7 @@
 
             </div>
 
-            <div id="dop_fields" class="uk-width-1-2">
+            <div id="dop_fields" class="uk-width-1-2@s">
 
 
 
@@ -286,10 +287,10 @@
 
         <input type="hidden" name="cardId" value="{{ card.id }}">
 
-        <div class="uk-clearfix uk-margin-top">
-        <button class="uk-button uk-button-primary uk-float-left hide_on_change" name="update">Сохранить</button>
-        <button id="tariff_changer" type="button" class="uk-button uk-button-secondary uk-float-left" uk-toggle="target: #change_tariff">Сменить тариф</button>
-        <button class="uk-button uk-button-danger uk-float-right" name="delete">Удалить</button>
+        <div class="edit_bottom uk-clearfix uk-margin-top">
+            <button class="uk-button uk-button-primary uk-float-left hide_on_change" name="update">Сохранить</button>
+            <button id="tariff_changer" type="button" class="uk-button uk-button-secondary uk-float-left" uk-toggle="target: #change_tariff">Сменить тариф</button>
+            <button class="uk-button uk-button-danger uk-float-right" name="delete">Удалить</button>
         </div>
 
     </form>

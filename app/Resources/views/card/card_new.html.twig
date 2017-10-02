@@ -33,7 +33,7 @@
         {% endif %}
 
         <div uk-grid>
-            <div class="uk-width-1-2">
+            <div class="uk-width-1-2@s">
                 <div class="uk-margin-bottom uk-position-relative">
                     <input type="text" name="header" placeholder="Заполните заголовок объявления" class="uk-input">
                     <div class="uk-position-absolute uk-position-top-left" style="left:5px;"><span class="red_star">*</span></div>
@@ -187,14 +187,14 @@
             </div>
 
 
-            <div class="uk-width-1-2">
+            <div class="uk-width-1-2@s">
                 <button id="fill_dop_button" type="button" class="uk-button uk-button-primary">Заполнить дополнительную информацию</button>
                 <div class="uk-margin-top">
                     Дополнительная информация не обязательна к заполнению
                 </div>
             </div>
 
-            <div id="dop_fields" class="uk-width-1-2" hidden>
+            <div id="dop_fields" class="uk-width-1-2@s" hidden>
 
 
                 <div class="help_text">Вы можете указать характеристики вашего транспорта</div>
@@ -227,7 +227,7 @@
                 <hr>
 
                 <div uk-grid class="uk-grid-small">
-                    <div class="uk-width-1-3">
+                    <div class="uk-width-1-3@s">
                         <div class="uk-text-small"><span class="red_star">*</span>Состояние</div>
                         <select name="conditionId" class="uk-select">
                             {% for condition in conditions %}
@@ -236,7 +236,7 @@
                         </select>
                     </div>
 
-                    <div class="uk-width-1-3">
+                    <div class="uk-width-1-3@s">
                         <div class="uk-text-small"><span class="red_star">*</span>Цвет</div>
                         <select name="colorId" class="uk-select">
                             {% for color in colors %}
@@ -245,7 +245,7 @@
                         </select>
                     </div>
 
-                    <div class="uk-width-1-3">
+                    <div class="uk-width-1-3@s">
                         <div class="uk-text-small"><span class="red_star">*</span>Год выпуска</div>
                         <select name="prodYear" class="uk-select">
                             {% for year in 1950..'now'|date('Y') %}

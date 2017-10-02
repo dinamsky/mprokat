@@ -50,7 +50,7 @@ class CarModel
     private $total;
 
     /**
-     * @ORM\ManyToOne(targetEntity="MarkBundle\Entity\CarMark")
+     * @ORM\ManyToOne(targetEntity="MarkBundle\Entity\CarMark", inversedBy="models", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="car_mark_id", referencedColumnName="id")
      */
     private $mark;
