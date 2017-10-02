@@ -5,7 +5,7 @@
         <div class="uk-column-1-5@s">
             <div class="city_block uk-margin-bottom" data-url="rus" data-header="Россия"><a class="gt_city_block" href="/rent/rus/all" data-def="/rent/rus/all">В России</a></div>
             {% for gt_city in popular_city if  gt_city.total >= 10 and city.url != gt_city.url %}
-                <a class="gt_city_block uk-display-block" href="/rent/{{ gt_city.url }}/all" data-def="/rent/{{ gt_city.url }}/all">В {{ gt_city.gde }}</a>
+                <a rel="nofollow" class="gt_city_block uk-display-block" href="/rent/{{ gt_city.url }}/all" data-def="/rent/{{ gt_city.url }}/all">В {{ gt_city.gde }}</a>
             {% endfor %}
         </div>
         <hr>
@@ -13,7 +13,7 @@
         <div id="more_cities2" hidden>
             <div class="uk-column-1-5@s">
                 {% for gt_city in popular_city if gt_city.total < 10 and city.url != gt_city.url %}
-                    <a class="gt_city_block uk-display-block" href="/rent/{{ gt_city.url }}/all" data-def="/rent/{{ gt_city.url }}/all">В {{ gt_city.gde }}</a>
+                    <a rel="nofollow" class="gt_city_block uk-display-block" href="/rent/{{ gt_city.url }}/all" data-def="/rent/{{ gt_city.url }}/all">В {{ gt_city.gde }}</a>
                 {% endfor %}
             </div>
         </div>

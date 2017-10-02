@@ -1,7 +1,7 @@
 <input type="hidden" id="modelURL" name="modelURL" value="{{ model.header }}">
 
 <div uk-toggle="target: #model_popular" >
-    <span class="model_selector">{{ model ? model.header : 'Модель' }}</span>
+    <span class="model_selector uk-text-truncate">{{ model ? model.header : 'Модель' }}</span>
     <i uk-icon="icon:chevron-down"></i>
 </div>
 
