@@ -10,12 +10,14 @@ $( document ).ready(function() {
             'margin' : margin,
             'slideBy' : items,
             'navText': ['<i uk-icon="icon:chevron-left"></i>', '<i uk-icon="icon:chevron-right"></i>'],
-            'autoHeight': true,
+            // 'autoHeight': true,
             'dots': dots,
+            onInitialized: recount,
             responsive:{
                 0:{
                     items:1,
-                    stagePadding:50
+                    stagePadding:50,
+                    margin:20
                 },
                 600:{
                     items:items
@@ -27,6 +29,13 @@ $( document ).ready(function() {
                     items:items
                 }
             }
+
         });
     });
+
+    function recount()
+    {
+        $(".owl-carousel").find('div.owl-item').height($(".owl-carousel").height());
+    }
+
 });

@@ -399,8 +399,8 @@ button{
 }
 
 .uk-button-primary{
-    background: #06a7ea;
-    color:white;
+    background: #06a7ea !important;
+    color:white !important;
 }
 
 .cover_gradient {
@@ -680,4 +680,12 @@ footer a:hover{
 .modal_phone{
     font-weight: bold;
     font-size: 30px;
+}
+
+.mobile_header .left_part{
+    padding: 7px 0;
+}
+
+.mobile_header .left_part button{
+    line-height: 15px;
 }
