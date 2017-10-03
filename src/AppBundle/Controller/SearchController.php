@@ -315,6 +315,8 @@ class SearchController extends Controller
 
         if(!$general) $general = ['url'=>'alltypes','header'=>'Любой тип транспорта'];
 
+        $in_city = $this->get('session')->get('city')->getUrl();
+
         return $this->render('search/search_main.html.twig', [
 
             'cards' => $cards,
@@ -356,7 +358,9 @@ class SearchController extends Controller
             'all_marks' => $all_marks,
             'gtm_ids' => $gtm_ids,
 
-            'bodyTypes' => $bodyTypes
+            'bodyTypes' => $bodyTypes,
+
+            'in_city' => $in_city
 
         ]);
     }

@@ -25,55 +25,63 @@ class MainPageController extends Controller
             ->getRepository(Card::class)
             ->getTopSlider();
 
-//        $cars = $this->getDoctrine()
-//            ->getRepository(Card::class)
-//            ->getLimitedSlider(2);
-
-//        $trucks = $this->getDoctrine()
-//            ->getRepository(Card::class)
-//            ->getLimitedSlider(3);
-
-//        $segways = $this->getDoctrine()
-//            ->getRepository(Card::class)
-//            ->getLimitedSlider(14);
-//
-//        $bicycles = $this->getDoctrine()
-//            ->getRepository(Card::class)
-//            ->getLimitedSlider(15);
-//
-//        $boats = $this->getDoctrine()
-//            ->getRepository(Card::class)
-//            ->getLimitedSlider(12);
-//
-//        $yachts = $this->getDoctrine()
-//            ->getRepository(Card::class)
-//            ->getLimitedSlider(13);
-
-
         $cars = $this->getDoctrine()
             ->getRepository(Card::class)
-            ->getTopOne(2);
+            ->getLimitedSlider(2);
+
         $trucks = $this->getDoctrine()
             ->getRepository(Card::class)
-            ->getTopOne(3);
+            ->getLimitedSlider(3);
+
         $moto = $this->getDoctrine()
             ->getRepository(Card::class)
-            ->getTopOne(8);
+            ->getLimitedSlider(8);
+
         $bicycles = $this->getDoctrine()
             ->getRepository(Card::class)
-            ->getTopOne(15);
+            ->getLimitedSlider(15);
+
         $yachts = $this->getDoctrine()
             ->getRepository(Card::class)
-            ->getTopOne(13);
+            ->getLimitedSlider(13);
+
         $snow = $this->getDoctrine()
             ->getRepository(Card::class)
-            ->getTopOne(10);
+            ->getLimitedSlider(10);
+
         $heli = $this->getDoctrine()
             ->getRepository(Card::class)
-            ->getTopOne(17);
+            ->getLimitedSlider(17);
+
         $quad = $this->getDoctrine()
             ->getRepository(Card::class)
-            ->getTopOne(9);
+            ->getLimitedSlider(9);
+
+
+//        $cars = $this->getDoctrine()
+//            ->getRepository(Card::class)
+//            ->getTopOne(2);
+//        $trucks = $this->getDoctrine()
+//            ->getRepository(Card::class)
+//            ->getTopOne(3);
+//        $moto = $this->getDoctrine()
+//            ->getRepository(Card::class)
+//            ->getTopOne(8);
+//        $bicycles = $this->getDoctrine()
+//            ->getRepository(Card::class)
+//            ->getTopOne(15);
+//        $yachts = $this->getDoctrine()
+//            ->getRepository(Card::class)
+//            ->getTopOne(13);
+//        $snow = $this->getDoctrine()
+//            ->getRepository(Card::class)
+//            ->getTopOne(10);
+//        $heli = $this->getDoctrine()
+//            ->getRepository(Card::class)
+//            ->getTopOne(17);
+//        $quad = $this->getDoctrine()
+//            ->getRepository(Card::class)
+//            ->getTopOne(9);
 
         $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.total DESC');
         $generalTypes = $query->getResult();

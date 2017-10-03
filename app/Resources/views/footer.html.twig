@@ -68,3 +68,7 @@
         </div>
     </div>
 </footer>
+
+{% if is_mobile() %}
+    {% include 'left_bar.html.twig' %}
+{% endif %}
