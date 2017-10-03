@@ -48,14 +48,12 @@ class NewCardController extends Controller
 
         if($this->get('session')->get('logged_user') === null and !$this->get('session')->has('admin')) return new Response("",404);
 
-        $user = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->findOneBy(['id'=>$this->get('session')->get('logged_user')->getId()]);
-
-        //dump($user);
-
-        if ($user->getIsBanned()) return new Response("",404);
-
+        if(!$this->get('session')->has('admin')) {
+            $user = $this->getDoctrine()
+                ->getRepository(User::class)
+                ->findOneBy(['id' => $this->get('session')->get('logged_user')->getId()]);
+            if ($user->getIsBanned()) return new Response("", 404);
+        }
         $card = new Card();
 
         $conditions = $this->getDoctrine()

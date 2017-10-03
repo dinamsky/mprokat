@@ -60,12 +60,13 @@ class EditCardController extends Controller
         ) return new Response("",404);
 
 
-        $user = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->find($this->get('session')->get('logged_user')->getId());
+        if(!$this->get('session')->has('admin')) {
+            $user = $this->getDoctrine()
+                ->getRepository(User::class)
+                ->find($this->get('session')->get('logged_user')->getId());
 
-        if($user->getIsBanned()) return new Response("",404);
-
+            if ($user->getIsBanned()) return new Response("", 404);
+        }
 
         $conditions = $this->getDoctrine()
             ->getRepository(State::class)
