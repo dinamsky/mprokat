@@ -82,7 +82,7 @@ class UserController extends Controller
     public function signInAction(Request $request, Password $password)
     {
         $em = $this->getDoctrine()->getManager();
-        $dql = 'SELECT u FROM UserBundle:User u WHERE u.email = ?1 OR u.login = ?1';
+        $dql = 'SELECT u FROM UserBundle:User u WHERE u.isBanned = 0 AND (u.email = ?1 OR u.login = ?1)';
         $query = $em->createQuery($dql);
         $query->setParameter(1, $request->request->get('email'));
         $users = $query->getResult();
