@@ -689,3 +689,22 @@ footer a:hover{
 .mobile_header .left_part button{
     line-height: 15px;
 }
+
+.card_grid_price{
+    position: absolute;
+    background: rgba(255, 255, 255, 0.87);
+    color: black;
+    font-weight: bold;
+    padding: 3px 5px;
+    border-radius: 0 0 15px 0;
+}
+
+.card_grid_views{
+    position: absolute;
+    right: 0;
+    bottom: -11px;
+    color: white;
+    background: rgba(0, 0, 0, 0.58);
+    padding: 3px 5px;
+    font-size: 12px;
+}
