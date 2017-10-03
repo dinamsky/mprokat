@@ -80,6 +80,12 @@ class User
      */
     private $isActivated = 0;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_banned", type="boolean")
+     */
+    private $isBanned = 0;
 
     /**
      * @var int
@@ -546,5 +552,29 @@ class User
     public function getOpinions()
     {
         return $this->opinions;
+    }
+
+    /**
+     * Set isBanned
+     *
+     * @param boolean $isBanned
+     *
+     * @return User
+     */
+    public function setIsBanned($isBanned)
+    {
+        $this->isBanned = $isBanned;
+
+        return $this;
+    }
+
+    /**
+     * Get isBanned
+     *
+     * @return boolean
+     */
+    public function getIsBanned()
+    {
+        return $this->isBanned;
     }
 }

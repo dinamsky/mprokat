@@ -59,6 +59,14 @@ class EditCardController extends Controller
             and  $this->get('session')->get('admin')->getRole() != 'superadmin'
         ) return new Response("",404);
 
+
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($this->get('session')->get('logged_user')->getId());
+
+        if($user->getIsBanned()) return new Response("",404);
+
+
         $conditions = $this->getDoctrine()
             ->getRepository(State::class)
             ->findAll();

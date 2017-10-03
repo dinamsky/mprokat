@@ -33,6 +33,8 @@ class ShowCardController extends Controller
             ->getRepository(Card::class)
             ->find($id);
 
+        if ($card->getUser()->getIsBanned()) return new Response("",404);
+
         $views = $this->get('session')->get('views');
         if (!isset($views[$card->getId()])) {
             $views[$card->getId()] = 1;

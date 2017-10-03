@@ -4,6 +4,7 @@ namespace UserBundle\Controller;
 
 use MarkBundle\Entity\CarModel;
 use UserBundle\Entity\UserOrder;
+use UserBundle\Entity\User;
 use AppBundle\Entity\CardFeature;
 use AppBundle\Entity\CardPrice;
 use AppBundle\Entity\Feature;
@@ -12,7 +13,7 @@ use AppBundle\Entity\Price;
 use AppBundle\Entity\Tariff;
 use AdminBundle\Entity\Admin;
 use AppBundle\Foto\FotoUtils;
-use UserBundle\Entity\User;
+
 use AppBundle\Entity\Card;
 use AppBundle\Entity\City;
 use AppBundle\Entity\Color;
@@ -44,7 +45,16 @@ class NewCardController extends Controller
     public function indexAction(MenuMarkModel $markmenu, MenuGeneralType $mgt, MenuCity $mc, Request $request, FotoUtils $fu, EntityManagerInterface $em, \Swift_Mailer $mailer)
     {
 
+
         if($this->get('session')->get('logged_user') === null and !$this->get('session')->has('admin')) return new Response("",404);
+
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findOneBy(['id'=>$this->get('session')->get('logged_user')->getId()]);
+
+        //dump($user);
+
+        if ($user->getIsBanned()) return new Response("",404);
 
         $card = new Card();
 

@@ -31,14 +31,16 @@ class ProfileController extends Controller
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->find((int)$id);
-        $user_foto = false;
-        foreach ($user->getInformation() as $info){
-            if($info->getUiKey() == 'foto' and $info->getUiValue()!='') $user_foto =  '/assets/images/users/t/'.$info->getUiValue().'.jpg';
-        }
-        return $this->render('user/user_page.html.twig',[
-            'user' => $user,
-            'user_foto' => $user_foto
-        ]);
+        if(!$user->getIsBanned()) {
+            $user_foto = false;
+            foreach ($user->getInformation() as $info) {
+                if ($info->getUiKey() == 'foto' and $info->getUiValue() != '') $user_foto = '/assets/images/users/t/' . $info->getUiValue() . '.jpg';
+            }
+            return $this->render('user/user_page.html.twig', [
+                'user' => $user,
+                'user_foto' => $user_foto
+            ]);
+        } else return new Response("",404);
     }
 
     /**
@@ -46,11 +48,12 @@ class ProfileController extends Controller
      */
     public function indexAction(Password $password)
     {
-
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->find($this->get('session')->get('logged_user')->getId());
-        return $this->render('user/profile_main.html.twig',['user' => $user]);
+
+        if(!$user->getIsBanned()) return $this->render('user/profile_main.html.twig',['user' => $user]);
+        else return new Response("",404);
     }
 
     /**
@@ -58,10 +61,15 @@ class ProfileController extends Controller
      */
     public function userCardsAction(em $em)
     {
-        $query = $em->createQuery('SELECT c FROM AppBundle:Card c WHERE c.userId = ?1');
-        $query->setParameter(1, $this->get('session')->get('logged_user')->getId());
-        $cards = $query->getResult();
-        return $this->render('user/user_cards.html.twig',['cards' => $cards]);
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($this->get('session')->get('logged_user')->getId());
+        if(!$user->getIsBanned()) {
+            $query = $em->createQuery('SELECT c FROM AppBundle:Card c WHERE c.userId = ?1');
+            $query->setParameter(1, $this->get('session')->get('logged_user')->getId());
+            $cards = $query->getResult();
+            return $this->render('user/user_cards.html.twig', ['cards' => $cards]);
+        } else return new Response("",404);
     }
 
     /**
@@ -73,7 +81,8 @@ class ProfileController extends Controller
             ->getRepository(User::class)
             ->find($this->get('session')->get('logged_user')->getId());
 
-        return $this->render('user/user_profile.html.twig',['user' => $user]);
+        if(!$user->getIsBanned()) return $this->render('user/user_profile.html.twig',['user' => $user]);
+        else return new Response("",404);
     }
 
     /**
