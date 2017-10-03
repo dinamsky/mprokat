@@ -315,7 +315,8 @@ class SearchController extends Controller
 
         if(!$general) $general = ['url'=>'alltypes','header'=>'Любой тип транспорта'];
 
-        $in_city = $this->get('session')->get('city')->getUrl();
+        if ($this->get('session')->has('city')) $in_city = $this->get('session')->get('city')->getUrl();
+        else $in_city = $city->getUrl();
 
         return $this->render('search/search_main.html.twig', [
 
