@@ -92,6 +92,10 @@ $( document ).ready(function() {
         document.location.href = getSelectorUrl() + getQueryVars();
     });
 
+    $('#main_search_button_left').on('click', function () {
+        document.location.href = getSelectorUrl() + getQueryVars();
+    });
+
 
     // $(document).click( function(event){
     //     if( $(event.target).closest('.hide_on_click_out').length || $(event.target).closest('.selector_opener').length)
@@ -125,6 +129,7 @@ $( document ).ready(function() {
             }
         });
     });
+
 
     $('body').on('click','.mark_block', function () {
         $('#markURL').val($(this).data('url')).attr('data-id',$(this).data('id'));

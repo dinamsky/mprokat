@@ -10,6 +10,7 @@
     {{ parent() }}
     <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('assets/js/city_general_mark_selector.js') }}"></script>
+    <script src="{{ asset('assets/js/left_selector.js') }}"></script>
     <script src="{{ asset('assets/js/showCard.js') }}"></script>
     <script src="{{ asset('assets/js/sliderSettings.js') }}"></script>
 {% endblock %}
@@ -85,7 +86,7 @@
                         <div class="slide uk-width-1-1" style="
                                 background:url('/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg') center center;
                                 background-size: cover;
-                                height:500px;
+                                height: {% if is_mobile() %}150px{% else %}500px{% endif %};
                                 ">
                             {#<img src="/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg" alt="" style="max-height: auto">#}
                         </div>

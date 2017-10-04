@@ -1,19 +1,19 @@
 <input type="hidden" id="cityURL" name="cityURL" value="{{ city.url }}">
 <input type="hidden" id="cityId" name="cityId" value="{{ city.id }}">
-<div uk-toggle="target: #city_popular" >
-    <span class="city_selector uk-text-truncate">{{ cityId != 0 ? city.header : 'Местоположение' }}</span>
+<div uk-toggle="target: #city_popular_left" >
+    <span class="city_selector_left uk-text-truncate">{{ cityId != 0 ? city.header : 'Местоположение' }}</span>
     <i uk-icon="icon:chevron-down"></i>
 </div>
 
-<div id="city_popular" class="uk-modal-container" uk-modal>
+<div id="city_popular_left" class="uk-modal-container" uk-modal>
     <div class="uk-modal-dialog uk-modal-body">
         <button class="uk-modal-close-default" type="button" uk-close></button>
         <h2 class="uk-modal-title">Выберите город</h2>
 
         <div class="uk-column-1-1 uk-column-1-5@s">
-            <div class="city_block {{ left_block is defined ? 'left_block' }} uk-margin-bottom" data-url="rus" data-header="Россия">Россия</div>
+            <div class="city_block_left_block uk-margin-bottom" data-url="rus" data-header="Россия">Россия</div>
             {% for city in popular_city if  city.total >= 10 %}
-                <div class="city_block {{ left_block is defined ? 'left_block' }}" data-id="{{ city.id }}" data-url="{{ city.url }}" data-header="{{ city.header }}">{{ city.header }} {{ city.total }}</div>
+                <div class="city_block_left_block" data-id="{{ city.id }}" data-url="{{ city.url }}" data-header="{{ city.header }}">{{ city.header }} {{ city.total }}</div>
             {% endfor %}
         </div>
         <hr>
@@ -21,7 +21,7 @@
         <div id="more_cities" hidden>
             <div class="uk-column-1-1 uk-column-1-5@s">
                 {% for city in popular_city if  city.total < 10 %}
-                    <div class="city_block {{ left_block is defined ? 'left_block' }} " data-id="{{ city.id }}" data-url="{{ city.url }}" data-header="{{ city.header }}">{{ city.header }} {{ city.total }}</div>
+                    <div class="city_block_left_block " data-id="{{ city.id }}" data-url="{{ city.url }}" data-header="{{ city.header }}">{{ city.header }} {{ city.total }}</div>
                 {% endfor %}
             </div>
         </div>

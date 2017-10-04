@@ -2,7 +2,14 @@ $( document ).ready(function() {
     $(".owl-carousel").each(function() {
         var items = $(this).data('items');
         var dots = $(this).data('dots');
-        if(dots === 0) dots = false; else dots = true;
+        var fnc = '';
+        if (dots === 0) {
+            dots = false;
+            fnc = 'recount';
+        } else {
+            dots = true;
+            fnc = '';
+        }
         var margin = 0;
         if(items>1) margin = 20;
         $(this).owlCarousel({
@@ -12,7 +19,7 @@ $( document ).ready(function() {
             'navText': ['<i uk-icon="icon:chevron-left"></i>', '<i uk-icon="icon:chevron-right"></i>'],
             // 'autoHeight': true,
             'dots': dots,
-            onInitialized: recount,
+            onInitialized: recount(fnc),
             responsive:{
                 0:{
                     items:1,
@@ -33,9 +40,9 @@ $( document ).ready(function() {
         });
     });
 
-    function recount()
+    function recount(fnc)
     {
-        $(".owl-carousel").find('div.owl-item').height($(".owl-carousel").height()+1);
+        if (fnc === 'recount') $(".owl-carousel").find('div.owl-item').height($(".owl-carousel").height());
     }
 
 });

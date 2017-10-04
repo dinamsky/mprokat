@@ -22,9 +22,7 @@
         width: 200px;
     }
 
-    #page_slider .slide{
-        height:300px !important;
-    }
+
 
     .user_page_top_line_1 {
         background-color: #06a7ea;
@@ -95,5 +93,9 @@
         line-height: 15px;
         background: white;
         margin-bottom: 15px;
+    }
+
+    #tt li a {
+        font-size: 12px;
     }
 }
