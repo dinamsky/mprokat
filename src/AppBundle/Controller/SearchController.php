@@ -46,7 +46,7 @@ class SearchController extends Controller
 
 
 
-
+        $is_body = false;
         $city_condition = '';
         $service_condition = '';
         $general_condition = '';
@@ -144,13 +144,19 @@ class SearchController extends Controller
             }
             $body_condition = 'AND c.id IN ('.implode(",",$bt_ids).')';
 
+
+
+            if($body_condition != '')
+
             $query = $em->createQuery('SELECT s FROM AppBundle:SubField s WHERE s.url = ?1');
             if (in_array($mark,$bodyTypeArray)) {
                 $query->setParameter(1, $mark);
+                $is_body = $mark;
                 $mark = false;
             }
             if (in_array($model,$bodyTypeArray)) {
                 $query->setParameter(1, $model);
+                $is_body = $model;
                 $model = false;
             }
             $bodyType = $query->getResult()[0];
@@ -315,6 +321,11 @@ class SearchController extends Controller
 
         if(!$general) $general = ['url'=>'alltypes','header'=>'Любой тип транспорта'];
 
+        if ($this->get('session')->has('city')) $in_city = $this->get('session')->get('city')->getUrl();
+        else $in_city = $city->getUrl();
+
+
+
         return $this->render('search/search_main.html.twig', [
 
             'cards' => $cards,
@@ -356,7 +367,10 @@ class SearchController extends Controller
             'all_marks' => $all_marks,
             'gtm_ids' => $gtm_ids,
 
-            'bodyTypes' => $bodyTypes
+            'bodyTypes' => $bodyTypes,
+
+            'in_city' => $in_city,
+            'is_body' => $is_body
 
         ]);
     }

@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new AdminBundle\AdminBundle(),
             new InfoBundle\InfoBundle(),
             new MarkBundle\MarkBundle(),
+            new SunCat\MobileDetectBundle\MobileDetectBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

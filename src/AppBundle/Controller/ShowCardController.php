@@ -133,6 +133,10 @@ class ShowCardController extends Controller
         if ($total_opinions > 0) $opinions = round($star/$total_opinions, 1);
         else $opinions = 0;
 
+
+        if ($this->get('session')->has('city')) $in_city = $this->get('session')->get('city')->getUrl();
+        else $in_city = $city->getUrl();
+
         return $this->render('card/card_show.html.twig', [
 
             'card' => $card,
@@ -176,7 +180,8 @@ class ShowCardController extends Controller
             'generalTypes' => $generalTypes,
             'car_type_id' => $mark->getCarTypeId(),
             'opinions' => $opinions,
-            'total_opinions' => $total_opinions
+            'total_opinions' => $total_opinions,
+            'in_city' => $in_city
 
         ]);
     }

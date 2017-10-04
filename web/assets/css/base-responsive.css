@@ -76,10 +76,24 @@
     }
 
     .cat_main_header{
-        margin-bottom:0 !important;
+        /*margin-bottom:0 !important;*/
     }
 
     #top_selector_block{
         margin-bottom:10px;
+    }
+
+    .top_counter_desc{
+        font-size: 10px;
+        position: relative;
+        top: -6px;
+    }
+
+    .top_counter {
+        padding: 10px 0;
+        font-size: 23px;
+        line-height: 15px;
+        background: white;
+        margin-bottom: 15px;
     }
 }
