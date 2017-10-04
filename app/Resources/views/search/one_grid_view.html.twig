@@ -22,12 +22,9 @@
             height: {{ height }};
             display: block;
             position: relative;">
-        <div class="card_grid_views">
-            <i class="fa fa-eye"></i> {{ card.views }}
-        </div>
         <div class="card_grid_price">
             {% for price in card.cardPrices if price.priceId == 2 %}
-                {{ price.value|number_format(0,'.','<span class="thousand_separator"></span>')|raw }} ₽/день
+                <b>{{ price.value|number_format(0,'.','<span class="thousand_separator"></span>')|raw }}</b> ₽<span class="uk-text-small c_grey">/день</span>
             {% endfor %}
         </div>
     </a>
@@ -36,11 +33,13 @@
 
 
     <div class="padding20">
-        <a class="uk-text-truncate uk-display-block uk-position-relative" href="/card/{{ card.id }}">{{ serviceType }} {{ card.markModel.Mark.header }} {{ card.markModel.header }} в {{ card.city.gde }}
+        <a class="uk-text-truncate uk-display-block uk-position-relative" href="/card/{{ card.id }}">{{ serviceType }} {% if card.generalType.chegoSingular is defined %}{{ card.generalType.chegoSingular }}{% else %}{% endif %} {{ card.markModel.Mark.header }} {{ card.markModel.header }} в {{ card.city.gde }}
 
         </a>
-        <div class="uk-text-truncate uk-text-small c_grey"><i class="fa fa-map-marker"></i> {{ card.city.header }}</div>
-
+        <div uk-grid>
+        <div class="uk-width-expand uk-text-truncate uk-text-small c_grey"><i class="fa fa-map-marker"></i> {{ card.city.header }}</div>
+            <div class="uk-width-auto uk-text-small c_grey"><i class="fa fa-eye"></i> {{ card.views }}</div>
+        </div>
     </div>
 
     {% if (

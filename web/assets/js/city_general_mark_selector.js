@@ -178,6 +178,8 @@ function getSelectorUrl(){
     //var general = $('#generalTypeId').find('option:selected').data('url');
     var general = $('#gtURL').val();
 
+    var body = $('.body_header').data('body');
+
     // var mark = $('#markId').find('option:selected').data('url');
     var mark = $('#markURL').val();
     //var model = $('#markModelId').find('option:selected').data('url');
@@ -207,7 +209,11 @@ function getSelectorUrl(){
         generalType = '';
     }
 
-    return '/rent'+city+service+generalType+markModel;
+    var bodyType = '';
+    if (body) bodyType = '/'+body;
+
+
+    return '/rent'+city+service+generalType+markModel+bodyType;
 }
 
 function getQueryVars() {
