@@ -700,3 +700,40 @@ footer a:hover{
     font-size: 14px;
 }
 
+.uk-offcanvas-close{
+    right: -307px;
+    top: 0px;
+    background: #222222;
+    padding: 12px;
+}
+
+.left_gtypes{
+    margin-bottom: 15px;
+}
+
+.left_gt_icon{
+    width: 25px;
+}
+
+.left_bar_more{
+    border: 1px solid rgba(255, 255, 255, 0.33);
+    color: grey !important;
+    padding: 5px 0 7px 0;
+}
+
+#left_bar .city_selector_left,#left_bar .city_selector{
+    color: #444;
+}
+
+#left_bar .mark_selector_left,#left_bar .mark_selector{
+    color: #444;
+}
+
+#left_bar .model_selector_left,#left_bar .model_selector{
+    color: #444;
+}
+
+.show_phone_big{
+    padding: 5px 20px;
+}
+

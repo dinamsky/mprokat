@@ -4,6 +4,7 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('assets/js/showCard.js') }}"></script>
+    <script src="{{ asset('assets/js/left_selector.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -55,18 +56,18 @@
                 </div>
                 <div class="uk-width-4-5@s">
                     <div uk-grid class="uk-grid-collapse">
-                        <div class="uk-width-1-4 uk-width-1-6@s"><i class="fa fa-envelope"></i> Email</div>
+                        <div class="uk-width-1-4 uk-width-1-6@s uk-text-small"><i class="fa fa-envelope"></i> Email</div>
                         <div class="uk-width-3-4"><a href="mailto:{{ user.email }}">Написать</a></div>
                     </div>
                     <div uk-grid class="uk-grid-collapse">
-                        <div class="uk-width-1-4 uk-width-1-6@s"><i class="fa fa-phone"></i> Телефон</div>
+                        <div class="uk-width-1-4 uk-width-1-6@s uk-text-small"><i class="fa fa-phone"></i> Телефон</div>
                         <div class="uk-width-3-4">
                             <div class="phone_block">
                             {% if app.session.get('phone')[user.id] is not defined and user.cards[0] is defined %}
                                 <span class="hidden_phone">
                                     <i class="fa fa-phone"></i> {% for info in user.information if info.uiKey == 'phone' %}{{ info.uiValue|slice(0,5) }}*******{% endfor %}
                                 </span>
-                                <button class="uk-button-primary show_phone" type="button" data-card_id="{{ user.cards[0].id }}">Показать</button>
+                                <button class="uk-button-primary show_phone_big" type="button" data-card_id="{{ user.cards[0].id }}">Показать</button>
                             {% else %}
                                 <span class="opened_phone">
                                 <i class="fa fa-phone"></i> {% for info in user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}
@@ -77,7 +78,7 @@
                     </div>
                     {% for info in user.information if info.uiKey == 'website' %}
                     <div uk-grid class="uk-grid-collapse">
-                        <div class="uk-width-1-4 uk-width-1-6@s"><i class="fa fa-globe"></i> Website</div>
+                        <div class="uk-width-1-4 uk-width-1-6@s uk-text-small"><i class="fa fa-globe"></i> Website</div>
                         <div class="uk-width-3-4"><a rel="nofollow" href="{{ info.uiValue }}">{{ info.uiValue }}</a></div>
                     </div>
                     {% endfor %}

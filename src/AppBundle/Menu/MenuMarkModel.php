@@ -109,6 +109,21 @@ class MenuMarkModel extends Controller
     }
 
     /**
+     * @Route("/ajax/getExistModelsLeft")
+     */
+    public function getExistModelsLAction(Request $request)
+    {
+        $markId = $request->request->get('markId');
+        $cityId = $request->request->get('cityId');
+        $models = $this->getExistMarks($cityId)['models_in_mark'];
+        return $this->render('selector/model_block2.html.twig', [
+            'model_arr'=>$models,
+            'mark_id'=>$markId,
+            'model'=>$models[$markId][0]
+        ]);
+    }
+
+    /**
      * @Route("/ajax/getExistMarks")
      */
     public function getExistMarksAction(Request $request)
@@ -125,6 +140,33 @@ class MenuMarkModel extends Controller
             if($result and isset($marks[$result[0]->getId()])) {
 
                 return $this->render('selector/mark_block.html.twig', [
+                    'mark_arr' => $this->getExistMarks($cityId)['sorted_marks'],
+                    'mark' => $marks[$result[0]->getId()][0]['mark'],
+                    'type' => $result[0]->getId()
+                ]);
+            } else return new Response();
+        } else {
+            return new Response();
+        }
+    }
+
+    /**
+     * @Route("/ajax/getExistMarksLeft")
+     */
+    public function getExistMarksLAction(Request $request)
+    {
+        $cityId = $request->request->get('cityId');
+        $gtURL = $request->request->get('gtURL');
+        $marks = $this->getExistMarks($cityId)['sorted_marks'];
+
+        if($marks) {
+            $query = $this->em->createQuery('SELECT t FROM MarkBundle:CarType t WHERE t.url = ?1');
+            $query->setParameter(1, $gtURL);
+            $result = $query->getResult();
+
+            if($result and isset($marks[$result[0]->getId()])) {
+
+                return $this->render('selector/mark_block2.html.twig', [
                     'mark_arr' => $this->getExistMarks($cityId)['sorted_marks'],
                     'mark' => $marks[$result[0]->getId()][0]['mark'],
                     'type' => $result[0]->getId()
