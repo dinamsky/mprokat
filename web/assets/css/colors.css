@@ -22,6 +22,10 @@
     background: white;
 }
 
+.bg_darkgrey{
+    background: #464646;
+}
+
 .c_red{
     color: red;
 }
