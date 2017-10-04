@@ -692,12 +692,11 @@ footer a:hover{
 
 .card_grid_price{
     position: absolute;
-    background: rgb(255, 255, 255);
-    color: black;
-
+    background: rgb(37, 180, 91);
+    color: white;
     padding: 3px 5px;
-    box-shadow: 1px 1px 1px grey;
-    left: 0;
-    top: 0;
+    right: 7px;
+    bottom: -13px;
+    font-size: 14px;
 }
 

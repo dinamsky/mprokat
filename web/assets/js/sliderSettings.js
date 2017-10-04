@@ -35,7 +35,7 @@ $( document ).ready(function() {
 
     function recount()
     {
-        $(".owl-carousel").find('div.owl-item').height($(".owl-carousel").height());
+        $(".owl-carousel").find('div.owl-item').height($(".owl-carousel").height()+1);
     }
 
 });
