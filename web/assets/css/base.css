@@ -737,3 +737,42 @@ footer a:hover{
     padding: 5px 20px;
 }
 
+.sort_button{
+    border: 0;
+    padding: 5px;
+    display: inline-block;
+    font-size: 12px;
+    line-height: 12px;
+    color: #f9f9f9;
+    background: #6d6d6d;
+    box-sizing: border-box;
+    font-family: arial;
+}
+
+.body_more{
+    border: 1px solid #bfbfbf;
+    display: inline-block;
+    box-sizing: border-box;
+    line-height: 12px;
+    padding: 3px 2px 2px;
+    cursor: pointer;
+}
+
+.sort_button.active{
+    background: #06a7ea;
+}
+
+#main_finder h1{
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 0;
+    border-bottom: 1px solid #d6d6d6;
+    padding-bottom: 5px;
+}
+
+.found_row{
+    padding-bottom: 3px;
+    margin-bottom: 30px;
+    font-size: 16px;
+    color: #06a7ea;
+}

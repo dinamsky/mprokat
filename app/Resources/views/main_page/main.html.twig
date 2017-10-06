@@ -13,7 +13,6 @@
     <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('assets/js/mainPage.js') }}"></script>
     <script src="{{ asset('assets/js/city_general_mark_selector.js') }}"></script>
-    <script src="{{ asset('assets/js/left_selector.js') }}"></script>
     <script src="{{ asset('assets/js/sliderSettings.js') }}"></script>
     <script src="{{ asset('assets/html5_banner/createjs-2015.11.26.min.js') }}"></script>
     <script src="{{ asset('assets/html5_banner/body.js') }}"></script>
@@ -125,9 +124,10 @@
                 </div>
             </div>
         </div>
+        {#g#}
     </div>
 
-    <div class="top_counter bg_white c_green {% if is_mobile() %}{% else %}uk-margin-large-bottom{% endif %}">
+    <div class="top_counter bg_white c_grey {% if is_mobile() %}{% else %}uk-margin-large-bottom{% endif %}">
         <div class="standard_wide">
             <div uk-grid class="{% if is_mobile() %}{% else %}uk-grid-divider{% endif %}">
                 <div class="uk-width-1-3">

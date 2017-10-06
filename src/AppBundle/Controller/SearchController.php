@@ -36,6 +36,9 @@ class SearchController extends Controller
         $city = false, $service = false, $general = false, $mark = false, $model = false, $card = false,
         EntityManagerInterface $em, MenuGeneralType $mgt, MenuCity $mc, MenuMarkModel $mm, Request $request)
     {
+
+        $mobileDetector = $this->get('mobile_detect.mobile_detector');
+
         if (strtolower($city) == 'rus') $city = false;
         if ($service == 'all') $service = false;
         if ($general == 'alltypes') $general = false;
@@ -215,7 +218,10 @@ class SearchController extends Controller
 
         if ($request->query->has('page')) $page = $get['page']; else $page = 1;
         if ($request->query->has('onpage')) $cards_per_page = $get['onpage']; else $cards_per_page = 12;
+
         $pages_in_center = 5;
+        if ($mobileDetector->isMobile()) $pages_in_center = 2;
+
         $pager_center_start = 2;
 
         $total_pages = ceil($total_cards/$cards_per_page);
