@@ -190,10 +190,11 @@ function getSelectorUrl(){
     //var model = $('#markModelId').find('option:selected').data('url');
     var model = $('#modelURL').val();
 
-    var service = $('#service').find('option:selected').val();
+    //var service = $('#service').find('option:selected').val();
 
-    if (service) service = '/'+service;
-    else service = '/all';
+    //if (service) service = '/'+service;
+    //else service = '/all';
+    var service = '/all';
 
     // if(country) city = '/'+country;
     // if(regionId) city = '/'+regionId;
@@ -225,7 +226,7 @@ function getQueryVars() {
     var view = $('#main_search_button').data('view'); view ? view = 'view='+view : view = '';
     var page = $('#main_search_button').data('page'); page ? page = '&page='+page : page = '';
     var onpage = $('#main_search_button').data('onpage'); onpage ? onpage = '&onpage='+onpage : onpage = '';
-    var order = $('#order').find('option:selected').val(); order ? order = '&order='+ order : order = '';
+    var order = $('#order').val(); order ? order = '&order='+ order : order = '';
     if (view+page+onpage+order) return '?'+view+page+onpage+order;
     else return '';
 }

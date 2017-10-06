@@ -98,4 +98,24 @@
     #tt li a {
         font-size: 12px;
     }
+
+    #pager button {
+        padding: 0px 12px;
+    }
+
+    #main_finder h1{
+        font-size: 22px;
+        text-align: center;
+        margin-bottom: 0px;
+        border-bottom: 1px solid #d6d6d6;
+        padding-bottom: 5px;
+    }
+
+    .found_row{
+        border-bottom: 1px solid #d6d6d6;
+        padding-bottom: 3px;
+        margin-bottom: 12px;
+        font-size: 16px;
+        color: #06a7ea;
+    }
 }
