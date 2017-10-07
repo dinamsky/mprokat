@@ -70,6 +70,9 @@ class SearchController extends Controller
             $city = $this->getDoctrine()
                 ->getRepository(City::class)
                 ->findOneBy(['url' => $city]);
+
+            if(!$city) throw $this->createNotFoundException(); //404
+
             $countryCode = $city->getCountry();
             if($city->getChildren()->isEmpty()){
                 $city_condition = 'AND c.cityId = '.$city->getId();
@@ -108,20 +111,22 @@ class SearchController extends Controller
                 ->getRepository(GeneralType::class)
                 ->findOneBy(['url' => $general]);
 
-            if($general->getChildren()->isEmpty()){
-                $gtId = $general->getId();
-                $general_condition = 'AND c.generalTypeId = '.$gtId;
-                if (!$general->getParent()) $pgtId = $general->getId();
-                else $pgtId = $general->getParent()->getId();
-            } else {
-                $generals = $general->getChildren();
-                foreach($generals as $child){
-                    $general_ids[] = $child->getId();
+            if($general) {
+                if ($general->getChildren()->isEmpty()) {
+                    $gtId = $general->getId();
+                    $general_condition = 'AND c.generalTypeId = ' . $gtId;
+                    if (!$general->getParent()) $pgtId = $general->getId();
+                    else $pgtId = $general->getParent()->getId();
+                } else {
+                    $generals = $general->getChildren();
+                    foreach ($generals as $child) {
+                        $general_ids[] = $child->getId();
+                    }
+                    $general_condition = ' AND c.generalTypeId IN (' . implode(',', $general_ids) . ',' . $general->getId() . ')';
+                    $pgtId = $general->getId();
+                    $gtId = 0;
                 }
-                $general_condition = ' AND c.generalTypeId IN ('.implode(',',$general_ids).','.$general->getId().')';
-                $pgtId = $general->getId();
-                $gtId = 0;
-            }
+            } else throw $this->createNotFoundException();
         }
 
 
@@ -177,6 +182,9 @@ class SearchController extends Controller
                     ->getRepository(CarMark::class)
                     ->findOneBy(['header' => $mark]);
             }
+
+            if(!$mark) throw $this->createNotFoundException(); //404
+
             $models = $mm->getModels($mark->getId());
             foreach ($models as $child) {
                 $mark_ids[] = $child->getId();
@@ -204,6 +212,8 @@ class SearchController extends Controller
             $model = $this->getDoctrine()
                 ->getRepository(CarModel::class)
                 ->findOneBy(['header' => $model, 'carMarkId' => $mark->getId()]);
+
+            if(!$model) throw $this->createNotFoundException(); //404
 
             $mark_condition = ' AND c.modelId = '.$model->getId();
         } else {
@@ -327,7 +337,11 @@ class SearchController extends Controller
 
         if(!$general) $general = ['url'=>'alltypes','header'=>'Любой тип транспорта'];
 
-        if ($this->get('session')->has('city')) $in_city = $this->get('session')->get('city')->getUrl();
+        if ($this->get('session')->has('city')){
+            $in_city = $this->get('session')->get('city');
+            if(isset($in_city[0])) $in_city = $in_city[0]->getUrl();
+            else $in_city = $city->getUrl();
+        }
         else $in_city = $city->getUrl();
 
 
@@ -379,6 +393,20 @@ class SearchController extends Controller
             'is_body' => $is_body
 
         ]);
+    }
+
+    /**
+     * @Route("/{url}", name="remove_trailing_slash",
+     *     requirements={"url" = ".*\/$"}, methods={"GET"})
+     */
+    public function removeTrailingSlashAction(Request $request)
+    {
+        $pathInfo = $request->getPathInfo();
+        $requestUri = $request->getRequestUri();
+
+        $url = str_replace($pathInfo, rtrim($pathInfo, ' /'), $requestUri);
+
+        return $this->redirect($url, 301);
     }
 }
 

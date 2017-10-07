@@ -688,6 +688,7 @@ footer a:hover{
 
 .mobile_header .left_part button{
     line-height: 15px;
+    padding: 0 12px;
 }
 
 .card_grid_price{
@@ -775,4 +776,12 @@ footer a:hover{
     margin-bottom: 30px;
     font-size: 16px;
     color: #06a7ea;
+}
+
+.m_add_card_button{
+    padding: 0;
+}
+
+#card_content{
+    word-wrap: break-word;
 }

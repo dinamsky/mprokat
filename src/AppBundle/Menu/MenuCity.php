@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\City;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Response;
 
 class MenuCity extends Controller
 {
@@ -69,6 +70,16 @@ class MenuCity extends Controller
         return $this->render('common/ajax_options_url.html.twig', [
             'options' => $this->getRegion($countryCode)
         ]);
+    }
+
+    /**
+     * @Route("/ajax/setCity")
+     */
+    public function setCityAction(Request $request)
+    {
+        $this->get('session')->set('city', $this->getCity($request->request->get('cityId')));
+        //dump($this->get('session'));
+        return new Response();
     }
 
     /**

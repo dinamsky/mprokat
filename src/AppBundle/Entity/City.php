@@ -46,6 +46,13 @@ class City
     /**
      * @var string
      *
+     * @ORM\Column(name="coords", type="string", length=255)
+     */
+    private $coords;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="url", type="string", length=255)
      */
     private $url;
@@ -329,5 +336,29 @@ class City
     public function getModels()
     {
         return $this->models;
+    }
+
+    /**
+     * Set coords
+     *
+     * @param string $coords
+     *
+     * @return City
+     */
+    public function setCoords($coords)
+    {
+        $this->coords = $coords;
+
+        return $this;
+    }
+
+    /**
+     * Get coords
+     *
+     * @return string
+     */
+    public function getCoords()
+    {
+        return $this->coords;
     }
 }

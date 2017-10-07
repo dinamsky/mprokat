@@ -29,6 +29,7 @@
 {% block title %}{% if custom_seo and custom_seo.title != ''%}{% include(template_from_string(custom_seo.title)) %}{% else %}Мультипрокат{% endif %}{% endblock %}
 
 {% block bodyVars %}onload="html5_init();"{% endblock %}
+{% block bodyClass %}main_page{% endblock %}
 
 {% block content %}
 
@@ -78,10 +79,10 @@
 
                 <div class="uk-margin-auto uk-width-3-4@s uk-margin-bottom">
                     <form uk-grid id="main_search_form" class="uk-flex uk-flex-center uk-grid-small" >
-                        <div class="uk-width-1-1 uk-width-auto@s uk-position-relative">
-                            <div class="uk-hidden@s uk-text-small c_white">Город</div>
-                            <div class="top_selector_box">{{ include('selector/adress_block.html.twig') }}</div>
-                        </div>
+                        {#<div class="uk-width-1-1 uk-width-auto@s uk-position-relative">#}
+                            {#<div class="uk-hidden@s uk-text-small c_white">Город</div>#}
+                            {#<div class="top_selector_box">{{ include('selector/adress_block.html.twig') }}</div>#}
+                        {#</div>#}
 
                         <input type="hidden" name="gtURL" id="gtURL" value="cars">
 

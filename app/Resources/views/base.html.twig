@@ -22,7 +22,7 @@
         <title>{% block title %}Мультипрокат{% endblock %}</title>
 
     </head>
-    <body {% block bodyVars %}{% endblock %} class="{{ is_mobile() ? 'mobile' : 'desktop' }}">
+    <body {% block bodyVars %}{% endblock %} class="{{ is_mobile() ? 'mobile' : 'desktop' }} {% block bodyClass %}{% endblock %}">
         {{ include('header.html.twig') }}
         <div id="content">
             {% for label, messages in app.flashes %}

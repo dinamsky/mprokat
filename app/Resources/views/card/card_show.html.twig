@@ -62,7 +62,7 @@
             {#{% endif %}#}
 
             <i uk-icon="icon:chevron-right"></i>
-            <a href="/rent/rus/all/{{ card.generalType.url }}">{{ card.generalType.header }}</a>
+            <a href="/rent/{{ in_city }}/all/{{ card.generalType.url }}">{{ card.generalType.header }}</a>
 
         </div>
     </div>
@@ -82,12 +82,15 @@
 
                 <div id="page_slider" class="owl-carousel owl-theme" data-items="1">
                     {% for foto in card.getFotos %}
-                        <div class="slide uk-width-1-1" style="
+                        <div uk-lightbox>
+                        <a href="/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg" class="slide uk-width-1-1" style="
                                 background:url('/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg') center center;
                                 background-size: cover;
+                                display: block;
                                 height: {% if is_mobile() %}150px{% else %}500px{% endif %};
                                 ">
                             {#<img src="/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg" alt="" style="max-height: auto">#}
+                        </a>
                         </div>
                     {% endfor %}
                 </div>
@@ -132,7 +135,7 @@
 
                             </div>
                             <div class="uk-width-1-2@s">
-                                <div>{{ card.content|raw }}</div>
+                                <div id="card_content">{{ card.content|raw }}</div>
                             </div>
                         </div>
 
@@ -362,9 +365,11 @@
                 </div>
 
 
+                <div class="uk-visible@s">
+                    <h3 class="pf_style_header"><span>Поиск</span></h3>
+                    {{ include('search/search_form.html.twig') }}
+                </div>
 
-                <h3 class="pf_style_header"><span>Поиск</span></h3>
-                {{ include('search/search_form.html.twig') }}
             </div>
         </div>
 

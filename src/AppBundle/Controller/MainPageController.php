@@ -115,10 +115,12 @@ class MainPageController extends Controller
             $this->get('session')->set('city', $city);
         } else {
             $city = $this->get('session')->get('city');
+            $city = $city[0];
         }
+
         $in_city = $city->getUrl();
 
-
+        //---
         $query = $em->createQuery('SELECT COUNT(c.id) FROM AppBundle:Card c');
         $totalCards = $query->getSingleScalarResult();
 
@@ -151,6 +153,8 @@ class MainPageController extends Controller
         $mark_arr_sorted = $mark_arr['sorted_marks'];
         $mark_arr_typed = $mark_arr['typed_marks'];
         $models_in_mark = $mark_arr['models_in_mark'];
+
+        dump($this->get('session'));
 
         return $this->render('main_page/main.html.twig', [
 //            'generalTopLevel' => $mgt->getTopLevel(),

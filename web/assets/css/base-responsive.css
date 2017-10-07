@@ -118,4 +118,12 @@
         font-size: 16px;
         color: #06a7ea;
     }
+
+    .card_cover{
+        height: 300px !important;
+    }
+
+    .breadcrumbs a{
+        font-size: 13px;
+    }
 }
