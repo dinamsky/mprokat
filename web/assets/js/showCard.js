@@ -29,6 +29,22 @@ $( document ).ready(function() {
         });
     });
 
+    $('.show_phone_big').on('click', function () {
+        var card_id = $(this).data('card_id');
+        var t = $(this);
+        $.ajax({
+            url: '/ajax/showPhone',
+            type: 'POST',
+            data: {card_id:card_id},
+            success: function(html){
+                $('.phone_block').html('<span class="opened_phone c_grey uk-text-center"><i class="fa fa-phone"></i> '+html+'</span>');
+                $('.modal_phone').html(html);
+                UIkit.modal('#user_phone_form').show();
+                yaCounter43151009.reachGoal('PhoneClick', {phone: html, cardId: card_id});
+            }
+        });
+    });
+
     $('.likes').on('click', function () {
         var card_id = $(this).data('card_id');
         var t = $(this);
