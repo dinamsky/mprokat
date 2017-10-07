@@ -207,7 +207,7 @@ class SearchController extends Controller
             $marks = array();
             $models = false;
         }
-
+//
         if($model){
             $model = $this->getDoctrine()
                 ->getRepository(CarModel::class)
