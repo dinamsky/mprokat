@@ -129,7 +129,7 @@ class MainPageController extends Controller
             $this->get('session')->set('city', $city);
         } else {
             $city = $this->get('session')->get('city');
-            $city = $city[0];
+            if(isset($city[0])) $city = $city[0];
         }
 
         $in_city = $city->getUrl();
