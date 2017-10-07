@@ -64,6 +64,10 @@ class ProfileController extends Controller
             } else {
                 $city = $this->get('session')->get('city');
             }
+
+            if (is_array($city)){
+                $city = $city[0];
+            }
             $in_city = $city->getUrl();
 
             $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.total DESC, c.header ASC');
