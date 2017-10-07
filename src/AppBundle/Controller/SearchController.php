@@ -339,7 +339,7 @@ class SearchController extends Controller
 
         if ($this->get('session')->has('city')){
             $in_city = $this->get('session')->get('city');
-            if(isset($in_city[0])) $in_city = $in_city[0]->getUrl();
+            if(is_array($in_city)) $in_city = $in_city[0]->getUrl();
             else $in_city = $city->getUrl();
         }
         else $in_city = $city->getUrl();
