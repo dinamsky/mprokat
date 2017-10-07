@@ -15,10 +15,13 @@ class GeoSubscriber implements EventSubscriberInterface
 {
     public function onKernelController(FilterControllerEvent $event)
     {
+        $userAgent = isset($_SERVER['HTTP_USER_AGENT'])
+            ? strtolower($_SERVER['HTTP_USER_AGENT'])
+            : '';
 
         $is_bot = preg_match(
-            "~(Google|Yahoo|Rambler|Bot|Yandex|Spider|Snoopy|Crawler|Finder|Mail|curl)~i",
-            $_SERVER['HTTP_USER_AGENT']
+            "~(google|yahoo|rambler|bot|yandex|spider|snoopy|crawler|finder|mail|curl)~i",
+            $userAgent
         );
 
         if(!$is_bot){
@@ -51,11 +54,6 @@ class GeoSubscriber implements EventSubscriberInterface
                 }
             }
         }
-
-
-
-
-        //dump($event->getRequest());
     }
 
     public static function getSubscribedEvents()

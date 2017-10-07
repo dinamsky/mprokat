@@ -105,27 +105,44 @@ $( document ).ready(function() {
     // });
 
 
+    // $('body').on('click', '.city_block', function () {
+    //     $('#cityURL').val($(this).data('url'));
+    //     $('#cityId').val($(this).data('id'));
+    //     var gtURL = $('#gtURL').val();
+    //     UIkit.modal('#city_popular').hide();
+    //     var cityId = $('#cityId').val();
+    //     $('.city_selector').html($(this).data('header'));
+    //     $.ajax({
+    //         url: '/ajax/getExistMarks',
+    //         type: 'POST',
+    //         data: {cityId:cityId,gtURL:gtURL},
+    //         success: function(html){
+    //             $('#mark_placement').html(html);
+    //             $.ajax({
+    //                 url: '/ajax/getExistModels',
+    //                 type: 'POST',
+    //                 data: {markId:$('#markURL').data('id'), cityId:cityId},
+    //                 success: function(html){
+    //                     $('#model_placement').html(html);
+    //                 }
+    //             });
+    //         }
+    //     });
+    // });
+
     $('body').on('click', '.city_block', function () {
+        var cityId = $(this).data('id');
+        $('#cityId').val(cityId);
         $('#cityURL').val($(this).data('url'));
-        $('#cityId').val($(this).data('id'));
-        var gtURL = $('#gtURL').val();
-        UIkit.modal('#city_popular').hide();
-        var cityId = $('#cityId').val();
         $('.city_selector').html($(this).data('header'));
         $.ajax({
-            url: '/ajax/getExistMarks',
+            url: '/ajax/setCity',
             type: 'POST',
-            data: {cityId:cityId,gtURL:gtURL},
-            success: function(html){
-                $('#mark_placement').html(html);
-                $.ajax({
-                    url: '/ajax/getExistModels',
-                    type: 'POST',
-                    data: {markId:$('#markURL').data('id'), cityId:cityId},
-                    success: function(html){
-                        $('#model_placement').html(html);
-                    }
-                });
+            data: {cityId:cityId},
+            success: function(){
+                UIkit.modal('#city_popular').hide();
+                if(!$('body').hasClass('main_page')) document.location.href = getSelectorUrl() + getQueryVars();
+                else document.location.href = '/';
             }
         });
     });

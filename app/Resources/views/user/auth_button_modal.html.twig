@@ -1,4 +1,4 @@
-<div class="top_user_actions" uk-height-match>
+<div class="top_user_actions uk-float-left" uk-height-match>
     {% if app.session.has('logged_user') %}
         <a href="/user"><img src="/assets/images/users/t/{{ app.session.get('user_pic') }}.jpg" alt="" style="height: 40px"> {{ app.session.get('logged_user').header }}</a>
 
