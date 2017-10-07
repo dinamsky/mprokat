@@ -10,11 +10,11 @@
         <button class="uk-modal-close-default" type="button" uk-close></button>
         <h2 class="uk-modal-title">Выберите Модель</h2>
 
-        <div class="uk-column-1-2 uk-column-1-5@s">
-            <div class="model_block uk-margin-bottom" data-url="" data-header="Любая модель">Любая модель</div>
+        <div class="uk-column-1-1 uk-column-1-5@s">
+            <div class="model_block {{ left_block is defined ? 'left_block' }} uk-margin-bottom" data-url="" data-header="Любая модель">Любая модель</div>
             {% if model_arr[mark_id] is defined %}
             {% for model in model_arr[mark_id] %}
-                <div class="model_block" data-url="{{ model.header }}" data-header="{{ model.header }}">{{ model.header }} </div>
+                <div class="model_block {{ left_block is defined ? 'left_block' }}" data-url="{{ model.header }}" data-header="{{ model.header }}">{{ model.header }} </div>
             {% endfor %}
             {% endif %}
         </div>

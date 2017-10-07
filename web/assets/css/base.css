@@ -688,6 +688,7 @@ footer a:hover{
 
 .mobile_header .left_part button{
     line-height: 15px;
+    padding: 0 12px;
 }
 
 .card_grid_price{
@@ -700,3 +701,98 @@ footer a:hover{
     font-size: 14px;
 }
 
+.uk-offcanvas-close{
+    right: -307px;
+    top: 0px;
+    background: #222222;
+    padding: 12px;
+}
+
+.left_gtypes{
+    margin-bottom: 15px;
+}
+
+.left_gt_icon{
+    width: 25px;
+}
+
+.left_bar_more{
+    border: 1px solid rgba(255, 255, 255, 0.33);
+    color: grey !important;
+    padding: 5px 0 7px 0;
+}
+
+#left_bar .city_selector_left,#left_bar .city_selector{
+    color: #444;
+}
+
+#left_bar .mark_selector_left,#left_bar .mark_selector{
+    color: #444;
+}
+
+#left_bar .model_selector_left,#left_bar .model_selector{
+    color: #444;
+}
+
+.show_phone_big{
+    padding: 5px 20px;
+}
+
+.sort_button{
+    border: 0;
+    padding: 5px;
+    display: inline-block;
+    font-size: 12px;
+    line-height: 12px;
+    color: #f9f9f9;
+    background: #6d6d6d;
+    box-sizing: border-box;
+    font-family: arial;
+}
+
+.body_more{
+    border: 1px solid #bfbfbf;
+    display: inline-block;
+    box-sizing: border-box;
+    line-height: 12px;
+    padding: 3px 2px 2px;
+    cursor: pointer;
+}
+
+.sort_button.active{
+    background: #06a7ea;
+}
+
+#main_finder h1{
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 0;
+    border-bottom: 1px solid #d6d6d6;
+    padding-bottom: 5px;
+}
+
+.found_row{
+    padding-bottom: 3px;
+    margin-bottom: 30px;
+    font-size: 16px;
+    color: #06a7ea;
+}
+
+.m_add_card_button{
+    padding: 0;
+}
+
+#card_content{
+    word-wrap: break-word;
+}
+
+.zero_text{
+    border: 4px solid #25b45b;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.zero_button{
+    background: #ad3030;
+    width: 100%;
+}

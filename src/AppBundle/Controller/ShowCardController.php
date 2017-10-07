@@ -134,7 +134,11 @@ class ShowCardController extends Controller
         else $opinions = 0;
 
 
-        if ($this->get('session')->has('city')) $in_city = $this->get('session')->get('city')->getUrl();
+        if ($this->get('session')->has('city')){
+            $in_city = $this->get('session')->get('city');
+            if(is_array($in_city)) $in_city = $in_city[0]->getUrl();
+            else $in_city = $city->getUrl();
+        }
         else $in_city = $city->getUrl();
 
         return $this->render('card/card_show.html.twig', [

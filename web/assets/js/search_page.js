@@ -25,4 +25,14 @@ $( document ).ready(function() {
         document.location.href = getSelectorUrl() + getQueryVars();
     });
 
+    $('.price_sort').on('click', function () {
+        $('#order').val($(this).val());
+        document.location.href = getSelectorUrl() + getQueryVars();
+    });
+
+    $('.body_more').on('click', function () {
+        $('.body_type_main').hide();
+        $('.body_type_all').removeAttr('hidden');
+        UIkit.update(event = 'update');
+    });
 });

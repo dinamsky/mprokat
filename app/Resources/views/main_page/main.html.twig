@@ -29,6 +29,7 @@
 {% block title %}{% if custom_seo and custom_seo.title != ''%}{% include(template_from_string(custom_seo.title)) %}{% else %}Мультипрокат{% endif %}{% endblock %}
 
 {% block bodyVars %}onload="html5_init();"{% endblock %}
+{% block bodyClass %}main_page{% endblock %}
 
 {% block content %}
 
@@ -61,7 +62,7 @@
 
 
     <div id="top_selector_block" class="">
-        <div class="standard_wide top_selector_all">
+        <div class="standard_wide top_selector_all" >
 
             {% if custom_seo and custom_seo.h1 != ''%}
                 <h1 class="uk-text-center main_h1">{% include(template_from_string(custom_seo.h1)) %}</h1>
@@ -73,24 +74,24 @@
             <button class="uk-button uk-width-1-1" id="button_main_search">Поиск</button>
             {% endif %}
 
-            <div class="main_search" {% if is_mobile() %}hidden{% endif %}>
+            <div id="the_main_selector" class="main_search" {% if is_mobile() %}hidden{% endif %} >
 
 
                 <div class="uk-margin-auto uk-width-3-4@s uk-margin-bottom">
-                    <form uk-grid id="main_search_form" class="uk-flex uk-flex-center uk-grid-small">
-                        <div class="uk-width-1-3 uk-width-auto@s uk-position-relative">
-                            <div class="uk-hidden@s uk-text-small c_white">Город</div>
-                            <div class="top_selector_box">{{ include('selector/adress_block.html.twig') }}</div>
-                        </div>
+                    <form uk-grid id="main_search_form" class="uk-flex uk-flex-center uk-grid-small" >
+                        {#<div class="uk-width-1-1 uk-width-auto@s uk-position-relative">#}
+                            {#<div class="uk-hidden@s uk-text-small c_white">Город</div>#}
+                            {#<div class="top_selector_box">{{ include('selector/adress_block.html.twig') }}</div>#}
+                        {#</div>#}
 
                         <input type="hidden" name="gtURL" id="gtURL" value="cars">
 
-                        <div class="uk-width-1-3 uk-width-auto@s uk-position-relative" >
+                        <div class="uk-width-1-1 uk-width-auto@s uk-position-relative" >
                             <div class="uk-hidden@s uk-text-small c_white">Марка</div>
                             <div class="top_selector_box" id="mark_placement">{{ include('selector/mark_block.html.twig', {'mark_arr':mark_arr_sorted, 'type':'1'}) }}</div>
                         </div>
 
-                        <div class="uk-width-1-3 uk-width-auto@s uk-position-relative" >
+                        <div class="uk-width-1-1 uk-width-auto@s uk-position-relative" >
                             <div class="uk-hidden@s uk-text-small c_white">Модель</div>
                             <div class="top_selector_box" id="model_placement">{{ include('selector/model_block.html.twig', {'model_arr':models_in_mark, 'mark_id':mark.id}) }}</div>
                         </div>
@@ -124,9 +125,10 @@
                 </div>
             </div>
         </div>
+        {#g#}
     </div>
 
-    <div class="top_counter bg_white c_green {% if is_mobile() %}{% else %}uk-margin-large-bottom{% endif %}">
+    <div class="top_counter bg_white c_grey {% if is_mobile() %}{% else %}uk-margin-large-bottom{% endif %}">
         <div class="standard_wide">
             <div uk-grid class="{% if is_mobile() %}{% else %}uk-grid-divider{% endif %}">
                 <div class="uk-width-1-3">

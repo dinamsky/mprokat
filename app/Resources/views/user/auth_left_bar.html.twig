@@ -1,0 +1,42 @@
+<div>
+    {% if app.session.has('logged_user') %}
+        <div uk-grid class="uk-grid-small">
+            <div class="uk-width-auto">
+                <a href="/user" style="background:url(/assets/images/users/t/{{ app.session.get('user_pic') }}.jpg) center center no-repeat;
+                                        background-size: cover;
+                        width: 50px;
+                        height: 50px;
+                        display: block;
+                        ">
+                </a>
+            </div>
+            <div class="uk-width-expand">
+                <div class="uk-text-truncate">{{ app.session.get('logged_user').header }}</div>
+                <div class="uk-text-right"><a href="/userLogout" class=""><span><i uk-icon="icon:sign-out"></i> Выход</span></a></div>
+                <div>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="uk-clearfix uk-margin-top">
+            <div class="uk-float-left"><i uk-icon="icon:user"></i> <a href="/profile">Профиль</a></div>
+            <div class="uk-float-right"><i uk-icon="icon:album"></i> <a href="/user/cards">Объявления</a></div>
+        </div>
+
+
+
+    {% elseif app.session.get('admin').email is defined %}
+        <div class="uk-clearfix">
+            <div class="uk-float-left"><a href="/admin"><span uk-icon="icon:user"></span> {{ app.session.get('admin').email }}</a></div>
+            <div class="uk-float-right"><a href="/adminLogout" class=""><span><i uk-icon="icon:sign-out"></i> Выход</span></a></div>
+        </div>
+    {% else %}
+        <div class="uk-clearfix">
+            <div class="uk-float-left"><div uk-toggle="target: #sign_in" class=""><span uk-icon="icon:sign-in"></span> Войти</div></div>
+            <div class="uk-float-right"><div uk-toggle="target: #sign_up" class=""><span uk-icon="icon:lock"></span>Регистрация</div></div>
+        </div>
+
+
+    {% endif %}
+</div>

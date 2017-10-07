@@ -25,7 +25,7 @@ class ProfileController extends Controller
     /**
      * @Route("/user/{id}", name="user_page", requirements={"id": "\d+"})
      */
-    public function userPageAction($id)
+    public function userPageAction($id, MenuMarkModel $mm, EntityManagerInterface $em)
     {
 
         $user = $this->getDoctrine()
@@ -36,9 +36,58 @@ class ProfileController extends Controller
             foreach ($user->getInformation() as $info) {
                 if ($info->getUiKey() == 'foto' and $info->getUiValue() != '') $user_foto = '/assets/images/users/t/' . $info->getUiValue() . '.jpg';
             }
+
+            if(!$this->get('session')->has('city')){
+                if($this->get('session')->has('geo')){
+                    $geo = $this->get('session')->get('geo');
+                    $city = $em->getRepository("AppBundle:City")->createQueryBuilder('c')
+                        ->where('c.header LIKE :geoname')
+                        ->andWhere('c.parentId IS NOT NULL')
+                        ->setParameter('geoname', '%'.$geo['city'].'%')
+                        ->getQuery()
+                        ->getResult();
+                    if ($city) {
+                        $city = $city[0];
+                    }
+                    else {
+                        $city = $this->getDoctrine()
+                            ->getRepository(City::class)
+                            ->find(77);
+                    }
+                } else {
+                    $city = new City();
+                    $city->setCountry('RUS');
+                    $city->setParentId(0);
+                    $city->setTempId(0);
+                }
+                $this->get('session')->set('city', $city);
+            } else {
+                $city = $this->get('session')->get('city');
+            }
+            $in_city = $city->getUrl();
+
+            $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.total DESC, c.header ASC');
+            $popular_city = $query->getResult();
+
+            $mark_arr = $mm->getExistMarks('',1);
+            $mark_arr_sorted = $mark_arr['sorted_marks'];
+            $models_in_mark = $mark_arr['models_in_mark'];
+
+            $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.total DESC');
+            $generalTypes = $query->getResult();
+
             return $this->render('user/user_page.html.twig', [
                 'user' => $user,
-                'user_foto' => $user_foto
+                'user_foto' => $user_foto,
+                'city' => $city,
+                'popular_city' => $popular_city,
+                'mark_arr_sorted' => $mark_arr_sorted,
+                'models_in_mark' => $models_in_mark,
+                'in_city' => $in_city,
+                'cityId' => $city->getId(),
+                'mark' => $mark_arr_sorted[1][0]['mark'],
+                'model' => $mark_arr_sorted[1][0]['models'][0],
+                'generalTypes' => $generalTypes,
             ]);
         } else return new Response("",404);
     }

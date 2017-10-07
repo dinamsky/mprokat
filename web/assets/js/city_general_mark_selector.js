@@ -92,6 +92,10 @@ $( document ).ready(function() {
         document.location.href = getSelectorUrl() + getQueryVars();
     });
 
+    $('#main_search_button_left').on('click', function () {
+        document.location.href = getSelectorUrl() + getQueryVars();
+    });
+
 
     // $(document).click( function(event){
     //     if( $(event.target).closest('.hide_on_click_out').length || $(event.target).closest('.selector_opener').length)
@@ -101,30 +105,48 @@ $( document ).ready(function() {
     // });
 
 
+    // $('body').on('click', '.city_block', function () {
+    //     $('#cityURL').val($(this).data('url'));
+    //     $('#cityId').val($(this).data('id'));
+    //     var gtURL = $('#gtURL').val();
+    //     UIkit.modal('#city_popular').hide();
+    //     var cityId = $('#cityId').val();
+    //     $('.city_selector').html($(this).data('header'));
+    //     $.ajax({
+    //         url: '/ajax/getExistMarks',
+    //         type: 'POST',
+    //         data: {cityId:cityId,gtURL:gtURL},
+    //         success: function(html){
+    //             $('#mark_placement').html(html);
+    //             $.ajax({
+    //                 url: '/ajax/getExistModels',
+    //                 type: 'POST',
+    //                 data: {markId:$('#markURL').data('id'), cityId:cityId},
+    //                 success: function(html){
+    //                     $('#model_placement').html(html);
+    //                 }
+    //             });
+    //         }
+    //     });
+    // });
+
     $('body').on('click', '.city_block', function () {
+        var cityId = $(this).data('id');
+        $('#cityId').val(cityId);
         $('#cityURL').val($(this).data('url'));
-        $('#cityId').val($(this).data('id'));
-        var gtURL = $('#gtURL').val();
-        UIkit.modal('#city_popular').hide();
-        var cityId = $('#cityId').val();
         $('.city_selector').html($(this).data('header'));
         $.ajax({
-            url: '/ajax/getExistMarks',
+            url: '/ajax/setCity',
             type: 'POST',
-            data: {cityId:cityId,gtURL:gtURL},
-            success: function(html){
-                $('#mark_placement').html(html);
-                $.ajax({
-                    url: '/ajax/getExistModels',
-                    type: 'POST',
-                    data: {markId:$('#markURL').data('id'), cityId:cityId},
-                    success: function(html){
-                        $('#model_placement').html(html);
-                    }
-                });
+            data: {cityId:cityId},
+            success: function(){
+                UIkit.modal('#city_popular').hide();
+                if(!$('body').hasClass('main_page')) document.location.href = getSelectorUrl() + getQueryVars();
+                else document.location.href = '/';
             }
         });
     });
+
 
     $('body').on('click','.mark_block', function () {
         $('#markURL').val($(this).data('url')).attr('data-id',$(this).data('id'));
@@ -185,10 +207,11 @@ function getSelectorUrl(){
     //var model = $('#markModelId').find('option:selected').data('url');
     var model = $('#modelURL').val();
 
-    var service = $('#service').find('option:selected').val();
+    //var service = $('#service').find('option:selected').val();
 
-    if (service) service = '/'+service;
-    else service = '/all';
+    //if (service) service = '/'+service;
+    //else service = '/all';
+    var service = '/all';
 
     // if(country) city = '/'+country;
     // if(regionId) city = '/'+regionId;
@@ -220,7 +243,7 @@ function getQueryVars() {
     var view = $('#main_search_button').data('view'); view ? view = 'view='+view : view = '';
     var page = $('#main_search_button').data('page'); page ? page = '&page='+page : page = '';
     var onpage = $('#main_search_button').data('onpage'); onpage ? onpage = '&onpage='+onpage : onpage = '';
-    var order = $('#order').find('option:selected').val(); order ? order = '&order='+ order : order = '';
+    var order = $('#order').val(); order ? order = '&order='+ order : order = '';
     if (view+page+onpage+order) return '?'+view+page+onpage+order;
     else return '';
 }
