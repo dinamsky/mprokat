@@ -21,13 +21,31 @@ class CardRepository extends \Doctrine\ORM\EntityRepository
         return $query->getResult();
     }
 
+    public function getLimitedSliders($gts)
+    {
+        $cars_ids = [];
+        $result = [];
+        $em = $this->getEntityManager();
+        foreach ($gts as $gt) {
+            $query = $em->createQuery('SELECT c.id FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId = ' . $gt . ' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
+            $query->setMaxResults(7);
+            foreach ($query->getScalarResult() as $cars_id) $cars_ids[] = $cars_id['id'];
+        }
+        $dql = 'SELECT c,f,p,g,m FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.fotos f LEFT JOIN c.cardPrices p LEFT JOIN c.city g LEFT JOIN c.markModel m WHERE c.id IN ('.implode(",",$cars_ids).') ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
+        $query = $em->createQuery($dql);
+        foreach($query->getResult() as $row){
+            $result[$row->getGeneralTypeId()][] = $row;
+        }
+        return $result;
+    }
+
     public function getTopSlider()
     {
         $em = $this->getEntityManager();
         $query = $em->createQuery('SELECT c.id FROM AppBundle:Card c JOIN c.tariff t ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
         $query->setMaxResults(20);
         foreach ($query->getScalarResult() as $cars_id) $cars_ids[] = $cars_id['id'];
-        $dql = 'SELECT c,f,p FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.fotos f LEFT JOIN c.cardPrices p WHERE c.id IN ('.implode(",",$cars_ids).') ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
+        $dql = 'SELECT c,f,p,g,m FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.fotos f LEFT JOIN c.cardPrices p LEFT JOIN c.city g LEFT JOIN c.markModel m WHERE c.id IN ('.implode(",",$cars_ids).') ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
         $query = $em->createQuery($dql);
         return $query->getResult();
     }

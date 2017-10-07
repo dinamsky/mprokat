@@ -785,3 +785,14 @@ footer a:hover{
 #card_content{
     word-wrap: break-word;
 }
+
+.zero_text{
+    border: 4px solid #25b45b;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.zero_button{
+    background: #ad3030;
+    width: 100%;
+}

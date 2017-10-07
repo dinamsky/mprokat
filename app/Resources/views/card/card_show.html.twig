@@ -368,6 +368,20 @@
                 <div class="uk-visible@s">
                     <h3 class="pf_style_header"><span>Поиск</span></h3>
                     {{ include('search/search_form.html.twig') }}
+
+                    <h3 class="pf_style_header"><span>Лучшие предложения</span></h3>
+                    {% for card in t3_new.getTop3 %}
+                        {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}
+                        <hr>
+                    {% endfor %}
+
+                    <div class="uk-text-center">
+                        {% if app.session.has('logged_user') %}
+                            <a href="/card/new" class="" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip>Разместить объявление в ТОП</a>
+                        {% else %}
+                            <a class="" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip uk-toggle="target: #sign_in_or_up">Разместить объявление в ТОП</a>
+                        {% endif %}
+                    </div>
                 </div>
 
             </div>

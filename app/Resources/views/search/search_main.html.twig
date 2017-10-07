@@ -100,12 +100,19 @@
                 {#{% endif %}#}
 
                 {% if total_cards == 0 %}
+
+                    <div class="zero_text">
+                        Пока никто не разместил объявление в этом городе и категории.<br>
+                        Будь первым - добавь объявления и получай клиентов!
+                    </div>
+
+
                     {% if app.session.has('logged_user') %}
-                        <a href="/card/new" class="uk-button uk-button-success ">Будь первым - добавь объявление!</a>
+                        <a href="/card/new" class="uk-button uk-button-success zero_button">Разместить объявление!</a>
                     {% elseif app.session.has('admin') %}
-                        <a href="/card/new" class="uk-button uk-button-success ">Будь первым - добавь объявление!</a>
+                        <a href="/card/new" class="uk-button uk-button-success zero_button">Разместить объявление!</a>
                     {% else %}
-                        <a uk-toggle="target: #sign_in" class="uk-button uk-button-success ">Будь первым - добавь объявление!</a>
+                        <a uk-toggle="target: #sign_in" class="uk-button uk-button-success zero_button">Разместить объявление!</a>
                     {% endif %}
                 {% endif %}
 

@@ -25,38 +25,52 @@ class MainPageController extends Controller
             ->getRepository(Card::class)
             ->getTopSlider();
 
-        $cars = $this->getDoctrine()
-            ->getRepository(Card::class)
-            ->getLimitedSlider(2);
+//        $cars = $this->getDoctrine()
+//            ->getRepository(Card::class)
+//            ->getLimitedSlider(2);
+//
+//        $trucks = $this->getDoctrine()
+//            ->getRepository(Card::class)
+//            ->getLimitedSlider(3);
+//
+//        $moto = $this->getDoctrine()
+//            ->getRepository(Card::class)
+//            ->getLimitedSlider(8);
+//
+//        $bicycles = $this->getDoctrine()
+//            ->getRepository(Card::class)
+//            ->getLimitedSlider(15);
+//
+//        $yachts = $this->getDoctrine()
+//            ->getRepository(Card::class)
+//            ->getLimitedSlider(13);
+//
+//        $snow = $this->getDoctrine()
+//            ->getRepository(Card::class)
+//            ->getLimitedSlider(10);
+//
+//        $heli = $this->getDoctrine()
+//            ->getRepository(Card::class)
+//            ->getLimitedSlider(17);
+//
+//        $quad = $this->getDoctrine()
+//            ->getRepository(Card::class)
+//            ->getLimitedSlider(9);
 
-        $trucks = $this->getDoctrine()
+        $all = $this->getDoctrine()
             ->getRepository(Card::class)
-            ->getLimitedSlider(3);
+            ->getLimitedSliders([2,3,8,15,13,10,17,9]);
 
-        $moto = $this->getDoctrine()
-            ->getRepository(Card::class)
-            ->getLimitedSlider(8);
 
-        $bicycles = $this->getDoctrine()
-            ->getRepository(Card::class)
-            ->getLimitedSlider(15);
 
-        $yachts = $this->getDoctrine()
-            ->getRepository(Card::class)
-            ->getLimitedSlider(13);
-
-        $snow = $this->getDoctrine()
-            ->getRepository(Card::class)
-            ->getLimitedSlider(10);
-
-        $heli = $this->getDoctrine()
-            ->getRepository(Card::class)
-            ->getLimitedSlider(17);
-
-        $quad = $this->getDoctrine()
-            ->getRepository(Card::class)
-            ->getLimitedSlider(9);
-
+        $cars = $all[2];
+        $trucks = $all[3];
+        $moto = $all[8];
+        $bicycles = $all[15];
+        $yachts = $all[13];
+        $snow = $all[10];
+        $heli = $all[17];
+        $quad = $all[9];
 
 //        $cars = $this->getDoctrine()
 //            ->getRepository(Card::class)
@@ -151,10 +165,10 @@ class MainPageController extends Controller
         $mark_arr = $mm->getExistMarks('',1);
 
         $mark_arr_sorted = $mark_arr['sorted_marks'];
-        $mark_arr_typed = $mark_arr['typed_marks'];
+        //$mark_arr_typed = $mark_arr['typed_marks'];
         $models_in_mark = $mark_arr['models_in_mark'];
 
-        dump($this->get('session'));
+
 
         return $this->render('main_page/main.html.twig', [
 //            'generalTopLevel' => $mgt->getTopLevel(),
