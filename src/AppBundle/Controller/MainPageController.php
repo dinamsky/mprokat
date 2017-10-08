@@ -123,13 +123,23 @@ class MainPageController extends Controller
             } else {
                 $city = new City();
                 $city->setCountry('RUS');
+                $city->setHeader('Россия');
                 $city->setParentId(0);
                 $city->setTempId(0);
+                $city->setUrl('rus');
             }
             $this->get('session')->set('city', $city);
         } else {
             $city = $this->get('session')->get('city');
-            if(is_array($city)) $city = $city[0];
+            if(is_array($city) and isset($city[0])) $city = $city[0];
+            if(is_array($city) and empty($city)){
+                $city = new City();
+                $city->setCountry('RUS');
+                $city->setHeader('Россия');
+                $city->setParentId(0);
+                $city->setTempId(0);
+                $city->setUrl('rus');
+            }
         }
 
         $in_city = $city->getUrl();

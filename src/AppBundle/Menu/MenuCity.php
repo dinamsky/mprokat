@@ -77,8 +77,16 @@ class MenuCity extends Controller
      */
     public function setCityAction(Request $request)
     {
-        $this->get('session')->set('city', $this->getCity($request->request->get('cityId')));
-        //dump($this->get('session'));
+        if($request->request->get('cityId') == 0 ){
+            $city = new City();
+            $city->setCountry('RUS');
+            $city->setHeader('Россия');
+            $city->setParentId(0);
+            $city->setTempId(0);
+            $city->setUrl('rus');
+            $this->get('session')->set('city', $city);
+        } else $this->get('session')->set('city', $this->getCity($request->request->get('cityId')));
+
         return new Response();
     }
 
