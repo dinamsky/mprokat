@@ -273,7 +273,7 @@ class SearchController extends Controller
         }
 
 
-        $dql = 'SELECT c,p,f FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.cardPrices p WITH p.priceId = 2 LEFT JOIN c.fotos f WHERE c.id IN ('.$ids.')'.$order;
+        $dql = 'SELECT c,p,f FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.cardPrices p WITH p.priceId < 3 LEFT JOIN c.fotos f WHERE c.id IN ('.$ids.')'.$order;
         $query = $em->createQuery($dql);
         $cards = $query->getResult();
 

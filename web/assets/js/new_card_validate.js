@@ -11,9 +11,18 @@ function new_card_validate(){
     var city = $('form select[name="cityId"]').find('option:selected').val();
     var noMark = $('input[name="noMark"]').prop('checked');
     var ownMark = $('input[name="ownMark"]').val();
+
+
+    var priceHour = $('input[name="price[1]"]').val();
+    var priceDay = $('input[name="price[2]"]').val();
+
+
+
     var subfields = [];
 
     var message = [];
+
+    if(!priceHour && !priceDay) message.push('\nОдна из цен - обязательна!');
 
     if($('#foto_upload').val() === ''){
         message.push('\nФотографии');
