@@ -343,6 +343,7 @@ class ProfileController extends Controller
                         'email' => $post->get('email'),
                         'name' => $post->get('name'),
                         'phone' => $post->get('phone'),
+                        'card' => $card,
                     )
                 ),
                 'text/html'
