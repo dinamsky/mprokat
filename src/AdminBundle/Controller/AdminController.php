@@ -105,7 +105,7 @@ class AdminController extends Controller
             $em->flush();
 
             $message = (new \Swift_Message('Администратор зарегистрировал аккаунт для вас на сайте multiprokat.com'))
-                ->setFrom('robot@multiprokat.com')
+                ->setFrom('mail@multiprokat.com')
                 ->setTo($user->getEmail())
                 ->setCc('test.multiprokat@gmail.com')
                 ->setBody(
@@ -239,7 +239,7 @@ class AdminController extends Controller
                     ->findOneBy(['adminId' => 1]);
 
                 $message = (new \Swift_Message('Тестовое письмо с multiprokat.com'))
-                    ->setFrom('robot@multiprokat.com')
+                    ->setFrom('mail@multiprokat.com')
                     ->setTo($request->request->get('check_email'))
                     ->setBody(
                         $this->renderView(

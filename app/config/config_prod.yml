@@ -23,6 +23,10 @@ monolog:
 
 swiftmailer:
     transport: smtp
+    host: smtp.yandex.ru
     username:  mail@multiprokat.com
-    port: 587
-    password:  akSOxizpkyJU8xYh
+    port: 465
+    password:  ogdaeebwwdmonyno
+    encryption: ssl
+    auth_mode: login
+    logging: true

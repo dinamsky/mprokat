@@ -331,7 +331,7 @@ class ProfileController extends Controller
         $user = $card->getUser();
 
         $message = (new \Swift_Message('Сообщение от пользователя'))
-            ->setFrom(['robot@multiprokat.com' => 'Робот Мультипрокат'])
+            ->setFrom(['mail@multiprokat.com' => 'Робот Мультипрокат'])
             ->setTo($user->getEmail())
             ->setCc('test.multiprokat@gmail.com')
             ->setBody(
@@ -374,7 +374,7 @@ class ProfileController extends Controller
 //        $user = $card->getUser();
 
         $message = (new \Swift_Message('Сообщение от пользователя'))
-            ->setFrom(['robot@multiprokat.com' => 'Робот Мультипрокат'])
+            ->setFrom(['mail@multiprokat.com' => 'Робот Мультипрокат'])
             ->setTo('mail@multiprokat.com')
             ->setCc('test.multiprokat@gmail.com')
             ->setBody(

@@ -232,7 +232,7 @@ class NewCardController extends Controller
 
             if($post->has('noMark')){
                 $message = (new \Swift_Message('Пользователь не нашел свою марку'))
-                    ->setFrom('robot@multiprokat.com')
+                    ->setFrom('mail@multiprokat.com')
                     ->setTo('test.multiprokat@gmail.com')
                     ->setBody(
                         $this->renderView(
