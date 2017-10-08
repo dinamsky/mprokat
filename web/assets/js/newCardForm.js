@@ -67,7 +67,7 @@ $( document ).ready(function() {
             type: 'POST',
             data: {regionId:regionId},
             success: function(html){
-                $('#cityId').html(html);
+                $('form select#cityId').html(html);
             }
         });
     });

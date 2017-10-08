@@ -40,7 +40,7 @@ class EditCardController extends Controller
     /**
      * @Route("/user/edit/card/{cardId}")
      */
-    public function editCardAction($cardId, MenuGeneralType $mgt, MenuMarkModel $markmenu, MenuCity $mc, SubFieldUtils $sf)
+    public function editCardAction($cardId, MenuGeneralType $mgt, MenuMarkModel $markmenu, MenuCity $mc, SubFieldUtils $sf, EntityManagerInterface $em)
     {
         $card = $this->getDoctrine()
             ->getRepository(Card::class)
@@ -121,6 +121,9 @@ class EditCardController extends Controller
         $pgtid = $card->getGeneralType()->getParentId();
         if($pgtid == null) $pgtid = $card->getGeneralTypeId();
 
+        $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.total DESC, c.header ASC');
+        $popular_city = $query->getResult();
+
         return $this->render('card/card_edit.html.twig',[
             'card' => $card,
             'conditions' => $conditions,
@@ -142,10 +145,12 @@ class EditCardController extends Controller
             'regions' => $mc->getRegion($city->getCountry()),
             'cities' => $city->getParent()->getChildren(),
             'city' => $city,
+            'cityId' => $city->getId(),
             'subfields' => $subfields,
             'features' => $features,
             'prices' => $prices,
-            'tariffs' => $tariffs
+            'tariffs' => $tariffs,
+            'popular_city' => $popular_city,
         ]);
     }
 
