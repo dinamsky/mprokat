@@ -112,6 +112,9 @@ class NewCardController extends Controller
                                                             ->find($this->get('session')->get('admin')->getId());
             else $admin = false;
 
+            $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.total DESC, c.header ASC');
+            $popular_city = $query->getResult();
+
             $response = $this->render('card/card_new.html.twig', [
                 'generalTopLevel' => $mgt->getTopLevel(),
                 'generalSecondLevel' => $mgt->getSecondLevel(1),
@@ -133,7 +136,9 @@ class NewCardController extends Controller
                 'cityId' => $city->getId(),
                 'city' => $city,
 
-                'admin' => $admin
+                'admin' => $admin,
+
+                'popular_city' => $popular_city,
 
             ]);
         }

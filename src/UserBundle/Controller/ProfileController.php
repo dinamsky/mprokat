@@ -99,42 +99,179 @@ class ProfileController extends Controller
     /**
      * @Route("/user", name="user_main")
      */
-    public function indexAction(Password $password)
+    public function indexAction(Password $password, EntityManagerInterface $em)
     {
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->find($this->get('session')->get('logged_user')->getId());
 
-        if(!$user->getIsBanned()) return $this->render('user/profile_main.html.twig',['user' => $user]);
+        if(!$this->get('session')->has('city')){
+            if($this->get('session')->has('geo')){
+                $geo = $this->get('session')->get('geo');
+                $city = $em->getRepository("AppBundle:City")->createQueryBuilder('c')
+                    ->where('c.header LIKE :geoname')
+                    ->andWhere('c.parentId IS NOT NULL')
+                    ->setParameter('geoname', '%'.$geo['city'].'%')
+                    ->getQuery()
+                    ->getResult();
+                if ($city) {
+                    $city = $city[0];
+                }
+                else {
+                    $city = $this->getDoctrine()
+                        ->getRepository(City::class)
+                        ->find(77);
+                }
+            } else {
+                $city = new City();
+                $city->setCountry('RUS');
+                $city->setParentId(0);
+                $city->setTempId(0);
+            }
+            $this->get('session')->set('city', $city);
+        } else {
+            $city = $this->get('session')->get('city');
+        }
+
+        if (is_array($city)){
+            $city = $city[0];
+        }
+        $in_city = $city->getUrl();
+
+        $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.total DESC, c.header ASC');
+        $popular_city = $query->getResult();
+
+        if(!$user->getIsBanned()) return $this->render('user/profile_main.html.twig',[
+            'user' => $user,
+            'city' => $city,
+            'popular_city' => $popular_city,
+            'in_city' => $in_city,
+            'cityId' => $city->getId(),
+        ]);
         else return new Response("",404);
     }
 
     /**
      * @Route("/user/cards", name="user_cards")
      */
-    public function userCardsAction(em $em)
+    public function userCardsAction(EntityManagerInterface $em)
     {
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->find($this->get('session')->get('logged_user')->getId());
+
         if(!$user->getIsBanned()) {
             $query = $em->createQuery('SELECT c FROM AppBundle:Card c WHERE c.userId = ?1');
             $query->setParameter(1, $this->get('session')->get('logged_user')->getId());
             $cards = $query->getResult();
-            return $this->render('user/user_cards.html.twig', ['cards' => $cards]);
+
+
+            if(!$this->get('session')->has('city')){
+                if($this->get('session')->has('geo')){
+                    $geo = $this->get('session')->get('geo');
+                    $city = $em->getRepository("AppBundle:City")->createQueryBuilder('c')
+                        ->where('c.header LIKE :geoname')
+                        ->andWhere('c.parentId IS NOT NULL')
+                        ->setParameter('geoname', '%'.$geo['city'].'%')
+                        ->getQuery()
+                        ->getResult();
+                    if ($city) {
+                        $city = $city[0];
+                    }
+                    else {
+                        $city = $this->getDoctrine()
+                            ->getRepository(City::class)
+                            ->find(77);
+                    }
+                } else {
+                    $city = new City();
+                    $city->setCountry('RUS');
+                    $city->setParentId(0);
+                    $city->setTempId(0);
+                }
+                $this->get('session')->set('city', $city);
+            } else {
+                $city = $this->get('session')->get('city');
+            }
+
+            if (is_array($city)){
+                $city = $city[0];
+            }
+            $in_city = $city->getUrl();
+
+            $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.total DESC, c.header ASC');
+            $popular_city = $query->getResult();
+
+            return $this->render('user/user_cards.html.twig', [
+                'cards' => $cards,
+                'city' => $city,
+                'popular_city' => $popular_city,
+                'in_city' => $in_city,
+                'cityId' => $city->getId(),
+            ]);
         } else return new Response("",404);
     }
 
     /**
      * @Route("/profile", name="user_profile")
      */
-    public function editProfileAction()
+    public function editProfileAction(EntityManagerInterface $em)
     {
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->find($this->get('session')->get('logged_user')->getId());
 
-        if(!$user->getIsBanned()) return $this->render('user/user_profile.html.twig',['user' => $user]);
+
+
+
+        if(!$user->getIsBanned()) {
+
+
+            if(!$this->get('session')->has('city')){
+                if($this->get('session')->has('geo')){
+                    $geo = $this->get('session')->get('geo');
+                    $city = $em->getRepository("AppBundle:City")->createQueryBuilder('c')
+                        ->where('c.header LIKE :geoname')
+                        ->andWhere('c.parentId IS NOT NULL')
+                        ->setParameter('geoname', '%'.$geo['city'].'%')
+                        ->getQuery()
+                        ->getResult();
+                    if ($city) {
+                        $city = $city[0];
+                    }
+                    else {
+                        $city = $this->getDoctrine()
+                            ->getRepository(City::class)
+                            ->find(77);
+                    }
+                } else {
+                    $city = new City();
+                    $city->setCountry('RUS');
+                    $city->setParentId(0);
+                    $city->setTempId(0);
+                }
+                $this->get('session')->set('city', $city);
+            } else {
+                $city = $this->get('session')->get('city');
+            }
+
+            if (is_array($city)){
+                $city = $city[0];
+            }
+            $in_city = $city->getUrl();
+
+            $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.total DESC, c.header ASC');
+            $popular_city = $query->getResult();
+
+
+            return $this->render('user/user_profile.html.twig', [
+                'user' => $user,
+                'city' => $city,
+                'popular_city' => $popular_city,
+                'in_city' => $in_city,
+                'cityId' => $city->getId(),
+            ]);
+        }
         else return new Response("",404);
     }
 

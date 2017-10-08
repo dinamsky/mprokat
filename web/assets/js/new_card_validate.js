@@ -8,7 +8,7 @@ function new_card_validate(){
     var general_type = $('#generalTypeId').find('option:selected').val();
     var header = $('#new_card_form').find('input[name="header"]').val();
     var model = $('#markModelId').find('option:selected').val()-0;
-    var city = $('#cityId').find('option:selected').val();
+    var city = $('form select[name="cityId"]').find('option:selected').val();
     var noMark = $('input[name="noMark"]').prop('checked');
     var ownMark = $('input[name="ownMark"]').val();
     var subfields = [];
