@@ -38,6 +38,11 @@ monolog:
         #    level: info
 
 swiftmailer:
-    transport: gmail
-    username:  test.multiprokat
-    password:  147896325qqq
+    transport: smtp
+    host: smtp.yandex.ru
+    username:  mail@multiprokat.com
+    port: 465
+    password:  ogdaeebwwdmonyno
+    encryption: ssl
+    auth_mode: login
+    logging: true
