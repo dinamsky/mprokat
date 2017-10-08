@@ -22,6 +22,7 @@ monolog:
             process_psr_3_messages: false
 
 swiftmailer:
-    transport: gmail
-    username:  test.multiprokat
-    password:  147896325qqq
+    transport: smtp
+    username:  mail@multiprokat.com
+    port: 587
+    password:  akSOxizpkyJU8xYh
