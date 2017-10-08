@@ -165,7 +165,7 @@ class UserController extends Controller
         $em->flush();
 
         $message = (new \Swift_Message('Регистрация на сайте multiprokat.com'))
-            ->setFrom('robot@multiprokat.com')
+            ->setFrom('mail@multiprokat.com')
             ->setTo($user->getEmail())
             ->setBody(
                 $this->renderView(
@@ -247,7 +247,7 @@ class UserController extends Controller
             $em->flush();
 
             $message = (new \Swift_Message('Восстановление пароля на сайте multiprokat.com'))
-                ->setFrom('robot@multiprokat.com')
+                ->setFrom('mail@multiprokat.com')
                 ->setTo($user->getEmail())
                 ->setBody(
                     $this->renderView(
