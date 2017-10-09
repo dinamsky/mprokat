@@ -2,10 +2,15 @@
     <hr>
     <div class="standard_wide">
         <div class="social_buttons">
-            <!-- VK like -->
-            <div id="vk_like"></div>
-            <script type="text/javascript">VK.Widgets.Like("vk_like", {type: "button"});</script>
-            <script type="text/javascript">document.write(VK.Share.button(false,{type: "round", text: "Поделиться"}));</script>
+            <div uk-grid>
+                <div><!-- VK like -->
+                    <div id="vk_like"></div>
+                    <script type="text/javascript">VK.Widgets.Like("vk_like", {type: "button"});</script>
+                </div>
+                <div><!-- VK share -->
+                    <script type="text/javascript">document.write(VK.Share.button(false,{type: "round", text: "Поделиться"}));</script>
+                </div>
+            </div>
         </div>
     </div>
     <div class="footer_info bg_dark">
