@@ -796,3 +796,8 @@ footer a:hover{
     background: #ad3030;
     width: 100%;
 }
+
+.social_buttons{
+    margin-bottom: 10px;
+    min-height: 28px;
+}
