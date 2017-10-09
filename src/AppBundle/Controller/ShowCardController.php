@@ -189,4 +189,15 @@ class ShowCardController extends Controller
 
         ]);
     }
+
+    /**
+     * @Route("/card_share/{id}", requirements={"id": "\d+"}, name="shareCard")
+     */
+    public function shareCardAction($id)
+    {
+        $this->get('session')->set('share', true);
+
+        return $this->redirect('/card/'.$id);
+    }
+
 }
