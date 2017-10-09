@@ -18,6 +18,7 @@
     {{ parent() }}
     <meta property="og:image" content="{{ app.request.getSchemeAndHttpHost() ~ mainFoto }}">
     <meta property="og:title" content="{{ include(':seo_templates:p_h1.html.twig') }}">
+    <meta property="og:url" content="{{ app.request.schemeAndHttpHost ~ app.request.requestUri }}">
 {% endblock %}
 
 {% block metaTags %}
