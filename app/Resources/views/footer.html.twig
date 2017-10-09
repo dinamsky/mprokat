@@ -11,7 +11,7 @@
                     <script type="text/javascript">document.write(VK.Share.button(false,{type: "round", text: "Поделиться"}));</script>
                 </div>
                 <div>
-                    <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+                    <div class="fb-like" data-href="{{ app.request.schemeAndHttpHost ~ app.request.requestUri }}" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
                 </div>
                 <div>
                     <script src="https://apis.google.com/js/platform.js" async defer></script>
