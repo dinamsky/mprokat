@@ -796,3 +796,20 @@ footer a:hover{
     background: #ad3030;
     width: 100%;
 }
+
+.social_buttons{
+    margin-bottom: 10px;
+    min-height: 28px;
+}
+
+.vk_share table{
+    height: 27px;
+}
+
+#___plusone_0{
+    vertical-align: middle !important;
+}
+
+#___plus_0{
+    vertical-align: middle !important;
+}

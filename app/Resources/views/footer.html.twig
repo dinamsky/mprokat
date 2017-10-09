@@ -1,4 +1,26 @@
 <footer class="uk-margin-top">
+    <hr>
+    <div class="standard_wide">
+        <div class="social_buttons">
+            <div uk-grid>
+                <div><!-- VK like -->
+                    <div id="vk_like"></div>
+                    <script type="text/javascript">VK.Widgets.Like("vk_like", {type: "button"});</script>
+                </div>
+                <div class="vk_share"><!-- VK share -->
+                    <script type="text/javascript">document.write(VK.Share.button(false,{type: "round", text: "Поделиться"}));</script>
+                </div>
+                <div>
+                    <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+                </div>
+                <div>
+                    <script src="https://apis.google.com/js/platform.js" async defer></script>
+                    <g:plusone></g:plusone>
+                    <div class="g-plus" data-action="share" data-height="24"></div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="footer_info bg_dark">
         <div class="standard_wide c_white">
             <div uk-grid>
