@@ -62,7 +62,13 @@
             </div>
             <div class="uk-width-auto uk-text-small c_grey {{ micro is defined ? 'micro' : '' }}"><i class="fa fa-eye"></i> {{ card.views }}</div>
         </div>
+
     </div>
+
+    {% if share is defined %}
+        <a href="/card_share/{{ card.id }}" class="bottom_share">Поделиться</a>
+    {% endif %}
+
 
     {% if (
        ( app.session.has('admin') and card.adminId == app.session.get('admin').id )

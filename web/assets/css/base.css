@@ -813,3 +813,20 @@ footer a:hover{
 #___plus_0{
     vertical-align: middle !important;
 }
+
+.share_button{
+    background: #c73636;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    cursor: pointer;
+}
+
+.bottom_share{
+    background: red;
+    display: block;
+    color: white;
+    text-align: center;
+    font-size: 12px;
+    padding: 5px;
+}

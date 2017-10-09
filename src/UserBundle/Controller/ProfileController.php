@@ -203,6 +203,7 @@ class ProfileController extends Controller
             $popular_city = $query->getResult();
 
             return $this->render('user/user_cards.html.twig', [
+                'share' => true,
                 'cards' => $cards,
                 'city' => $city,
                 'popular_city' => $popular_city,

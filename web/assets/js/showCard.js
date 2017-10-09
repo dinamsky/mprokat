@@ -86,4 +86,8 @@ $( document ).ready(function() {
         }
     });
 
+    if($('.card_cover').hasClass('share')){
+        UIkit.modal('#share_butons').show();
+    }
+
 });

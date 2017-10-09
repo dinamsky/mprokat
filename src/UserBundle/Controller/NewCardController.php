@@ -326,6 +326,12 @@ class NewCardController extends Controller
 
                 $response = new RedirectResponse($url);
             }
+
+            $this->addFlash(
+                'notice',
+                'Не забудьте поделиться вашим объявлением в социальных сетях!'
+            );
+
         }
 
         return $response;
