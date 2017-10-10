@@ -68,7 +68,7 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/adminNewUser")
+     * @Route("/adminNewUser", name="adminNewUser")
      */
     public function newUserAction(Request $request, Password $password, \Swift_Mailer $mailer)
     {
@@ -83,6 +83,22 @@ class AdminController extends Controller
             $admin = $this->getDoctrine()
                 ->getRepository(Admin::class)
                 ->find($this->get('session')->get('admin')->getId());
+
+
+            $user = $this->getDoctrine()
+                ->getRepository(User::class)
+                ->findBy(array(
+                    'email' => $request->request->get('email')
+                ));
+
+            if ($user) {
+                $this->addFlash(
+                    'notice',
+                    'Пользователь уже зарегистрирован!'
+                );
+                return $this->redirectToRoute('adminNewUser');
+            }
+
 
             $user = new User();
             $user->setEmail($request->request->get('email'));
