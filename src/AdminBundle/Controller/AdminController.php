@@ -91,6 +91,23 @@ class AdminController extends Controller
                     'email' => $request->request->get('email')
                 ));
 
+            $phone = $this->getDoctrine()
+                ->getRepository(UserInfo::class)
+                ->findOneBy(array(
+                    'uiValue' => $request->request->get('phone')
+                ));
+
+            dump($phone);
+
+
+            if ($phone) {
+                $this->addFlash(
+                    'notice',
+                    'Номер телефона уже зарегистрирован! <br><br> <a href="/user/'.$phone->getUserId().'">посмотреть профиль пользователя</a>'
+                );
+                return $this->redirectToRoute('adminNewUser');
+            }
+
             if ($user) {
                 $this->addFlash(
                     'notice',
