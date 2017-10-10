@@ -24,7 +24,7 @@ class StatController extends Controller
 
         if ($this->get('session')->get('admin') === null) return $this->render('AdminBundle::admin_enter_form.html.twig');
         else {
-            return $this->render('AdminBundle::admin_stat_main.html.twig');
+            return $this->render('AdminBundle:stat:admin_stat_main.html.twig');
         }
     }
 
@@ -38,11 +38,18 @@ class StatController extends Controller
         if ($this->get('session')->get('admin') === null) return $this->render('AdminBundle::admin_enter_form.html.twig');
         else {
 
-            $query = $em->createQuery('SELECT s FROM AppBundle:City s LEFT JOIN c.cards c WHERE s.parentId IS NOT NULL ');
-            $bodyTypes = $query->getResult();
+            $query = $em->createQuery('SELECT s,c FROM AppBundle:City s LEFT JOIN s.cards c WHERE s.parentId IS NOT NULL');
+            $cities = $query->getResult();
+            foreach($cities as $c){
+                $res[$c->getId()] = count($c->getCards());
+                $cit[$c->getId()] = $c;
+            }
+            arsort($res);
 
-
-            return $this->render('AdminBundle::admin_stat_main.html.twig');
+            return $this->render('AdminBundle:stat:admin_stat_city.html.twig',[
+                'cities' => $cit,
+                'sort' => $res,
+            ]);
         }
     }
 }

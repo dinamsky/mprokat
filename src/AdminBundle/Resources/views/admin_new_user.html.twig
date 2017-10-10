@@ -3,17 +3,19 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('assets/js/signup_validate.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.maskedinput.js') }}"></script>
+    <script src="{{ asset('assets/js/phone_validate.js') }}"></script>
 {% endblock %}
 
 {% block content %}
 
-        <h1>Создать новый аккаунт</h1>
-        <form id="signUpForm" action="/adminNewUser" method="POST" onsubmit="return signup_validate();">
-            <input type="text" name="header" class="uk-input uk-width-1-2" placeholder="логин" required><br>
-            <input type="text" name="email" class="uk-input uk-width-1-2" placeholder="email" required><br>
-            <input type="text" name="password" class="uk-input uk-width-1-2" placeholder="пароль" required><br>
-            <input type="text" name="phone" class="uk-input uk-width-1-2" placeholder="телефон" required><br>
-            <button class="uk-button uk-button-primary">Создать</button>
-        </form>
+    <h1>Создать новый аккаунт</h1>
+    <form id="signUpForm" action="/adminNewUser" method="POST" onsubmit="return signup_validate();">
+        <input type="text" name="header" class="uk-input uk-width-1-2" placeholder="логин" required><br>
+        <input type="text" name="email" class="uk-input uk-width-1-2" placeholder="email" required><br>
+        <input type="text" name="password" class="uk-input uk-width-1-2" placeholder="пароль" required><br>
+        <input type="text" name="phone" class="uk-input uk-width-1-2 phone_validate" placeholder="телефон" required><br>
+        <button class="uk-button uk-button-primary">Создать</button>
+    </form>
 
 {% endblock %}
