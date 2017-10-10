@@ -66,7 +66,7 @@ class Card
     private $address = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="City")
+     * @ORM\ManyToOne(targetEntity="City", inversedBy="cards")
      * @ORM\JoinColumn(name="city_id", referencedColumnName="id")
      */
     private $city;

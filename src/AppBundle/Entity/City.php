@@ -91,10 +91,14 @@ class City
      */
     private $parent;
 
-
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Card", mappedBy="city", cascade={"remove"}, orphanRemoval=true)
+     */
+    private $cards;
 
     public function __construct() {
         $this->children = new ArrayCollection();
+        $this->cards = new ArrayCollection();
     }
 
     /**
@@ -360,5 +364,39 @@ class City
     public function getCoords()
     {
         return $this->coords;
+    }
+
+    /**
+     * Add card
+     *
+     * @param \AppBundle\Entity\Card $card
+     *
+     * @return City
+     */
+    public function addCard(\AppBundle\Entity\Card $card)
+    {
+        $this->cards[] = $card;
+
+        return $this;
+    }
+
+    /**
+     * Remove card
+     *
+     * @param \AppBundle\Entity\Card $card
+     */
+    public function removeCard(\AppBundle\Entity\Card $card)
+    {
+        $this->cards->removeElement($card);
+    }
+
+    /**
+     * Get cards
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCards()
+    {
+        return $this->cards;
     }
 }
