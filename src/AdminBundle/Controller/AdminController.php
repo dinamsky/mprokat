@@ -97,7 +97,7 @@ class AdminController extends Controller
                     'uiValue' => $request->request->get('phone')
                 ));
 
-            dump($phone);
+
 
 
             if ($phone) {
