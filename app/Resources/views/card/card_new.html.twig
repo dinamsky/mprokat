@@ -253,10 +253,10 @@
                     <div class="uk-width-1-3@s">
                         <div class="uk-text-small"><span class="red_star">*</span>Год выпуска</div>
                         <select name="prodYear" class="uk-select">
+                            <option value="0" selected>- выберите -</option>
                             {% for year in 1950..'now'|date('Y') %}
                                 <option value="{{ year }}">{{ year }}</option>
                             {% endfor %}
-                            <option value="0" selected>- выберите -</option>
                         </select>
                     </div>
 

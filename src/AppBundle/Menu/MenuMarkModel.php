@@ -271,4 +271,26 @@ class MenuMarkModel extends Controller
             return $query->getResult();
         } else return [];
     }
+
+    /**
+     * @Route("/ajax/getMarkByInput")
+     */
+    public function getMarkByInputAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $res = array();
+
+        $marks = $em->getRepository("MarkBundle:CarMark")->createQueryBuilder('m')
+            ->where('m.header LIKE :mrk')
+            ->andWhere('m.carTypeId = 1')
+            ->setParameter('mrk', '%'.$request->request->get('q').'%')
+            ->getQuery()
+            ->getResult();
+
+        foreach($marks as $m){
+            $res[] = $m->getHeader().'|'.$m->getId();
+        }
+
+        return new Response(json_encode($res));
+    }
 }
