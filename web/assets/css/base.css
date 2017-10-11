@@ -839,6 +839,11 @@ footer a:hover{
 
 .body_button{
     display: inline-block;
+    padding: 0 25px;
+}
+
+.body_button.uk-grid-margin{
+    margin-top: 0;
 }
 
 .body_button a{
