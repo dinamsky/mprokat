@@ -864,3 +864,8 @@ footer a:hover{
 .current_tariff_pointer{
     border-bottom: 2px solid red;
 }
+
+.border_selector{
+    border: 1px solid #dadada;
+    padding: 0 5px;
+}
