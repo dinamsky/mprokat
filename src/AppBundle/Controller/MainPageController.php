@@ -154,15 +154,15 @@ class MainPageController extends Controller
         $query = $em->createQuery('SELECT COUNT(c.id) FROM AppBundle:Card c');
         $totalCards = $query->getSingleScalarResult();
 
-        $query = $em->createQuery('SELECT COUNT(u.id) FROM UserBundle:User u');
-        $totalUsers = $query->getSingleScalarResult();
+        $query = $em->createQuery('SELECT SUM(c.views) FROM AppBundle:Card c');
+        $totalViews = $query->getSingleScalarResult();
 
         $query = $em->createQuery('SELECT COUNT(g.id) FROM AppBundle:GeneralType g');
         $totalCategories = $query->getSingleScalarResult();
 
         $total = array(
             'cards' => $totalCards,
-            'users' => $totalUsers,
+            'views' => $totalViews,
             'categories' => $totalCategories
             );
 
