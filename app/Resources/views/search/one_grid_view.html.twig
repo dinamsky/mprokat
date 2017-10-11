@@ -65,8 +65,15 @@
 
     </div>
 
+
+
     {% if share is defined %}
-        <a href="/card_share/{{ card.id }}" class="bottom_share">Поделиться</a>
+        <a href="/card_share/{{ card.id }}" class="bottom_share">Разместить в своих соцсетях</a>
+        <div class="uk-text-center uk-text-small">Ваш тариф: "
+        {{ card.tariffId == 1 ? 'Стандарт' }}
+        {{ card.tariffId == 2 ? 'Экспресс' }}
+        {{ card.tariffId == 3 ? 'Премиум' }}"
+        </div>
     {% endif %}
 
 

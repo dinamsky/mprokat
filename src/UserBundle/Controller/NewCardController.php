@@ -3,6 +3,7 @@
 namespace UserBundle\Controller;
 
 use MarkBundle\Entity\CarModel;
+use MarkBundle\Entity\CarMark;
 use UserBundle\Entity\UserOrder;
 use UserBundle\Entity\User;
 use AppBundle\Entity\CardFeature;
@@ -153,17 +154,6 @@ class NewCardController extends Controller
             $card->setVideo($post->get('video'));
             $card->setStreetView($post->get('streetView'));
 
-            if($post->has('noMark')){
-                $model = $this->getDoctrine()
-                    ->getRepository(Mark::class)
-                    ->find(20991);
-            } else {
-                $model = $this->getDoctrine()
-                    ->getRepository(CarModel::class)
-                    ->find($post->get('modelId'));
-            }
-            $card->setMarkModel($model);
-
 
             if ($post->get('generalTypeId') == 0) $gt = $post->get('generalTypeTopLevelId');
             else $gt = $post->get('generalTypeId');
@@ -172,6 +162,34 @@ class NewCardController extends Controller
                 ->getRepository(GeneralType::class)
                 ->find($gt);
             $card->setGeneralType($generalType);
+
+
+            if($post->has('noMark')){
+//                $model = $this->getDoctrine()
+//                    ->getRepository(CarModel::class)
+//                    ->find(20991);
+                $mark = $this->getDoctrine()
+                    ->getRepository(CarMark::class)
+                    ->find($post->get('mark'));
+
+
+                $model = new CarModel();
+                $model->setCarTypeId($generalType->getCarTypeIds());
+                $model->setHeader(strip_tags(trim(mb_strtoupper(mb_substr($post->get('ownMark'), 0, 1)))));
+                $model->setMark($mark);
+                $model->setTotal(1);
+                $em->persist($model);
+                $em->flush();
+
+            } else {
+                $model = $this->getDoctrine()
+                    ->getRepository(CarModel::class)
+                    ->find($post->get('modelId'));
+            }
+            $card->setMarkModel($model);
+
+
+
 
             $city = $this->getDoctrine()
                 ->getRepository(City::class)

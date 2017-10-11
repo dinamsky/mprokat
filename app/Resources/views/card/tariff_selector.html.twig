@@ -8,7 +8,7 @@
 <div id="tariff_3" class="tariff_block {{ tariffId == 3 ? 'active' : '' }}">
     <div class="tariff_block_inner">
     <h3>Премиум продвижение <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
-        {{ card.tariffId is defined and card.tariffId == 3 ? ' - ваш текущий тариф' : '' }}
+        {{ card.tariffId is defined and card.tariffId == 3 ? ' - <span class="current_tariff_pointer">ваш текущий тариф</span>' : '' }}
     </h3>
     <div uk-grid>
         <div class="uk-width-1-2@s">
@@ -29,7 +29,7 @@
 <div id="tariff_2" class="tariff_block {{ tariffId == 2 ? 'active' : '' }}">
     <div class="tariff_block_inner">
     <h3>Экспресс продвижение <i class="fa fa-star"></i> <i class="fa fa-star"></i>
-    {{ card.tariffId is defined and card.tariffId == 2 ? ' - ваш текущий тариф' : '' }}
+    {{ card.tariffId is defined and card.tariffId == 2 ? ' - <span class="current_tariff_pointer">ваш текущий тариф</span>' : '' }}
     </h3>
     <div uk-grid>
         <div class="uk-width-1-2@s">
@@ -48,7 +48,7 @@
 <div id="tariff_1" class="tariff_block {{ tariffId == 1 ? 'active' : '' }}">
     <div class="tariff_block_inner">
     <h3>Обычная публикация
-        {{ card.tariffId is defined and card.tariffId == 1 ? ' - ваш текущий тариф' : '' }}
+        {{ card.tariffId is defined and card.tariffId == 1 ? ' - <span class="current_tariff_pointer">ваш текущий тариф</span>' : '' }}
     </h3>
     <div uk-grid>
         <div class="uk-width-1-2@s">

@@ -1,29 +1,33 @@
-<form id="searchForm" action="/search" method="GET">
+<form id="searchForm" action="/search" method="GET" {{ top is defined ? 'uk-grid' }} class="uk-grid-small {{ top is defined ? 'uk-flex uk-flex-center' }}">
 
 
     {#<div class="cursor-pointer">{{ include('selector/adress_block.html.twig') }}</div>#}
 
-    <div class="cursor-pointer">{{ include('selector/general_new_block.html.twig') }}</div>
+    <div class="cursor-pointer"><div class="border_selector">{{ include('selector/general_new_block.html.twig') }}</div></div>
 
-    <div class="cursor-pointer" id="mark_placement">{{ include('selector/mark_block.html.twig', {'mark_arr':mark_arr_sorted,'type':car_type_id}) }}</div>
+    <div class="cursor-pointer" id="mark_placement"><div class="border_selector">{{ include('selector/mark_block.html.twig', {'mark_arr':mark_arr_sorted,'type':car_type_id}) }}</div></div>
 
 
 
-    <div class="cursor-pointer" id="model_placement">{{ include('selector/model_block.html.twig', {'model_arr':models_in_mark, 'mark_id':mark.id}) }}</div>
+    <div class="cursor-pointer" id="model_placement"><div class="border_selector">{{ include('selector/model_block.html.twig', {'model_arr':models_in_mark, 'mark_id':mark.id}) }}</div></div>
 
 
 
 
     <input type="hidden" name="view" value="{{ view is defined ? view : 'grid_view' }}">
 
-    <button data-page="{{ page is defined ? page : 1 }}"
-            data-view="{{ view is defined ? view : 'grid_view' }}"
-            data-onpage="{{ onpage is defined ? onpage : 12 }}"
+    {{ top is defined ? '<div class="top_find_button">' }}
 
-            id="main_search_button"
-            type="button"
-            class="uk-button uk-button-primary uk-margin-top uk-width-1-1">
-        Найти
-    </button>
+        <button data-page="{{ page is defined ? page : 1 }}"
+                data-view="{{ view is defined ? view : 'grid_view' }}"
+                data-onpage="{{ onpage is defined ? onpage : 12 }}"
+
+                id="main_search_button"
+                type="button"
+                class="uk-button uk-button-primary uk-margin-top uk-width-1-1">
+            Найти
+        </button>
+
+    {{ top is defined ? '</div>' }}
 
 </form>
