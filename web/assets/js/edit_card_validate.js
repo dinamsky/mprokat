@@ -21,13 +21,7 @@ function edit_card_validate(){
 
     if (!general_type) message.push('\nТип транспорта');
     if (!header) message.push('\nЗаголовок');
-    if (!model || model === 0) {
-        if(noMark){
-            if (!ownMark)  message.push('\nВпишите свою марку/модель');
-        } else {
-            message.push('\nМодель');
-        }
-    }
+    if (!model || model === 0) message.push('\nМодель');
     if (!city || city === '0') message.push('\nГород');
 
     // $('.sub_field_field').each(function(){
