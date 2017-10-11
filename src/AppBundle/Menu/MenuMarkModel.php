@@ -256,12 +256,14 @@ class MenuMarkModel extends Controller
     public function getExistMark($model_ids,$general)
     {
         $mark_ids = [];
-        $query = $this->em->createQuery('SELECT t FROM MarkBundle:CarType t WHERE t.url = ?1');
-        $query->setParameter(1, $general->getUrl());
-        $carType = $query->getResult();
-        $carType = $carType[0];
+//        $query = $this->em->createQuery('SELECT t FROM MarkBundle:CarType t WHERE t.url = ?1');
+//        $query->setParameter(1, $general->getUrl());
+//        $carType = $query->getResult();
+//        $carType = $carType[0];
+        $carType = $general->getCarTypeIds();
+
         sort($model_ids);
-        $query = $this->em->createQuery('SELECT m.carMarkId FROM MarkBundle:CarModel m WHERE m.carTypeId = '.$carType->getId().' AND m.id IN ('.implode(",",$model_ids).') ORDER BY m.carMarkId');
+        $query = $this->em->createQuery('SELECT m.carMarkId FROM MarkBundle:CarModel m WHERE m.carTypeId = '.$carType.' AND m.id IN ('.implode(",",$model_ids).') ORDER BY m.carMarkId');
         foreach($query->getScalarResult() as $row){
             $mark_ids[] = $row['carMarkId'];
         }

@@ -125,17 +125,23 @@ class MainPageController extends Controller
                 $city->setCountry('RUS');
                 $city->setHeader('Россия');
                 $city->setParentId(0);
+                $city->setGde('России');
                 $city->setTempId(0);
                 $city->setUrl('rus');
             }
             $this->get('session')->set('city', $city);
         } else {
             $city = $this->get('session')->get('city');
-            if(is_array($city) and isset($city[0])) $city = $city[0];
+            $city->setGde('России');
+            if(is_array($city) and isset($city[0])) {
+                $city = $city[0];
+                $city->setGde('России');
+            }
             if(is_array($city) and empty($city)){
                 $city = new City();
                 $city->setCountry('RUS');
                 $city->setHeader('Россия');
+                $city->setGde('России');
                 $city->setParentId(0);
                 $city->setTempId(0);
                 $city->setUrl('rus');
