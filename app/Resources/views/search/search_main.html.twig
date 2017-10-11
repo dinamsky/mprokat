@@ -170,7 +170,13 @@
                     {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}
                     <hr>
                 {% endfor %}
-
+                <div class="uk-text-center">
+                    {% if app.session.has('logged_user') %}
+                        <a href="/card/new" class="" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip>Разместить объявление в ТОП</a>
+                    {% else %}
+                        <a class="" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip uk-toggle="target: #sign_in_or_up">Разместить объявление в ТОП</a>
+                    {% endif %}
+                </div>
 
 
                 {{ include('selector/mark_block_link.html.twig', {'mark_arr':mark_arr_sorted,'type':car_type_id}) }}
