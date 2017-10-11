@@ -319,10 +319,11 @@ class SearchController extends Controller
         $popular_city = $query->getResult();
 
         if($general) {
-            $query = $em->createQuery('SELECT t FROM MarkBundle:CarType t WHERE t.url = ?1');
-            $query->setParameter(1, $general->getUrl());
-            $carType = $query->getResult();
-            $carType = $carType[0]->getId();
+//            $query = $em->createQuery('SELECT t FROM MarkBundle:CarType t WHERE t.url = ?1');
+//            $query->setParameter(1, $general->getUrl());
+//            $carType = $query->getResult();
+//            $carType = $carType[0]->getId();
+            $carType = $general->getCarTypeIds();
         } else $carType = '';
 
         $mark_arr = $mm->getExistMarks("",$carType);
