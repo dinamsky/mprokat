@@ -830,3 +830,32 @@ footer a:hover{
     font-size: 12px;
     padding: 5px;
 }
+
+.top_find_button button{
+    margin-top: 0 !important;
+    padding: 2px 10px;
+    line-height: 14px;
+}
+
+.body_button{
+    display: inline-block;
+}
+
+.body_button a{
+    font-size: 13px;
+}
+
+.filter_sticky.uk-active{
+    background: white;
+    padding: 10px;
+}
+
+.filter_sticky hr{
+    margin: 0;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.current_tariff_pointer{
+    border-bottom: 2px solid red;
+}
