@@ -1,4 +1,4 @@
-<form id="searchForm" action="/search" method="GET" {{ top ? 'uk-grid' }} class="uk-grid-small {{ top ? 'uk-flex uk-flex-center' }}">
+<form id="searchForm" action="/search" method="GET" {{ top is defined ? 'uk-grid' }} class="uk-grid-small {{ top is defined ? 'uk-flex uk-flex-center' }}">
 
 
     {#<div class="cursor-pointer">{{ include('selector/adress_block.html.twig') }}</div>#}
@@ -16,7 +16,7 @@
 
     <input type="hidden" name="view" value="{{ view is defined ? view : 'grid_view' }}">
 
-    {{ top ? '<div class="top_find_button">' }}
+    {{ top is defined ? '<div class="top_find_button">' }}
 
         <button data-page="{{ page is defined ? page : 1 }}"
                 data-view="{{ view is defined ? view : 'grid_view' }}"
@@ -28,6 +28,6 @@
             Найти
         </button>
 
-    {{ top ? '</div>' }}
+    {{ top is defined ? '</div>' }}
 
 </form>
