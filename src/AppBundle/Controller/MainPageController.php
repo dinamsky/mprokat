@@ -132,7 +132,6 @@ class MainPageController extends Controller
             $this->get('session')->set('city', $city);
         } else {
             $city = $this->get('session')->get('city');
-            $city->setGde('России');
             if(is_array($city) and isset($city[0])) {
                 $city = $city[0];
                 $city->setGde('России');
@@ -145,6 +144,9 @@ class MainPageController extends Controller
                 $city->setParentId(0);
                 $city->setTempId(0);
                 $city->setUrl('rus');
+            }
+            if(!is_array($city)){
+                $city->setGde('России');
             }
         }
 
