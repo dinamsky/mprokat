@@ -7,11 +7,11 @@
         Ваш аккаунт: <b>стандартный</b>
         <div>Вы можете разместить не более 2-х объявлений</div>
         <hr>
-        <a href="/userPayPro" class="uk-button uk-button-danger uk-button-small">Оплатить PRO аккаунт</a>
+        <a href="/userPayPro/{{ app.session.get('logged_user').id }}" class="uk-button uk-button-danger uk-button-small">Оплатить PRO аккаунт</a>
         <div class="uk-margin-top">Оплаченный PRO аккаунт действует бессрочно</div>
     {% else %}
-        Ваш аккаунт: PRO
-        <div>Вы можете разместить неограниченное количество объявлений</div>
+        Ваш аккаунт: <span class="c_red uk-text-bold">PRO</span>
+        <div class="uk-margin-top">Вы можете разместить неограниченное количество объявлений</div>
     {% endif %}
     </div>
 </div>
