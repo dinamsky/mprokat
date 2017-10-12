@@ -83,6 +83,13 @@ class User
     /**
      * @var bool
      *
+     * @ORM\Column(name="account_type_id", type="smallint")
+     */
+    private $accountTypeId = 0;
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(name="is_banned", type="boolean")
      */
     private $isBanned = 0;
@@ -576,5 +583,29 @@ class User
     public function getIsBanned()
     {
         return $this->isBanned;
+    }
+
+    /**
+     * Set accountTypeId
+     *
+     * @param integer $accountTypeId
+     *
+     * @return User
+     */
+    public function setAccountTypeId($accountTypeId)
+    {
+        $this->accountTypeId = $accountTypeId;
+
+        return $this;
+    }
+
+    /**
+     * Get accountTypeId
+     *
+     * @return integer
+     */
+    public function getAccountTypeId()
+    {
+        return $this->accountTypeId;
     }
 }

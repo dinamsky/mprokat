@@ -299,22 +299,26 @@ class UserController extends Controller
 
             $order->setStatus('paid');
 
-            $tariff = $this->getDoctrine()
-                ->getRepository(Tariff::class)
-                ->find($order->getTariffId());
-
-            $card = $this->getDoctrine()
-                ->getRepository(Card::class)
-                ->find($order->getCardId());
-
-            $card->setDateTariffStart(new \DateTime());
-
-            $card->setTariff($tariff);
-
-            $em->persist($order);
-            $em->persist($card);
-
-            $em->flush();
+            if($order->getOrderType() == 'accountPRO'){
+                $user = $this->getDoctrine()
+                    ->getRepository(User::class)
+                    ->find($order->getUserId());
+                $user->setAccountTypeId(1);
+                $em->persist($user);
+                $em->flush();
+            } else {
+                $tariff = $this->getDoctrine()
+                    ->getRepository(Tariff::class)
+                    ->find($order->getTariffId());
+                $card = $this->getDoctrine()
+                    ->getRepository(Card::class)
+                    ->find($order->getCardId());
+                $card->setDateTariffStart(new \DateTime());
+                $card->setTariff($tariff);
+                $em->persist($order);
+                $em->persist($card);
+                $em->flush();
+            }
         }
         return new Response($text, 200);
     }
@@ -337,12 +341,25 @@ class UserController extends Controller
             return new Response($text, 200);
         }
 
+        $message = 'Ваш новый тариф успешно оплачен!';
+        $url = '/user/cards';
+
+        $order = $this->getDoctrine()
+            ->getRepository(UserOrder::class)
+            ->find($inv_id);
+
+        if ($order->getOrderType() == 'accountPRO') {
+            $message = 'Ваш PRO аккаунт успешно оплачен!';
+            $url = '/user/cards';
+        }
+
         $this->addFlash(
             'notice',
-            'Ваш новый тариф успешно оплачен!'
+            $message
         );
 
-        return $this->redirectToRoute('homepage');
+        //return $this->redirectToRoute('homepage');
+        return new RedirectResponse($url);
     }
 
     /**
@@ -377,6 +394,41 @@ class UserController extends Controller
         }
 
         return new Response(json_encode($emails));
+    }
+
+    /**
+     * @Route("/userPayPro")
+     */
+    public function payProAction($user_id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($user_id);
+
+        $order = new UserOrder();
+        $order->setUser($user);
+        $order->setCard(new Card());
+        $order->setTariff(new Tariff());
+        $order->setPrice(1);
+        $order->setOrderType('accountPRO');
+        $order->setStatus('new');
+        $em->persist($order);
+        $em->flush();
+
+        $mrh_login = "multiprokat";
+        $mrh_pass1 = "Wf1bYXSd5V8pKS3ULwb3";
+        $inv_id    = $order->getId();
+        $inv_desc  = "set_account_PRO";
+        $out_summ  = 1;
+
+        $crc  = md5("$mrh_login:$out_summ:$inv_id:$mrh_pass1");
+
+        $url = "https://auth.robokassa.ru/Merchant/Index.aspx?MrchLogin=$mrh_login&".
+            "OutSum=$out_summ&InvId=$inv_id&Desc=$inv_desc&SignatureValue=$crc";
+
+        return new RedirectResponse($url);
     }
 
 }
