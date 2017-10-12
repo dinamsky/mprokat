@@ -306,6 +306,7 @@ class UserController extends Controller
                 $user->setAccountTypeId(1);
                 $em->persist($user);
                 $em->flush();
+                $this->get('session')->set('logged_user', $user);
             } else {
                 $tariff = $this->getDoctrine()
                     ->getRepository(Tariff::class)
