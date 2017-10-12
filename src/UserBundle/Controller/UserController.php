@@ -406,11 +406,17 @@ class UserController extends Controller
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->find($user_id);
+        $tariff = $this->getDoctrine()
+            ->getRepository(Tariff::class)
+            ->find(1);
+        $card = $this->getDoctrine()
+            ->getRepository(Card::class)
+            ->findOneBy(['isActive' => true]);
 
         $order = new UserOrder();
         $order->setUser($user);
-        $order->setCard(new Card());
-        $order->setTariff(new Tariff());
+        $order->setCard($card);
+        $order->setTariff($tariff);
         $order->setPrice(1);
         $order->setOrderType('accountPRO');
         $order->setStatus('new');
