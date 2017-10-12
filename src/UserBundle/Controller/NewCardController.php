@@ -54,7 +54,20 @@ class NewCardController extends Controller
                 ->getRepository(User::class)
                 ->findOneBy(['id' => $this->get('session')->get('logged_user')->getId()]);
             if ($user->getIsBanned()) return new Response("", 404);
+
+            if ($user->getAccountTypeId() == 0 and count($user->getCards()) > 2){
+                $this->addFlash(
+                    'notice',
+                    'В стандартном аккаунте вам доступно не более 2-х объявлений.<br>Оплатите PRO аккаунт для неограниченного количества объявлений'
+                );
+                return new RedirectResponse('/user/cards');
+            }
         }
+
+
+
+
+
         $card = new Card();
 
         $conditions = $this->getDoctrine()
