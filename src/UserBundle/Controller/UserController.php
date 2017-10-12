@@ -397,7 +397,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/userPayPro")
+     * @Route("/userPayPro/{user_id}")
      */
     public function payProAction($user_id)
     {
