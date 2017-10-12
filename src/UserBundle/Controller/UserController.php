@@ -412,35 +412,39 @@ class UserController extends Controller
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->find($user_id);
-        $tariff = $this->getDoctrine()
-            ->getRepository(Tariff::class)
-            ->find(1);
-        $card = $this->getDoctrine()
-            ->getRepository(Card::class)
-            ->findOneBy(['isActive' => true]);
 
-        $order = new UserOrder();
-        $order->setUser($user);
-        $order->setCard($card);
-        $order->setTariff($tariff);
-        $order->setPrice(450);
-        $order->setOrderType('accountPRO');
-        $order->setStatus('new');
-        $em->persist($order);
-        $em->flush();
+        if ($user) {
 
-        $mrh_login = "multiprokat";
-        $mrh_pass1 = "Wf1bYXSd5V8pKS3ULwb3";
-        $inv_id    = $order->getId();
-        $inv_desc  = "set_account_PRO";
-        $out_summ  = 450;
+            $tariff = $this->getDoctrine()
+                ->getRepository(Tariff::class)
+                ->find(1);
+            $card = $this->getDoctrine()
+                ->getRepository(Card::class)
+                ->findOneBy(['isActive' => true]);
 
-        $crc  = md5("$mrh_login:$out_summ:$inv_id:$mrh_pass1");
+            $order = new UserOrder();
+            $order->setUser($user);
+            $order->setCard($card);
+            $order->setTariff($tariff);
+            $order->setPrice(450);
+            $order->setOrderType('accountPRO');
+            $order->setStatus('new');
+            $em->persist($order);
+            $em->flush();
 
-        $url = "https://auth.robokassa.ru/Merchant/Index.aspx?MrchLogin=$mrh_login&".
-            "OutSum=$out_summ&InvId=$inv_id&Desc=$inv_desc&SignatureValue=$crc";
+            $mrh_login = "multiprokat";
+            $mrh_pass1 = "Wf1bYXSd5V8pKS3ULwb3";
+            $inv_id = $order->getId();
+            $inv_desc = "set_account_PRO";
+            $out_summ = 450;
 
-        return new RedirectResponse($url);
+            $crc = md5("$mrh_login:$out_summ:$inv_id:$mrh_pass1");
+
+            $url = "https://auth.robokassa.ru/Merchant/Index.aspx?MrchLogin=$mrh_login&" .
+                "OutSum=$out_summ&InvId=$inv_id&Desc=$inv_desc&SignatureValue=$crc";
+
+            return new RedirectResponse($url);
+        } else throw $this->createNotFoundException(); //404
     }
 
 }

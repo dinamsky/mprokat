@@ -7,8 +7,14 @@
         Ваш аккаунт: <b>стандартный</b>
         <div>Вы можете разместить не более 2-х объявлений</div>
         <hr>
-        <a href="/userPayPro/{{ app.session.get('logged_user').id }}" class="uk-button uk-button-danger uk-button-small">Оплатить PRO аккаунт</a>
-        <div class="uk-margin-top">Оплаченный PRO аккаунт действует бессрочно</div>
+        <a href="/userPayPro/{{ app.session.get('logged_user').id }}" class="uk-button uk-button-success uk-button-small">
+            Оплатить PRO аккаунт<br>
+            450<i class="fa fa-ruble"></i>
+        </a>
+        <div class="uk-margin-top uk-text-small">Оплаченный PRO аккаунт действует бессрочно<br>
+            и дает больше возможностей,<br>
+            в том числе:<br>
+            размещать больше объявлений и получать больше звонков от клиентов</div>
     {% else %}
         Ваш аккаунт: <span class="c_red uk-text-bold">PRO</span>
         <div class="uk-margin-top">Вы можете разместить неограниченное количество объявлений</div>
