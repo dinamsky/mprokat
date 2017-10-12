@@ -350,6 +350,11 @@ class UserController extends Controller
             ->find($inv_id);
 
         if ($order->getOrderType() == 'accountPRO') {
+            $user = $this->getDoctrine()
+                ->getRepository(User::class)
+                ->find($order->getUserId());
+            $this->get('session')->set('logged_user', $user);
+
             $message = 'Ваш PRO аккаунт успешно оплачен!';
             $url = '/user/cards';
         }
@@ -418,7 +423,7 @@ class UserController extends Controller
         $order->setUser($user);
         $order->setCard($card);
         $order->setTariff($tariff);
-        $order->setPrice(1);
+        $order->setPrice(450);
         $order->setOrderType('accountPRO');
         $order->setStatus('new');
         $em->persist($order);
@@ -428,7 +433,7 @@ class UserController extends Controller
         $mrh_pass1 = "Wf1bYXSd5V8pKS3ULwb3";
         $inv_id    = $order->getId();
         $inv_desc  = "set_account_PRO";
-        $out_summ  = 1;
+        $out_summ  = 450;
 
         $crc  = md5("$mrh_login:$out_summ:$inv_id:$mrh_pass1");
 
