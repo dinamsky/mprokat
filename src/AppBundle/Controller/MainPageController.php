@@ -136,7 +136,7 @@ class MainPageController extends Controller
             $city = $this->get('session')->get('city');
         }
 
-dump($city);
+
         $in_city = $city->getUrl();
 
         //---
