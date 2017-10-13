@@ -2,6 +2,7 @@
 
 namespace UserBundle\Controller;
 
+use AppBundle\Menu\ServiceStat;
 use MarkBundle\Entity\CarModel;
 use MarkBundle\Entity\CarMark;
 use UserBundle\Entity\UserOrder;
@@ -40,7 +41,7 @@ class EditCardController extends Controller
     /**
      * @Route("/user/edit/card/{cardId}")
      */
-    public function editCardAction($cardId, MenuGeneralType $mgt, MenuMarkModel $markmenu, MenuCity $mc, SubFieldUtils $sf, EntityManagerInterface $em)
+    public function editCardAction($cardId, MenuGeneralType $mgt, MenuMarkModel $markmenu, MenuCity $mc, SubFieldUtils $sf, EntityManagerInterface $em, Request $request, ServiceStat $stat)
     {
         $card = $this->getDoctrine()
             ->getRepository(Card::class)
@@ -124,6 +125,15 @@ class EditCardController extends Controller
         $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.total DESC, c.header ASC');
         $popular_city = $query->getResult();
 
+        $stat_arr = [
+            'url' => '/user/edit/card/'.$card->getId(),
+            'event_type' => 'set_form',
+            'page_type' => 'form',
+            'user_id' => $user->getId(),
+        ];
+        $stat->setStat($stat_arr);
+
+
         return $this->render('card/card_edit.html.twig',[
             'card' => $card,
             'conditions' => $conditions,
@@ -157,7 +167,7 @@ class EditCardController extends Controller
     /**
      * @Route("/card/update")
      */
-    public function saveCardAction(Request $request, FotoUtils $fu)
+    public function saveCardAction(Request $request, FotoUtils $fu, ServiceStat $stat)
     {
 
         $post = $request->request;
@@ -227,6 +237,14 @@ class EditCardController extends Controller
         //$card->setTariff($tariff);
 
         $em->persist($card);
+
+        $stat_arr = [
+            'url' => '/user/edit/card/'.$card->getId(),
+            'event_type' => 'edit_card',
+            'page_type' => 'form',
+            'user_id' => $user->getId(),
+        ];
+        $stat->setStat($stat_arr);
 
 
         if ($post->get('subField') !== null) foreach($post->get('subField') as $fieldId=>$value) if($value!=0 and $value!=''){

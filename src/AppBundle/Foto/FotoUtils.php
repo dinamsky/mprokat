@@ -212,7 +212,7 @@ class FotoUtils extends Controller
 
     public function deleteFoto(Request $request)
     {
-        // TODO set main if deleted
+
 
         $main_dir = $_SERVER['DOCUMENT_ROOT'].'/assets/images/cards';
 
@@ -224,8 +224,27 @@ class FotoUtils extends Controller
             ->getRepository(Foto::class)
             ->find($id);
 
+        $card = $this->em
+            ->getRepository(Card::class)
+            ->find($foto->getCardId());
+
+        if(count($card->getFotos())<2) return new Response('stop', 200);
+
+        $setNewMain = false;
+        if($foto->getIsMain()) $setNewMain = true;
+
         $this->em->remove($foto);
         $this->em->flush();
+
+        if($setNewMain){
+            $foto = $this->em
+                ->getRepository(Foto::class)
+                ->findOneBy(['cardId' => $card->getId()]);
+            $foto->setIsMain(true);
+            $this->em->persist($foto);
+            $this->em->flush();
+        }
+
 
         unlink ($main_dir.'/'.$foto->getFolder().'/'.$id.'.jpg');
         unlink ($main_dir.'/'.$foto->getFolder().'/t/'.$id.'.jpg');

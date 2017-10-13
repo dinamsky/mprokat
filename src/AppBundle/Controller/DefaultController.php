@@ -9,6 +9,7 @@ use AppBundle\Entity\Seo;
 use AppBundle\Menu\MenuGeneralType;
 use AppBundle\Menu\MenuCity;
 use AppBundle\Menu\MenuMarkModel;
+use AppBundle\Menu\ServiceStat;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -28,7 +29,7 @@ class DefaultController extends Controller
     /**
      * @Route("/ajax/showPhone")
      */
-    public function showPhoneAction(Request $request)
+    public function showPhoneAction(Request $request, ServiceStat $stat)
     {
         $post = $request->request;
         $card = $this->getDoctrine()
@@ -46,6 +47,20 @@ class DefaultController extends Controller
         } else {
             $this->get('session')->set('phone', [$card->getUserId() => 1]);
         }
+
+        $stat_arr = [
+            'url' => $request->getPathInfo(),
+            'event_type' => 'phone',
+            'page_type' => $post->get('type'),
+            'card_id' => $card->getId(),
+            'user_id' => $card->getUserId(),
+        ];
+
+        if($post->get('type') == 'card') $stat_arr['url'] = '/card/'.$card->getId();
+        if($post->get('type') == 'profile') $stat_arr['url'] = '/user/'.$card->getUserId();
+
+        $stat->setStat($stat_arr);
+
 
         return new Response($phone, 200);
     }

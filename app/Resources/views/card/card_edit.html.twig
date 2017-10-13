@@ -265,8 +265,8 @@
                                         style="position:absolute;top:0;right:0;color: white;">
                                 </button>
 
-                                <button type="button" class="uk-button-default main_foto_button" uk-icon="icon: home" data-id="{{ foto.id }}"
-                                        style="position:absolute;top:0;left:0;color: white;"><span></span>
+                                <button type="button" class="{{ foto.isMain ? 'uk-button-primary' : 'not_first' }} main_foto_button" data-id="{{ foto.id }}"
+                                        style="position:absolute;top:0;left:0;color: white;">1
                                 </button>
                             </div>
                         </div>

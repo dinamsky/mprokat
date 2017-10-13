@@ -8,6 +8,7 @@ use AppBundle\Entity\SubField;
 use AppBundle\Menu\MenuGeneralType;
 use AppBundle\Menu\MenuCity;
 use AppBundle\Menu\MenuMarkModel;
+use AppBundle\Menu\ServiceStat;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -27,7 +28,7 @@ class ShowCardController extends Controller
     /**
      * @Route("/card/{id}", requirements={"id": "\d+"}, name="showCard")
      */
-    public function showCardAction($id, MenuGeneralType $mgt, SubFieldUtils $sf, MenuCity $mc, MenuMarkModel $mm)
+    public function showCardAction($id, MenuGeneralType $mgt, SubFieldUtils $sf, MenuCity $mc, MenuMarkModel $mm, Request $request, ServiceStat $stat)
     {
         $card = $this->getDoctrine()
             ->getRepository(Card::class)
@@ -141,6 +142,23 @@ class ShowCardController extends Controller
         }
         else $in_city = $city->getUrl();
 
+
+        $stat->setStat([
+            'url' => $request->getPathInfo(),
+            'event_type' => 'visit',
+            'page_type' => 'card',
+            'card_id' => $card->getId(),
+            'user_id' => $card->getUserId(),
+        ]);
+
+
+        $bodyType = false;
+        foreach($subFields as $sf){
+            if($sf['value'] instanceof SubField){
+                if($sf['value']->getFieldId() == 3) $bodyType = $sf['value'];
+            }
+        }
+
         return $this->render('card/card_show.html.twig', [
 
             'card' => $card,
@@ -185,7 +203,8 @@ class ShowCardController extends Controller
             'car_type_id' => $mark->getCarTypeId(),
             'opinions' => $opinions,
             'total_opinions' => $total_opinions,
-            'in_city' => $in_city
+            'in_city' => $in_city,
+            'bodyType' => $bodyType
 
         ]);
     }
