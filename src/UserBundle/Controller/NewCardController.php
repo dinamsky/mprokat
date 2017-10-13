@@ -2,6 +2,7 @@
 
 namespace UserBundle\Controller;
 
+use AppBundle\Menu\ServiceStat;
 use MarkBundle\Entity\CarModel;
 use MarkBundle\Entity\CarMark;
 use UserBundle\Entity\UserOrder;
@@ -43,7 +44,7 @@ class NewCardController extends Controller
     /**
      * @Route("/card/new")
      */
-    public function indexAction(MenuMarkModel $markmenu, MenuGeneralType $mgt, MenuCity $mc, Request $request, FotoUtils $fu, EntityManagerInterface $em, \Swift_Mailer $mailer)
+    public function indexAction(MenuMarkModel $markmenu, MenuGeneralType $mgt, MenuCity $mc, Request $request, FotoUtils $fu, EntityManagerInterface $em, \Swift_Mailer $mailer, ServiceStat $stat)
     {
 
 
@@ -128,6 +129,15 @@ class NewCardController extends Controller
 
             $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.total DESC, c.header ASC');
             $popular_city = $query->getResult();
+
+            $stat_arr = [
+                'url' => '/card/new',
+                'event_type' => 'set_form',
+                'page_type' => 'form',
+                'user_id' => $user->getId(),
+            ];
+            $stat->setStat($stat_arr);
+
 
             $response = $this->render('card/card_new.html.twig', [
                 'generalTopLevel' => $mgt->getTopLevel(),
@@ -259,6 +269,16 @@ class NewCardController extends Controller
             $em->persist($card);
 
             $em->flush();
+
+
+            $stat_arr = [
+                'url' => '/card/new',
+                'event_type' => 'new_card',
+                'page_type' => 'form',
+                'user_id' => $user->getId(),
+                'card_id' => $card->getId(),
+            ];
+            $stat->setStat($stat_arr);
 
 
             if($post->has('noMark')){

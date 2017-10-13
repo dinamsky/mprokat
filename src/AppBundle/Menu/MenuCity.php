@@ -84,8 +84,9 @@ class MenuCity extends Controller
             $city->setParentId(0);
             $city->setTempId(0);
             $city->setUrl('rus');
+            $city->setGde('России');
             $this->get('session')->set('city', $city);
-        } else $this->get('session')->set('city', $this->getCity($request->request->get('cityId')));
+        } else $this->get('session')->set('city', $this->getCity($request->request->get('cityId'))[0]);
 
         return new Response();
     }

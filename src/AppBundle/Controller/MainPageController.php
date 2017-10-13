@@ -6,19 +6,21 @@ use AppBundle\Entity\Seo;
 use AppBundle\Menu\MenuGeneralType;
 use AppBundle\Menu\MenuCity;
 use AppBundle\Menu\MenuMarkModel;
+use AppBundle\Menu\ServiceStat;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\Card;
 use AppBundle\Entity\City;
 use AppBundle\Entity\GeneralType;
+use Symfony\Component\HttpFoundation\Request;
 
 class MainPageController extends Controller
 {
     /**
      * @Route("/", name="homepage")
      */
-    public function indexAction(MenuGeneralType $mgt, MenuCity $mc, EntityManagerInterface $em, MenuMarkModel $mm)
+    public function indexAction(MenuGeneralType $mgt, MenuCity $mc, EntityManagerInterface $em, MenuMarkModel $mm, Request $request, ServiceStat $stat)
     {
 
         $topSlider = $this->getDoctrine()
@@ -132,24 +134,9 @@ class MainPageController extends Controller
             $this->get('session')->set('city', $city);
         } else {
             $city = $this->get('session')->get('city');
-            if(is_array($city) and isset($city[0])) {
-                $city = $city[0];
-                $city->setGde('России');
-            }
-            if(is_array($city) and empty($city)){
-                $city = new City();
-                $city->setCountry('RUS');
-                $city->setHeader('Россия');
-                $city->setGde('России');
-                $city->setParentId(0);
-                $city->setTempId(0);
-                $city->setUrl('rus');
-            }
-            if(!is_array($city)){
-                $city->setGde('России');
-            }
         }
 
+dump($city);
         $in_city = $city->getUrl();
 
         //---
@@ -187,6 +174,13 @@ class MainPageController extends Controller
         $models_in_mark = $mark_arr['models_in_mark'];
 
 
+
+        $stat_arr = [
+            'url' => $request->getPathInfo(),
+            'event_type' => 'visit',
+            'page_type' => 'main',
+        ];
+        $stat->setStat($stat_arr);
 
         return $this->render('main_page/main.html.twig', [
 //            'generalTopLevel' => $mgt->getTopLevel(),

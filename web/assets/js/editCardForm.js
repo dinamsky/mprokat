@@ -39,7 +39,9 @@ $( document ).ready(function() {
             type: 'POST',
             data: {id:id},
             success: function(html){
-                $(t).parents('.edit_foto').remove();
+                if(html==='stop'){
+                    alert('Нельзя удалить единственное фото!');
+                } else $(t).parents('.edit_foto').remove();
             }
         });
     });

@@ -15,11 +15,14 @@ $( document ).ready(function() {
 
     $('.show_phone').on('click', function () {
         var card_id = $(this).data('card_id');
+        var profile = $(this).data('profile');
+        var type = 'profile';
+        if (profile === 0) type = 'card';
         var t = $(this);
         $.ajax({
             url: '/ajax/showPhone',
             type: 'POST',
-            data: {card_id:card_id},
+            data: {card_id:card_id, type:type},
             success: function(html){
                 $('.phone_block').html('<span class="opened_phone bg_green c_white uk-text-center"><i class="fa fa-phone"></i> '+html+'</span>');
                 $('.modal_phone').html(html);
@@ -29,21 +32,21 @@ $( document ).ready(function() {
         });
     });
 
-    $('.show_phone_big').on('click', function () {
-        var card_id = $(this).data('card_id');
-        var t = $(this);
-        $.ajax({
-            url: '/ajax/showPhone',
-            type: 'POST',
-            data: {card_id:card_id},
-            success: function(html){
-                $('.phone_block').html('<span class="opened_phone c_grey uk-text-center"><i class="fa fa-phone"></i> '+html+'</span>');
-                $('.modal_phone').html(html);
-                UIkit.modal('#user_phone_form').show();
-                yaCounter43151009.reachGoal('PhoneClick', {phone: html, cardId: card_id});
-            }
-        });
-    });
+    // $('.show_phone_big').on('click', function () {
+    //     var card_id = $(this).data('card_id');
+    //     var t = $(this);
+    //     $.ajax({
+    //         url: '/ajax/showPhone',
+    //         type: 'POST',
+    //         data: {card_id:card_id, type:'profile'},
+    //         success: function(html){
+    //             $('.phone_block').html('<span class="opened_phone c_grey uk-text-center"><i class="fa fa-phone"></i> '+html+'</span>');
+    //             $('.modal_phone').html(html);
+    //             UIkit.modal('#user_phone_form').show();
+    //             yaCounter43151009.reachGoal('PhoneClick', {phone: html, cardId: card_id});
+    //         }
+    //     });
+    // });
 
     $('.likes').on('click', function () {
         var card_id = $(this).data('card_id');
