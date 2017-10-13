@@ -16,6 +16,7 @@ use AppBundle\Menu\MenuCity;
 use AppBundle\Menu\MenuGeneralType;
 use AppBundle\Menu\MenuMarkModel;
 use AppBundle\Menu\MenuSubFieldAjax;
+use AppBundle\Menu\ServiceStat;
 use AppBundle\SubFields\SubFieldUtils;
 use MarkBundle\Entity\CarMark;
 use MarkBundle\Entity\CarModel;
@@ -34,7 +35,7 @@ class SearchController extends Controller
      */
     public function showCardsAction(
         $city = false, $service = false, $general = false, $mark = false, $model = false, $card = false,
-        EntityManagerInterface $em, MenuGeneralType $mgt, MenuCity $mc, MenuMarkModel $mm, Request $request)
+        EntityManagerInterface $em, MenuGeneralType $mgt, MenuCity $mc, MenuMarkModel $mm, Request $request, ServiceStat $stat)
     {
 
         $mobileDetector = $this->get('mobile_detect.mobile_detector');
@@ -345,7 +346,15 @@ class SearchController extends Controller
         }
         else $in_city = $city->getUrl();
 
+        $stat_arr = [
+            'url' => $request->getPathInfo(),
+            'event_type' => 'visit',
+            'page_type' => 'catalog',
+        ];
 
+        if($total_cards == 0) $stat_arr['is_empty'] = true;
+
+        $stat->setStat($stat_arr);
 
         return $this->render('search/search_main.html.twig', [
 

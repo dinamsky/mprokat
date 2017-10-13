@@ -869,3 +869,28 @@ footer a:hover{
     border: 1px solid #dadada;
     padding: 0 5px;
 }
+
+.back_button{
+    font-size: 10px;
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    display: none;
+    background: #c73636;
+    color: white;
+    padding: 10px 5px;
+}
+
+.top_sticky.uk-active .back_button{
+    display: block;
+}
+
+.back_button:hover{
+    color: white;
+    background: grey;
+    text-decoration: none;
+}
+
+.not_first{
+
+}

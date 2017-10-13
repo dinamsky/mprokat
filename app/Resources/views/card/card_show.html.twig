@@ -81,7 +81,19 @@
         <div class="standard_wide">
             <a href="/">Главная</a>
             <i uk-icon="icon:chevron-right"></i>
-            <a href="/rent/{{ in_city }}/all/{{ card.generalType.url }}">{{ card.generalType.header }}</a>
+            <a href="/rent/{{ card.city.url }}">{{ card.city.header }}</a>
+            <i uk-icon="icon:chevron-right"></i>
+            <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}">{{ card.generalType.header }}</a>
+
+            {% if bodyType %}
+                <i uk-icon="icon:chevron-right"></i>
+                <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ bodyType.url }}">{{ bodyType.header }}</a>
+            {% endif %}
+
+            <i uk-icon="icon:chevron-right"></i>
+            <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ card.markModel.mark.header }}">{{ card.markModel.mark.header }}</a>
+            <i uk-icon="icon:chevron-right"></i>
+            <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ card.markModel.mark.header }}/{{ card.markModel.header }}">{{ card.markModel.header }}</a>
         </div>
     </div>
 
@@ -309,7 +321,7 @@
                     <div uk-grid class="uk-grid-collapse uk-grid-match">
                         <div class="phone_block uk-width-5-6">
                             {% if app.session.get('phone')[card.user.id] is not defined %}
-                                <div class="hidden_phone bg_green show_phone uk-text-center c_white" data-card_id="{{ card.id }}">
+                                <div class="hidden_phone bg_green show_phone uk-text-center c_white" data-card_id="{{ card.id }}" data-profile="0">
                                     <div class="uk-text-center">Показать телефон</div>
                                     <i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue|slice(0,5) }} XXX-XX-XX{% endfor %}
                                 </div>
@@ -336,10 +348,7 @@
                     </div>
                     <hr>
                     <div class="uk-text-center"><a href="/user/{{ card.user.id }}">Все объявления<br>пользователя ({{ card.user.cards|length }})</a></div>
-                    {% for info in card.user.information if info.uiKey == 'website' %}
-                        <hr>
-                        <div class="uk-text-truncate"><i class="fa fa-globe"></i> {{ info.uiValue }}</div>
-                    {% endfor %}
+
                 </div>
 
 

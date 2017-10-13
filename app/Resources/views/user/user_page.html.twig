@@ -80,7 +80,7 @@
                         <div uk-grid class="uk-grid-collapse uk-grid-match">
                             <div class="phone_block uk-width-5-6">
                                 {% if app.session.get('phone')[user.id] is not defined %}
-                                    <div class="hidden_phone bg_green show_phone uk-text-center c_white" data-card_id="{{ user.cards[0].id }}">
+                                    <div class="hidden_phone bg_green show_phone uk-text-center c_white" data-card_id="{{ user.cards[0].id }}" data-profile="1">
                                         <div class="uk-text-center">Показать телефон</div>
                                         <i class="fa fa-phone"></i> {% for info in user.information if info.uiKey == 'phone' %}{{ info.uiValue|slice(0,5) }} XXX-XX-XX{% endfor %}
                                     </div>
