@@ -129,7 +129,7 @@ class EditCardController extends Controller
             'url' => '/user/edit/card/'.$card->getId(),
             'event_type' => 'set_form',
             'page_type' => 'form',
-            'user_id' => $user->getId(),
+            'user_id' => $card->getUserId(),
         ];
         $stat->setStat($stat_arr);
 
@@ -242,7 +242,7 @@ class EditCardController extends Controller
             'url' => '/user/edit/card/'.$card->getId(),
             'event_type' => 'edit_card',
             'page_type' => 'form',
-            'user_id' => $user->getId(),
+            'user_id' => $card->getUserId(),
         ];
         $stat->setStat($stat_arr);
 
