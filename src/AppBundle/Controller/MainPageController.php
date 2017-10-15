@@ -149,10 +149,14 @@ class MainPageController extends Controller
         $query = $em->createQuery('SELECT COUNT(g.id) FROM AppBundle:GeneralType g');
         $totalCategories = $query->getSingleScalarResult();
 
+        $query = $em->createQuery('SELECT COUNT(DISTINCT c.cityId) FROM AppBundle:Card c');
+        $totalCities = $query->getSingleScalarResult();
+
         $total = array(
             'cards' => $totalCards,
             'views' => $totalViews,
-            'categories' => $totalCategories
+            'categories' => $totalCategories,
+            'cities' => $totalCities
             );
 
 //        $general = $this->getDoctrine()
