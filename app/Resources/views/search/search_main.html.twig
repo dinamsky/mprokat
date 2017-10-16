@@ -47,9 +47,10 @@
 
                 <div {{ not is_mobile() ? 'uk-sticky="offset: 0"' }} class="uk-margin-bottom filter_sticky uk-visible@s">
                     <div>{{ include('search/search_form.html.twig',{'top':true}) }}</div>
-                    <hr>
-                    <div uk-grid class="uk-grid-small">
+
                         {% if bodyTypes and model.id == null %}
+                            <hr>
+                            <div uk-grid class="uk-grid-small">
                             <div class="body_button"><a href="{{ body_url }}">Любой кузов</a></div>
                             {% for body in bodyTypes %}
                                 {% if mark.id == null %}
@@ -58,8 +59,9 @@
                                     <div class="body_button"><a href="/rent/{{ x_uri[2] }}/{{ x_uri[3] }}/{{ x_uri[4] }}/{{ x_uri[5] }}/{{ body.url }}">{{ body.header }}</a></div>
                                 {% endif %}
                             {% endfor %}
+                            </div>
                         {% endif %}
-                    </div>
+
 
                     <hr>
                     <div uk-grid class="uk-grid-small">
