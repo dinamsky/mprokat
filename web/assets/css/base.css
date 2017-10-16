@@ -901,3 +901,7 @@ footer a:hover{
 .not_first{
 
 }
+
+.user_image_block{
+    padding: 0 !important;
+}
