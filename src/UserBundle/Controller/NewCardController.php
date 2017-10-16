@@ -152,6 +152,8 @@ class NewCardController extends Controller
                 if(isset($phone) and $phone != '') $phone = true;
             }
 
+            if ($this->get('session')->has('admin')) $phone = true;
+
             $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.total DESC');
             $generalTypes = $query->getResult();
 
@@ -288,7 +290,16 @@ class NewCardController extends Controller
 
             $em->flush();
 
-            if($post->has('phone')){
+            if($user){
+                $phone = false;
+                foreach ($user->getInformation() as $inf)
+                    if($inf->getUiKey() == 'phone') {
+                        $phone = $inf->getUiValue();
+                        break;
+                    }
+                if(isset($phone) and $phone != '') $phone = true;
+            }
+            if(!$phone and $post->has('phone')){
                 $ui = new UserInfo();
                 $ui->setUser($user);
                 $ui->setUiKey('phone');
