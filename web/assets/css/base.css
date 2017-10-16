@@ -61,7 +61,8 @@ button{
 
 .top_sticky{
     padding: 10px 0;
-    background: rgba(255, 255, 255, 0.86);
+    background: white;
+    box-shadow: 0 1px 1px grey;
 }
 
 .top_sticky .logo{
@@ -69,8 +70,6 @@ button{
 }
 
 .top_sticky.uk-active{
-    padding: 10px 0;
-    background: rgba(255, 255, 255, 0.86);
 }
 
 .top_sticky.uk-active .logo{
@@ -83,22 +82,29 @@ button{
 }
 
 .top_user_actions a, .top_user_actions_button{
-    color:white;
     border: 0;
-    border-left:1px solid white;
+    border-left: 1px solid white;
     display: inline-block;
     text-align: center;
     vertical-align: top;
-    padding: 0 5px 0 5px;
+    padding: 5px;
     background: transparent;
     cursor: pointer;
     float: left;
-    min-height: 31px;
+    min-height: 28px;
 }
 
 .top_user_actions a:hover, .top_user_actions_button:hover{
-    background: #0079ab;
+    background: lightgrey;
     text-decoration: none;
+}
+
+.sticky_top_city_selector{
+    padding: 5px;
+}
+
+.sticky_top_city_selector:hover{
+    background: lightgrey;
 }
 
 .card_cover_description{
@@ -587,7 +593,7 @@ footer a:hover{
 }
 
 .gt_selector .inner{
-    color: #444;
+
 }
 
 .gt_selector:hover{
@@ -680,6 +686,7 @@ footer a:hover{
 .modal_phone{
     font-weight: bold;
     font-size: 30px;
+    display: block;
 }
 
 .mobile_header .left_part{

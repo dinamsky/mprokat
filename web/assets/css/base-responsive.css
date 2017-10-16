@@ -126,4 +126,59 @@
     .breadcrumbs a{
         font-size: 13px;
     }
+
+    .sticky_top_city_selector{
+        padding: 0;
+        color:white;
+    }
+
+    .m_add_card_button {
+        padding: 0;
+        font-size: 11px;
+        width: 50px;
+    }
+
+    #button_main_search{
+        background: transparent;
+        border: 1px solid white;
+        color: white;
+    }
+
+    .card_page_phone{
+        position: fixed;
+        bottom: 0;
+        z-index: 10;
+        width: 100%;
+        left: 0;
+        margin-bottom: 0 !important;
+    }
+
+    .card_page_phone .hidden_phone, .card_page_phone .opened_phone {
+        height: 53px;
+        padding: 3px 0;
+        cursor: pointer;
+        line-height: 21px;
+    }
+
+    .card_page_phone .user_form_button {
+        height: 53px;
+        padding: 13px 0;
+        color: white;
+        text-align: center;
+        border-left: 1px solid white;
+        line-height: 21px;
+        cursor: pointer;
+    }
+
+    .modal_phone {
+        font-weight: bold;
+        font-size: 27px;
+    }
+
+    .card_page_phone .opened_phone {
+        height: 53px;
+        padding: 13px 0;
+        cursor: pointer;
+        line-height: 21px;
+    }
 }
