@@ -83,6 +83,9 @@ class ProfileController extends Controller
             ];
             $stat->setStat($stat_arr);
 
+            $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.total DESC');
+            $generalTypes = $query->getResult();
+
             return $this->render('user/user_cards.html.twig', [
                 'share' => true,
                 'cards' => $cards,
@@ -90,6 +93,7 @@ class ProfileController extends Controller
                 'popular_city' => $popular_city,
                 'in_city' => $in_city,
                 'cityId' => $city->getId(),
+                'generalTypes' => $generalTypes,
             ]);
         } else return new Response("",404);
     }
@@ -222,12 +226,16 @@ class ProfileController extends Controller
         $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.total DESC, c.header ASC');
         $popular_city = $query->getResult();
 
+        $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.total DESC');
+        $generalTypes = $query->getResult();
+
         if(!$user->getIsBanned()) return $this->render('user/profile_main.html.twig',[
             'user' => $user,
             'city' => $city,
             'popular_city' => $popular_city,
             'in_city' => $in_city,
             'cityId' => $city->getId(),
+            'generalTypes' => $generalTypes,
         ]);
         else return new Response("",404);
     }
@@ -293,6 +301,8 @@ class ProfileController extends Controller
             ];
             $stat->setStat($stat_arr);
 
+            $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.total DESC');
+            $generalTypes = $query->getResult();
 
             return $this->render('user/user_profile.html.twig', [
                 'user' => $user,
@@ -300,6 +310,7 @@ class ProfileController extends Controller
                 'popular_city' => $popular_city,
                 'in_city' => $in_city,
                 'cityId' => $city->getId(),
+                'generalTypes' => $generalTypes,
             ]);
         }
         else return new Response("",404);
