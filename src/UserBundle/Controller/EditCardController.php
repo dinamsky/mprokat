@@ -133,6 +133,8 @@ class EditCardController extends Controller
         ];
         $stat->setStat($stat_arr);
 
+        $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.total DESC');
+        $generalTypes = $query->getResult();
 
         return $this->render('card/card_edit.html.twig',[
             'card' => $card,
@@ -161,6 +163,7 @@ class EditCardController extends Controller
             'prices' => $prices,
             'tariffs' => $tariffs,
             'popular_city' => $popular_city,
+            'generalTypes' => $generalTypes,
         ]);
     }
 
