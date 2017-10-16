@@ -134,8 +134,10 @@ class NewCardController extends Controller
                 'url' => '/card/new',
                 'event_type' => 'set_form',
                 'page_type' => 'form',
-                'user_id' => $user->getId(),
             ];
+
+            if(isset($user)) $stat_arr['user_id'] = $user->getId();
+
             $stat->setStat($stat_arr);
 
 
@@ -275,9 +277,11 @@ class NewCardController extends Controller
                 'url' => '/card/new',
                 'event_type' => 'new_card',
                 'page_type' => 'form',
-                'user_id' => $user->getId(),
                 'card_id' => $card->getId(),
             ];
+
+            if(isset($user)) $stat_arr['user_id'] = $user->getId();
+
             $stat->setStat($stat_arr);
 
 
