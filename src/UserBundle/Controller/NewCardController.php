@@ -5,6 +5,7 @@ namespace UserBundle\Controller;
 use AppBundle\Menu\ServiceStat;
 use MarkBundle\Entity\CarModel;
 use MarkBundle\Entity\CarMark;
+use UserBundle\Entity\UserInfo;
 use UserBundle\Entity\UserOrder;
 use UserBundle\Entity\User;
 use AppBundle\Entity\CardFeature;
@@ -141,6 +142,16 @@ class NewCardController extends Controller
             $stat->setStat($stat_arr);
 
 
+            if($user){
+                $phone = false;
+                foreach ($user->getInformation() as $inf)
+                    if($inf->getUiKey() == 'phone') {
+                    $phone = $inf->getUiValue();
+                    break;
+                }
+                if(isset($phone) and $phone != '') $phone = true;
+            }
+
             $response = $this->render('card/card_new.html.twig', [
                 'generalTopLevel' => $mgt->getTopLevel(),
                 'generalSecondLevel' => $mgt->getSecondLevel(1),
@@ -165,7 +176,7 @@ class NewCardController extends Controller
                 'admin' => $admin,
 
                 'popular_city' => $popular_city,
-
+                'phone' => $phone,
             ]);
         }
 
@@ -272,6 +283,14 @@ class NewCardController extends Controller
 
             $em->flush();
 
+            if($post->has('phone')){
+                $ui = new UserInfo();
+                $ui->setUser($user);
+                $ui->setUiKey('phone');
+                $ui->setUiValue($post->get('phone'));
+                $em->persist($ui);
+                $em->flush();
+            }
 
             $stat_arr = [
                 'url' => '/card/new',

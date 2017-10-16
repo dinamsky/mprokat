@@ -3,10 +3,15 @@
 {% block stylesheets %}
     {{ parent() }}
     <link href="{{ asset('assets/css/auto-complete.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/select2.min.css') }}" rel="stylesheet" />
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
+    {#<script src="{{ asset('assets/js/jquery-ui.min.js') }}"></script>#}
+
+    {#<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>#}
+
     <script src="{{ asset('assets/tinymce/jquery.tinymce.min.js') }}"></script>
     <script src="{{ asset('assets/tinymce/tinymce.min.js') }}"></script>
     <script src="{{ asset('assets/js/visual_editor.js') }}"></script>
@@ -18,11 +23,15 @@
     <script src="{{ asset('assets/js/newCardForm.js') }}"></script>
     <script src="{{ asset('assets/js/tariff_selector.js') }}"></script>
     <script src="{{ asset('assets/js/image_upload_preview.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.maskedinput.js') }}"></script>
+    <script src="{{ asset('assets/js/phone_validate.js') }}"></script>
+    <script src="{{ asset('assets/js/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/js/select_combo.js') }}"></script>
 {% endblock %}
 
 {% block content %}
 
-    <form id="new_card_form" action="/card/new" method="POST" enctype="multipart/form-data" onsubmit="return new_card_validate();" class="standard_wide uk-margin-top">
+    <form id="new_card_form" action="/card/new" method="POST" enctype="multipart/form-data" onsubmit="return new_card_validate();" class="standard_wide uk-margin-top {{ not phone ? 'no_phone' }}">
 
 
         {% if app.session.has('admin') and app.session.get('admin').role == 'superadmin'%}
@@ -34,6 +43,12 @@
 
         <div uk-grid>
             <div class="uk-width-1-2@s">
+                {% if not phone %}
+                <div class="uk-margin-bottom uk-position-relative">
+                    <input type="text" name="phone" id="phone" placeholder="Заполните номер телефона" class="uk-input phone_validate">
+                    <div class="uk-position-absolute uk-position-top-left" style="left:5px;"><span class="red_star">*</span></div>
+                </div>
+                {% endif %}
                 <div class="uk-margin-bottom uk-position-relative">
                     <input type="text" name="header" placeholder="Заполните заголовок объявления" class="uk-input">
                     <div class="uk-position-absolute uk-position-top-left" style="left:5px;"><span class="red_star">*</span></div>
@@ -135,14 +150,16 @@
 
                     <div class="uk-width-1-3">
                         <div class="uk-text-small"><span class="red_star">*</span>Марка</div>
-                        <select name="mark" id="markId" class="uk-select">
+
+                        <select name="mark" id="markId" class="uk-select sel_combo">
                             {{ include( 'common/ajax_edit_options.html.twig', { 'options': marks, 'id': 0 }) }}
                         </select>
+
                     </div>
 
                     <div class="uk-width-1-3">
                         <div class="uk-text-small"><span class="red_star">*</span>Модель</div>
-                        <select name="modelId" id="markModelId" class="uk-select"></select>
+                        <select name="modelId" id="markModelId" class="uk-select sel_combo"></select>
                     </div>
 
                     <div class="uk-width-1-2">

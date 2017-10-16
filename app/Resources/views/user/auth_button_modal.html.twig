@@ -7,7 +7,7 @@
             <a href="/profile">Профиль</a><br>
             <a href="/user/cards">Объявления</a>
         </div>
-        <a href="/userLogout" class="uk-position-relative right_quit"><span><i uk-icon="icon:sign-out"></i> Выход</span></a>
+        {#<a href="/userLogout" class="uk-position-relative right_quit"><span><i uk-icon="icon:sign-out"></i> Выход</span></a>#}
     {% elseif app.session.get('admin').email is defined %}
         <a href="/admin"><span uk-icon="icon:user"></span> {{ app.session.get('admin').email }}</a>
         <a href="/adminLogout" class=""><span><i uk-icon="icon:sign-out"></i> Выход</span></a>
