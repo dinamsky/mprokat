@@ -34,6 +34,8 @@ class ShowCardController extends Controller
             ->getRepository(Card::class)
             ->find($id);
 
+        if(!$card) throw $this->createNotFoundException(); //404
+
         if ($card->getUser()->getIsBanned()) return new Response("",404);
 
         $views = $this->get('session')->get('views');
