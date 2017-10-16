@@ -23,6 +23,7 @@
                         {% if info.uiKey == 'ig' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="c_white padding0-10"><i class="fa fa-instagram"></i></a>{% endif %}
                         {% if info.uiKey == 'yt' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="c_white padding0-10"><i class="fa fa-youtube"></i></a>{% endif %}
                     {% endfor %}
+                    <span class="c_white">{{ app.session.has('admin') ? user.email }}</span>
                 </div>
             </div>
         </div>

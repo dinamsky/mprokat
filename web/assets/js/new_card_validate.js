@@ -14,6 +14,7 @@ function new_card_validate(){
     var ownMark = $('input[name="ownMark"]').val();
 
 
+
     var priceHour = $('input[name="price[1]"]').val();
     var priceDay = $('input[name="price[2]"]').val();
 
@@ -22,6 +23,11 @@ function new_card_validate(){
     var subfields = [];
 
     var message = [];
+
+    if($('#new_card_form').hasClass('no_phone')){
+        var phone = $('#phone').val();
+        if (!phone) message.push('\nЗаполните номер телефона!');
+    }
 
     if(!priceHour && !priceDay) message.push('\nОдна из цен - обязательна!');
 

@@ -901,3 +901,27 @@ footer a:hover{
 .not_first{
 
 }
+
+.user_image_block{
+    padding: 0 !important;
+}
+
+.custom-combobox{
+    width: 100%;
+    display: block;
+}
+
+.custom-combobox-input{
+    width: 80%;
+    background: white !important;
+    padding: 10px 5px;
+    border-radius: 0 !important;
+    border: 1px solid #e5e5e5 !important;
+}
+
+.select2-selection{
+    border-radius: 0 !important;
+    height: 40px !important;
+    border: 1px solid lightgrey !important;
+    padding-top: 4px;
+}
