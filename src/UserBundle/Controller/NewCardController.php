@@ -152,6 +152,9 @@ class NewCardController extends Controller
                 if(isset($phone) and $phone != '') $phone = true;
             }
 
+            $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.total DESC');
+            $generalTypes = $query->getResult();
+
             $response = $this->render('card/card_new.html.twig', [
                 'generalTopLevel' => $mgt->getTopLevel(),
                 'generalSecondLevel' => $mgt->getSecondLevel(1),
@@ -174,6 +177,8 @@ class NewCardController extends Controller
                 'city' => $city,
 
                 'admin' => $admin,
+
+                'generalTypes' => $generalTypes,
 
                 'popular_city' => $popular_city,
                 'phone' => $phone,
