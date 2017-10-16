@@ -25,7 +25,7 @@ $( document ).ready(function() {
             data: {card_id:card_id, type:type},
             success: function(html){
                 $('.phone_block').html('<span class="opened_phone bg_green c_white uk-text-center"><i class="fa fa-phone"></i> '+html+'</span>');
-                $('.modal_phone').html(html);
+                $('.modal_phone').html(html).attr('href','tel:'+html);
                 UIkit.modal('#user_phone_form').show();
                 yaCounter43151009.reachGoal('PhoneClick', {phone: html, cardId: card_id});
             }

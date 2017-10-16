@@ -327,9 +327,9 @@
                                 </div>
 
                             {% else %}
-                                <span class="opened_phone bg_green c_white uk-text-center">
+                                <a class="opened_phone bg_green c_white uk-text-center" href="tel:{% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}">
                                     <i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}
-                                </span>
+                                </a>
                             {% endif %}
                         </div>
                         <div class="uk-width-1-6">
@@ -383,7 +383,7 @@
                     <div class="uk-modal-dialog uk-modal-body">
                         <button class="uk-modal-close-default" type="button" uk-close></button>
                         <div class="modal_name"><i class="fa fa-user"></i> {{ card.user.header }}</div>
-                        <div class="modal_phone"></div>
+                        <a class="modal_phone" href=""></a>
                         <hr>
                         <div class="modal_text tx_19">
                             Не забудьте сообщить владельцу, что звоните с сайта Мультипрокат и спросить скидку!
