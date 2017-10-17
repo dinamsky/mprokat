@@ -208,27 +208,48 @@ class NewCardController extends Controller
 
 
             if($post->has('noMark')){
-//                $model = $this->getDoctrine()
-//                    ->getRepository(CarModel::class)
-//                    ->find(20991);
-                $mark = $this->getDoctrine()
+                $mark_header = strip_tags(trim(mb_strtoupper(mb_substr($post->get('ownMark'), 0, 1)).mb_substr($post->get('ownMark'),1)));
+                $check_mark = $this->getDoctrine()
                     ->getRepository(CarMark::class)
-                    ->find($post->get('mark'));
+                    ->findOneBy(['header'=>$mark_header,'carTypeId'=>$generalType->getCarTypeIds()]);
+                if ($check_mark === null) {
+                    $newmark = new CarMark();
+                    $newmark->setCarTypeId($generalType->getCarTypeIds());
+                    $newmark->setHeader($mark_header);
+                    $em->persist($newmark);
+                    $em->flush();
+                }
+            }
 
+            if($post->has('noModel')){
 
-                $model = new CarModel();
-                $model->setCarTypeId($generalType->getCarTypeIds());
-                $model->setHeader(strip_tags(trim(mb_strtoupper(mb_substr($post->get('ownMark'), 0, 1)))));
-                $model->setMark($mark);
-                $model->setTotal(1);
-                $em->persist($model);
-                $em->flush();
+                if(!isset($newmark)) {
+                    $mark = $this->getDoctrine()
+                        ->getRepository(CarMark::class)
+                        ->find($post->get('mark'));
+                } else $mark = $newmark;
+
+                $model_header = strip_tags(trim(mb_strtoupper(mb_substr($post->get('ownModel'), 0, 1)).mb_substr($post->get('ownModel'),1)));
+
+                $check_model = $this->getDoctrine()
+                    ->getRepository(CarModel::class)
+                    ->findOneBy(['header'=>$model_header,'carTypeId'=>$generalType->getCarTypeIds(),'carMarkId'=>$mark->getId()]);
+                if (!$check_model) {
+                    $model = new CarModel();
+                    $model->setCarTypeId($generalType->getCarTypeIds());
+                    $model->setHeader($model_header);
+                    $model->setMark($mark);
+                    $model->setTotal(1);
+                    $em->persist($model);
+                    $em->flush();
+                }
 
             } else {
                 $model = $this->getDoctrine()
                     ->getRepository(CarModel::class)
                     ->find($post->get('modelId'));
             }
+
             $card->setMarkModel($model);
 
 
