@@ -327,7 +327,7 @@ class ProfileController extends Controller
             ->getRepository(User::class)
             ->find($this->get('session')->get('logged_user')->getId());
 
-        $user->setHeader($post->get('header'));
+        $user->setHeader(trim(strip_tags($post->get('header'))));
 
         /**
          * @var $info UserInfo
@@ -342,6 +342,10 @@ class ProfileController extends Controller
         foreach($post->get('info') as $uiKey =>$uiValue ){
             $info = new UserInfo();
             $info->setUiKey($uiKey);
+
+//            if (in_array($uiKey,['website','about'])) $uiValue = strip_tags($uiValue);
+            $uiValue = trim(strip_tags($uiValue));
+
             $info->setUiValue($uiValue);
             $info->setUser($user);
             $em->persist($info);
@@ -479,5 +483,23 @@ class ProfileController extends Controller
             $_SERVER['DOCUMENT_ROOT'].'/assets/images/users/t');
 
         return $this->redirectToRoute('user_profile');
+    }
+
+    /**
+     * @Route("/ajax/goPro")
+     */
+    public function goProAction(Request $request)
+    {
+        $post = $request->request;
+        $em = $this->getDoctrine()->getManager();
+
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($post->get('user_id'));
+        $user->setAccountTypeId(1);
+        $em->persist($user);
+        $em->flush();
+
+        return new Response();
     }
 }

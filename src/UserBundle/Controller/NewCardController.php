@@ -190,9 +190,9 @@ class NewCardController extends Controller
         if($request->isMethod('POST')){
             $em = $this->getDoctrine()->getManager();
             $post = $request->request;
-            $card->setHeader($post->get('header'));
-            $card->setContent($post->get('content'));
-            $card->setAddress($post->get('address'));
+            $card->setHeader(strip_tags($post->get('header')));
+            $card->setContent(strip_tags($post->get('content')));
+            $card->setAddress(strip_tags($post->get('address')));
             $card->setCoords($post->get('coords'));
             $card->setVideo($post->get('video'));
             $card->setStreetView($post->get('streetView'));

@@ -13,7 +13,13 @@
             <div uk-grid>
                 <div class="uk-visible@s uk-width-1-5@s" ></div>
                 <div class="uk-width-4-5@s">
-                    <h1 class="c_white uk-margin-remove">{{ user.header }}</h1>
+                    <div class="c_white">Собственник</div>
+                    <h1 class="c_white uk-margin-remove">
+                        {{ user.header }}
+                        {% if user.accountTypeId == 0 and app.session.has('admin') %}
+                            <button class="uk-button uk-button-danger uk-button-small go_pro" data-id="{{ user.id }}">Перевести в PRO</button>
+                        {% endif %}
+                    </h1>
                     {% for info in user.information %}
                         {% if info.uiKey == 'vk' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="c_white padding0-10"><i class="fa fa-vk"></i></a>{% endif %}
                         {% if info.uiKey == 'fb' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="c_white padding0-10"><i class="fa fa-facebook"></i></a>{% endif %}
@@ -128,12 +134,11 @@
                         </div>
                     </div>
 
-                    {#{% for info in user.information if info.uiKey == 'website' %}#}
-                    {#<div uk-grid class="uk-grid-collapse">#}
-                        {#<div class="uk-width-1-4 uk-width-1-6@s uk-text-small"><i class="fa fa-globe"></i> Website</div>#}
-                        {#<div class="uk-width-3-4"><a rel="nofollow" href="{{ info.uiValue }}">{{ info.uiValue }}</a></div>#}
-                    {#</div>#}
-                    {#{% endfor %}#}
+                    {% for info in user.information if info.uiKey == 'about' %}
+                    <div class="uk-margin-bottom bordered padding20">
+                        {{ info.uiValue }}
+                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>

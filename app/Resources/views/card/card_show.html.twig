@@ -4,6 +4,7 @@
     {{ parent() }}
     <link href="{{ asset('assets/css/owl.carousel.min.css') }}" rel="stylesheet"/>
     <link href="{{ asset('assets/css/owl.theme.default.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/auto-complete.css') }}" rel="stylesheet" />
 {% endblock %}
 
 {% block javascripts %}
@@ -12,6 +13,8 @@
     <script src="{{ asset('assets/js/city_general_mark_selector.js') }}"></script>
     <script src="{{ asset('assets/js/showCard.js') }}"></script>
     <script src="{{ asset('assets/js/sliderSettings.js') }}"></script>
+    <script src="{{ asset('assets/js/auto-complete.min.js') }}"></script>
+    <script src="{{ asset('assets/js/mark_autocomplete.js') }}"></script>
 {% endblock %}
 
 {% block socialScripts %}
@@ -293,6 +296,7 @@
 
 
                 <div class="user_block uk-text-center uk-margin-bottom">
+                    <div class="uk-text-small">Собственник</div>
                     {% if user_foto %}
                     <div style="background: url('{{ user_foto }}') center center no-repeat;
                             background-size: contain;
@@ -303,6 +307,7 @@
                     </div>
                     {% else %}
                     {% endif %}
+
                     <h3 class="uk-margin-remove"><a href="/user/{{ card.user.id }}">{{ card.user.header }}</a></h3>
                     <div class="uk-margin-top">
                         {% for info in card.user.information %}
