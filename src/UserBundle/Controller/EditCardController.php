@@ -189,9 +189,9 @@ class EditCardController extends Controller
             else return $this->redirectToRoute('search');
         }
 
-        $card->setHeader($post->get('header'));
-        $card->setContent($post->get('content'));
-        $card->setAddress($post->get('address'));
+        $card->setHeader(strip_tags($post->get('header')));
+        $card->setContent(strip_tags($post->get('content')));
+        $card->setAddress(strip_tags($post->get('address')));
         $card->setCoords($post->get('coords'));
         $card->setVideo($post->get('video'));
         $card->setStreetView($post->get('streetView'));

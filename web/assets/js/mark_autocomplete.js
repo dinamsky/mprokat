@@ -8,7 +8,7 @@ $( document ).ready(function() {
                 url: '/ajax/getMarkByInput',
                 type: 'POST',
                 dataType: 'json',
-                data: {q: term},
+                data: {q: term, gt:$('#gtURL').val()},
                 success: function(json){
                     response(json);
                 }
