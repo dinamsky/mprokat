@@ -389,13 +389,13 @@ button{
 
 .user_page_top_line_1{
     background-color: #06a7ea;
-    padding-top: 80px;
-    height:90px;
+    padding-top: 60px;
+    height: 100px;
 }
 
 .user_page_top_line_2{
     background-color: white;
-    height: 120px;
+    min-height: 120px;
     padding-top: 20px;
 }
 
@@ -644,8 +644,16 @@ footer a:hover{
     color: white;
 }
 
-#top_selector_block hr{
-    border-color: rgba(255,255,255, 0.39);
+#top_selector_block a:hover{
+    color:white;
+    text-decoration: none;
+}
+
+#top_selector_block .gt_selector:hover .inner {
+    outline: 1px solid white;
+    outline-offset: 4px;
+    cursor: pointer;
+    text-decoration: none;
 }
 
 .top_selector_all{

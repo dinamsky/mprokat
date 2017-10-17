@@ -32,6 +32,18 @@ $( document ).ready(function() {
         });
     });
 
+    $('.go_pro').on('click', function () {
+        var user_id = $(this).data('id');
+        $.ajax({
+            url: '/ajax/goPro',
+            type: 'POST',
+            data: {user_id:user_id},
+            success: function(html){
+                document.location.href = '/user/'+user_id;
+            }
+        });
+    });
+
     // $('.show_phone_big').on('click', function () {
     //     var card_id = $(this).data('card_id');
     //     var t = $(this);

@@ -38,7 +38,7 @@ class UserInfo
     /**
      * @var string
      *
-     * @ORM\Column(name="ui_value", type="string", length=255)
+     * @ORM\Column(name="ui_value", type="text")
      */
     private $uiValue;
 

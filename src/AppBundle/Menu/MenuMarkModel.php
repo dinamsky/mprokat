@@ -282,9 +282,14 @@ class MenuMarkModel extends Controller
         $em = $this->getDoctrine()->getManager();
         $res = array();
 
+        $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.url = ?1');
+        $query->setParameter(1, $request->request->get('gt'));
+        $gt = $query->getResult()[0];
+
+
         $marks = $em->getRepository("MarkBundle:CarMark")->createQueryBuilder('m')
             ->where('m.header LIKE :mrk')
-            ->andWhere('m.carTypeId = 1')
+            ->andWhere('m.carTypeId = '.$gt->getCarTypeIds())
             ->setParameter('mrk', '%'.$request->request->get('q').'%')
             ->getQuery()
             ->getResult();
