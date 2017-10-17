@@ -13,7 +13,8 @@ function new_card_validate(){
     var noMark = $('input[name="noMark"]').prop('checked');
     var ownMark = $('input[name="ownMark"]').val();
 
-
+    var noModel = $('input[name="noModel"]').prop('checked');
+    var ownModel = $('input[name="ownModel"]').val();
 
     var priceHour = $('input[name="price[1]"]').val();
     var priceDay = $('input[name="price[2]"]').val();
@@ -37,14 +38,27 @@ function new_card_validate(){
 
     if (!general_type) message.push('\nТип транспорта');
     if (!header) message.push('\nЗаголовок');
-    if (!model || model === 0) {
+
+    if (!mark || mark === 0) {
         if(noMark){
-            if (!ownMark)  message.push('\nВпишите свою марку/модель');
-            if (!mark) message.push('\nВыберите марку');
+            if (!ownMark) message.push('\nВпишите свою марку');
+        } else {
+            message.push('\nМарка');
+        }
+    }
+
+    if (!model || model === 0) {
+        if(noModel){
+            if (!ownModel)  message.push('\nВпишите свою модель');
+            if (!mark && !noMark) message.push('\nВыберите марку');
         } else {
             message.push('\nМодель');
         }
     }
+
+
+
+
     if (!city || city === '0') message.push('\nГород');
 
     // $('.sub_field_field').each(function(){
