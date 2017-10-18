@@ -388,7 +388,7 @@ button{
 }
 
 .user_page_top_line_1{
-    background-color: #06a7ea;
+    background-color: white;
     padding-top: 60px;
     height: 100px;
 }
@@ -802,13 +802,13 @@ footer a:hover{
 }
 
 .zero_text{
-    border: 4px solid #25b45b;
     padding: 20px;
     margin-bottom: 30px;
+    background: #e4e4e4;
 }
 
 .zero_button{
-    background: #ad3030;
+    background: #25b45b;
     width: 100%;
 }
 
@@ -830,7 +830,7 @@ footer a:hover{
 }
 
 .share_button{
-    background: #c73636;
+    background: #989898;
     color: white;
     text-align: center;
     padding: 20px;
@@ -932,4 +932,8 @@ footer a:hover{
     height: 40px !important;
     border: 1px solid lightgrey !important;
     padding-top: 4px;
+}
+
+.uk-button{
+    box-shadow: 2px 2px 1px lightgrey;
 }

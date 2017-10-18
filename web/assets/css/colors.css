@@ -49,3 +49,7 @@
 .t_shadowed{
     text-shadow: 0 0 1px #000;
 }
+
+.b_shadowed{
+    box-shadow: 2px 2px 1px #b7b7b7;
+}
