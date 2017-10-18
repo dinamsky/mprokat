@@ -2,6 +2,7 @@
 
 namespace UserBundle\Controller;
 
+use AppBundle\Entity\Deleted;
 use AppBundle\Menu\ServiceStat;
 use MarkBundle\Entity\CarModel;
 use MarkBundle\Entity\CarMark;
@@ -182,6 +183,14 @@ class EditCardController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         if ($post->has('delete')){
+            $del = new Deleted();
+            $del->setUserId($card->getUserId());
+            $del->setCardId($card->getId());
+            $del->setCityId($card->getCityId());
+            $del->setModelId($card->getModelId());
+            $del->setGeneralTypeId($card->getGeneralTypeId());
+            $em->persist($del);
+
             $fu->deleteAllFotos($card);
             $em->remove($card);
             $em->flush();
