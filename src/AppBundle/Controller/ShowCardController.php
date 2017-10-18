@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Comment;
+use AppBundle\Entity\Deleted;
 use AppBundle\Entity\Mark;
 use AppBundle\Entity\SubField;
 use AppBundle\Menu\MenuGeneralType;
@@ -10,6 +11,7 @@ use AppBundle\Menu\MenuCity;
 use AppBundle\Menu\MenuMarkModel;
 use AppBundle\Menu\ServiceStat;
 use Doctrine\ORM\EntityManagerInterface;
+use MarkBundle\Entity\CarModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,11 +32,69 @@ class ShowCardController extends Controller
      */
     public function showCardAction($id, MenuGeneralType $mgt, SubFieldUtils $sf, MenuCity $mc, MenuMarkModel $mm, Request $request, ServiceStat $stat)
     {
+        $em = $this->get('doctrine')->getManager();
+
         $card = $this->getDoctrine()
             ->getRepository(Card::class)
             ->find($id);
 
-        if(!$card) throw $this->createNotFoundException(); //404
+        $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.total DESC, c.header ASC');
+        $popular_city = $query->getResult();
+
+        $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g ORDER BY g.total DESC');
+        $generalTypes = $query->getResult();
+
+
+        if(!$card){
+            $deleted = $this->getDoctrine()
+                ->getRepository(Deleted::class)
+                ->findOneBy(['cardId'=>$id]);
+            if($deleted){
+                $city = $this->getDoctrine()
+                    ->getRepository(City::class)
+                    ->find($deleted->getCityId());
+                $general = $this->getDoctrine()
+                    ->getRepository(GeneralType::class)
+                    ->find($deleted->getGeneralTypeId());
+                $model = $this->getDoctrine()
+                    ->getRepository(CarModel::class)
+                    ->find($deleted->getModelId());
+
+                $dql = 'SELECT c.id FROM AppBundle:Card c WHERE c.generalTypeId = '.$general->getId().' AND c.cityId = '.$city->getId().' ORDER BY c.dateUpdate DESC';
+                $query = $em->createQuery($dql);
+                $query->setMaxResults(10);
+                foreach($query->getScalarResult() as $row) $sim_ids[] = $row['id'];
+                if(isset($sim_ids)) {
+                    $dql = 'SELECT c,p,f FROM AppBundle:Card c LEFT JOIN c.cardPrices p LEFT JOIN c.fotos f WHERE c.id IN (' . implode(",", $sim_ids) . ') ORDER BY c.dateUpdate DESC';
+                    $query = $em->createQuery($dql);
+                    $similar = $query->getResult();
+                } else $similar = false;
+
+                $dql = 'SELECT c.id FROM AppBundle:Card c WHERE c.cityId = '.$city->getId().' ORDER BY c.dateUpdate DESC';
+                $query = $em->createQuery($dql);
+                $query->setMaxResults(10);
+                foreach($query->getScalarResult() as $row) $sim_ids[] = $row['id'];
+                if(isset($sim_ids)) {
+                    $dql = 'SELECT c,p,f FROM AppBundle:Card c LEFT JOIN c.cardPrices p LEFT JOIN c.fotos f WHERE c.id IN (' . implode(",", $sim_ids) . ') ORDER BY c.dateUpdate DESC';
+                    $query = $em->createQuery($dql);
+                    $allincity = $query->getResult();
+                } else $allincity = false;
+
+                return $this->render('card/card_deleted.html.twig', [
+                    'city' => $city,
+                    'cityId' => $city->getId(),
+                    'similar' => $similar,
+                    'allincity' => $allincity,
+                    'general' => $general,
+                    'model' => $model,
+                    'popular_city' => $popular_city,
+                    'generalTypes' => $generalTypes,
+                    'car_type_id' => $general->getCarTypeIds(),
+                    'in_city' => $city->getUrl(),
+
+                ]);
+            } else throw $this->createNotFoundException(); //404
+        };
 
         if ($card->getUser()->getIsBanned()) return new Response("",404);
 
@@ -43,7 +103,6 @@ class ShowCardController extends Controller
             $views[$card->getId()] = 1;
             $this->get('session')->set('views', $views);
             $card->setViews($card->getViews() + 1);
-            $em = $this->getDoctrine()->getManager();
             $em->persist($card);
             $em->flush();
         }
@@ -58,7 +117,7 @@ class ShowCardController extends Controller
         if ($card->getStreetView() != '') $streetView = unserialize($card->getStreetView());
         else $streetView = false;
 
-        $em = $this->get('doctrine')->getManager();
+
         $dql = 'SELECT c.id FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId = '.$card->getGeneralTypeId().' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
 
         $query = $em->createQuery($dql);
@@ -74,9 +133,6 @@ class ShowCardController extends Controller
         $query = $em->createQuery($dql);
 
         $similar = $query->getResult();
-
-
-
 
         $model = $mm->getModel($card->getModelId());
         $mark = $mm->getMark($model->getCarMarkId());
@@ -121,11 +177,7 @@ class ShowCardController extends Controller
         //dump($city);
         //dump($mark_arr);
 
-        $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.total DESC, c.header ASC');
-        $popular_city = $query->getResult();
 
-        $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g ORDER BY g.total DESC');
-        $generalTypes = $query->getResult();
 
         $star = 0;
         $total_opinions = 0;
