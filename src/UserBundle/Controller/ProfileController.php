@@ -195,14 +195,21 @@ class ProfileController extends Controller
 
         if ($this->captchaVerify($post->get('g-recaptcha-response'))) {
 
+            if($post->has('card_id')) {
+                $card_id = $post->get('card_id');
 
-            $card_id = $post->get('card_id');
+                $card = $this->getDoctrine()
+                    ->getRepository(Card::class)
+                    ->find($card_id);
+                $user = $card->getUser();
+            }
+            if($post->has('user_id')){
+                $user = $this->getDoctrine()
+                    ->getRepository(Card::class)
+                    ->find($post->has('user_id'));
+                $card = false;
+            }
 
-            $card = $this->getDoctrine()
-                ->getRepository(Card::class)
-                ->find($card_id);
-
-            $user = $card->getUser();
 
             $message = (new \Swift_Message('Сообщение от пользователя'))
                 ->setFrom(['mail@multiprokat.com' => 'Робот Мультипрокат'])
@@ -218,6 +225,7 @@ class ProfileController extends Controller
                             'name' => $post->get('name'),
                             'phone' => $post->get('phone'),
                             'card' => $card,
+                            'user' => $user
                         )
                     ),
                     'text/html'
