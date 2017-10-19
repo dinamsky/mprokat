@@ -120,7 +120,7 @@ class NewCardController extends Controller
             $stat->setStat($stat_arr);
 
 
-            if($user){
+            if(isset($user)){
                 $phone = false;
                 foreach ($user->getInformation() as $inf)
                     if($inf->getUiKey() == 'phone') {

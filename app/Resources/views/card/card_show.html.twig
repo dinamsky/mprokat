@@ -55,6 +55,7 @@
         }(document, 'script', 'facebook-jssdk'));</script>
     <!-- FB -->
 
+    {% if not is_mobile() %}
     <div class="uk-flex uk-flex-bottom card_cover {{  app.session.has('share') ? 'share' }}"
          style="background:url('{{ mainFoto }}') center center;
                  background-size: cover;
@@ -76,6 +77,19 @@
             </div>
         </div>
     </div>
+    {% else %}
+        <div class="standard_wide">
+            <h1>{{ include(':seo_templates:p_h1.html.twig') }}</h1>
+            <div>
+                {% if card.address != '' %}
+                    <i class="fa fa-map-marker"></i> {{ card.address }}
+                {% else %}
+                    <i class="fa fa-map-marker"></i> {{ card.getCity.header }}, {{ card.getCity.getParent.header }}, {{ card.getCity.country }}
+                {% endif %}
+            </div>
+            <div><i class="fa fa-calendar"></i> {{ card.dateCreate|date("d.m.Y") }} <i class="fa fa-eye"></i> {{ card.views }}</div>
+        </div>
+    {% endif %}
 
     {% if app.session.has('share') %}
         {{ app.session.remove('share') }}
@@ -115,7 +129,7 @@
                     {% endif %}
                 </div>
 
-                <div id="page_slider" class="owl-carousel owl-theme" data-items="1">
+                <div id="page_slider" class="owl-carousel owl-theme" data-items="1" data-full="1">
                     {% for foto in card.getFotos %}
                         <div uk-lightbox>
                         <a href="/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg" class="slide uk-width-1-1" style="
@@ -208,9 +222,9 @@
 
 
                 {% if card.getCardFeatures is not empty%}
-                    <h2 class="pf_style_header"><span>Характеристики</span></h2>
+                    <h2 class="pf_style_header"><span>Характеристики</span>{{ is_mobile() ? '<a class="toggle_chars" uk-toggle="target: #car_chars">Развернуть</a>' }}</h2>
 
-                    <div class="card_blanc">
+                    <div id="car_chars" class="card_blanc" {{ is_mobile() ? 'hidden' }}>
                         <div uk-grid>
                             {% for feature in card.getCardFeatures %}
                                 <div class="">
@@ -220,6 +234,7 @@
                             {% endfor %}
                         </div>
                     </div>
+
                 {% endif %}
 
                 <h2 class="pf_style_header"><span>Комментарии</span></h2>

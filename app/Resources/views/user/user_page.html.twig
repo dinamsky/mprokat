@@ -15,7 +15,24 @@
 {% block content %}
     <div class="user_page_top_line_1">
         <div class="standard_wide">
+            {% if is_mobile() %}
+                <div class="uk-width-1-1 uk-width-1-5@s">
+                    {% if user_foto %}
+                        <div style="background: url('{{ user_foto }}') center center no-repeat;
+                                background-size: contain;
+                                width: 155px;
+                                height: 155px;
+                                display: inline-block;
+
+                                position: relative;
+                                ">
+                        </div>
+                    {% else %}
+                    {% endif %}
+                </div>
+            {% endif %}
             <div uk-grid>
+
                 <div class="uk-visible@s uk-width-1-5@s" ></div>
                 <div class="uk-width-4-5@s">
                     <div class="">Собственник</div>
@@ -42,7 +59,8 @@
     <div class="user_page_top_line_2">
         <div class="standard_wide">
             <div uk-grid>
-                <div class="uk-visible@s uk-width-1-5@s">
+                {% if not is_mobile() %}
+                <div class="uk-width-1-1 uk-width-1-5@s">
                     {% if user_foto %}
                         <div style="background: url('{{ user_foto }}') center center no-repeat;
                                 background-size: contain;
@@ -66,6 +84,7 @@
                         </div>
                     {% endif %}
                 </div>
+                {% endif %}
                 <div class="uk-width-4-5@s">
                     {#<div uk-grid class="uk-grid-collapse">#}
                         {#<div class="uk-width-1-4 uk-width-1-6@s uk-text-small"><i class="fa fa-envelope"></i> Email</div>#}

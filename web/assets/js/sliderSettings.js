@@ -2,6 +2,7 @@ $( document ).ready(function() {
     $(".owl-carousel").each(function() {
         var items = $(this).data('items');
         var dots = $(this).data('dots');
+        var full = $(this).data('full');
         var fnc = '';
         if (dots === 0) {
             dots = false;
@@ -9,6 +10,10 @@ $( document ).ready(function() {
         } else {
             dots = true;
             fnc = '';
+        }
+        var st_padding = 50;
+        if (full){
+            st_padding = 0;
         }
         var margin = 0;
         if(items>1) margin = 20;
@@ -23,7 +28,7 @@ $( document ).ready(function() {
             responsive:{
                 0:{
                     items:1,
-                    stagePadding:50,
+                    stagePadding:st_padding,
                     margin:20
                 },
                 600:{

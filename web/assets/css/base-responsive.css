@@ -25,7 +25,7 @@
 
 
     .user_page_top_line_1 {
-        background-color: #06a7ea;
+        background-color: white;
         padding-top: 10px;
         height: auto;
         padding-bottom: 10px;
@@ -186,5 +186,24 @@
         padding: 13px 0;
         cursor: pointer;
         line-height: 21px;
+    }
+
+    .card_cover{
+
+    }
+
+    .toggle_chars{
+        color: grey;
+        border: 1px solid grey;
+        margin-top: 5px;
+        display: inline-block;
+        line-height: 19px;
+        font-size: 18px;
+        padding: 5px 10px;
+    }
+
+    .pf_style_header{
+        text-align: center;
+        border-bottom: 0 ;
     }
 }

@@ -249,28 +249,34 @@ class MenuMarkModel extends Controller
 
     public function getExistGt($gt_ids)
     {
-        $query = $this->em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.id IN ('.implode(",",$gt_ids).')');
+        if(!empty($gt_ids)) {
+            $query = $this->em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.id IN (' . implode(",", $gt_ids) . ')');
+        } else {
+            $query = $this->em->createQuery('SELECT g FROM AppBundle:GeneralType g');
+        }
         return $query->getResult();
     }
 
     public function getExistMark($model_ids,$general)
     {
-        $mark_ids = [];
+        if(!empty($model_ids)) {
+            $mark_ids = [];
 //        $query = $this->em->createQuery('SELECT t FROM MarkBundle:CarType t WHERE t.url = ?1');
 //        $query->setParameter(1, $general->getUrl());
 //        $carType = $query->getResult();
 //        $carType = $carType[0];
-        $carType = $general->getCarTypeIds();
+            $carType = $general->getCarTypeIds();
 
-        sort($model_ids);
-        $query = $this->em->createQuery('SELECT m.carMarkId FROM MarkBundle:CarModel m WHERE m.carTypeId = '.$carType.' AND m.id IN ('.implode(",",$model_ids).') ORDER BY m.carMarkId');
-        foreach($query->getScalarResult() as $row){
-            $mark_ids[] = $row['carMarkId'];
-        }
-        $mark_ids = array_unique($mark_ids);
-        if(!empty($mark_ids)) {
-            $query = $this->em->createQuery('SELECT m FROM MarkBundle:CarMark m WHERE m.id IN (' . implode(",", $mark_ids) . ')');
-            return $query->getResult();
+            sort($model_ids);
+            $query = $this->em->createQuery('SELECT m.carMarkId FROM MarkBundle:CarModel m WHERE m.carTypeId = ' . $carType . ' AND m.id IN (' . implode(",", $model_ids) . ') ORDER BY m.carMarkId');
+            foreach ($query->getScalarResult() as $row) {
+                $mark_ids[] = $row['carMarkId'];
+            }
+            $mark_ids = array_unique($mark_ids);
+            if (!empty($mark_ids)) {
+                $query = $this->em->createQuery('SELECT m FROM MarkBundle:CarMark m WHERE m.id IN (' . implode(",", $mark_ids) . ')');
+                return $query->getResult();
+            } else return [];
         } else return [];
     }
 
