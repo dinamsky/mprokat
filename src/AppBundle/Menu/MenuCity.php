@@ -119,7 +119,7 @@ class MenuCity extends Controller
             ->getResult();
 
         foreach($cities as $c){
-            $res[] = $c->getHeader().'|'.$c->getId();
+            $res[] = $c->getHeader().'|'.$c->getId().'|'.$c->getUrl();
         }
 
         return new Response(json_encode($res));

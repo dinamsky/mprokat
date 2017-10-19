@@ -20,7 +20,7 @@ $( document ).ready(function() {
             var id = res[1];
             search = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
             var re = new RegExp("(" + search.split(' ').join('|') + ")", "gi");
-            return '<div class="autocomplete-suggestion city_block" data-url="' + item + '" data-header="' + item + '" data-id="' + id + '" data-val = "' + id + '" >' + item.replace(re, "<b>$1</b>") + '</div>';
+            return '<div class="autocomplete-suggestion city_block" data-url="' + res[2] + '" data-header="' + item + '" data-id="' + id + '" data-val = "' + id + '" >' + item.replace(re, "<b>$1</b>") + '</div>';
         },
         onSelect: function(e, term, item){
             $('.city_block[data-id="'+term+'"]').click();
