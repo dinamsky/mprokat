@@ -68,11 +68,14 @@ class SearchController extends Controller
         $gtId = 0;
 
         if($city){
-            $city = $this->getDoctrine()
-                ->getRepository(City::class)
-                ->findOneBy(['url' => $city]);
 
-            if(!$city) throw $this->createNotFoundException(); //404
+            if($this->get('session')->get('city')->getUrl() != $city) {
+                $city = $this->getDoctrine()
+                    ->getRepository(City::class)
+                    ->findOneBy(['url' => $city]);
+                if(!$city) throw $this->createNotFoundException(); //404
+                $this->get('session')->set('city', $city);
+            } else $city = $this->get('session')->get('city');
 
             $countryCode = $city->getCountry();
             if($city->getChildren()->isEmpty()){
@@ -316,8 +319,7 @@ class SearchController extends Controller
             ->getRepository(Seo::class)
             ->findOneBy(['url' => $request->getPathInfo()]);
 
-        $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.total DESC, c.header ASC');
-        $popular_city = $query->getResult();
+
 
         if($general) {
 //            $query = $em->createQuery('SELECT t FROM MarkBundle:CarType t WHERE t.url = ?1');
@@ -387,7 +389,7 @@ class SearchController extends Controller
 
             'seo' => $seo,
             'custom_seo' => $custom_seo,
-            'popular_city' => $popular_city,
+
 
             'mark_arr_sorted' => $mark_arr_sorted,
             'models_in_mark' => $models_in_mark,

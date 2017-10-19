@@ -1,20 +1,25 @@
 <?php
 
-
 namespace AppBundle\EventSubscriber;
 
-
-
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use AppBundle\Entity\City;
+use Doctrine\ORM\EntityManagerInterface as em;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class GeoSubscriber implements EventSubscriberInterface
 {
+
+    public function __construct(em $em)
+    {
+        $this->em = $em;
+    }
+
     public function onKernelController(FilterControllerEvent $event)
     {
+
+
         $userAgent = isset($_SERVER['HTTP_USER_AGENT'])
             ? strtolower($_SERVER['HTTP_USER_AGENT'])
             : '';
@@ -24,35 +29,38 @@ class GeoSubscriber implements EventSubscriberInterface
             $userAgent
         );
 
-        if(!$is_bot){
+        $default = true;
 
-            $ip = $event->getRequest()->getClientIp();
-            if ($ip == 'unknown') {
-                $ip = $_SERVER['REMOTE_ADDR'];
-            }
-            if ($ip == '127.0.0.1') {
-                $geo = ['city' => 'Москва','lat'=>'55.753410','lon'=>'37.620285'];
-                $event->getRequest()->getSession()->set('geo', $geo);
-
-            } else {
-
-                $sessId = $event->getRequest()->getSession()->getId();
-
-                if ($event->getRequest()->getSession()->has('ip')) {
-                    $sessIP = $event->getRequest()->getSession()->get('ip');
-                } else {
-                    $event->getRequest()->getSession()->set('ip', $ip);
-                    $event->getRequest()->getSession()->set('sessId', $sessId);
+        if (!$is_bot) {
+            if(!isset($_SESSION['city'])) {
+                $ip = $event->getRequest()->getClientIp();
+                if ($ip == 'unknown') {
+                    $ip = $_SERVER['REMOTE_ADDR'];
+                }
+                if ($ip != '127.0.0.1') {
                     $get = file_get_contents('http://ip-api.com/json/' . $ip . '?lang=ru');
                     if ($get) {
                         $geo = json_decode($get, true);
-                    } else {
-                        $geo = ['city' => 'Москва','lat'=>'55.753410','lon'=>'37.620285'];
+                        $city = $this->em->getRepository("AppBundle:City")->createQueryBuilder('c')
+                            ->where('c.header LIKE :geoname')
+                            ->andWhere('c.parentId IS NOT NULL')
+                            ->setParameter('geoname', '%'.$geo['city'].'%')
+                            ->getQuery()
+                            ->getResult();
+                        if ($city) {
+                            $event->getRequest()->getSession()->set('city', $city[0]);
+                            $default = false;
+                        }
                     }
-                    $event->getRequest()->getSession()->set('geo', $geo);
-                    $event->getRequest()->getSession()->getFlashBag()->add('notice', 'Ваш город был определен как ' . $geo['city']);
-                }
-            }
+                } else $default = false;
+            } else $default = false;
+        }
+
+        if($default){
+            $city = $this->em
+                ->getRepository(City::class)
+                ->find(77);
+            $event->getRequest()->getSession()->set('city', $city);
         }
     }
 

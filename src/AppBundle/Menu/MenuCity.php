@@ -102,6 +102,29 @@ class MenuCity extends Controller
         ]);
     }
 
+
+    /**
+     * @Route("/ajax/getCityByInput")
+     */
+    public function getCityByInputAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $res = array();
+
+        $cities = $em->getRepository("AppBundle:City")->createQueryBuilder('c')
+            ->where('c.header LIKE :ct')
+            ->andWhere('c.parent IS NOT NUll')
+            ->setParameter('ct', '%'.$request->request->get('q').'%')
+            ->getQuery()
+            ->getResult();
+
+        foreach($cities as $c){
+            $res[] = $c->getHeader().'|'.$c->getId();
+        }
+
+        return new Response(json_encode($res));
+    }
+
     public function updateCityTotal($cityId,$modelId = '')
     {
 //        $query = $this->em->createQuery('SELECT c FROM AppBundle:City c WHERE c.id = ?1');
