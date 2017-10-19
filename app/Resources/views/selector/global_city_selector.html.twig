@@ -16,7 +16,7 @@
 
         <div class="uk-column-1-1 uk-column-1-5@s">
             <div class="city_block uk-margin-bottom" data-id="0" data-url="rus" data-header="Россия">Россия</div>
-            {% for city in popular_city if  city.total >= 10 %}
+            {% for city in popular_city if city.total >= 10 %}
                 <div class="city_block" data-id="{{ city.id }}" data-url="{{ city.url }}" data-header="{{ city.header }}">{{ city.header }}</div>
             {% endfor %}
         </div>
@@ -24,7 +24,7 @@
         <button uk-toggle="target: #more_cities" type="button" class="more_cities_button">показать все города</button>
         <div id="more_cities" hidden>
             <div class="uk-column-1-1 uk-column-1-5@s">
-                {% for city in popular_city if  city.total < 10 %}
+                {% for city in popular_city if city.total < 10 %}
                     <div class="city_block" data-id="{{ city.id }}" data-url="{{ city.url }}" data-header="{{ city.header }}">{{ city.header }}</div>
                 {% endfor %}
             </div>

@@ -1,6 +1,6 @@
 <?php
 
-// src/AppBundle/EventSubscriber/TokenSubscriber.php
+
 namespace AppBundle\EventSubscriber;
 
 
