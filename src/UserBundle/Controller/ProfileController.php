@@ -206,7 +206,7 @@ class ProfileController extends Controller
             if($post->has('user_id')){
                 $user = $this->getDoctrine()
                     ->getRepository(Card::class)
-                    ->find($post->has('user_id'));
+                    ->find($post->get('user_id'));
                 $card = false;
             }
 
