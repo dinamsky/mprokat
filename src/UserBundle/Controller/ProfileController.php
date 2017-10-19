@@ -243,7 +243,8 @@ class ProfileController extends Controller
             );
         }
 
-        return $this->redirect('/card/'.$card_id);
+        if($card) return $this->redirect('/card/'.$card_id);
+        else return $this->redirect('/user/'.$user->getId());
     }
 
     /**
