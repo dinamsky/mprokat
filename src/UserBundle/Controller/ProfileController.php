@@ -39,41 +39,10 @@ class ProfileController extends Controller
             $cards = $query->getResult();
 
 
-            if(!$this->get('session')->has('city')){
-                if($this->get('session')->has('geo')){
-                    $geo = $this->get('session')->get('geo');
-                    $city = $em->getRepository("AppBundle:City")->createQueryBuilder('c')
-                        ->where('c.header LIKE :geoname')
-                        ->andWhere('c.parentId IS NOT NULL')
-                        ->setParameter('geoname', '%'.$geo['city'].'%')
-                        ->getQuery()
-                        ->getResult();
-                    if ($city) {
-                        $city = $city[0];
-                    }
-                    else {
-                        $city = $this->getDoctrine()
-                            ->getRepository(City::class)
-                            ->find(77);
-                    }
-                } else {
-                    $city = new City();
-                    $city->setCountry('RUS');
-                    $city->setParentId(0);
-                    $city->setTempId(0);
-                }
-                $this->get('session')->set('city', $city);
-            } else {
-                $city = $this->get('session')->get('city');
-            }
-
-            if (is_array($city)){
-                $city = $city[0];
-            }
+            $city = $this->get('session')->get('city');
             $in_city = $city->getUrl();
 
-            $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.total DESC, c.header ASC');
-            $popular_city = $query->getResult();
+
 
             $stat_arr = [
                 'url' => $request->getPathInfo(),
@@ -90,7 +59,7 @@ class ProfileController extends Controller
                 'share' => true,
                 'cards' => $cards,
                 'city' => $city,
-                'popular_city' => $popular_city,
+
                 'in_city' => $in_city,
                 'cityId' => $city->getId(),
                 'generalTypes' => $generalTypes,
@@ -109,41 +78,10 @@ class ProfileController extends Controller
             ->getRepository(User::class)
             ->find($this->get('session')->get('logged_user')->getId());
 
-        if(!$this->get('session')->has('city')){
-            if($this->get('session')->has('geo')){
-                $geo = $this->get('session')->get('geo');
-                $city = $em->getRepository("AppBundle:City")->createQueryBuilder('c')
-                    ->where('c.header LIKE :geoname')
-                    ->andWhere('c.parentId IS NOT NULL')
-                    ->setParameter('geoname', '%'.$geo['city'].'%')
-                    ->getQuery()
-                    ->getResult();
-                if ($city) {
-                    $city = $city[0];
-                }
-                else {
-                    $city = $this->getDoctrine()
-                        ->getRepository(City::class)
-                        ->find(77);
-                }
-            } else {
-                $city = new City();
-                $city->setCountry('RUS');
-                $city->setParentId(0);
-                $city->setTempId(0);
-            }
-            $this->get('session')->set('city', $city);
-        } else {
-            $city = $this->get('session')->get('city');
-        }
-
-        if (is_array($city)){
-            $city = $city[0];
-        }
+        $city = $this->get('session')->get('city');
         $in_city = $city->getUrl();
 
-        $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.total DESC, c.header ASC');
-        $popular_city = $query->getResult();
+
 
         $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.total DESC');
         $generalTypes = $query->getResult();
@@ -151,7 +89,7 @@ class ProfileController extends Controller
         if(!$user->getIsBanned()) return $this->render('user/profile_main.html.twig',[
             'user' => $user,
             'city' => $city,
-            'popular_city' => $popular_city,
+
             'in_city' => $in_city,
             'cityId' => $city->getId(),
             'generalTypes' => $generalTypes,
@@ -176,41 +114,10 @@ class ProfileController extends Controller
         if(!$user->getIsBanned()) {
 
 
-            if(!$this->get('session')->has('city')){
-                if($this->get('session')->has('geo')){
-                    $geo = $this->get('session')->get('geo');
-                    $city = $em->getRepository("AppBundle:City")->createQueryBuilder('c')
-                        ->where('c.header LIKE :geoname')
-                        ->andWhere('c.parentId IS NOT NULL')
-                        ->setParameter('geoname', '%'.$geo['city'].'%')
-                        ->getQuery()
-                        ->getResult();
-                    if ($city) {
-                        $city = $city[0];
-                    }
-                    else {
-                        $city = $this->getDoctrine()
-                            ->getRepository(City::class)
-                            ->find(77);
-                    }
-                } else {
-                    $city = new City();
-                    $city->setCountry('RUS');
-                    $city->setParentId(0);
-                    $city->setTempId(0);
-                }
-                $this->get('session')->set('city', $city);
-            } else {
-                $city = $this->get('session')->get('city');
-            }
-
-            if (is_array($city)){
-                $city = $city[0];
-            }
+            $city = $this->get('session')->get('city');
             $in_city = $city->getUrl();
 
-            $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.total DESC, c.header ASC');
-            $popular_city = $query->getResult();
+
 
             $stat_arr = [
                 'url' => $request->getPathInfo(),
@@ -226,7 +133,7 @@ class ProfileController extends Controller
             return $this->render('user/user_profile.html.twig', [
                 'user' => $user,
                 'city' => $city,
-                'popular_city' => $popular_city,
+
                 'in_city' => $in_city,
                 'cityId' => $city->getId(),
                 'generalTypes' => $generalTypes,
@@ -286,40 +193,58 @@ class ProfileController extends Controller
     {
         $post = $request->request;
 
-        $card_id = $post->get('card_id');
+        if ($this->captchaVerify($post->get('g-recaptcha-response'))) {
 
-        $card = $this->getDoctrine()
-            ->getRepository(Card::class)
-            ->find($card_id);
+            if($post->has('card_id')) {
+                $card_id = $post->get('card_id');
 
-        $user = $card->getUser();
+                $card = $this->getDoctrine()
+                    ->getRepository(Card::class)
+                    ->find($card_id);
+                $user = $card->getUser();
+            }
+            if($post->has('user_id')){
+                $user = $this->getDoctrine()
+                    ->getRepository(User::class)
+                    ->find($post->get('user_id'));
+                $card = false;
+            }
 
-        $message = (new \Swift_Message('Сообщение от пользователя'))
-            ->setFrom(['mail@multiprokat.com' => 'Робот Мультипрокат'])
-            ->setTo($user->getEmail())
-            ->setCc('test.multiprokat@gmail.com')
-            ->setBody(
-                $this->renderView(
-                    'email/request.html.twig',
-                    array(
-                        'header' => $user->getHeader(),
-                        'message' => $post->get('message'),
-                        'email' => $post->get('email'),
-                        'name' => $post->get('name'),
-                        'phone' => $post->get('phone'),
-                        'card' => $card,
-                    )
-                ),
-                'text/html'
+
+            $message = (new \Swift_Message('Сообщение от пользователя'))
+                ->setFrom(['mail@multiprokat.com' => 'Робот Мультипрокат'])
+                ->setTo($user->getEmail())
+                ->setCc('test.multiprokat@gmail.com')
+                ->setBody(
+                    $this->renderView(
+                        'email/request.html.twig',
+                        array(
+                            'header' => $user->getHeader(),
+                            'message' => $post->get('message'),
+                            'email' => $post->get('email'),
+                            'name' => $post->get('name'),
+                            'phone' => $post->get('phone'),
+                            'card' => $card,
+                            'user' => $user
+                        )
+                    ),
+                    'text/html'
+                );
+            $mailer->send($message);
+
+            $this->addFlash(
+                'notice',
+                'Ваше сообщение успешно отправлено!'
             );
-        $mailer->send($message);
+        } else {
+            $this->addFlash(
+                'notice',
+                'Каптча не пройдена!'
+            );
+        }
 
-        $this->addFlash(
-            'notice',
-            'Ваше сообщение успешно отправлено!'
-        );
-
-        return $this->redirect('/card/'.$card_id);
+        if($card) return $this->redirect('/card/'.$card_id);
+        else return $this->redirect('/user/'.$user->getId());
     }
 
     /**
@@ -437,41 +362,10 @@ class ProfileController extends Controller
                 if ($info->getUiKey() == 'foto' and $info->getUiValue() != '') $user_foto = '/assets/images/users/t/' . $info->getUiValue() . '.jpg';
             }
 
-            if(!$this->get('session')->has('city')){
-                if($this->get('session')->has('geo')){
-                    $geo = $this->get('session')->get('geo');
-                    $city = $em->getRepository("AppBundle:City")->createQueryBuilder('c')
-                        ->where('c.header LIKE :geoname')
-                        ->andWhere('c.parentId IS NOT NULL')
-                        ->setParameter('geoname', '%'.$geo['city'].'%')
-                        ->getQuery()
-                        ->getResult();
-                    if ($city) {
-                        $city = $city[0];
-                    }
-                    else {
-                        $city = $this->getDoctrine()
-                            ->getRepository(City::class)
-                            ->find(77);
-                    }
-                } else {
-                    $city = new City();
-                    $city->setCountry('RUS');
-                    $city->setParentId(0);
-                    $city->setTempId(0);
-                }
-                $this->get('session')->set('city', $city);
-            } else {
-                $city = $this->get('session')->get('city');
-            }
-
-            if (is_array($city)){
-                $city = $city[0];
-            }
+            $city = $this->get('session')->get('city');
             $in_city = $city->getUrl();
 
-            $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.total DESC, c.header ASC');
-            $popular_city = $query->getResult();
+
 
             $mark_arr = $mm->getExistMarks('',1);
             $mark_arr_sorted = $mark_arr['sorted_marks'];
@@ -493,7 +387,7 @@ class ProfileController extends Controller
                 'user' => $user,
                 'user_foto' => $user_foto,
                 'city' => $city,
-                'popular_city' => $popular_city,
+
                 'mark_arr_sorted' => $mark_arr_sorted,
                 'models_in_mark' => $models_in_mark,
                 'in_city' => $in_city,
@@ -503,5 +397,21 @@ class ProfileController extends Controller
                 'generalTypes' => $generalTypes,
             ]);
         } else return new Response("",404);
+    }
+
+    private function captchaverify($recaptcha){
+        $url = "https://www.google.com/recaptcha/api/siteverify";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, array(
+            "secret"=>"6LcGCzUUAAAAAH0yAEPu8N5h9b5BB8THZtFDx3r2","response"=>$recaptcha));
+        $response = curl_exec($ch);
+        curl_close($ch);
+        $data = json_decode($response);
+
+        return $data->success;
     }
 }

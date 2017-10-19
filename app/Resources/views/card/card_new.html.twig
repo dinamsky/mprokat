@@ -95,12 +95,13 @@
                             <input name="coords" type="hidden" value="">
                             <div id="map" data-lat="55.753410" data-lng="37.620285"></div>
                         {% else %}
-                            {% if app.session.get('geo').lat == NULL %}
+                            {% if app.session.get('city').coords == NULL %}
                                 {% set lat = 55.753410 %}
                                 {% set lon = 37.620285 %}
                             {% else %}
-                                {% set lat = app.session.get('geo').lat %}
-                                {% set lon = app.session.get('geo').lon %}
+                                {% set crd = app.session.get('city').coords|split(',') %}
+                                {% set lat = crd[0] %}
+                                {% set lon = crd[1] %}
                             {% endif %}
                             <input name="coords" type="hidden" value="{{ lat }},{{ lon }}">
                             <div id="map" data-lat="{{ lat }}" data-lng="{{ lon }}"></div>

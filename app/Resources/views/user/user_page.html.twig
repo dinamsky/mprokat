@@ -5,12 +5,34 @@
     {{ parent() }}
     <script src="{{ asset('assets/js/showCard.js') }}"></script>
     <script src="{{ asset('assets/js/left_selector.js') }}"></script>
+    <script src="{{ asset('assets/js/recapthcha_validate.js') }}"></script>
+{% endblock %}
+
+{% block socialScripts %}
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 {% endblock %}
 
 {% block content %}
     <div class="user_page_top_line_1">
         <div class="standard_wide">
+            {% if is_mobile() %}
+                <div class="uk-width-1-1 uk-width-1-5@s">
+                    {% if user_foto %}
+                        <div style="background: url('{{ user_foto }}') center center no-repeat;
+                                background-size: contain;
+                                width: 155px;
+                                height: 155px;
+                                display: inline-block;
+
+                                position: relative;
+                                ">
+                        </div>
+                    {% else %}
+                    {% endif %}
+                </div>
+            {% endif %}
             <div uk-grid>
+
                 <div class="uk-visible@s uk-width-1-5@s" ></div>
                 <div class="uk-width-4-5@s">
                     <div class="">Собственник</div>
@@ -37,7 +59,8 @@
     <div class="user_page_top_line_2">
         <div class="standard_wide">
             <div uk-grid>
-                <div class="uk-visible@s uk-width-1-5@s">
+                {% if not is_mobile() %}
+                <div class="uk-width-1-1 uk-width-1-5@s">
                     {% if user_foto %}
                         <div style="background: url('{{ user_foto }}') center center no-repeat;
                                 background-size: contain;
@@ -61,6 +84,7 @@
                         </div>
                     {% endif %}
                 </div>
+                {% endif %}
                 <div class="uk-width-4-5@s">
                     {#<div uk-grid class="uk-grid-collapse">#}
                         {#<div class="uk-width-1-4 uk-width-1-6@s uk-text-small"><i class="fa fa-envelope"></i> Email</div>#}
@@ -108,16 +132,20 @@
                         <div class="uk-modal-dialog uk-modal-body">
                             <h2 class="uk-modal-title">Сообщение пользователю</h2>
                             <button class="uk-modal-close-default" type="button" uk-close></button>
-                            <form action="/user/sendMessage" uk-grid class="uk-grid-small" method="POST">
+                            <form action="/user/sendMessage" uk-grid class="uk-grid-small" method="POST" onsubmit="return check_if_capcha_is_filled();">
                                 <div class="uk-width-1-1"><input type="text" name="name" class="uk-input" placeholder="Имя"></div>
                                 <div class="uk-width-1-1"><input type="text" name="phone" class="uk-input uk-width-1-1" placeholder="Телефон"></div>
                                 <div class="uk-width-1-1"><input type="text" name="email" class="uk-input" placeholder="Email" required></div>
                                 <div class="uk-width-1-1"><textarea name="message" class="uk-width-1-1 short_textarea" placeholder="Сообщение" required></textarea>
                                 </div>
-                                <input type="hidden" name="card_id" value="{{ user.cards[0].id }}">
+                                <input type="hidden" name="user_id" value="{{ user.id }}">
                                 <div class="uk-width-1-1">
                                     <button class="uk-button uk-button-default uk-width-1-1">Отправить</button>
                                 </div>
+                                <div class="g-recaptcha"
+                                     data-callback="capcha_filled"
+                                     data-expired-callback="capcha_expired"
+                                     data-sitekey="6LcGCzUUAAAAADpeaCQhkXWZqdhnB6_ZEGRm7Z2m"></div>
                             </form>
                         </div>
                     </div>

@@ -57,7 +57,7 @@ class NewCardController extends Controller
                 ->findOneBy(['id' => $this->get('session')->get('logged_user')->getId()]);
             if ($user->getIsBanned()) return new Response("", 404);
 
-            if ($user->getAccountTypeId() == 0 and count($user->getCards()) > 2){
+            if ($user->getAccountTypeId() == 0 and count($user->getCards()) > 1){
                 $this->addFlash(
                     'notice',
                     'В стандартном аккаунте вам доступно не более 2-х объявлений.<br>Оплатите PRO аккаунт для неограниченного количества объявлений'
@@ -95,29 +95,7 @@ class NewCardController extends Controller
         if($request->isMethod('GET')) {
 
 
-            if($this->get('session')->has('geo')){
-
-                $geo = $this->get('session')->get('geo');
-
-                $city = $em->getRepository("AppBundle:City")->createQueryBuilder('c')
-                    ->where('c.header LIKE :geoname')
-                    ->andWhere('c.parentId IS NOT NULL')
-                    ->setParameter('geoname', '%'.$geo['city'].'%')
-                    ->getQuery()
-                    ->getResult();
-                if ($city) $city = $city[0]; // TODO make easier!
-                else {
-                    $city = new City();
-                    $city->setCountry('RUS');
-                    $city->setParentId(0);
-                    $city->setTempId(0);
-                }
-            } else {
-                $city = new City();
-                $city->setCountry('RUS');
-                $city->setParentId(0);
-                $city->setTempId(0);
-            }
+            $city = $this->get('session')->get('city');
 
             $gt = $this->getDoctrine()
                 ->getRepository(GeneralType::class)
@@ -142,7 +120,7 @@ class NewCardController extends Controller
             $stat->setStat($stat_arr);
 
 
-            if($user){
+            if(isset($user)){
                 $phone = false;
                 foreach ($user->getInformation() as $inf)
                     if($inf->getUiKey() == 'phone') {
@@ -316,9 +294,18 @@ class NewCardController extends Controller
                 foreach ($user->getInformation() as $inf)
                     if($inf->getUiKey() == 'phone') {
                         $phone = $inf->getUiValue();
+                        $ui_id = $inf->getId();
                         break;
                     }
                 if(isset($phone) and $phone != '') $phone = true;
+                if($phone == ''){
+                    $ui = $this->getDoctrine()
+                        ->getRepository(UserInfo::class)
+                        ->find($ui_id);
+                    $em->remove($ui);
+                    $em->flush();
+                    $phone = false;
+                }
             }
             if(!$phone and $post->has('phone')){
                 $ui = new UserInfo();

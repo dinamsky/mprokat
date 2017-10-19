@@ -46,4 +46,9 @@ class ServiceT3new extends Controller
         return $query->getResult();
     }
 
+    public function popularCities()
+    {
+        $query = $this->em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.header ASC');
+        return $query->getResult();
+    }
 }

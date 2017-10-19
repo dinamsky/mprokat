@@ -38,8 +38,7 @@ class ShowCardController extends Controller
             ->getRepository(Card::class)
             ->find($id);
 
-        $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.total DESC, c.header ASC');
-        $popular_city = $query->getResult();
+
 
         $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g ORDER BY g.total DESC');
         $generalTypes = $query->getResult();
@@ -87,7 +86,7 @@ class ShowCardController extends Controller
                     'allincity' => $allincity,
                     'general' => $general,
                     'model' => $model,
-                    'popular_city' => $popular_city,
+
                     'generalTypes' => $generalTypes,
                     'car_type_id' => $general->getCarTypeIds(),
                     'in_city' => $city->getUrl(),
@@ -248,7 +247,7 @@ class ShowCardController extends Controller
             'mainFoto' => $mainFoto,
             'seo' => $seo,
 
-            'popular_city' => $popular_city,
+
 
             'mark_arr_sorted' => $mark_arr_sorted,
             'models_in_mark' => $models_in_mark,
