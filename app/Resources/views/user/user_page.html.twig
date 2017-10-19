@@ -114,10 +114,14 @@
                                 <div class="uk-width-1-1"><input type="text" name="email" class="uk-input" placeholder="Email" required></div>
                                 <div class="uk-width-1-1"><textarea name="message" class="uk-width-1-1 short_textarea" placeholder="Сообщение" required></textarea>
                                 </div>
-                                <input type="hidden" name="card_id" value="{{ user.cards[0].id }}">
+                                <input type="hidden" name="user_id" value="{{ user.id }}">
                                 <div class="uk-width-1-1">
                                     <button class="uk-button uk-button-default uk-width-1-1">Отправить</button>
                                 </div>
+                                <div class="g-recaptcha"
+                                     data-callback="capcha_filled"
+                                     data-expired-callback="capcha_expired"
+                                     data-sitekey="6LcGCzUUAAAAADpeaCQhkXWZqdhnB6_ZEGRm7Z2m"></div>
                             </form>
                         </div>
                     </div>
