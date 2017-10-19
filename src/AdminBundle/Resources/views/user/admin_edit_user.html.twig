@@ -5,6 +5,8 @@
     <script src="{{ asset('assets/tinymce/jquery.tinymce.min.js') }}"></script>
     <script src="{{ asset('assets/tinymce/tinymce.min.js') }}"></script>
     <script src="{{ asset('assets/js/visual_editor.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.maskedinput.js') }}"></script>
+    <script src="{{ asset('assets/js/phone_validate.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -46,7 +48,7 @@
 
         {% endfor %}
 
-        <div>Телефон: <input name="info[phone]" value="{{ phone }}" class="uk-input"></div>
+        <div>Телефон: <input name="info[phone]" value="{{ phone }}" class="uk-input phone_validate"></div>
         <div>Website: <input name="info[website]" value="{{ website }}" class="uk-input"></div>
         <hr>
 
