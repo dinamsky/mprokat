@@ -214,7 +214,7 @@ class ProfileController extends Controller
             $message = (new \Swift_Message('Сообщение от пользователя'))
                 ->setFrom(['mail@multiprokat.com' => 'Робот Мультипрокат'])
                 ->setTo($user->getEmail())
-                ->setCc('test.multiprokat@gmail.com')
+                ->setCc('mail@multiprokat.com')
                 ->setBody(
                     $this->renderView(
                         'email/request.html.twig',
@@ -265,7 +265,6 @@ class ProfileController extends Controller
         $message = (new \Swift_Message('Сообщение от пользователя'))
             ->setFrom(['mail@multiprokat.com' => 'Робот Мультипрокат'])
             ->setTo('mail@multiprokat.com')
-            ->setCc('test.multiprokat@gmail.com')
             ->setBody(
                 $this->renderView(
                     'email/request.html.twig',

@@ -13,12 +13,13 @@ function signup_validate(){
     }
 
     if (!validateEmail(email)) {
-        alert('Заполните email правильно!');
+        alert('Заполните email правильно! Допустимы: a-z 0-9 точка дефис @');
         return false;
     }
 }
 
 function validateEmail(email) {
+    if(email.indexOf('+') + 1) return false;
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
 }

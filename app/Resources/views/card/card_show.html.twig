@@ -237,6 +237,8 @@
 
                 {% endif %}
 
+
+                {% if not app.session.has('first_card') %}
                 <h2 class="pf_style_header"><span>Комментарии</span></h2>
 
                 <div class="card_blanc">
@@ -300,7 +302,9 @@
                         </div>
                     {% endif %}
                 </div>
-
+                {% else %}
+                    <a href="/card/new" class="uk-button uk-button-success uk-width-1-1 uk-margin-top">Разместить еще объявление</a>
+                {% endif %}
 
 
                 {% if app.session.has('admin') or ( app.session.has('logged_user') and card.user.id == app.session.get('logged_user').id ) %}
@@ -480,5 +484,9 @@
         </div>
 
     </div>
+
+    {% if app.session.has('first_card') %}
+        {{ app.session.remove('first_card') }}
+    {% endif %}
 
 {% endblock %}
