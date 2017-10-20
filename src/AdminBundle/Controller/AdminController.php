@@ -137,22 +137,7 @@ class AdminController extends Controller
             $em->persist($userinfo);
             $em->flush();
 
-            $message = (new \Swift_Message('Администратор зарегистрировал аккаунт для вас на сайте multiprokat.com'))
-                ->setFrom('mail@multiprokat.com')
-                ->setTo($user->getEmail())
-                ->setCc('test.multiprokat@gmail.com')
-                ->setBody(
-                    $this->renderView(
-                        'email/admin_registration.html.twig',
-                        array(
-                            'header' => $user->getHeader(),
-                            'password' => $request->request->get('password'),
-                            'email' => $user->getEmail()
-                        )
-                    ),
-                    'text/html'
-                );
-            $mailer->send($message);
+
             $this->addFlash(
                 'notice',
                 'Новый аккаунт успешно создан!'

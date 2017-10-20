@@ -62,6 +62,14 @@ class NewCardController extends Controller
                     'notice',
                     'В стандартном аккаунте вам доступно не более 2-х объявлений.<br>Оплатите PRO аккаунт для неограниченного количества объявлений'
                 );
+                $stat_arr = [
+                    'url' => '/card/new',
+                    'event_type' => 'need_PRO',
+                    'page_type' => 'form',
+                ];
+                if(isset($user)) $stat_arr['user_id'] = $user->getId();
+                $stat->setStat($stat_arr);
+
                 return new RedirectResponse('/user/cards');
             }
         }
@@ -163,6 +171,8 @@ class NewCardController extends Controller
                 'popular_city' => $popular_city,
                 'phone' => $phone,
             ]);
+
+            return $response;
         }
 
         if($request->isMethod('POST')){
@@ -261,6 +271,13 @@ class NewCardController extends Controller
 
             $card->setUser($user);
 
+
+            if($user->getCards()->count() === 0){
+                $new_card = true;
+            }
+
+
+
             $color = $this->getDoctrine()
                 ->getRepository(Color::class)
                 ->find($post->get('colorId'));
@@ -288,6 +305,26 @@ class NewCardController extends Controller
             $em->persist($card);
 
             $em->flush();
+
+            if($this->get('session')->has('admin') and isset($new_card)){
+                $message = (new \Swift_Message('Администратор зарегистрировал аккаунт для вас на сайте multiprokat.com'))
+                    ->setFrom('mail@multiprokat.com')
+                    ->setTo($user->getEmail())
+                    ->setCc('mail@multiprokat.com')
+                    ->setBody(
+                        $this->renderView(
+                            'email/admin_registration.html.twig',
+                            array(
+                                'header' => $user->getHeader(),
+                                'password' => $request->request->get('password'),
+                                'email' => $user->getEmail(),
+                                'card' => $card
+                            )
+                        ),
+                        'text/html'
+                    );
+                $mailer->send($message);
+            }
 
             if($user){
                 $phone = false;
@@ -331,7 +368,7 @@ class NewCardController extends Controller
             if($post->has('noMark')){
                 $message = (new \Swift_Message('Пользователь не нашел свою марку'))
                     ->setFrom('mail@multiprokat.com')
-                    ->setTo('test.multiprokat@gmail.com')
+                    ->setTo('mail@multiprokat.com')
                     ->setBody(
                         $this->renderView(
                             'email/newmark.html.twig',
@@ -392,7 +429,11 @@ class NewCardController extends Controller
                 if ($this->get('session')->has('admin')){
                     $response = $this->redirectToRoute('admin_main');
                 } else {
-                    $response = $this->redirectToRoute('user_cards');
+
+                    if(isset($new_card)){
+                        $response = $this->redirect('/card/'.$card->getId()); // new and first
+                        $this->get('session')->set('first_card', true);
+                    } else $response = $this->redirectToRoute('user_cards');
                 }
             }
             else {
@@ -405,7 +446,7 @@ class NewCardController extends Controller
                 $order->setUser($user);
                 $order->setCard($card);
                 $order->setTariff($tariff);
-                $order->setPrice($tariff->getPrice());
+                $order->setPrice(ceil($tariff->getPrice()*100/110));
                 $order->setOrderType('tariff_'.$tariff->getId());
                 $order->setStatus('new');
                 $em->persist($order);
@@ -415,7 +456,7 @@ class NewCardController extends Controller
                 $mrh_pass1 = "Wf1bYXSd5V8pKS3ULwb3";
                 $inv_id    = $order->getId();
                 $inv_desc  = "set_tariff";
-                $out_summ  = $tariff->getPrice();
+                $out_summ  = ceil($tariff->getPrice()*100/110);
 
                 $crc  = md5("$mrh_login:$out_summ:$inv_id:$mrh_pass1");
 
@@ -425,10 +466,12 @@ class NewCardController extends Controller
                 $response = new RedirectResponse($url);
             }
 
-            $this->addFlash(
-                'notice',
-                'Не забудьте поделиться вашим объявлением в социальных сетях!'
-            );
+            if (!$this->get('session')->has('admin')) {
+                $this->addFlash(
+                    'notice',
+                    'Не забудьте поделиться вашим объявлением в социальных сетях!'
+                );
+            }
 
         }
 
