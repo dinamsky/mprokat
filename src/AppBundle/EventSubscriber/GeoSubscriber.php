@@ -52,7 +52,7 @@ class GeoSubscriber implements EventSubscriberInterface
                             $default = false;
                         }
                     }
-                } else $default = false;
+                }
             } else $default = false;
         }
 

@@ -426,7 +426,7 @@ class UserController extends Controller
             $order->setUser($user);
             $order->setCard($card);
             $order->setTariff($tariff);
-            $order->setPrice(450);
+            $order->setPrice(ceil(450*100/110));
             $order->setOrderType('accountPRO');
             $order->setStatus('new');
             $em->persist($order);
@@ -436,7 +436,7 @@ class UserController extends Controller
             $mrh_pass1 = "Wf1bYXSd5V8pKS3ULwb3";
             $inv_id = $order->getId();
             $inv_desc = "set_account_PRO";
-            $out_summ = 450;
+            $out_summ = ceil(450*100/110);
 
             $crc = md5("$mrh_login:$out_summ:$inv_id:$mrh_pass1");
 

@@ -331,7 +331,7 @@ class EditCardController extends Controller
                 $order->setUser($user);
                 $order->setCard($card);
                 $order->setTariff($tariff);
-                $order->setPrice($tariff->getPrice());
+                $order->setPrice(ceil($tariff->getPrice()*100/110));
                 $order->setOrderType('tariff_' . $tariff->getId());
                 $order->setStatus('new');
                 $em->persist($order);
@@ -341,7 +341,7 @@ class EditCardController extends Controller
                 $mrh_pass1 = "Wf1bYXSd5V8pKS3ULwb3";
                 $inv_id = $order->getId();
                 $inv_desc = "set_tariff";
-                $out_summ = $tariff->getPrice();
+                $out_summ  = ceil($tariff->getPrice()*100/110);
 
                 $crc = md5("$mrh_login:$out_summ:$inv_id:$mrh_pass1");
 
