@@ -271,6 +271,13 @@ class NewCardController extends Controller
 
             $card->setUser($user);
 
+
+            if($user->getCards()->count() === 0){
+                $new_card = true;
+            }
+
+
+
             $color = $this->getDoctrine()
                 ->getRepository(Color::class)
                 ->find($post->get('colorId'));
@@ -299,7 +306,7 @@ class NewCardController extends Controller
 
             $em->flush();
 
-            if($this->get('session')->has('admin') and $user->getCards()->count() === 0){
+            if($this->get('session')->has('admin') and isset($new_card)){
                 $message = (new \Swift_Message('Администратор зарегистрировал аккаунт для вас на сайте multiprokat.com'))
                     ->setFrom('mail@multiprokat.com')
                     ->setTo($user->getEmail())
@@ -423,7 +430,7 @@ class NewCardController extends Controller
                     $response = $this->redirectToRoute('admin_main');
                 } else {
 
-                    if($user->getCards()->count() === 0){
+                    if(isset($new_card)){
                         $response = $this->redirect('/card/'.$card->getId()); // new and first
                         $this->get('session')->set('first_card', true);
                     } else $response = $this->redirectToRoute('user_cards');
@@ -459,10 +466,12 @@ class NewCardController extends Controller
                 $response = new RedirectResponse($url);
             }
 
-            $this->addFlash(
-                'notice',
-                'Не забудьте поделиться вашим объявлением в социальных сетях!'
-            );
+            if (!$this->get('session')->has('admin')) {
+                $this->addFlash(
+                    'notice',
+                    'Не забудьте поделиться вашим объявлением в социальных сетях!'
+                );
+            }
 
         }
 
