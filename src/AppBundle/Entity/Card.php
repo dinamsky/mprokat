@@ -164,7 +164,7 @@ class Card
      *
      * @ORM\Column(name="admin_id", type="integer", nullable=true, options={"default" : 1})
      */
-    private $adminId = null;
+    private $adminId = 1;
 
     /**
      * @ORM\ManyToOne(targetEntity="AdminBundle\Entity\Admin", inversedBy="cards")
