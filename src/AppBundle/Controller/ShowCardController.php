@@ -39,6 +39,13 @@ class ShowCardController extends Controller
             ->find($id);
 
 
+        if($card->getIsActive() == 0){
+            $this->addFlash(
+                'notice',
+                'Объявление №'.$card->getId().' временно недоступно!<br>Если это ваше объявление -<br>активируйте свой аккаунт через ссылку в письме регистрации,<br>тогда ваше объявление станет доступным.'
+            );
+            return $this->redirectToRoute('homepage');
+        }
 
         $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g ORDER BY g.total DESC');
         $generalTypes = $query->getResult();

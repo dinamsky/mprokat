@@ -216,6 +216,13 @@ class UserController extends Controller
                 'notice',
                 $message
             );
+
+            foreach($user->getCards() as $card){
+                $card->setIsActive(true);
+                $em->persist($card);
+                $em->flush();
+            }
+
             $return_url = 'user_main';
         } else {
             $this->addFlash(

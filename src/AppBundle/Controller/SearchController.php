@@ -225,7 +225,7 @@ class SearchController extends Controller
             if (!$models) $models = array();
         }
 
-        $dql = 'SELECT count(c.id) FROM AppBundle:Card c WHERE 1=1 '.$city_condition.$service_condition.$general_condition.$mark_condition.$body_condition;
+        $dql = 'SELECT count(c.id) FROM AppBundle:Card c WHERE c.isActive = 1 '.$city_condition.$service_condition.$general_condition.$mark_condition.$body_condition;
         $query = $em->createQuery($dql);
 
         $total_cards = $query->getSingleScalarResult();
@@ -260,7 +260,7 @@ class SearchController extends Controller
         $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g ORDER BY g.total DESC');
         $generalTypes = $query->getResult();
 
-        $dql = 'SELECT c.id FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.cardPrices p WITH p.priceId = 2 WHERE 1=1 '.$city_condition.$service_condition.$general_condition.$mark_condition.$body_condition.$order;
+        $dql = 'SELECT c.id FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.cardPrices p WITH p.priceId = 2 WHERE c.isActive = 1 '.$city_condition.$service_condition.$general_condition.$mark_condition.$body_condition.$order;
         $query = $em->createQuery($dql);
 
         $query->setMaxResults($cards_per_page);
@@ -322,10 +322,6 @@ class SearchController extends Controller
 
 
         if($general) {
-//            $query = $em->createQuery('SELECT t FROM MarkBundle:CarType t WHERE t.url = ?1');
-//            $query->setParameter(1, $general->getUrl());
-//            $carType = $query->getResult();
-//            $carType = $carType[0]->getId();
             $carType = $general->getCarTypeIds();
         } else $carType = '';
 
