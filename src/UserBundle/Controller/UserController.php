@@ -223,7 +223,7 @@ class UserController extends Controller
                 $em->flush();
             }
 
-            $return_url = 'user_main';
+            $return_url = 'user_cards';
         } else {
             $this->addFlash(
                 'notice',
