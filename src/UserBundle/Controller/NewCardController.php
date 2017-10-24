@@ -45,18 +45,28 @@ class NewCardController extends Controller
     /**
      * @Route("/card/new")
      */
-    public function indexAction(MenuMarkModel $markmenu, MenuGeneralType $mgt, MenuCity $mc, Request $request, FotoUtils $fu, EntityManagerInterface $em, \Swift_Mailer $mailer, ServiceStat $stat)
+    public function indexAction(MenuMarkModel $markmenu, MenuGeneralType $mgt, MenuCity $mc, Request $request, FotoUtils $fu, EntityManagerInterface $em, \Swift_Mailer $mailer, ServiceStat $stat, Password $pass)
     {
 
+        $admin = false;
+        if ($this->get('session')->has('admin')){
+            $admin = $this->getDoctrine()
+                ->getRepository(Admin::class)
+                ->find($this->get('session')->get('admin')->getId());
+        }
 
-        if($this->get('session')->get('logged_user') === null and !$this->get('session')->has('admin')) return new Response("",404);
-
-        if(!$this->get('session')->has('admin')) {
+        $user = false;
+        if($this->get('session')->has('logged_user')) {
             $user = $this->getDoctrine()
                 ->getRepository(User::class)
                 ->findOneBy(['id' => $this->get('session')->get('logged_user')->getId()]);
-            if ($user->getIsBanned()) return new Response("", 404);
+        }
 
+
+        //if($this->get('session')->get('logged_user') === null and !$this->get('session')->has('admin')) return new Response("",404);
+
+        if(!$admin and $user) {
+            if ($user->getIsBanned()) return new Response("", 404);
             if ($user->getAccountTypeId() == 0 and count($user->getCards()) > 1){
                 $this->addFlash(
                     'notice',
@@ -69,14 +79,9 @@ class NewCardController extends Controller
                 ];
                 if(isset($user)) $stat_arr['user_id'] = $user->getId();
                 $stat->setStat($stat_arr);
-
                 return new RedirectResponse('/user/cards');
             }
         }
-
-
-
-
 
         $card = new Card();
 
@@ -109,10 +114,7 @@ class NewCardController extends Controller
                 ->getRepository(GeneralType::class)
                 ->find(2);
 
-            if ($this->get('session')->has('admin')) $admin = $this->getDoctrine()
-                                                            ->getRepository(Admin::class)
-                                                            ->find($this->get('session')->get('admin')->getId());
-            else $admin = false;
+
 
             $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.total DESC, c.header ASC');
             $popular_city = $query->getResult();
@@ -123,12 +125,13 @@ class NewCardController extends Controller
                 'page_type' => 'form',
             ];
 
-            if(isset($user)) $stat_arr['user_id'] = $user->getId();
+            if($user) $stat_arr['user_id'] = $user->getId();
 
             $stat->setStat($stat_arr);
 
+            $phone = true;
 
-            if(isset($user)){
+            if($user){
                 $phone = false;
                 foreach ($user->getInformation() as $inf)
                     if($inf->getUiKey() == 'phone') {
@@ -165,6 +168,7 @@ class NewCardController extends Controller
                 'city' => $city,
 
                 'admin' => $admin,
+                'user' => $user,
 
                 'generalTypes' => $generalTypes,
 
@@ -264,9 +268,97 @@ class NewCardController extends Controller
                         'email' => $post->get('user_email')
                     ));
             } else {
-                $user = $this->getDoctrine()
-                    ->getRepository(User::class)
-                    ->find($this->get('session')->get('logged_user')->getId());
+                if($this->get('session')->has('logged_user')) {
+                    $user = $this->getDoctrine()
+                        ->getRepository(User::class)
+                        ->find($this->get('session')->get('logged_user')->getId());
+                } else {
+                    if($post->get('l_email') != '' and $post->get('l_password') != ''){ // if sign in
+                        $user = $this->getDoctrine()
+                            ->getRepository(User::class)
+                            ->findOneBy(array(
+                                'email' => $post->get('l_email')
+                            ));
+                        if ($pass->CheckPassword($post->get('l_password'), $user->getPassword())){
+
+                            $this->get('session')->set('logged_user', $user);
+                            $this->get('session')->set('user_pic', false);
+                            foreach($user->getInformation() as $info){
+                                if($info->getUiKey() == 'foto') $this->get('session')->set('user_pic', $info->getUiValue());
+                            }
+
+                            if(count($user->getCards()) > 1) {
+                                $this->addFlash(
+                                    'notice',
+                                    'В стандартном аккаунте вам доступно не более 2-х объявлений.<br>Оплатите PRO аккаунт для неограниченного количества объявлений'
+                                );
+                                return new RedirectResponse('/user/cards');
+                            }
+                        } else {
+                            $this->addFlash(
+                                'notice',
+                                'Неверный пароль!'
+                            );
+                            return new RedirectResponse('/card/new');
+                        }
+                    }
+                    if($post->get('r_email') != '' and $post->get('r_password') != '' and $post->get('r_phone') != ''){
+                        $card->setIsActive(false);
+
+                        $user = $this->getDoctrine()
+                            ->getRepository(User::class)
+                            ->findOneBy(array(
+                                'email' => $post->get('r_email')
+                            ));
+                        if(!$user){
+                            $code = md5(rand(0,99999999));
+                            $user = new User();
+                            $user->setEmail($request->request->get('r_email'));
+                            $user->setLogin('');
+                            $user->setPassword($pass->HashPassword($request->request->get('r_password')));
+                            $user->setHeader($request->request->get('r_header'));
+                            $user->setActivateString($code);
+                            $user->setTempPassword('');
+
+                            $em = $this->getDoctrine()->getManager();
+                            $em->persist($user);
+                            $em->flush();
+
+                            $ui = new UserInfo();
+                            $ui->setUser($user);
+                            $ui->setUiKey('phone');
+                            $ui->setUiValue($post->get('r_phone'));
+                            $em->persist($ui);
+                            $em->flush();
+
+                            $message = (new \Swift_Message('Регистрация на сайте multiprokat.com'))
+                                ->setFrom('mail@multiprokat.com')
+                                ->setTo($user->getEmail())
+                                ->setBody(
+                                    $this->renderView(
+                                        'email/registration.html.twig',
+                                        array(
+                                            'header' => $user->getHeader(),
+                                            'code' => $code
+                                        )
+                                    ),
+                                    'text/html'
+                                );
+                            $mailer->send($message);
+
+                            $this->addFlash(
+                                'notice',
+                                'На вашу почту было отправлено письмо для активации аккаунта!'
+                            );
+                        } else {
+                            $this->addFlash(
+                                'notice',
+                                'Данный email уже зарегистрирован!'
+                            );
+                            return new RedirectResponse('/card/new');
+                        }
+                    }
+                }
             }
 
             $card->setUser($user);
@@ -335,7 +427,7 @@ class NewCardController extends Controller
                         break;
                     }
                 if(isset($phone) and $phone != '') $phone = true;
-                if($phone == ''){
+                if($phone == '' and isset($ui_id)){
                     $ui = $this->getDoctrine()
                         ->getRepository(UserInfo::class)
                         ->find($ui_id);
@@ -343,15 +435,17 @@ class NewCardController extends Controller
                     $em->flush();
                     $phone = false;
                 }
+
+                if(!$phone and $post->has('phone')){
+                    $ui = new UserInfo();
+                    $ui->setUser($user);
+                    $ui->setUiKey('phone');
+                    $ui->setUiValue($post->get('phone'));
+                    $em->persist($ui);
+                    $em->flush();
+                }
             }
-            if(!$phone and $post->has('phone')){
-                $ui = new UserInfo();
-                $ui->setUser($user);
-                $ui->setUiKey('phone');
-                $ui->setUiValue($post->get('phone'));
-                $em->persist($ui);
-                $em->flush();
-            }
+
 
             $stat_arr = [
                 'url' => '/card/new',

@@ -21,9 +21,53 @@ function new_card_validate(){
 
 
 
+
+
+
+
     var subfields = [];
 
     var message = [];
+
+    if($('#new_card_form').hasClass('unknown')){
+        var r_email = $('input[name="r_email"]').val();
+        var r_password = $('input[name="r_password"]').val();
+        var r_phone = $('input[name="r_phone"]').val();
+
+        var l_email = $('input[name="l_email"]').val();
+        var l_password = $('input[name="l_password"]').val();
+
+        if(l_email !== ''){
+            if(l_password === '') message.push('\nЗаполните пароль!');
+            if(r_email !== '') message.push('\nВы можете или войти или зарегистрироваться! Оставьте ненужные поля пустыми!');
+        }
+
+        if(l_password !== ''){
+            if(l_email === '') message.push('\nЗаполните email!');
+        }
+
+        if(r_email !== ''){
+            if(r_password === '') message.push('\nЗаполните пароль!');
+            if(r_phone === '') message.push('\nЗаполните номер телефона!');
+            if(l_email !== '') message.push('\nВы можете или войти или зарегистрироваться! Оставьте ненужные поля пустыми!');
+        }
+
+        if(r_password !== ''){
+            if(r_email === '') message.push('\nЗаполните email!');
+            if(r_phone === '') message.push('\nЗаполните номер телефона!');
+        }
+
+        if(r_phone !== ''){
+            if(r_email === '') message.push('\nЗаполните email!');
+            if(r_password === '') message.push('\nЗаполните пароль!');
+        }
+
+        if(r_email === '' && r_password === '' && r_phone === '' && l_email === '' && l_password === ''){
+            message.push('\nЗаполните или поля регистрации или входа!');
+        }
+    }
+
+
 
     if($('#new_card_form').hasClass('no_phone')){
         var phone = $('#phone').val();

@@ -32,7 +32,7 @@ class GeoSubscriber implements EventSubscriberInterface
         $default = true;
 
         if (!$is_bot) {
-            if(!isset($_SESSION['city'])) {
+            if(!$event->getRequest()->getSession()->has('city')) {
                 $ip = $event->getRequest()->getClientIp();
                 if ($ip == 'unknown') {
                     $ip = $_SERVER['REMOTE_ADDR'];

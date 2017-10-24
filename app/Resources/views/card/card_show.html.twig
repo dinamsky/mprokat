@@ -109,10 +109,12 @@
                 <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ bodyType.url }}">{{ bodyType.header }}</a>
             {% endif %}
 
+            {% if card.modelId != 20991 %}
             <i uk-icon="icon:chevron-right"></i>
             <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ card.markModel.mark.header }}">{{ card.markModel.mark.header }}</a>
             <i uk-icon="icon:chevron-right"></i>
             <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ card.markModel.mark.header }}/{{ card.markModel.header }}">{{ card.markModel.header }}</a>
+            {% endif %}
         </div>
     </div>
 

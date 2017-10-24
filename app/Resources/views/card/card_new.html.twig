@@ -31,7 +31,11 @@
 
 {% block content %}
 
-    <form id="new_card_form" action="/card/new" method="POST" enctype="multipart/form-data" onsubmit="return new_card_validate();" class="standard_wide uk-margin-top {{ not phone ? 'no_phone' }}">
+    {% if not admin and not user %}
+        {{ include(':user:auth_in_card.html.twig') }}
+    {% endif %}
+
+    <form id="new_card_form" action="/card/new" method="POST" enctype="multipart/form-data" onsubmit="return new_card_validate();" class="standard_wide uk-margin-top {{ not phone ? 'no_phone' }} {% if not admin and not user %}unknown{% endif %}">
 
 
         {% if app.session.has('admin') and app.session.get('admin').role == 'superadmin'%}
@@ -40,6 +44,8 @@
         {% if app.session.has('admin') and app.session.get('admin').role == 'cardmaster'%}
             {{ include('AdminBundle::admin_cardmaster_new.html.twig') }}
         {% endif %}
+
+
 
         <div uk-grid>
             <div class="uk-width-1-2@s">
