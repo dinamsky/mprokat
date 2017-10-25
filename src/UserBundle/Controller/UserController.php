@@ -454,4 +454,15 @@ class UserController extends Controller
         } else throw $this->createNotFoundException(); //404
     }
 
+    /**
+     * @Route("/user_checkmail")
+     */
+    public function checkMailAction(Request $request)
+    {
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findOneBy(['email'=>$request->request->get('email')]);
+        if ($user) return new Response('ok');
+        else return new Response('new');
+    }
 }

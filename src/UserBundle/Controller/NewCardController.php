@@ -320,6 +320,9 @@ class NewCardController extends Controller
                             $user->setActivateString($code);
                             $user->setTempPassword('');
 
+                            if($post->has('subscriber')) $user->setIsSubscriber(true);
+                            else $user->setIsSubscriber(false);
+
                             $em = $this->getDoctrine()->getManager();
                             $em->persist($user);
                             $em->flush();
@@ -348,7 +351,7 @@ class NewCardController extends Controller
 
                             $this->addFlash(
                                 'notice',
-                                'На вашу почту было отправлено письмо для активации аккаунта!'
+                                'На вашу почту было отправлено письмо.<br>Перейдите по ссылке в письме для завершения регистрации!'
                             );
                         } else {
                             $this->addFlash(
