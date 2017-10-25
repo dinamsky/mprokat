@@ -29,6 +29,7 @@
                 {% else %}
                     <a uk-toggle="target: #sign_in" class="uk-button uk-button-success uk-width-1-1 m_add_card_button">Сдать</a>
                 {% endif %}
+                {#<a href="/card/new" class="uk-button uk-button-success uk-width-1-1 m_add_card_button">Сдать</a>#}
             </div>
         </div>
     {% else %}
@@ -50,13 +51,14 @@
                         <div>{{ include('user/auth_button_modal.html.twig') }}</div>
 
                         <div>
-                            {% if app.session.has('logged_user') %}
-                                <a href="/card/new" class="uk-button uk-button-success add_card_button">Сдать</a>
-                            {% elseif app.session.has('admin') %}
-                                <a href="/card/new" class="uk-button uk-button-success add_card_button">Сдать</a>
-                            {% else %}
-                                <a uk-toggle="target: #sign_in" class="uk-button uk-button-success add_card_button">Сдать</a>
-                            {% endif %}
+                            {#{% if app.session.has('logged_user') %}#}
+                                {#<a href="/card/new" class="uk-button uk-button-success add_card_button">Сдать</a>#}
+                            {#{% elseif app.session.has('admin') %}#}
+                                {#<a href="/card/new" class="uk-button uk-button-success add_card_button">Сдать</a>#}
+                            {#{% else %}#}
+                                {#<a uk-toggle="target: #sign_in" class="uk-button uk-button-success add_card_button">Сдать</a>#}
+                            {#{% endif %}#}
+                            <a href="/card/new" class="uk-button uk-button-success add_card_button">Сдать</a>
                         </div>
                     </div>
                 </div>

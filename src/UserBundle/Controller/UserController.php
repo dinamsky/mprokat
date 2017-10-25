@@ -216,7 +216,14 @@ class UserController extends Controller
                 'notice',
                 $message
             );
-            $return_url = 'user_main';
+
+            foreach($user->getCards() as $card){
+                $card->setIsActive(true);
+                $em->persist($card);
+                $em->flush();
+            }
+
+            $return_url = 'user_cards';
         } else {
             $this->addFlash(
                 'notice',
@@ -447,4 +454,15 @@ class UserController extends Controller
         } else throw $this->createNotFoundException(); //404
     }
 
+    /**
+     * @Route("/user_checkmail")
+     */
+    public function checkMailAction(Request $request)
+    {
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findOneBy(['email'=>$request->request->get('email')]);
+        if ($user) return new Response('ok');
+        else return new Response('new');
+    }
 }

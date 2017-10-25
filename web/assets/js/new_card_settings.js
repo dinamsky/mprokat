@@ -67,4 +67,42 @@ $( document ).ready(function() {
         $('.service_selector button').removeClass('uk-button-primary');
         $(this).addClass('uk-button-primary');
     });
+
+    $('.newcard_mailcheck').on('click', function(){
+        var check_email = $('input[name="check_email"]').val();
+        $(this).hide();
+        $.ajax({
+            url: '/user_checkmail', // user controller
+            type: 'POST',
+            data: {email:check_email},
+            success: function(html){
+                if(html === 'ok'){
+                    $('input[name="email"]').val(check_email);
+                    $('.check_block').hide();
+                    $('#signin_block').removeClass('uk-hidden');
+                }
+                if(html === 'new'){
+                    $('input[name="r_email"]').val(check_email);
+                    $('.check_block').hide();
+                    $('#signup_block').removeClass('uk-hidden');
+                }
+            }
+        });
+    });
+
+    $('.continue_with_reg').on('click', function(){
+        var h = $('input[name="r_header"]').val();
+        var t = $('input[name="r_phone"]').val();
+        if(h!=='' && t!=='') {
+            $(this).hide();
+            $('.signup_header').hide();
+            $('.unknown').css('display', 'block');
+            $('#signup_block').append('<hr>');
+            $('html, body').animate({
+                scrollTop: $(".unknown").offset().top - 80
+            }, 1000);
+        } else {
+            alert('Пожалуйста заполните телефон и имя/наименование!');
+        }
+    });
 });

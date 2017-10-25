@@ -21,9 +21,25 @@ function new_card_validate(){
 
 
 
+
+
+
+
     var subfields = [];
 
     var message = [];
+
+    if($('#new_card_form').hasClass('unknown')){
+        var r_email = $('input[name="r_email"]').val();
+        var r_password = $('input[name="r_password"]').val();
+        var r_phone = $('input[name="r_phone"]').val();
+
+        if(r_email === '') message.push('\nЗаполните email!');
+        if(r_phone === '') message.push('\nЗаполните номер телефона!');
+        if(r_password === '') message.push('\nЗаполните пароль!');
+    }
+
+
 
     if($('#new_card_form').hasClass('no_phone')){
         var phone = $('#phone').val();

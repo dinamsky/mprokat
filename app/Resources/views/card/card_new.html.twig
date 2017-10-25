@@ -31,7 +31,11 @@
 
 {% block content %}
 
-    <form id="new_card_form" action="/card/new" method="POST" enctype="multipart/form-data" onsubmit="return new_card_validate();" class="standard_wide uk-margin-top {{ not phone ? 'no_phone' }}">
+    {% if not admin and not user %}
+        {{ include('user/step_auth.html.twig') }}
+    {% endif %}
+
+    <form id="new_card_form" action="/card/new" method="POST" enctype="multipart/form-data" onsubmit="return new_card_validate();" class="standard_wide uk-margin-top {{ not phone ? 'no_phone' }} {% if not admin and not user %}unknown{% endif %}">
 
 
         {% if app.session.has('admin') and app.session.get('admin').role == 'superadmin'%}
@@ -40,6 +44,8 @@
         {% if app.session.has('admin') and app.session.get('admin').role == 'cardmaster'%}
             {{ include('AdminBundle::admin_cardmaster_new.html.twig') }}
         {% endif %}
+
+
 
         <div uk-grid>
             <div class="uk-width-1-2@s">
@@ -299,7 +305,18 @@
         </div>
 
 
-
+        {% if not admin and not user %}
+            <hr>
+            <div class="pass_block">
+                <input type="password" name="r_password" placeholder="Придумайте пароль для входа" class="uk-input uk-width-1-4">
+            </div>
+            <div>
+                После выбора тарифа на ваш email будет отправлено письмо. Перейдите по ссылке в письме для завершения регистрации.<br>
+                <input type="checkbox" name="subscriber" checked> Получать новости и спецпредложения
+            </div>
+            <hr>
+            <h3>Выберите тариф размещения</h3>
+        {% endif %}
 
 
         {{ include(':card:tariff_selector.html.twig', {'tariffId':0}) }}

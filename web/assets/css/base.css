@@ -937,3 +937,30 @@ footer a:hover{
 .uk-button{
     box-shadow: 2px 2px 1px lightgrey;
 }
+
+.newcard_reglog_block{
+    background: #cecece;
+    padding: 30px 0;
+}
+
+#new_card_form.unknown{
+    display:none;
+}
+.forget_link{
+
+}
+
+.t_2,.t_1{
+    background: white;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+    color: #1aa6de;
+    border: 1px solid lightgrey;
+    border-bottom:0;
+}
+
+.pass_block{
+    background: #ababab;
+    padding: 20px;
+}
