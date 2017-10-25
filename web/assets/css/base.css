@@ -964,3 +964,7 @@ footer a:hover{
     background: #ababab;
     padding: 20px;
 }
+
+#signup_block input[type="text"]{
+    width:380px;
+}
