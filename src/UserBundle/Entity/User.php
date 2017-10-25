@@ -83,6 +83,13 @@ class User
     /**
      * @var bool
      *
+     * @ORM\Column(name="is_subscriber", type="boolean")
+     */
+    private $isSubscriber;
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(name="account_type_id", type="smallint")
      */
     private $accountTypeId = 0;
@@ -607,5 +614,29 @@ class User
     public function getAccountTypeId()
     {
         return $this->accountTypeId;
+    }
+
+    /**
+     * Set isSubscriber
+     *
+     * @param boolean $isSubscriber
+     *
+     * @return User
+     */
+    public function setIsSubscriber($isSubscriber)
+    {
+        $this->isSubscriber = $isSubscriber;
+
+        return $this;
+    }
+
+    /**
+     * Get isSubscriber
+     *
+     * @return boolean
+     */
+    public function getIsSubscriber()
+    {
+        return $this->isSubscriber;
     }
 }
