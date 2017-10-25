@@ -48,243 +48,283 @@
 
 
         <div uk-grid>
-            <div class="uk-width-1-2@s">
+
+            <div class="uk-width-1-1@s">
                 {% if not phone %}
                 <div class="uk-margin-bottom uk-position-relative">
                     <input type="text" name="phone" id="phone" placeholder="Заполните номер телефона" class="uk-input phone_validate">
                     <div class="uk-position-absolute uk-position-top-left" style="left:5px;"><span class="red_star">*</span></div>
                 </div>
                 {% endif %}
-                <div class="uk-margin-bottom uk-position-relative">
-                    <input type="text" name="header" placeholder="Заполните заголовок объявления" class="uk-input">
-                    <div class="uk-position-absolute uk-position-top-left" style="left:5px;"><span class="red_star">*</span></div>
-                </div>
-                <div class="help_text uk-text-center">Сдаете в прокат или в аренду?</div>
-                <div uk-grid class="service_selector">
-                    <div class="uk-width-1-2">
-                        <button type="button" class="uk-button uk-button-primary uk-width-1-1" value="1">Прокат</button>
+
+
+
+                <div uk-grid class="uk-flex uk-flex-middle">
+                    <div class="uk-width-1-5">Тип объявления <span class="red_star">*</span></div>
+                    <div class="uk-width-4-5">
+                        <div uk-grid class="service_selector">
+                            <div class="">
+                                <button type="button" class="uk-button uk-width-1-1" value="1">Прокат</button>
+                            </div>
+                            <div class="">
+                                <button type="button" class="uk-button uk-button-default uk-width-1-1" value="2">Аренда</button>
+                            </div>
+                            <input type="hidden" name="serviceTypeId" value="1">
+                            <span class="uk-text-center help_text">Сдаете в прокат или в аренду?</span>
+                        </div>
                     </div>
-                    <div class="uk-width-1-2">
-                        <button type="button" class="uk-button uk-width-1-1" value="2">Аренда</button>
-                    </div>
-                    <input type="hidden" name="serviceTypeId" value="1">
-                </div>
-
-                <hr>
-                <div class="help_text">Город был определен автоматически, но его всегда можно сменить</div>
-                <div class=""><span class="red_star">*</span>Адрес: <span class="expander_button" uk-toggle="target: #city_selector">{{ city.header }} <i uk-icon="icon:chevron-down"></i></span></div>
-
-                <div class="expandable_block" id="city_selector" hidden>
-                    <div class="uk-text-small">Страна</div>
-                    <select name="countryCode" id="countryCode" class="uk-select">
-                        {#<option value="0">-выберите страну-</option>#}
-                        {#{% for country_code, country_title in countries %}#}
-                            {#<option value="{{ country_code }}" {{ country_code == countryCode ? 'selected' : '' }}>{{ country_title }}</option>#}
-                        {#{% endfor %}#}
-                        {{ include( 'common/ajax_edit_options.html.twig', { 'options': countries, 'id': countryCode }) }}
-                    </select>
-                    <div class="uk-text-small">Регион</div>
-                    <select name="regionId" id="regionId" class="uk-select">
-                        {{ include( 'common/ajax_edit_options.html.twig', { 'options': regions, 'id': regionId }) }}
-                    </select>
-                    <div class="uk-text-small">Город</div>
-                    <select name="cityId" id="cityId" class="uk-select">
-                        {{ include( 'common/ajax_edit_options.html.twig', { 'options': cities, 'id': cityId }) }}
-                    </select>
-                    <div class="uk-text-small">Адрес</div>
-                    <div>
-                        <textarea name="address" class="uk-textarea"></textarea>
-                    </div>
-                    <div class="uk-text-small" uk-toggle="target: #map_selector" id="show_map">Карта <i uk-icon="icon:chevron-down"></i></div>
-                    <div id="map_selector" hidden>
-                        {% if app.session.has('admin') %}
-                            <input name="coords" type="hidden" value="">
-                            <div id="map" data-lat="55.753410" data-lng="37.620285"></div>
-                        {% else %}
-                            {% if app.session.get('city').coords == NULL %}
-                                {% set lat = 55.753410 %}
-                                {% set lon = 37.620285 %}
-                            {% else %}
-                                {% set crd = app.session.get('city').coords|split(',') %}
-                                {% set lat = crd[0] %}
-                                {% set lon = crd[1] %}
-                            {% endif %}
-                            <input name="coords" type="hidden" value="{{ lat }},{{ lon }}">
-                            <div id="map" data-lat="{{ lat }}" data-lng="{{ lon }}"></div>
-                        {% endif %}
-                    </div>
-
-
-                    <input type="hidden" name="streetView">
-
                 </div>
 
-                <hr>
-                <div class="help_text">Тип транспорта установлен по умолчанию, выберите свой</div>
-                <div class=""><span class="red_star">*</span>Тип транспорта: <span class="expander_button" uk-toggle="target: #general_selector">{{ gt.header }} <i uk-icon="icon:chevron-down"></i></span></div>
 
 
-
-                <div class="expandable_block" id="general_selector" hidden>
-                    <div uk-grid>
-                        <div class="uk-width-1-2">
-                            <select name="generalTypeTopLevelId" id="generalTypeTopLevelId" class="uk-select">
-                                {{ include( 'common/ajax_edit_options.html.twig', { 'options': generalTopLevel, 'id': 1 }) }}
+                <div uk-grid>
+                    <div class="uk-width-1-5">Адрес <span class="red_star">*</span></div>
+                    <div class="uk-width-4-5">
+                        <span class="expander_button" uk-toggle="target: #city_selector">{{ city.header }} <i uk-icon="icon:chevron-down"></i></span>
+                        <span class="help_text">Город был определен автоматически, но его всегда можно сменить</span>
+                        <div class="expandable_block" id="city_selector" hidden>
+                            <div class="uk-text-small">Страна</div>
+                            <select name="countryCode" id="countryCode" class="uk-select">
+                                {#<option value="0">-выберите страну-</option>#}
+                                {#{% for country_code, country_title in countries %}#}
+                                {#<option value="{{ country_code }}" {{ country_code == countryCode ? 'selected' : '' }}>{{ country_title }}</option>#}
+                                {#{% endfor %}#}
+                                {{ include( 'common/ajax_edit_options.html.twig', { 'options': countries, 'id': countryCode }) }}
                             </select>
-                        </div>
-
-                        <div class="uk-width-1-2">
-                            <select name="generalTypeId" id="generalTypeId" class="uk-select">
-                                {{ include( 'common/ajax_edit_options.html.twig', { 'options': generalSecondLevel, 'id':2 }) }}
+                            <div class="uk-text-small">Регион</div>
+                            <select name="regionId" id="regionId" class="uk-select">
+                                {{ include( 'common/ajax_edit_options.html.twig', { 'options': regions, 'id': regionId }) }}
                             </select>
-                        </div>
-                    </div>
-
-                </div>
-
-                <hr>
-                <div class="help_text">Если не нашли свою марку/модель - поставьте галочку и укажите требуемое</div>
-                <div uk-grid class="uk-grid-small">
-
-                    <input type="hidden" name="groupName" value="cars">
-
-                    <div class="uk-width-1-3">
-                        <div class="uk-text-small"><span class="red_star">*</span>Группа</div>
-                        <select name="groupName" id="markGroupName" class="uk-select">
-                            {{ include( 'common/ajax_edit_options.html.twig', { 'options': mark_groups, 'id': 1 }) }}
-                        </select>
-                    </div>
-
-                    <div class="uk-width-1-3">
-                        <div class="uk-text-small"><span class="red_star">*</span>Марка</div>
-
-                        <select name="mark" id="markId" class="uk-select sel_combo">
-                            {{ include( 'common/ajax_edit_options.html.twig', { 'options': marks, 'id': 0 }) }}
-                        </select>
-
-                    </div>
-
-                    <div class="uk-width-1-3">
-                        <div class="uk-text-small"><span class="red_star">*</span>Модель</div>
-                        <select name="modelId" id="markModelId" class="uk-select sel_combo"></select>
-                    </div>
-
-
-                    <div class="uk-width-1-2">
-                        <label><input type="checkbox" name="noMark"> Марки нет в списке</label>
-                    </div>
-
-                    <div class="uk-width-1-2">
-                        <input name="ownMark" class="uk-input" placeholder="впишите свою марку">
-                    </div>
-
-                    <div class="uk-width-1-2">
-                        <label><input type="checkbox" name="noModel"> Модели нет в списке</label>
-                    </div>
-
-                    <div class="uk-width-1-2">
-                        <input name="ownModel" class="uk-input" placeholder="впишите свою модель">
-                    </div>
-
-                </div>
-
-
-
-                <hr>
-                <div>
-                    Фото: <input id="foto_upload" type="file" name="fotos[]" multiple> (до 5 одновременно)
-                    <div id="foto_list_view" uk-grid uk-sortable class="uk-grid-small"></div>
-                </div>
-
-                <hr>
-                <div class="help_text">Укажите свои расценки по периодам</div>
-                <div class="uk-clearfix">
-                    <div class="uk-float-left">
-                    {% for price in prices if price.id < 3%}
-                        <div>
-                        <input type="number" name="price[{{ price.id }}]" class="uk-input uk-width-1-2 one_of"> ₽ / <span>{{ price.header }}</span>
-                        </div>
-                    {% endfor %}
-                        <span class="red_star">*</span> Одна из расценок: в час/в день обязательна!
-                    </div>
-                    <span class="uk-float-right expander_button" uk-toggle="target: #price_selector">Еще цены <i uk-icon="icon:chevron-down"></i></span>
-                </div>
-                <div class="expandable_block" id="price_selector" hidden>
-                    {% for price in prices if price.id > 2 %}
-                        <div>
-                            <input type="number" name="price[{{ price.id }}]" class="uk-input uk-width-1-4"> ₽ / <span>{{ price.header }} </span>
-                        </div>
-                    {% endfor %}
-                </div>
-
-                <hr>
-                <div><textarea name="content" class="uk-textarea" placeholder="Тут можно указать условия аренды или проката (HTML не поддерживается!)" required></textarea></div>
-
-
-
-            </div>
-
-
-            <div class="uk-width-1-2@s">
-                <button id="fill_dop_button" type="button" class="uk-button uk-button-primary">Заполнить дополнительную информацию</button>
-                <div class="uk-margin-top">
-                    Дополнительная информация не обязательна к заполнению
-                </div>
-            </div>
-
-            <div id="dop_fields" class="uk-width-1-2@s" hidden>
-
-
-                <div class="help_text">Вы можете указать характеристики вашего транспорта</div>
-                <div class=""><span class="expander_button" uk-toggle="target: #features_selector">Характеристики  <i uk-icon="icon:chevron-down"></i></span></div>
-
-                <div class="expandable_block" id="features_selector" hidden>
-                    <div >
-                        {% for feature in features %}
+                            <div class="uk-text-small">Город</div>
+                            <select name="cityId" id="cityId" class="uk-select">
+                                {{ include( 'common/ajax_edit_options.html.twig', { 'options': cities, 'id': cityId }) }}
+                            </select>
+                            <div class="uk-text-small">Адрес</div>
                             <div>
-                                <b>{{ feature.header }}</b>
-                                <div>
-                                    {% for item in feature.getChildren %}
-                                        <div>
-                                            <label>
-                                                <input type="checkbox" name="feature[{{ item.id }}]"> {{ item.header }}
-                                            </label>
-                                        </div>
-                                    {% endfor %}
+                                <textarea name="address" class="uk-textarea"></textarea>
+                            </div>
+                            <div class="uk-text-small" uk-toggle="target: #map_selector" id="show_map">Карта <i uk-icon="icon:chevron-down"></i></div>
+                            <div id="map_selector" hidden>
+                                {% if app.session.has('admin') %}
+                                    <input name="coords" type="hidden" value="">
+                                    <div id="map" data-lat="55.753410" data-lng="37.620285"></div>
+                                {% else %}
+                                    {% if app.session.get('city').coords == NULL %}
+                                        {% set lat = 55.753410 %}
+                                        {% set lon = 37.620285 %}
+                                    {% else %}
+                                        {% set crd = app.session.get('city').coords|split(',') %}
+                                        {% set lat = crd[0] %}
+                                        {% set lon = crd[1] %}
+                                    {% endif %}
+                                    <input name="coords" type="hidden" value="{{ lat }},{{ lon }}">
+                                    <div id="map" data-lat="{{ lat }}" data-lng="{{ lon }}"></div>
+                                {% endif %}
+                            </div>
+                            <input type="hidden" name="streetView">
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div uk-grid>
+                    <div class="uk-width-1-5">Тип транспорта <span class="red_star">*</span></div>
+                    <div class="uk-width-4-5">
+                        <span class="expander_button" uk-toggle="target: #general_selector">{{ gt.header }} <i uk-icon="icon:chevron-down"></i></span>
+                        <div class="expandable_block" id="general_selector" hidden>
+                            <div uk-grid>
+                                <div class="uk-width-1-2">
+                                    <select name="generalTypeTopLevelId" id="generalTypeTopLevelId" class="uk-select">
+                                        {{ include( 'common/ajax_edit_options.html.twig', { 'options': generalTopLevel, 'id': 1 }) }}
+                                    </select>
+                                </div>
+
+                                <div class="uk-width-1-2">
+                                    <select name="generalTypeId" id="generalTypeId" class="uk-select">
+                                        {{ include( 'common/ajax_edit_options.html.twig', { 'options': generalSecondLevel, 'id':2 }) }}
+                                    </select>
                                 </div>
                             </div>
-                        {% endfor %}
+
+                        </div>
                     </div>
                 </div>
 
-                <hr>
-                <div class="help_text">Дополнительные параметры объявления будут участвовать в фильтрации</div>
-                <div class=""><span class="expander_button" uk-toggle="target: #subfields">Дополнительно <i uk-icon="icon:chevron-down"></i></span></div>
-                <div class="expandable_block" id="subfields" hidden></div>
 
-                <hr>
 
-                <div uk-grid class="uk-grid-small">
-                    <div class="uk-width-1-3@s">
-                        <div class="uk-text-small"><span class="red_star">*</span>Состояние</div>
+                <div uk-grid>
+                    <div class="uk-width-1-5">Марка и модель <span class="red_star">*</span></div>
+                    <div class="uk-width-4-5">
+                        <div uk-grid class="uk-grid-small">
+
+                            <input type="hidden" name="groupName" value="cars">
+
+                            <div class="uk-width-1-3">
+                                <div class="uk-text-small">Группа</div>
+                                <select name="groupName" id="markGroupName" class="uk-select">
+                                    {{ include( 'common/ajax_edit_options.html.twig', { 'options': mark_groups, 'id': 1 }) }}
+                                </select>
+                            </div>
+
+                            <div class="uk-width-1-3">
+                                <div class="uk-text-small">Марка</div>
+
+                                <select name="mark" id="markId" class="uk-select sel_combo">
+                                    {{ include( 'common/ajax_edit_options.html.twig', { 'options': marks, 'id': 0 }) }}
+                                </select>
+
+                            </div>
+
+                            <div class="uk-width-1-3">
+                                <div class="uk-text-small">Модель</div>
+                                <select name="modelId" id="markModelId" class="uk-select sel_combo"></select>
+                            </div>
+
+                            <div class="help_text">Если не нашли свою марку/модель - поставьте галочку и укажите требуемое</div>
+
+                            <div class="uk-width-1-2">
+                                <label><input type="checkbox" name="noMark"> Марки нет в списке</label>
+                            </div>
+
+                            <div class="uk-width-1-2">
+                                <input name="ownMark" class="uk-input" placeholder="впишите свою марку">
+                            </div>
+
+                            <div class="uk-width-1-2">
+                                <label><input type="checkbox" name="noModel"> Модели нет в списке</label>
+                            </div>
+
+                            <div class="uk-width-1-2">
+                                <input name="ownModel" class="uk-input" placeholder="впишите свою модель">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div uk-grid>
+                    <div class="uk-width-1-5">Фотографии <span class="red_star">*</span></div>
+                    <div class="uk-width-4-5">
+                        <input id="foto_upload" type="file" name="fotos[]" multiple> (до 5 одновременно)
+                        <div id="foto_list_view" uk-grid uk-sortable class="uk-grid-small"></div>
+                    </div>
+                </div>
+
+                <div uk-grid>
+                    <div class="uk-width-1-5"><span class="red_star">*</span>Цены</div>
+                    <div class="uk-width-4-5">
+                        <div class="uk-clearfix">
+                            <div class="uk-float-left">
+                                {% for price in prices if price.id < 3%}
+                                    <div>
+                                        <input type="number" name="price[{{ price.id }}]" class="uk-input uk-width-1-2 one_of"> ₽ / <span>{{ price.header }}</span>
+                                    </div>
+                                {% endfor %}
+                                <span class="red_star">*</span> Одна из расценок: в час/в день обязательна!
+                            </div>
+
+                        </div>
+                        <div>
+                            <span class="expander_button" uk-toggle="target: #price_selector">Еще цены <i uk-icon="icon:chevron-down"></i></span>
+                        </div>
+                        <div class="expandable_block" id="price_selector" hidden>
+                            {% for price in prices if price.id > 2 %}
+                                <div>
+                                    <input type="number" name="price[{{ price.id }}]" class="uk-input uk-width-1-4"> ₽ / <span>{{ price.header }} </span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div uk-grid>
+                    <div class="uk-width-1-5"><span class="red_star">*</span>Описание</div>
+                    <div class="uk-width-4-5">
+                        <textarea name="content" class="uk-textarea" placeholder="Тут можно указать условия аренды или проката (HTML не поддерживается!)" required style="height: 100px">
+                        </textarea>
+                    </div>
+                </div>
+
+
+                <div uk-grid>
+                    <div class="uk-width-1-5"></div>
+                    <div class="uk-width-4-5">
+                        Можно <a id="fill_dop_button">заполнить дополнительную информацию</a>, но не обязательно
+                    </div>
+                </div>
+
+
+            </div>
+
+
+
+
+            <div id="dop_fields" class="uk-width-1-1@s" hidden>
+
+
+                <div uk-grid>
+                    <div class="uk-width-1-5">Характеристики</div>
+                    <div class="uk-width-4-5">
+                        <div class=""><span class="expander_button" uk-toggle="target: #features_selector">Показать  <i uk-icon="icon:chevron-down"></i></span></div>
+
+                        <div class="expandable_block" id="features_selector" hidden>
+                            <div >
+                                {% for feature in features %}
+                                    <div>
+                                        <b>{{ feature.header }}</b>
+                                        <div>
+                                            {% for item in feature.getChildren %}
+                                                <div>
+                                                    <label>
+                                                        <input type="checkbox" name="feature[{{ item.id }}]"> {{ item.header }}
+                                                    </label>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div uk-grid>
+                    <div class="uk-width-1-5">Дополнительно</div>
+                    <div class="uk-width-4-5">
+                        <div class="">
+                            <span class="expander_button" uk-toggle="target: #subfields">Показать <i uk-icon="icon:chevron-down"></i></span>
+                            <span class="help_text"> Дополнительные параметры объявления будут участвовать в фильтрации</span>
+                        </div>
+                        <div class="expandable_block" id="subfields" hidden></div>
+                    </div>
+                </div>
+
+                <div uk-grid>
+                    <div class="uk-width-1-5">Состояние</div>
+                    <div class="uk-width-4-5">
                         <select name="conditionId" class="uk-select">
                             {% for condition in conditions %}
                                 <option value="{{ condition.id }}" {{ condition.id == 2 ? 'selected' }}>{{ condition.header }}</option>
                             {% endfor %}
                         </select>
                     </div>
+                </div>
 
-                    <div class="uk-width-1-3@s">
-                        <div class="uk-text-small"><span class="red_star">*</span>Цвет</div>
+                <div uk-grid>
+                    <div class="uk-width-1-5">Цвет</div>
+                    <div class="uk-width-4-5">
                         <select name="colorId" class="uk-select">
                             {% for color in colors %}
                                 <option value="{{ color.id }}">{{ color.header }}</option>
                             {% endfor %}
                         </select>
                     </div>
+                </div>
 
-                    <div class="uk-width-1-3@s">
-                        <div class="uk-text-small"><span class="red_star">*</span>Год выпуска</div>
+                <div uk-grid>
+                    <div class="uk-width-1-5">Год выпуска</div>
+                    <div class="uk-width-4-5">
                         <select name="prodYear" class="uk-select">
                             <option value="0" selected>- выберите -</option>
                             {% for year in 1950..'now'|date('Y') %}
@@ -292,14 +332,18 @@
                             {% endfor %}
                         </select>
                     </div>
-
                 </div>
 
-                <hr>
+                <div uk-grid>
+                    <div class="uk-width-1-5">Видео</div>
+                    <div class="uk-width-4-5">
+                        <input name="video" class="uk-input">
+                        <div class="uk-text-small">например: https://www.youtube.com/watch?v=10WEWgAdDKk</div>
+                    </div>
+                </div>
 
-                <div class="uk-text-small">Видео: (укажите ссылку на видео с Youtube целиком)</div>
-                <input name="video" class="uk-input">
-                <div class="uk-text-small">например: https://www.youtube.com/watch?v=10WEWgAdDKk</div>
+
+
 
             </div>
         </div>

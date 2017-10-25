@@ -64,8 +64,8 @@ $( document ).ready(function() {
 
     $('.service_selector button').on('click', function(){
         $('input[name="serviceTypeId"]').val($(this).val());
-        $('.service_selector button').removeClass('uk-button-primary');
-        $(this).addClass('uk-button-primary');
+        $('.service_selector button').addClass('uk-button-default');
+        $(this).removeClass('uk-button-default');
     });
 
     $('.newcard_mailcheck').on('click', function(){
