@@ -159,7 +159,7 @@ class UserController extends Controller
         $user->setHeader($request->request->get('header'));
         $user->setActivateString($code);
         $user->setTempPassword('');
-
+        $user->setIsSubscriber(true);
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
         $em->flush();
