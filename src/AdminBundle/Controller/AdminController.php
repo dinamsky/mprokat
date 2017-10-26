@@ -126,6 +126,7 @@ class AdminController extends Controller
             $user->setTempPassword('');
             $user->setIsActivated(true);
             $user->setAdmin($admin);
+            $user->setIsSubscriber(true);
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
