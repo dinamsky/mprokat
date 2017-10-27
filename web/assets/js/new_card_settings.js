@@ -105,4 +105,11 @@ $( document ).ready(function() {
             alert('Пожалуйста заполните телефон и имя/наименование!');
         }
     });
+
+    $('.newcard_continue').on('click', function(){
+        var id = $(this).data('id');
+        $(this).remove();
+        $('#'+id).removeClass('uk-hidden');
+        UIkit.update(event = 'update');
+    });
 });

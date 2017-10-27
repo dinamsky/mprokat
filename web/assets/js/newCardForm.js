@@ -34,6 +34,26 @@ $( document ).ready(function() {
                 $('#generalTypeId').html(html);
             }
         });
+
+        $.ajax({
+            url: '/ajax/getCarType',
+            type: 'POST',
+            data: {gt:generalTypeTopLevelId},
+            success: function(groupId){
+                $('#markGroupName').find('option:selected').removeAttr('selected');
+                $('#markGroupName').find('option[value="'+groupId+'"]').attr('selected','true');
+                $.ajax({
+                    url: '/ajax/getMarks',
+                    type: 'POST',
+                    data: {groupId:groupId},
+                    success: function(html){
+                        $('#markId').html(html);
+                    }
+                });
+            }
+        });
+
+
     });
 
     $('#generalTypeId').on('change',function(){
@@ -44,6 +64,23 @@ $( document ).ready(function() {
             data: {generalTypeId:generalTypeId},
             success: function(html){
                 $('#subfields').html(html);
+            }
+        });
+        $.ajax({
+            url: '/ajax/getCarType',
+            type: 'POST',
+            data: {gt:generalTypeId},
+            success: function(groupId){
+                $('#markGroupName').find('option:selected').removeAttr('selected');
+                $('#markGroupName').find('option[value="'+groupId+'"]').attr('selected','true');
+                $.ajax({
+                    url: '/ajax/getMarks',
+                    type: 'POST',
+                    data: {groupId:groupId},
+                    success: function(html){
+                        $('#markId').html(html);
+                    }
+                });
             }
         });
     });
@@ -70,6 +107,18 @@ $( document ).ready(function() {
                 $('form select#cityId').html(html);
             }
         });
+    });
+
+    $('input[name="noMark"]').on('change',function(){
+        var checked = $(this).prop('checked');
+        if(checked) $('input[name="ownMark"]').removeClass('uk-hidden');
+        else $('input[name="ownMark"]').addClass('uk-hidden');
+    });
+
+    $('input[name="noModel"]').on('change',function(){
+        var checked = $(this).prop('checked');
+        if(checked) $('input[name="ownModel"]').removeClass('uk-hidden');
+        else $('input[name="ownModel"]').addClass('uk-hidden');
     });
 
 });

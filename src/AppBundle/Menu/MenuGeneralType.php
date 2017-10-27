@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\GeneralType;
+use Symfony\Component\HttpFoundation\Response;
 
 class MenuGeneralType extends Controller
 {
@@ -73,5 +74,17 @@ class MenuGeneralType extends Controller
     {
         $query = $this->em->createQuery('UPDATE AppBundle:GeneralType g SET g.total = g.total + 1 WHERE g.id ='.$gtId);
         $query->execute();
+    }
+
+    /**
+     * @Route("/ajax/getCarType")
+     */
+    public function getCarTypeAction(Request $request)
+    {
+        $gt = $request->request->get('gt');
+        $query = $this->em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.id = ?1');
+        $query->setParameter(1, $gt);
+        $result =  $query->getResult();
+        return new Response($result[0]->getCarTypeIds());
     }
 }

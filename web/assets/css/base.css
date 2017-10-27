@@ -968,3 +968,7 @@ footer a:hover{
 #signup_block input[type="text"]{
     width:380px;
 }
+
+#new_card_form .select2-container{
+    width: 100% !important;
+}

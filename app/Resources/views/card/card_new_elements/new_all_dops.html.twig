@@ -29,7 +29,7 @@
     <div class="uk-width-4-5">
         <div class="">
             <span class="expander_button" uk-toggle="target: #subfields">Показать <i uk-icon="icon:chevron-down"></i></span>
-            <span class="help_text"> Дополнительные параметры объявления будут участвовать в фильтрации</span>
+            <span class="uk-margin-left help_text"> Дополнительные параметры объявления будут участвовать в фильтрации</span>
         </div>
         <div class="expandable_block" id="subfields" hidden></div>
     </div>
@@ -38,7 +38,7 @@
 <div uk-grid>
     <div class="uk-width-1-5">Состояние</div>
     <div class="uk-width-4-5">
-        <select name="conditionId" class="uk-select">
+        <select name="conditionId" class="uk-select uk-width-1-5">
             {% for condition in conditions %}
                 <option value="{{ condition.id }}" {{ condition.id == 2 ? 'selected' }}>{{ condition.header }}</option>
             {% endfor %}
@@ -49,7 +49,8 @@
 <div uk-grid>
     <div class="uk-width-1-5">Цвет</div>
     <div class="uk-width-4-5">
-        <select name="colorId" class="uk-select">
+        <select name="colorId" class="uk-select uk-width-1-5">
+            <option value="0">- выберите -</option>
             {% for color in colors %}
                 <option value="{{ color.id }}">{{ color.header }}</option>
             {% endfor %}
@@ -60,7 +61,7 @@
 <div uk-grid>
     <div class="uk-width-1-5">Год выпуска</div>
     <div class="uk-width-4-5">
-        <select name="prodYear" class="uk-select">
+        <select name="prodYear" class="uk-select uk-width-1-5">
             <option value="0" selected>- выберите -</option>
             {% for year in 1950..'now'|date('Y') %}
                 <option value="{{ year }}">{{ year }}</option>
