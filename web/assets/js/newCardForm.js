@@ -121,4 +121,19 @@ $( document ).ready(function() {
         else $('input[name="ownModel"]').addClass('uk-hidden');
     });
 
+    $('#markModelId').on('change',function(){
+        var modelId = $(this).children('option:selected').val();
+        var mark_name = $('#markId').children('option:selected').html();
+        var model_name = $(this).children('option:selected').html();
+        $.ajax({
+            url: '/ajax/getPrices',
+            type: 'POST',
+            data: {modelId:modelId},
+            success: function(html){
+                var content = mark_name+' '+model_name+'<br>';
+                $('#counted_prices').html(content+html);
+            }
+        });
+    });
+
 });

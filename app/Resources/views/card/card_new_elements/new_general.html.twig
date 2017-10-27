@@ -1,5 +1,8 @@
 <div uk-grid>
-    <div class="uk-width-1-5">Тип транспорта <span class="red_star">*</span></div>
+    <div class="uk-width-1-5">
+        Тип транспорта <span class="red_star">*</span>
+        <div class="help_text">Выберите группу и тип транспорта</div>
+    </div>
     <div class="uk-width-3-5">
         <span class="expander_button" uk-toggle="target: #general_selector">{{ gt.header }} <i uk-icon="icon:chevron-down"></i></span>
         <div class="expandable_block" id="general_selector" hidden>
@@ -22,6 +25,5 @@
         </div>
     </div>
     <div class="uk-width-1-5">
-        <div class="help_text">Выберите группу и тип транспорта</div>
     </div>
 </div>
