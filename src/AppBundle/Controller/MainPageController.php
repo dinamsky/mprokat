@@ -112,7 +112,9 @@ class MainPageController extends Controller
 
             'mark_arr_sorted' => $mark_arr_sorted,
             'models_in_mark' => $models_in_mark,
-            'in_city' => $in_city
+            'in_city' => $in_city,
+
+
         ]);
     }
 }

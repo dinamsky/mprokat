@@ -1,5 +1,5 @@
 <header>
-    {% if is_mobile() %}
+    {% if is_mobile() and not is_tablet() %}
         <div uk-grid class="uk-grid-collapse mobile_header" uk-sticky>
             <div class="uk-width-expand">
                 <div class="bg_blue left_part">

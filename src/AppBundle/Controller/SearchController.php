@@ -398,7 +398,9 @@ class SearchController extends Controller
             'bodyTypes' => $bodyTypes,
 
             'in_city' => $in_city,
-            'is_body' => $is_body
+            'is_body' => $is_body,
+
+            'page_type' => 'catalog'
 
         ]);
     }
