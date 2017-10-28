@@ -31,15 +31,7 @@ function new_card_validate(){
 
     var message = [];
 
-    if($('#new_card_form').hasClass('unknown')){
-        var r_email = $('input[name="r_email"]').val();
-        var r_password = $('input[name="r_password"]').val();
-        var r_phone = $('input[name="r_phone"]').val();
 
-        if(r_email === '') message.push('<br>Заполните email!');
-        if(r_phone === '') message.push('<br>Заполните номер телефона!');
-        if(r_password === '') message.push('<br>Заполните пароль!');
-    }
 
 
     if($('#new_card_form').hasClass('no_phone')){
@@ -86,6 +78,37 @@ function new_card_validate(){
         message.push('<br>Описание');
         $('textarea[name="content"]').css('border-color','red');
     }
+
+    if($('#new_card_form').hasClass('unknown')){
+
+        $('input[name="r_email"]').css('border-color','#e5e5e5');
+        $('input[name="r_phone"]').css('border-color','#e5e5e5');
+        $('input[name="r_password"]').css('border-color','#e5e5e5');
+        $('input[name="r_header"]').css('border-color','#e5e5e5');
+
+        var r_email = $('input[name="r_email"]').val();
+        var r_password = $('input[name="r_password"]').val();
+        var r_phone = $('input[name="r_phone"]').val();
+        var r_header = $('input[name="r_header"]').val();
+
+        if(r_email === '') {
+            message.push('<br>Email!');
+            $('input[name="r_email"]').css('border-color','red');
+        }
+        if(r_phone === '') {
+            message.push('<br>Номер телефона!');
+            $('input[name="r_phone"]').css('border-color','red');
+        }
+        if(r_password === '') {
+            message.push('<br>Пароль!');
+            $('input[name="r_password"]').css('border-color','red');
+        }
+        if(r_header === '') {
+            message.push('<br>Имя!');
+            $('input[name="r_header"]').css('border-color','red');
+        }
+    }
+
 
     if (message.length > 0){
         $('html, body').animate({scrollTop: 0},500);
