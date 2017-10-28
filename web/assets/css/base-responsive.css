@@ -207,3 +207,14 @@
         border-bottom: 0 ;
     }
 }
+
+@media (min-width: 600px) and (max-width: 1024px){
+    .standard_wide{
+        width: 100%;
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+    .top_sticky{
+        width: 100% !important;
+    }
+}

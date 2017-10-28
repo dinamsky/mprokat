@@ -39,6 +39,13 @@ class GeneralType
     /**
      * @var string
      *
+     * @ORM\Column(name="header_singular", type="string", length=255, nullable=true)
+     */
+    private $headerSingular;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="car_type_ids", type="string", length=255)
      */
     private $carTypeIds;
@@ -393,5 +400,29 @@ class GeneralType
     public function getTotal()
     {
         return $this->total;
+    }
+
+    /**
+     * Set headerSingular
+     *
+     * @param string $headerSingular
+     *
+     * @return GeneralType
+     */
+    public function setHeaderSingular($headerSingular)
+    {
+        $this->headerSingular = $headerSingular;
+
+        return $this;
+    }
+
+    /**
+     * Get headerSingular
+     *
+     * @return string
+     */
+    public function getHeaderSingular()
+    {
+        return $this->headerSingular;
     }
 }

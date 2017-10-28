@@ -34,6 +34,26 @@ $( document ).ready(function() {
                 $('#generalTypeId').html(html);
             }
         });
+
+        $.ajax({
+            url: '/ajax/getCarType',
+            type: 'POST',
+            data: {gt:generalTypeTopLevelId},
+            success: function(groupId){
+                $('#markGroupName').find('option:selected').removeAttr('selected');
+                $('#markGroupName').find('option[value="'+groupId+'"]').attr('selected','true');
+                $.ajax({
+                    url: '/ajax/getMarks',
+                    type: 'POST',
+                    data: {groupId:groupId},
+                    success: function(html){
+                        $('#markId').html(html);
+                    }
+                });
+            }
+        });
+
+
     });
 
     $('#generalTypeId').on('change',function(){
@@ -44,6 +64,23 @@ $( document ).ready(function() {
             data: {generalTypeId:generalTypeId},
             success: function(html){
                 $('#subfields').html(html);
+            }
+        });
+        $.ajax({
+            url: '/ajax/getCarType',
+            type: 'POST',
+            data: {gt:generalTypeId},
+            success: function(groupId){
+                $('#markGroupName').find('option:selected').removeAttr('selected');
+                $('#markGroupName').find('option[value="'+groupId+'"]').attr('selected','true');
+                $.ajax({
+                    url: '/ajax/getMarks',
+                    type: 'POST',
+                    data: {groupId:groupId},
+                    success: function(html){
+                        $('#markId').html(html);
+                    }
+                });
             }
         });
     });
@@ -68,6 +105,36 @@ $( document ).ready(function() {
             data: {regionId:regionId},
             success: function(html){
                 $('form select#cityId').html(html);
+            }
+        });
+    });
+
+    $('input[name="noMark"]').on('change',function(){
+        var checked = $(this).prop('checked');
+        if(checked) $('input[name="ownMark"]').removeClass('uk-hidden');
+        else $('input[name="ownMark"]').addClass('uk-hidden');
+    });
+
+    $('input[name="noModel"]').on('change',function(){
+        var checked = $(this).prop('checked');
+        if(checked) $('input[name="ownModel"]').removeClass('uk-hidden');
+        else $('input[name="ownModel"]').addClass('uk-hidden');
+    });
+
+    $('#markModelId').on('change',function(){
+        var modelId = $(this).children('option:selected').val();
+        var mark_name = $('#markId').children('option:selected').html();
+        var model_name = $(this).children('option:selected').html();
+        $.ajax({
+            url: '/ajax/getPrices',
+            type: 'POST',
+            data: {modelId:modelId},
+            success: function(html){
+                if(html!='') {
+                    var content = '<div class="count_price_block arrow_box"><h4>Минимальная и максимальная цена на сайте</h4><b>' + mark_name + ' ' + model_name + '</b><br>';
+                    var footer = '<p>Подсказка!<br>Если поставить цены ниже, чем у конкурентов, звонков будет больше.</p></div>';
+                    $('#counted_prices').html(content + html + footer);
+                }
             }
         });
     });

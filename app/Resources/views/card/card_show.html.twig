@@ -169,7 +169,7 @@
 
                                 <div>Состояние: {{ card.getCondition.header }}</div>
 
-                                <div>Цвет: {{ card.getColor.header }}</div>
+                                <div>{{ card.getColor != null ? 'Цвет: '~card.getColor.header }}</div>
 
 
                                 {% for subfield in sub_fields if subfield.value is not null %}
