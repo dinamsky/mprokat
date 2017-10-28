@@ -96,19 +96,19 @@ $( document ).ready(function() {
     });
 
     $('.continue_with_reg').on('click', function(){
-        var h = $('input[name="r_header"]').val();
-        var t = $('input[name="r_phone"]').val();
-        if(h!=='' && t!=='') {
+        // var h = $('input[name="r_header"]').val();
+        // var t = $('input[name="r_phone"]').val();
+        // if(h!=='' && t!=='') {
             $(this).hide();
-            $('.signup_header').hide();
+            $('.first_step').hide();
             $('.unknown').css('display', 'block');
-            $('#signup_block').append('<hr>');
-            $('html, body').animate({
-                scrollTop: $(".unknown").offset().top - 80
-            }, 1000);
-        } else {
-            alert('Пожалуйста заполните телефон и имя/наименование!');
-        }
+            // $('#signup_block').append('<hr>');
+            // $('html, body').animate({
+            //     scrollTop: $(".unknown").offset().top - 80
+            // }, 1000);
+        // } else {
+        //     alert('Пожалуйста заполните телефон и имя/наименование!');
+        // }
     });
 
     $('.newcard_continue').on('click', function(){

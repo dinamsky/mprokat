@@ -130,8 +130,11 @@ $( document ).ready(function() {
             type: 'POST',
             data: {modelId:modelId},
             success: function(html){
-                var content = mark_name+' '+model_name+'<br>';
-                $('#counted_prices').html(content+html);
+                if(html!='') {
+                    var content = '<div class="count_price_block arrow_box"><h4>Минимальная и максимальная цена на сайте</h4><b>' + mark_name + ' ' + model_name + '</b><br>';
+                    var footer = '<p>Подсказка!<br>Если поставить цены ниже, чем у конкурентов, звонков будет больше.</p></div>';
+                    $('#counted_prices').html(content + html + footer);
+                }
             }
         });
     });
