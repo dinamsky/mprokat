@@ -264,7 +264,8 @@ class ShowCardController extends Controller
             'opinions' => $opinions,
             'total_opinions' => $total_opinions,
             'in_city' => $in_city,
-            'bodyType' => $bodyType
+            'bodyType' => $bodyType,
+            'page_type' => 'card'
 
         ]);
     }

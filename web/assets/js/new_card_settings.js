@@ -64,30 +64,35 @@ $( document ).ready(function() {
 
     $('.service_selector button').on('click', function(){
         $('input[name="serviceTypeId"]').val($(this).val());
-        $('.service_selector button').removeClass('uk-button-primary');
-        $(this).addClass('uk-button-primary');
+        $('.service_selector button').addClass('uk-button-default');
+        $(this).removeClass('uk-button-default');
     });
 
     $('.newcard_mailcheck').on('click', function(){
         var check_email = $('input[name="check_email"]').val();
-        $(this).hide();
-        $.ajax({
-            url: '/user_checkmail', // user controller
-            type: 'POST',
-            data: {email:check_email},
-            success: function(html){
-                if(html === 'ok'){
-                    $('input[name="email"]').val(check_email);
-                    $('.check_block').hide();
-                    $('#signin_block').removeClass('uk-hidden');
+        if (!validateEmail(check_email)) {
+            alert('Заполните email правильно! Допустимы: a-z 0-9 точка дефис @');
+            return false;
+        } else {
+            $(this).hide();
+            $.ajax({
+                url: '/user_checkmail', // user controller
+                type: 'POST',
+                data: {email: check_email},
+                success: function (html) {
+                    if (html === 'ok') {
+                        $('input[name="email"]').val(check_email);
+                        $('.check_block').hide();
+                        $('#signin_block').removeClass('uk-hidden');
+                    }
+                    if (html === 'new') {
+                        $('input[name="r_email"]').val(check_email);
+                        $('.check_block').hide();
+                        $('#signup_block').removeClass('uk-hidden');
+                    }
                 }
-                if(html === 'new'){
-                    $('input[name="r_email"]').val(check_email);
-                    $('.check_block').hide();
-                    $('#signup_block').removeClass('uk-hidden');
-                }
-            }
-        });
+            });
+        }
     });
 
     $('.continue_with_reg').on('click', function(){
@@ -104,5 +109,12 @@ $( document ).ready(function() {
         } else {
             alert('Пожалуйста заполните телефон и имя/наименование!');
         }
+    });
+
+    $('.newcard_continue').on('click', function(){
+        var id = $(this).data('id');
+        $(this).remove();
+        $('#'+id).removeClass('uk-hidden');
+        UIkit.update(event = 'update');
     });
 });

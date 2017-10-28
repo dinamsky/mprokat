@@ -934,6 +934,10 @@ footer a:hover{
     padding-top: 4px;
 }
 
+.select2-selection.error{
+    border: 1px solid red !important;
+}
+
 .uk-button{
     box-shadow: 2px 2px 1px lightgrey;
 }
@@ -968,3 +972,20 @@ footer a:hover{
 #signup_block input[type="text"]{
     width:380px;
 }
+
+#new_card_form .select2-container{
+    width: 100% !important;
+}
+
+.foto_placeholder.error {
+    border: 1px solid red;
+}
+
+/*#new_card_alert{*/
+    /*position: absolute;*/
+    /*width: 300px;*/
+    /*left:50%;*/
+    /*padding:30px;*/
+    /*margin-left: -180px;*/
+    /*top:150px;*/
+/*}*/

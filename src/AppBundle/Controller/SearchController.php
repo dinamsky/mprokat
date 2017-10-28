@@ -144,7 +144,7 @@ class SearchController extends Controller
         } else $bodyTypes = false;
 
 
-        if(($mark and in_array($mark,$bodyTypeArray)) or ($model and in_array($model,$bodyTypeArray))){
+        if(isset($bodyTypeArray) and (($mark and in_array($mark,$bodyTypeArray)) or ($model and in_array($model,$bodyTypeArray)))){
             if (in_array($mark,$bodyTypeArray)) $bt_value = $bodyTypeEntity[$mark]->getId();
             if (in_array($model,$bodyTypeArray)) $bt_value = $bodyTypeEntity[$model]->getId();
             $query = $em->createQuery('SELECT f.cardId FROM AppBundle:FieldInteger f WHERE f.value = '.$bt_value.' AND f.cardFieldId = 3');
@@ -398,7 +398,9 @@ class SearchController extends Controller
             'bodyTypes' => $bodyTypes,
 
             'in_city' => $in_city,
-            'is_body' => $is_body
+            'is_body' => $is_body,
+
+            'page_type' => 'catalog'
 
         ]);
     }
