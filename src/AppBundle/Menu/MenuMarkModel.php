@@ -306,4 +306,28 @@ class MenuMarkModel extends Controller
 
         return new Response(json_encode($res));
     }
+
+    /**
+     * @Route("/ajax/getPrices")
+     */
+    public function getPricesAction(Request $request)
+    {
+        $prices = [];
+        $prices_hour = [];
+        $content = '';
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery('SELECT c,p FROM AppBundle:Card c JOIN c.cardPrices p WHERE c.modelId = ?1');
+        $query->setParameter(1, $request->request->get('modelId'));
+        foreach ($query->getResult() as $row){
+            foreach($row->getCardPrices() as $price){
+                if($price->getPriceId() == 2) $prices[] = $price->getValue();
+                if($price->getPriceId() == 1) $prices_hour[] = $price->getValue();
+            }
+        }
+
+        if(count($prices_hour)>1) $content = min($prices_hour).' - '.max($prices_hour). ' <i class="fa fa-ruble"></i>/час<br>';
+        if(count($prices)>1) $content = $content.min($prices).' - '.max($prices). ' <i class="fa fa-ruble"></i>/день';
+
+        return new Response($content);
+    }
 }

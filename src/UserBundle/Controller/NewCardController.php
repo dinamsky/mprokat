@@ -372,11 +372,14 @@ class NewCardController extends Controller
             }
 
 
+            if($post->get('colorId') != 0) {
+                $color = $this->getDoctrine()
+                    ->getRepository(Color::class)
+                    ->find($post->get('colorId'));
+                $card->setColor($color);
+            }
 
-            $color = $this->getDoctrine()
-                ->getRepository(Color::class)
-                ->find($post->get('colorId'));
-            $card->setColor($color);
+
 
             $tariff = $this->getDoctrine()
                 ->getRepository(Tariff::class)
