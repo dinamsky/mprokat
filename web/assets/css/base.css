@@ -101,6 +101,7 @@ button{
 
 .sticky_top_city_selector{
     padding: 5px;
+    color: #07d;
 }
 
 .sticky_top_city_selector:hover{
@@ -989,3 +990,64 @@ footer a:hover{
     /*margin-left: -180px;*/
     /*top:150px;*/
 /*}*/
+
+.inline_link_button{
+    border: 1px solid #07d;
+    line-height: 14px;
+    display: inline-block;
+    padding: 0 5px 3px;
+}
+
+.inline_link_button:hover{
+    background: #07d;
+    color:white;
+    text-decoration: none;
+}
+
+.count_price_block{
+    border: 1px solid lightgrey;
+    padding: 10px;
+    position: relative;
+}
+
+
+.count_price_block h4{
+    font-size: 14px;
+    color: grey;
+}
+
+.count_price_block p{
+    font-size: 13px;
+    margin-bottom: 0;
+    font-style: italic;
+}
+
+
+.arrow_box {
+    position: relative;
+    background: #f9f9f9;
+    border: 1px solid #999999;
+}
+.arrow_box:after, .arrow_box:before {
+    right: 100%;
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.arrow_box:after {
+    border-color: rgba(249, 249, 249, 0);
+    border-right-color: #f9f9f9;
+    border-width: 17px;
+    margin-top: -17px;
+}
+.arrow_box:before {
+    border-color: rgba(153, 153, 153, 0);
+    border-right-color: #999999;
+    border-width: 18px;
+    margin-top: -18px;
+}
