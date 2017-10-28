@@ -27,11 +27,12 @@
     <script src="{{ asset('assets/js/phone_validate.js') }}"></script>
     <script src="{{ asset('assets/js/select2.min.js') }}"></script>
     <script src="{{ asset('assets/js/select_combo.js') }}"></script>
+    <script src="{{ asset('assets/js/signup_validate.js') }}"></script>
 {% endblock %}
 
 {% block content %}
 
-    <div class="standard_wide uk-margin-top"><h1>Сдать в прокат</h1></div>
+    <div class="standard_wide uk-margin-top"><h1>Новое объявление</h1></div>
 
     {% if not admin and not user %}
         {{ include('user/step_auth.html.twig') }}
@@ -174,6 +175,16 @@
 
     </form>
 
+
+    <div id="new_card_alert" uk-modal>
+        <div class="uk-modal-dialog c_red">
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+            <div class="uk-modal-header">
+                <h2 class="uk-modal-title c_red">Заполните поля</h2>
+            </div>
+            <div class="uk-modal-body" id="alert_content"></div>
+        </div>
+    </div>
 
 
 {% endblock %}
