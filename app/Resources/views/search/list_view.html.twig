@@ -33,6 +33,7 @@
                 {% if app.session.get('admin').email is defined %}
                     <form action="/card/update" method="POST" style="position: absolute;top:0;right:0;">
                         <input type="hidden" name="cardId" value="{{ card.id }}">
+                        <input type="hidden" name="return" value="{{ app.request.requestUri }}">
                         <button class="uk-button uk-button-danger" name="delete">Удалить</button>
                     </form>
                     <a class="uk-button-primary" href="/user/edit/card/{{ card.id }}" uk-icon="icon:pencil" style="position: absolute;left:0;top:0"></a>
