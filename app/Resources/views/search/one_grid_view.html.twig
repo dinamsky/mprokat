@@ -84,6 +84,7 @@
     ) %}
         <form action="/card/update" method="POST" style="position: absolute;top:0;right:0;" onsubmit="return confirm('Вы уверены?');">
             <input type="hidden" name="cardId" value="{{ card.id }}">
+            <input type="hidden" name="return" value="{{ app.request.requestUri }}">
             <button class="uk-button-danger c_white" name="delete" uk-close></button>
         </form>
         <a class="uk-button-primary uk-position-top-left icon_button" href="/user/edit/card/{{ card.id }}" ><i class="fa fa-pencil"></i></a>
