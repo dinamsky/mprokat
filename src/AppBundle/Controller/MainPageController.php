@@ -25,11 +25,11 @@ class MainPageController extends Controller
 
         $topSlider = $this->getDoctrine()
             ->getRepository(Card::class)
-            ->getTopSlider();
+            ->getTopSlider($this->get('session')->get('city')->getId());
 
         $all = $this->getDoctrine()
             ->getRepository(Card::class)
-            ->getLimitedSliders([2,3,8,15,13,10,17,9]);
+            ->getLimitedSliders([2,3,8,15,13,10,17,9], $this->get('session')->get('city')->getId());
 
         $cars = $all[2];
         $trucks = $all[3];

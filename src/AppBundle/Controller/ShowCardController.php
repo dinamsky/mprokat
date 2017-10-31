@@ -38,18 +38,14 @@ class ShowCardController extends Controller
             ->getRepository(Card::class)
             ->find($id);
 
-
-
-
         $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g ORDER BY g.total DESC');
         $generalTypes = $query->getResult();
 
-
-        if(!$card){
+        if (!$card) {
             $deleted = $this->getDoctrine()
                 ->getRepository(Deleted::class)
-                ->findOneBy(['cardId'=>$id]);
-            if($deleted){
+                ->findOneBy(['cardId' => $id]);
+            if ($deleted) {
                 $city = $this->getDoctrine()
                     ->getRepository(City::class)
                     ->find($deleted->getCityId());
@@ -60,21 +56,21 @@ class ShowCardController extends Controller
                     ->getRepository(CarModel::class)
                     ->find($deleted->getModelId());
 
-                $dql = 'SELECT c.id FROM AppBundle:Card c WHERE c.generalTypeId = '.$general->getId().' AND c.cityId = '.$city->getId().' ORDER BY c.dateUpdate DESC';
+                $dql = 'SELECT c.id FROM AppBundle:Card c WHERE c.generalTypeId = ' . $general->getId() . ' AND c.cityId = ' . $city->getId() . ' ORDER BY c.dateUpdate DESC';
                 $query = $em->createQuery($dql);
                 $query->setMaxResults(10);
-                foreach($query->getScalarResult() as $row) $sim_ids[] = $row['id'];
-                if(isset($sim_ids)) {
+                foreach ($query->getScalarResult() as $row) $sim_ids[] = $row['id'];
+                if (isset($sim_ids)) {
                     $dql = 'SELECT c,p,f FROM AppBundle:Card c LEFT JOIN c.cardPrices p LEFT JOIN c.fotos f WHERE c.id IN (' . implode(",", $sim_ids) . ') ORDER BY c.dateUpdate DESC';
                     $query = $em->createQuery($dql);
                     $similar = $query->getResult();
                 } else $similar = false;
 
-                $dql = 'SELECT c.id FROM AppBundle:Card c WHERE c.cityId = '.$city->getId().' ORDER BY c.dateUpdate DESC';
+                $dql = 'SELECT c.id FROM AppBundle:Card c WHERE c.cityId = ' . $city->getId() . ' ORDER BY c.dateUpdate DESC';
                 $query = $em->createQuery($dql);
                 $query->setMaxResults(10);
-                foreach($query->getScalarResult() as $row) $sim_ids[] = $row['id'];
-                if(isset($sim_ids)) {
+                foreach ($query->getScalarResult() as $row) $sim_ids[] = $row['id'];
+                if (isset($sim_ids)) {
                     $dql = 'SELECT c,p,f FROM AppBundle:Card c LEFT JOIN c.cardPrices p LEFT JOIN c.fotos f WHERE c.id IN (' . implode(",", $sim_ids) . ') ORDER BY c.dateUpdate DESC';
                     $query = $em->createQuery($dql);
                     $allincity = $query->getResult();
@@ -96,15 +92,15 @@ class ShowCardController extends Controller
             } else throw $this->createNotFoundException(); //404
         };
 
-        if($card->getIsActive() == 0){
+        if ($card->getIsActive() == 0) {
             $this->addFlash(
                 'notice',
-                'Объявление №'.$card->getId().' временно недоступно!<br>Если это ваше объявление -<br>активируйте свой аккаунт через ссылку в письме регистрации,<br>тогда ваше объявление станет доступным.'
+                'Объявление №' . $card->getId() . ' временно недоступно!<br>Если это ваше объявление -<br>активируйте свой аккаунт через ссылку в письме регистрации,<br>тогда ваше объявление станет доступным.'
             );
             return $this->redirectToRoute('homepage');
         }
 
-        if ($card->getUser()->getIsBanned()) return new Response("",404);
+        if ($card->getUser()->getIsBanned()) return new Response("", 404);
 
         $views = $this->get('session')->get('views');
         if (!isset($views[$card->getId()])) {
@@ -119,26 +115,35 @@ class ShowCardController extends Controller
 
         $city = $card->getCity();
 
-        if ($card->getVideo() != '') $video = explode("=",$card->getVideo())[1];
+        if ($card->getVideo() != '') $video = explode("=", $card->getVideo())[1];
         else $video = false;
 
         if ($card->getStreetView() != '') $streetView = unserialize($card->getStreetView());
         else $streetView = false;
 
-
-        $dql = 'SELECT c.id FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId = '.$card->getGeneralTypeId().' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
+        $dql = 'SELECT c.id FROM AppBundle:Card c JOIN c.tariff t WHERE c.cityId=?1 AND c.generalTypeId = ' . $card->getGeneralTypeId() . ' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
 
         $query = $em->createQuery($dql);
+        $query->setParameter(1, $this->get('session')->get('city')->getId());
         $query->setMaxResults(10);
-        foreach($query->getScalarResult() as $row){
+
+        if (count($query->getResult()) < 4) {
+            $dql = 'SELECT c.id FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId = ' . $card->getGeneralTypeId() . ' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
+            $query = $em->createQuery($dql);
+            $query->setMaxResults(10);
+        }
+
+
+
+        foreach ($query->getScalarResult() as $row) {
             $sim_ids[] = $row['id'];
         }
-        $sim_ids = implode(",",$sim_ids);
+        $sim_ids = implode(",", $sim_ids);
 
 
-        $dql = 'SELECT c,p,f FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.cardPrices p LEFT JOIN c.fotos f WHERE c.id IN ('.$sim_ids.') ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
-
+        $dql = 'SELECT c,p,f FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.cardPrices p LEFT JOIN c.fotos f WHERE c.id IN (' . $sim_ids . ') ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
         $query = $em->createQuery($dql);
+
 
         $similar = $query->getResult();
 
