@@ -193,87 +193,39 @@
                 </div>
             </div>
             <div class="uk-width-1-4@s">
-                <a href="/rent/{{ in_city }}/all/bikes" class="cat_main_header padding20 c_grey bordered b_shadowed uk-display-block uk-text-center uk-margin-bottom">Мотоциклы</a>
+                <a href="/rent/{{ in_city }}/all/bikes" class="cat_main_header padding20 c_grey bordered b_shadowed uk-display-block uk-text-center uk-margin-bottom">Свадебные авто</a>
                 {#<div>#}
                     {#{{ include('search/one_grid_view.html.twig', {'card':moto, 'height':'150px'}) }}#}
                 {#</div>#}
                 <div class="owl-carousel owl-theme uk-width-1-1" data-items="1" data-dots="0">
-                    {% for card in moto %}
+                    {% for card in wedding %}
                         {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px'}) }}
                     {% endfor %}
-                    {{ include('search/all_more.html.twig', {'title':'Все мотоциклы', 'url':'/rent/'~in_city~'/all/bikes'}) }}
+                    {{ include('search/all_more.html.twig', {'title':'Все свадебные авто', 'url':'/rent/'~in_city~'/all/bikes'}) }}
                 </div>
             </div>
             <div class="uk-width-1-4@s">
-                <a href="/rent/{{ in_city }}/all/trucks" class="cat_main_header padding20 c_grey bordered b_shadowed uk-display-block uk-text-center uk-margin-bottom">Грузовые автомобили</a>
+                <a href="/rent/{{ in_city }}/all/trucks" class="cat_main_header padding20 c_grey bordered b_shadowed uk-display-block uk-text-center uk-margin-bottom">Вертолеты</a>
                 {#<div>#}
                     {#{{ include('search/one_grid_view.html.twig', {'card':trucks, 'height':'150px'}) }}#}
-                {#</div>#}
-                <div class="owl-carousel owl-theme uk-width-1-1" data-items="1" data-dots="0">
-                    {% for card in trucks %}
-                        {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px'}) }}
-                    {% endfor %}
-                    {{ include('search/all_more.html.twig', {'title':'Все грузовые автомобили', 'url':'/rent/'~in_city~'/all/trucks'}) }}
-                </div>
-            </div>
-            <div class="uk-width-1-4@s">
-                <a href="/rent/{{ in_city }}/all/bikes" class="cat_main_header padding20 c_grey bordered b_shadowed uk-display-block uk-text-center uk-margin-bottom">Велосипеды</a>
-                {#<div>#}
-                    {#{{ include('search/one_grid_view.html.twig', {'card':bicycles, 'height':'150px'}) }}#}
-                {#</div>#}
-                <div class="owl-carousel owl-theme uk-width-1-1" data-items="1" data-dots="0">
-                    {% for card in bicycles %}
-                        {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px'}) }}
-                    {% endfor %}
-                    {{ include('search/all_more.html.twig', {'title':'Все велосипеды', 'url':'/rent/'~in_city~'/all/bikes'}) }}
-                </div>
-            </div>
-            <div class="uk-width-1-4@s">
-                <a href="/rent/{{ in_city }}/all/helicopters" class="cat_main_header padding20 c_grey bordered b_shadowed uk-display-block uk-text-center uk-margin-bottom">Воздушные прогулки</a>
-                {#<div>#}
-                    {#{{ include('search/one_grid_view.html.twig', {'card':heli, 'height':'150px'}) }}#}
                 {#</div>#}
                 <div class="owl-carousel owl-theme uk-width-1-1" data-items="1" data-dots="0">
                     {% for card in heli %}
                         {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px'}) }}
                     {% endfor %}
-                    {{ include('search/all_more.html.twig', {'title':'Все вертолеты', 'url':'/rent/'~in_city~'/all/helicopters'}) }}
+                    {{ include('search/all_more.html.twig', {'title':'Все вертолеты', 'url':'/rent/'~in_city~'/all/trucks'}) }}
                 </div>
             </div>
             <div class="uk-width-1-4@s">
-                <a href="/rent/{{ in_city }}/all/quadro" class="cat_main_header padding20 c_grey bordered b_shadowed uk-display-block uk-text-center uk-margin-bottom">Гонки по бездорожью</a>
+                <a href="/rent/{{ in_city }}/all/bikes" class="cat_main_header padding20 c_grey bordered b_shadowed uk-display-block uk-text-center uk-margin-bottom">Снегоходы</a>
                 {#<div>#}
-                    {#{{ include('search/one_grid_view.html.twig', {'card':quad, 'height':'150px'}) }}#}
-                {#</div>#}
-                <div class="owl-carousel owl-theme uk-width-1-1" data-items="1" data-dots="0">
-                    {% for card in quad %}
-                        {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px'}) }}
-                    {% endfor %}
-                    {{ include('search/all_more.html.twig', {'title':'Все квадроциклы', 'url':'/rent/'~in_city~'/all/quadro'}) }}
-                </div>
-            </div>
-            <div class="uk-width-1-4@s">
-                <a href="/rent/{{ in_city }}/all/snowride" class="cat_main_header padding20 c_grey bordered b_shadowed uk-display-block uk-text-center uk-margin-bottom">Снежные приключения</a>
-                {#<div>#}
-                    {#{{ include('search/one_grid_view.html.twig', {'card':snow, 'height':'150px'}) }}#}
+                    {#{{ include('search/one_grid_view.html.twig', {'card':bicycles, 'height':'150px'}) }}#}
                 {#</div>#}
                 <div class="owl-carousel owl-theme uk-width-1-1" data-items="1" data-dots="0">
                     {% for card in snow %}
                         {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px'}) }}
                     {% endfor %}
-                    {{ include('search/all_more.html.twig', {'title':'Все снегоходы', 'url':'/rent/'~in_city~'/all/snowride'}) }}
-                </div>
-            </div>
-            <div class="uk-width-1-4@s">
-                <a href="/rent/{{ in_city }}/all/yachts" class="cat_main_header padding20 c_grey bordered b_shadowed uk-display-block uk-text-center uk-margin-bottom">Морские прогулки</a>
-                {#<div>#}
-                    {#{{ include('search/one_grid_view.html.twig', {'card':yachts, 'height':'150px'}) }}#}
-                {#</div>#}
-                <div class="owl-carousel owl-theme uk-width-1-1" data-items="1" data-dots="0">
-                    {% for card in yachts %}
-                        {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px'}) }}
-                    {% endfor %}
-                    {{ include('search/all_more.html.twig', {'title':'Все яхты', 'url':'/rent/'~in_city~'/all/yachts'}) }}
+                    {{ include('search/all_more.html.twig', {'title':'Все снегоходы', 'url':'/rent/'~in_city~'/all/bikes'}) }}
                 </div>
             </div>
         </div>

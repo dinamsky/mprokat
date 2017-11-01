@@ -25,20 +25,17 @@ class MainPageController extends Controller
 
         $topSlider = $this->getDoctrine()
             ->getRepository(Card::class)
-            ->getTopSlider();
+            ->getTopSlider($this->get('session')->get('city')->getId());
 
         $all = $this->getDoctrine()
             ->getRepository(Card::class)
-            ->getLimitedSliders([2,3,8,15,13,10,17,9]);
+            ->getLimitedSliders([2,6,17,10], $this->get('session')->get('city')->getId());
 
         $cars = $all[2];
-        $trucks = $all[3];
-        $moto = $all[8];
-        $bicycles = $all[15];
-        $yachts = $all[13];
+        $wedding = $all[6];
         $snow = $all[10];
         $heli = $all[17];
-        $quad = $all[9];
+
 
         $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.total DESC');
         $generalTypes = $query->getResult();
@@ -88,14 +85,12 @@ class MainPageController extends Controller
             'city' => $city,
 
             'topSlider' => $topSlider,
+
             'cars' => $cars,
-            'trucks' => $trucks,
             'heli' => $heli,
-            'bicycles' => $bicycles,
             'snow' => $snow,
-            'yachts' => $yachts,
-            'moto' => $moto,
-            'quad' => $quad,
+            'wedding' => $wedding,
+
 
             'cityId' => $city->getId(),
 

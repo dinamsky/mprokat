@@ -36,25 +36,18 @@ class ServiceStat extends Controller
         if(!$is_bot) {
 
             if (!isset($this->sess->get('stat_url')[$data['url']][$data['event_type']])) {
-                $query = $this->em->createQuery('SELECT s FROM AppBundle:Stat s WHERE s.url=?1 AND s.eventType=?2');
-                $query->setParameter(1, $data['url']);
-                $query->setParameter(2, $data['event_type']);
-                if (count($query->getResult()) > 0) {
-                    $stat = $query->getResult()[0];
-                    $stat->setQty($stat->getQty() + 1);
-                } else {
 
-                    if (!isset($data['card_id'])) $data['card_id'] = null;
-                    if (!isset($data['user_id'])) $data['user_id'] = null;
+                if (!isset($data['card_id'])) $data['card_id'] = null;
+                if (!isset($data['user_id'])) $data['user_id'] = null;
 
-                    $stat = new Stat();
-                    $stat->setUrl($data['url']);
-                    $stat->setCardId($data['card_id']);
-                    $stat->setUserId($data['user_id']);
-                    $stat->setEventType($data['event_type']);
-                    $stat->setPageType($data['page_type']);
-                    $stat->setQty(1);
-                }
+                $stat = new Stat();
+                $stat->setUrl($data['url']);
+                $stat->setCardId($data['card_id']);
+                $stat->setUserId($data['user_id']);
+                $stat->setEventType($data['event_type']);
+                $stat->setPageType($data['page_type']);
+                $stat->setQty(1);
+
 
                 if (isset($data['is_empty'])) $stat->setIsEmpty(true);
 
