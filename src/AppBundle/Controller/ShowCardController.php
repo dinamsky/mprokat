@@ -121,31 +121,49 @@ class ShowCardController extends Controller
         if ($card->getStreetView() != '') $streetView = unserialize($card->getStreetView());
         else $streetView = false;
 
-        $dql = 'SELECT c.id FROM AppBundle:Card c JOIN c.tariff t WHERE c.cityId=?1 AND c.generalTypeId = ' . $card->getGeneralTypeId() . ' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
 
+        // ---------------------------- start of similar ----------------------------------
+
+        $dql = 'SELECT c.id FROM AppBundle:Card c WHERE c.cityId=?1 AND c.id != ?2 AND c.modelId=?3 ORDER BY c.dateUpdate DESC'; // -- get by model
         $query = $em->createQuery($dql);
         $query->setParameter(1, $this->get('session')->get('city')->getId());
+        $query->setParameter(2, $card->getId());
+        $query->setParameter(3, $card->getModelId());
         $query->setMaxResults(10);
 
-        if (count($query->getResult()) < 4) {
-            $dql = 'SELECT c.id FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId = ' . $card->getGeneralTypeId() . ' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
+        if (count($query->getScalarResult()) < 1) { // -- get by mark
+            $dql = 'SELECT m.id FROM MarkBundle:CarModel m WHERE m.carMarkId=?1';
             $query = $em->createQuery($dql);
+            $query->setParameter(1, $card->getMarkModel()->getCarMarkId());
+            foreach ($query->getScalarResult() as $row) {
+                $model_ids[] = $row['id'];
+            }
+            $dql = 'SELECT c.id FROM AppBundle:Card c WHERE c.cityId=?1 AND c.id != ?2 AND c.modelId IN ('.implode(",",$model_ids).') ORDER BY c.dateUpdate DESC';
+            $query = $em->createQuery($dql);
+            $query->setParameter(1, $this->get('session')->get('city')->getId());
+            $query->setParameter(2, $card->getId());
             $query->setMaxResults(10);
+
+            if (count($query->getScalarResult()) < 1) {
+                $dql = 'SELECT c.id FROM AppBundle:Card c JOIN c.tariff t WHERE c.cityId=?1 AND c.id != ?2 AND c.generalTypeId = ' . $card->getGeneralTypeId() . ' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
+                $query = $em->createQuery($dql);
+                $query->setParameter(1, $this->get('session')->get('city')->getId());
+                $query->setParameter(2, $card->getId());
+                $query->setMaxResults(10);
+            }
         }
-
-
 
         foreach ($query->getScalarResult() as $row) {
             $sim_ids[] = $row['id'];
         }
         $sim_ids = implode(",", $sim_ids);
 
-
         $dql = 'SELECT c,p,f FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.cardPrices p LEFT JOIN c.fotos f WHERE c.id IN (' . $sim_ids . ') ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
         $query = $em->createQuery($dql);
 
-
         $similar = $query->getResult();
+
+        // ---------------------------- end of similar ----------------------------------
 
         $model = $mm->getModel($card->getModelId());
         $mark = $mm->getMark($model->getCarMarkId());

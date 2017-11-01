@@ -12,7 +12,7 @@
         <a href="/admin"><span uk-icon="icon:user"></span> {{ app.session.get('admin').email }}</a>
         <a href="/adminLogout" class=""><span><i uk-icon="icon:sign-out"></i> Выход</span></a>
     {% else %}
-        <div  uk-toggle="target: #sign_in" class="top_user_actions_button"><span uk-icon="icon:sign-in"></span> Войти</div>
-        <div  uk-toggle="target: #sign_up" class="top_user_actions_button"><span uk-icon="icon:lock"></span>Регистрация</div>
+        <div  uk-toggle="target: #sign_in" class="top_user_actions_button"><span uk-icon="icon:sign-in"></span> Вход</div>
+        {#<div  uk-toggle="target: #sign_up" class="top_user_actions_button"><span uk-icon="icon:lock"></span>Регистрация</div>#}
     {% endif %}
 </div>
