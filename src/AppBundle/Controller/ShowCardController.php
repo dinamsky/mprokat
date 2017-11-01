@@ -150,6 +150,15 @@ class ShowCardController extends Controller
                 $query->setParameter(1, $this->get('session')->get('city')->getId());
                 $query->setParameter(2, $card->getId());
                 $query->setMaxResults(10);
+
+                if (count($query->getScalarResult()) < 1) {
+                    $dql = 'SELECT c.id FROM AppBundle:Card c JOIN c.tariff t WHERE c.id != ?2 AND c.generalTypeId = ' . $card->getGeneralTypeId() . ' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
+                    $query = $em->createQuery($dql);
+                    $query->setParameter(1, $this->get('session')->get('city')->getId());
+                    $query->setParameter(2, $card->getId());
+                    $query->setMaxResults(10);
+                }
+
             }
         }
 
