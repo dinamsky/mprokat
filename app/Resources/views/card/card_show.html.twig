@@ -241,69 +241,77 @@
 
 
                 {% if not app.session.has('first_card') %}
-                <h2 class="pf_style_header"><span>Комментарии</span></h2>
+                    <div uk-grid class="uk-margin-top">
+                        <div class="uk-width-1-2">
+                            <h2 class="pf_style_header"><span>Комментарии</span></h2>
 
-                <div class="card_blanc">
-                    {% if app.session.has('logged_user') %}
-                        <form action="/userAddComment" method="POST">
-                            <textarea name="comment" class="uk-textarea" placeholder="Ваш комментарий" required></textarea>
-                            <input type="hidden" name="user_id" value="{{ app.session.get('logged_user').id }}">
-                            <input type="hidden" name="card_id" value="{{ card.id }}">
-                            <input type="hidden" name="return" value="{{ app.request.requestUri }}">
-                            <button class="uk-button uk-button-primary uk-margin-top">Отправить</button>
-                        </form>
+                            <div class="card_blanc">
+                                {% if app.session.has('logged_user') %}
+                                    <form action="/userAddComment" method="POST">
+                                        <textarea name="comment" class="uk-textarea" placeholder="Ваш комментарий" required></textarea>
+                                        <input type="hidden" name="user_id" value="{{ app.session.get('logged_user').id }}">
+                                        <input type="hidden" name="card_id" value="{{ card.id }}">
+                                        <input type="hidden" name="return" value="{{ app.request.requestUri }}">
+                                        <button class="uk-button uk-button-primary uk-margin-top">Отправить</button>
+                                    </form>
 
-                        <div class="uk-margin-top">
-                            {% for comment in card.comments %}
-                                <div class="uk-margin-bottom">
-                                    <i class="fa fa-calendar"></i> {{ comment.dateCreate|date('d.m.Y H:i') }}
-                                    <i class="fa fa-user"></i> {{ comment.user.header }}
-                                    <div><i class="fa fa-comment-o"></i> {{ comment.content }}</div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <div>
-                            <a uk-toggle="target: #sign_in">Войдите</a> или <a uk-toggle="target: #sign_up">зарегистрируйтесь</a>, чтобы написать комментарий.
-                        </div>
-                    {% endif %}
-                </div>
-
-                <h2 class="pf_style_header"><span>Отзывы</span></h2>
-
-                <div class="card_blanc">
-                    {% if app.session.has('logged_user') %}
-                        <form action="/userAddOpinion" method="POST">
-                            <div class="stars uk-margin-bottom">
-                                {% for i in 1..5 %}
-                                    <span class="star {{ i == 1 ? 'active' }}" data-star="{{ i }}"><i class="fa fa-star"></i></span>
-                                {% endfor %}
-                                <span id="stars">1</span>
+                                    <div class="uk-margin-top">
+                                        {% for comment in card.comments %}
+                                            <div class="uk-margin-bottom">
+                                                <i class="fa fa-calendar"></i> {{ comment.dateCreate|date('d.m.Y H:i') }}
+                                                <i class="fa fa-user"></i> {{ comment.user.header }}
+                                                <div><i class="fa fa-comment-o"></i> {{ comment.content }}</div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <div>
+                                        <a uk-toggle="target: #sign_in">Войдите</a> или <a uk-toggle="target: #sign_up">зарегистрируйтесь</a>, чтобы написать комментарий.
+                                    </div>
+                                {% endif %}
                             </div>
-                            <textarea name="content" class="uk-textarea" placeholder="Ваш отзыв" required></textarea>
-                            <input type="hidden" name="stars" value="1">
-                            <input type="hidden" name="user_id" value="{{ app.session.get('logged_user').id }}">
-                            <input type="hidden" name="card_id" value="{{ card.id }}">
-                            <input type="hidden" name="return" value="{{ app.request.requestUri }}">
-                            <button class="uk-button uk-button-primary uk-margin-top">Отправить</button>
-                        </form>
-                        <div class="uk-margin-top">
-                            {% for opinion in card.opinions %}
-                                <div class="uk-margin-bottom">
-                                    <i class="fa fa-calendar"></i> {{ opinion.dateCreate|date('d.m.Y H:i') }}
-                                    <i class="fa fa-user"></i> {{ opinion.user.header }}
-                                    <i class="fa fa-star c_gold"></i> {{ opinion.stars }}
-                                    <div><i class="fa fa-comment-o"></i> {{ opinion.content }}</div>
-                                </div>
-                            {% endfor %}
                         </div>
+                        <div class="uk-width-1-2">
+                            <h2 class="pf_style_header"><span>Отзывы</span></h2>
 
-                    {% else %}
-                        <div>
-                            <a uk-toggle="target: #sign_in">Войдите</a> или <a uk-toggle="target: #sign_up">зарегистрируйтесь</a>, чтобы оставить отзыв.
+                            <div class="card_blanc">
+                                {% if app.session.has('logged_user') %}
+                                    <form action="/userAddOpinion" method="POST">
+                                        <div class="stars uk-margin-bottom">
+                                            {% for i in 1..5 %}
+                                                <span class="star {{ i == 1 ? 'active' }}" data-star="{{ i }}"><i class="fa fa-star"></i></span>
+                                            {% endfor %}
+                                            <span id="stars">1</span>
+                                        </div>
+                                        <textarea name="content" class="uk-textarea" placeholder="Ваш отзыв" required></textarea>
+                                        <input type="hidden" name="stars" value="1">
+                                        <input type="hidden" name="user_id" value="{{ app.session.get('logged_user').id }}">
+                                        <input type="hidden" name="card_id" value="{{ card.id }}">
+                                        <input type="hidden" name="return" value="{{ app.request.requestUri }}">
+                                        <button class="uk-button uk-button-primary uk-margin-top">Отправить</button>
+                                    </form>
+                                    <div class="uk-margin-top">
+                                        {% for opinion in card.opinions %}
+                                            <div class="uk-margin-bottom">
+                                                <i class="fa fa-calendar"></i> {{ opinion.dateCreate|date('d.m.Y H:i') }}
+                                                <i class="fa fa-user"></i> {{ opinion.user.header }}
+                                                <i class="fa fa-star c_gold"></i> {{ opinion.stars }}
+                                                <div><i class="fa fa-comment-o"></i> {{ opinion.content }}</div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+
+                                {% else %}
+                                    <div>
+                                        <a uk-toggle="target: #sign_in">Войдите</a> или <a uk-toggle="target: #sign_up">зарегистрируйтесь</a>, чтобы оставить отзыв.
+                                    </div>
+                                {% endif %}
+                            </div>
                         </div>
-                    {% endif %}
-                </div>
+                    </div>
+
+
+
                 {% else %}
                     <a href="/card/new" class="uk-button uk-button-success uk-width-1-1 uk-margin-top">Разместить еще объявление</a>
                 {% endif %}
@@ -347,7 +355,7 @@
 
                 <div class="uk-margin-bottom card_page_phone ">
                     <div uk-grid class="uk-grid-collapse uk-grid-match b_shadowed">
-                        <div class="phone_block uk-width-5-6">
+                        <div class="phone_block uk-width-1-1">
                             {% if app.session.get('phone')[card.user.id] is not defined %}
                                 <div class="hidden_phone bg_green show_phone uk-text-center c_white" data-card_id="{{ card.id }}" data-profile="0">
                                     <div class="uk-text-center">Показать телефон</div>
@@ -360,12 +368,13 @@
                                 </a>
                             {% endif %}
                         </div>
-                        <div class="uk-width-1-6">
-                            <div class="bg_green user_form_button" uk-toggle="target: #user_message_form"><i class="fa fa-commenting"></i></div>
-                        </div>
+
                     </div>
                 </div>
 
+                <div class="uk-margin-bottom card_blanc">
+                    <div class="cursor-pointer" uk-toggle="target: #user_message_form"><i class="fa fa-commenting"></i> Написать сообщение</div>
+                </div>
 
                 <div class="uk-margin-bottom card_blanc">
                     <div><i class="fa fa-eye c_green"></i> {{ card.views }} <span class="uk-text-small c_grey">просмотров</span></div>
