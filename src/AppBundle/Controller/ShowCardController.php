@@ -129,7 +129,7 @@ class ShowCardController extends Controller
         $query->setParameter(1, $this->get('session')->get('city')->getId());
         $query->setParameter(2, $card->getId());
         $query->setParameter(3, $card->getModelId());
-        $query->setMaxResults(10);
+        $query->setMaxResults(9);
 
         if (count($query->getScalarResult()) < 1) { // -- get by mark
             $dql = 'SELECT m.id FROM MarkBundle:CarModel m WHERE m.carMarkId=?1';
@@ -142,20 +142,20 @@ class ShowCardController extends Controller
             $query = $em->createQuery($dql);
             $query->setParameter(1, $this->get('session')->get('city')->getId());
             $query->setParameter(2, $card->getId());
-            $query->setMaxResults(10);
+            $query->setMaxResults(9);
 
             if (count($query->getScalarResult()) < 1) {
                 $dql = 'SELECT c.id FROM AppBundle:Card c JOIN c.tariff t WHERE c.cityId=?1 AND c.id != ?2 AND c.generalTypeId = ' . $card->getGeneralTypeId() . ' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
                 $query = $em->createQuery($dql);
                 $query->setParameter(1, $this->get('session')->get('city')->getId());
                 $query->setParameter(2, $card->getId());
-                $query->setMaxResults(10);
+                $query->setMaxResults(9);
 
                 if (count($query->getScalarResult()) < 1) {
                     $dql = 'SELECT c.id FROM AppBundle:Card c JOIN c.tariff t WHERE c.id != ?2 AND c.generalTypeId = ' . $card->getGeneralTypeId() . ' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
                     $query = $em->createQuery($dql);
                     $query->setParameter(2, $card->getId());
-                    $query->setMaxResults(10);
+                    $query->setMaxResults(9);
                 }
 
             }
