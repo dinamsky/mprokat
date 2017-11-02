@@ -87,4 +87,26 @@ class MenuGeneralType extends Controller
         $result =  $query->getResult();
         return new Response($result[0]->getCarTypeIds());
     }
+
+    /**
+     * @Route("/ajax/getGtByInput")
+     */
+    public function getGtByInputAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $res = array();
+
+        $gts = $em->getRepository("AppBundle:GeneralType")->createQueryBuilder('g')
+            ->where('g.header LIKE :ct')
+            ->andWhere("g.carTypeIds != '' ")
+            ->setParameter('ct', '%'.$request->request->get('q').'%')
+            ->getQuery()
+            ->getResult();
+
+        foreach($gts as $c){
+            $res[] = $c->getHeader().'|'.$c->getUrl();
+        }
+
+        return new Response(json_encode($res));
+    }
 }

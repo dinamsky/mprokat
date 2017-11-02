@@ -38,15 +38,21 @@
 
         <div class="standard_wide">
             <div uk-grid>
-                <div class="uk-width-1-4">
-                    <a href="/">
-                        <img class="logo" src="/assets/images/interface/logo.png" alt="">
-                    </a>
+                <div class="uk-width-auto">
+                    <div class="uk-grid uk-grid-small">
+                        <a href="/">
+                            <img class="logo" src="/assets/images/interface/logo.png" alt="">
+                        </a>
+                        <div class="top_search_button" uk-toggle="target: #search_block">
+                            <i uk-icon="icon:search"></i> Поиск
+                        </div>
+                    </div>
+
 
                 </div>
-                <div class="uk-width-3-4">
+                <div class="uk-width-expand">
 
-                    <div uk-grid class="uk-grid-small uk-flex-right">
+                    <div class="uk-grid uk-grid-small uk-flex-right">
                         <div class="c_grey">{{ include('selector/global_city_selector.html.twig') }}</div>
                         <div>{{ include('user/auth_button_modal.html.twig') }}</div>
 
@@ -63,8 +69,13 @@
                     </div>
                 </div>
             </div>
+
+            <div id="search_block" hidden>{{ include('search/top_search.html.twig') }}</div>
+
         </div>
     </div>
+
+
 
     {% endif %}
 </header>

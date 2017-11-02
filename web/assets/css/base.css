@@ -1055,3 +1055,17 @@ footer a:hover{
     border-width: 18px;
     margin-top: -18px;
 }
+
+.top_search_button{
+    display: inline-block;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.top_search_input{
+    border: 0;
+    border-bottom: 1px solid lightgrey;
+    padding: 11px 0;
+}
+
+.top_search_input:focus { outline: none; }
