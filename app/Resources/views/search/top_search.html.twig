@@ -16,7 +16,7 @@
 
     <div><button class="uk-button-primary uk-button" id="go_top_search">Найти</button></div>
 
-    <input type="hidden" name="top_s_city" value="rus">
+    <input type="hidden" name="top_s_city" value="{{ app.session.get('city').url }}">
     <input type="hidden" name="top_s_gt" value="cars">
     <input type="hidden" name="top_s_mark">
 </div>

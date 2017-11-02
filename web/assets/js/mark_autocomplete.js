@@ -28,31 +28,7 @@ $( document ).ready(function() {
         }
     });
 
-    var my_mark_top_autoComplete = new autoComplete({
-            selector: 'input[name="input_top_mark"]',
-            source: function(term, response){
-                $.ajax({
-                    url: '/ajax/getMarkByInput',
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {q: term, gt:$('input[name="top_s_gt"]').val()},
-                    success: function(json){
-                        response(json);
-                    }
-                });
-            },
-            renderItem: function (item, search){
-                var res = item.split('|');
-                item = res[0];
-                var id = res[1];
-                search = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-                var re = new RegExp("(" + search.split(' ').join('|') + ")", "gi");
-                return '<div class="autocomplete-suggestion" data-url="' + item + '" data-header="' + item + '" data-id="' + id + '" data-val = "' + item + '" >' + item.replace(re, "<b>$1</b>") + '</div>';
-            },
-            onSelect: function(e, term, item){
-                $('input[name="top_s_mark"]').val(e.target.dataset.url);
-            }
-        });
+
 
 });
 
