@@ -37,7 +37,7 @@ class MainPageController extends Controller
         $heli = $all[17];
 
 
-        $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.total DESC');
+        $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.weight, g.total DESC');
         $generalTypes = $query->getResult();
 
         $city = $this->get('session')->get('city');

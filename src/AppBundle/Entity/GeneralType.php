@@ -30,6 +30,13 @@ class GeneralType
     private $parentId;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="weight", type="integer", nullable=true)
+     */
+    private $weight;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="header", type="string", length=255)
@@ -424,5 +431,29 @@ class GeneralType
     public function getHeaderSingular()
     {
         return $this->headerSingular;
+    }
+
+    /**
+     * Set weight
+     *
+     * @param integer $weight
+     *
+     * @return GeneralType
+     */
+    public function setWeight($weight)
+    {
+        $this->weight = $weight;
+
+        return $this;
+    }
+
+    /**
+     * Get weight
+     *
+     * @return integer
+     */
+    public function getWeight()
+    {
+        return $this->weight;
     }
 }

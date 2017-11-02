@@ -63,7 +63,7 @@
     <div class="uk-width-4-5">
         <select name="prodYear" class="uk-select uk-width-1-5">
             <option value="0" selected>- выберите -</option>
-            {% for year in 1950..'now'|date('Y') %}
+            {% for year in 'now'|date('Y')..1950 %}
                 <option value="{{ year }}">{{ year }}</option>
             {% endfor %}
         </select>
