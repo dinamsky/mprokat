@@ -1069,3 +1069,7 @@ footer a:hover{
 }
 
 .top_search_input:focus { outline: none; }
+
+.top_search_input.selected{
+    border-bottom: 1px solid green;
+}

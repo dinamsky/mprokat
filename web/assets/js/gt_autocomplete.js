@@ -27,6 +27,7 @@ $( document ).ready(function() {
                 console.log(term);
 
                 $('input[name="top_s_gt"]').val(e.target.dataset.id);
+                $('input[name="input_top_gt"]').addClass('selected');
             }
         });
 
