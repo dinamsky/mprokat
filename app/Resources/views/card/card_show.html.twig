@@ -356,7 +356,33 @@
             </div>
             <div class="uk-width-1-4@s">
 
+                <div class="uk-margin-bottom card_page_phone" uk-sticky="offset: 64">
+                    <div uk-grid class="uk-grid-collapse uk-grid-match b_shadowed">
+                        <div class="phone_block uk-width-1-1">
+                            {% if app.session.get('phone')[card.user.id] is not defined %}
+                                <div class="hidden_phone bg_blue show_phone uk-text-center c_white" data-card_id="{{ card.id }}" data-profile="0">
+                                    <div class="uk-text-center">Показать телефон</div>
+                                    <i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue|slice(0,5) }} XXX-XX-XX{% endfor %}
+                                </div>
 
+                            {% else %}
+                                <a class="opened_phone bg_green c_white uk-text-center" href="tel:{% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}">
+                                    <i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}
+                                </a>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="uk-margin-bottom card_blanc">
+                    {% for price in card.getCardPrices %}
+                        <div class="uk-text-center {{ price.priceId == 2 ? 'price_highlighted' : ''}}">
+                            <span class="price_value">{{ price.value|number_format(0,'.','<span class="thousand_separator"></span>')|raw }}</span>
+                            <span class="price_descriptor"> ₽ / {{ price.getPrice.header }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
 
                 <div class="user_block uk-text-center uk-margin-bottom">
                     <div class="uk-text-small">Собственник</div>
@@ -385,25 +411,6 @@
                     </div>
                 </div>
 
-                <div class="uk-margin-bottom card_page_phone ">
-                    <div uk-grid class="uk-grid-collapse uk-grid-match b_shadowed">
-                        <div class="phone_block uk-width-1-1">
-                            {% if app.session.get('phone')[card.user.id] is not defined %}
-                                <div class="hidden_phone bg_green show_phone uk-text-center c_white" data-card_id="{{ card.id }}" data-profile="0">
-                                    <div class="uk-text-center">Показать телефон</div>
-                                    <i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue|slice(0,5) }} XXX-XX-XX{% endfor %}
-                                </div>
-
-                            {% else %}
-                                <a class="opened_phone bg_green c_white uk-text-center" href="tel:{% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}">
-                                    <i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}
-                                </a>
-                            {% endif %}
-                        </div>
-
-                    </div>
-                </div>
-
                 <div class="uk-margin-bottom card_blanc">
                     <div class="cursor-pointer" uk-toggle="target: #user_message_form"><i class="fa fa-commenting"></i> Написать сообщение</div>
                 </div>
@@ -421,14 +428,7 @@
                 </div>
 
 
-                <div class="uk-margin-bottom card_blanc">
-                    {% for price in card.getCardPrices %}
-                        <div class="uk-text-center {{ price.priceId == 2 ? 'price_highlighted' : ''}}">
-                            <span class="price_value">{{ price.value|number_format(0,'.','<span class="thousand_separator"></span>')|raw }}</span>
-                            <span class="price_descriptor"> ₽ / {{ price.getPrice.header }}</span>
-                        </div>
-                    {% endfor %}
-                </div>
+
 
                 <div id="user_message_form" uk-modal>
                     <div class="uk-modal-dialog uk-modal-body">
