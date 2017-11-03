@@ -1073,3 +1073,16 @@ footer a:hover{
 .top_search_input.selected{
     border-bottom: 1px solid green;
 }
+
+.glob_search{
+    border: 0;
+    border-bottom: 1px solid grey;
+}
+
+.glob_search:focus{
+    outline:none;
+}
+.ac_link{
+    display: block;
+    width:auto !important;
+}

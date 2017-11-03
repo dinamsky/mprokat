@@ -385,19 +385,30 @@
                 </div>
 
                 <div class="user_block uk-text-center uk-margin-bottom">
-                    <div class="uk-text-small">Собственник</div>
-                    {% if user_foto %}
-                    <div style="background: url('{{ user_foto }}') center center no-repeat;
-                            background-size: contain;
-                            width: 155px;
-                            height: 155px;
-                            display: inline-block;
-                            ">
-                    </div>
-                    {% else %}
-                    {% endif %}
 
-                    <h3 class="uk-margin-remove"><a href="/user/{{ card.user.id }}">{{ card.user.header }}</a></h3>
+                    <div uk-grid class="uk-grid-small">
+                        {% if user_foto %}
+                            <div class="uk-width-auto">
+                                <a href="/user/{{ card.user.id }}" style="background: url('{{ user_foto }}') center center no-repeat;
+                                        background-size: contain;
+                                        width: 50px;
+                                        height: 50px;
+                                        display: inline-block;
+                                        ">
+                                </a>
+                            </div>
+                        {% else %}
+                        {% endif %}
+
+                        <div class="uk-width-expand">
+                            <div class="uk-text-small">Собственник</div>
+                            <h3 class="uk-margin-remove uk-text-truncate" style="line-height: 31px;"><a href="/user/{{ card.user.id }}" class="uk-text-truncate">{{ card.user.header }}</a></h3>
+                        </div>
+                    </div>
+
+
+
+
                     <div class="">
                         {% for info in card.user.information %}
                             {% if info.uiKey == 'vk' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_vk"><i class="fa fa-vk"></i></a>{% endif %}

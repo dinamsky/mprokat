@@ -82,6 +82,34 @@ $( document ).ready(function() {
         }
     });
 
+
+    var all_autoComplete = new autoComplete({
+        selector: 'input[name="glob_search"]',
+        source: function(term, response){
+            $.ajax({
+                url: '/ajax/getGlobByInput',
+                type: 'POST',
+                dataType: 'json',
+                data: {q: term, cityUrl: $('input[name="top_s_city"]').val()},
+                success: function(json){
+                    response(json);
+                }
+            });
+        },
+        renderItem: function (item, search){
+            var res = item.split('|');
+            item = res[0];
+            var url = res[1];
+            search = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+            var re = new RegExp("(" + search.split(' ').join('|') + ")", "gi");
+            return '<a class="ac_link autocomplete-suggestion" href="'+url+'" data-url="' + item + '" data-header="' + item + '" data-val = "' + item + '" >' + item.replace(re, "<b>$1</b>") + '</a>';
+        },
+        onSelect: function(e, term, item){
+            document.location.href = item.getAttribute('href');
+        }
+    });
+
+
     $('#go_top_search').on('click', function () {
         var city = $('input[name="top_s_city"]').val();
         var gt = $('input[name="top_s_gt"]').val();
