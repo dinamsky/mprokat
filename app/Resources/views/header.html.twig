@@ -38,15 +38,25 @@
 
         <div class="standard_wide">
             <div uk-grid>
-                <div class="uk-width-1-4">
-                    <a href="/">
-                        <img class="logo" src="/assets/images/interface/logo.png" alt="">
-                    </a>
+                <div class="uk-width-1-2">
+                    <div class="uk-grid uk-grid-small">
+                        <div class="uk-width-auto">
+                            <a href="/"><img class="logo" src="/assets/images/interface/logo.png" alt=""></a>
+                        </div>
+                        <div class="uk-width-expand">
+                            {#<i uk-icon="icon:search"></i> <input class="glob_search" type="text" name="glob_search" placeholder="Поиск">#}
+                            <div class="uk-inline uk-width-1-1">
+                                <span class="uk-form-icon" uk-icon="icon: search"></span>
+                                <input class="uk-input" name="glob_search">
+                            </div>
+                        </div>
+                    </div>
+
 
                 </div>
-                <div class="uk-width-3-4">
+                <div class="uk-width-expand">
 
-                    <div uk-grid class="uk-grid-small uk-flex-right">
+                    <div class="uk-grid uk-grid-small uk-flex-right">
                         <div class="c_grey">{{ include('selector/global_city_selector.html.twig') }}</div>
                         <div>{{ include('user/auth_button_modal.html.twig') }}</div>
 
@@ -63,8 +73,13 @@
                     </div>
                 </div>
             </div>
+
+            <div id="search_block" hidden>{{ include('search/top_search.html.twig') }}</div>
+
         </div>
     </div>
+
+
 
     {% endif %}
 </header>

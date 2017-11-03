@@ -123,14 +123,16 @@ button{
 
 .pf_style_header{
     border-bottom: 2px solid lightgrey;
+    color: #6b6b6b;
+    padding-bottom: 5px;
 }
 
 .pf_style_header span{
-    display: inline-block;
-    border-bottom: 2px solid #06a7ea;
-    padding-bottom: 5px;
-    position: relative;
-    top: 2px;
+    /*display: inline-block;*/
+    /*border-bottom: 2px solid #06a7ea;*/
+    /*padding-bottom: 5px;*/
+    /*position: relative;*/
+    /*top: 2px;*/
 }
 
 .short_textarea{
@@ -182,7 +184,7 @@ button{
 
 .user_block{
     background: white;
-    padding: 30px 10px;
+    padding: 10px 10px;
     color:grey;
     -webkit-box-shadow: 1px 1px 1px #9a9a9a;
     -moz-box-shadow: 1px 1px 1px #9a9a9a;
@@ -333,7 +335,7 @@ button{
 
 .card_blanc {
     background: white;
-    padding: 30px;
+    padding: 10px 30px;
     -webkit-box-shadow: 1px 1px 1px #9a9a9a;
     -moz-box-shadow: 1px 1px 1px #9a9a9a;
     box-shadow: 1px 1px 1px #9a9a9a;
@@ -800,6 +802,8 @@ footer a:hover{
 
 #card_content{
     word-wrap: break-word;
+    max-height: 200px;
+    overflow: hidden;
 }
 
 .zero_text{
@@ -1050,4 +1054,35 @@ footer a:hover{
     border-right-color: #999999;
     border-width: 18px;
     margin-top: -18px;
+}
+
+.top_search_button{
+    display: inline-block;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.top_search_input{
+    border: 0;
+    border-bottom: 1px solid lightgrey;
+    padding: 11px 0;
+}
+
+.top_search_input:focus { outline: none; }
+
+.top_search_input.selected{
+    border-bottom: 1px solid green;
+}
+
+.glob_search{
+    border: 0;
+    border-bottom: 1px solid grey;
+}
+
+.glob_search:focus{
+    outline:none;
+}
+.ac_link{
+    display: block;
+    width:auto !important;
 }

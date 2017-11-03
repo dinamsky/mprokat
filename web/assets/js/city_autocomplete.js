@@ -1,7 +1,7 @@
 $( document ).ready(function() {
 
 
-    var my_autoComplete = new autoComplete({
+    var my_city_autoComplete = new autoComplete({
         selector: 'input[name="input_city"]',
         source: function(term, response){
             $.ajax({
@@ -27,8 +27,6 @@ $( document ).ready(function() {
             $('input[name="input_city"]').val('');
         }
     });
-
-
 
 });
 
