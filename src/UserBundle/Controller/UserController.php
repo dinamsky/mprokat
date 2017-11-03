@@ -38,6 +38,13 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class UserController extends Controller
 {
 
+    protected $mailer;
+
+    public function __construct(\Swift_Mailer $mailer)
+    {
+        $this->mailer = $mailer;
+    }
+
     /**
      * @Route("/ajax/getAllSubFields")
      */
@@ -204,6 +211,13 @@ class UserController extends Controller
             if ($user->getTempPassword() != '') {
                 $user->setPassword($user->getTempPassword());
                 $message = 'Ваш новый пароль успешно активирован!';
+            } else {
+                $msg = (new \Swift_Message('Регистрация на сайте multiprokat.com'))
+                ->setFrom('mail@multiprokat.com')
+                ->setTo('mail@multiprokat.com')
+                ->setBody('Только что был успешно зарегистрирован <a href="https://multiprokat.com/user/'.$user->getId().'">пользователь</a>','text/html');
+
+                $this->mailer->send($msg);
             }
             $user->setTempPassword('');
             $user->setIsActivated(true);
