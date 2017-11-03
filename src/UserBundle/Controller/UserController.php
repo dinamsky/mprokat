@@ -246,6 +246,7 @@ class UserController extends Controller
         }
 
         return $this->redirectToRoute($return_url);
+        //
     }
 
     /**
