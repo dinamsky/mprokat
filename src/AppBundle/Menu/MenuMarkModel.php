@@ -440,7 +440,6 @@ class MenuMarkModel extends Controller
 
     public function getCarTypeUrl($carTypeId)
     {
-        dump($carTypeId);
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.carTypeIds = ?1');
         $query->setParameter(1, $carTypeId);
