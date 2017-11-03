@@ -52,8 +52,8 @@
 
 
     <div class="padding20 bg_darkgrey">
-        <a class="uk-text-truncate uk-display-block uk-position-relative c_white" href="/card/{{ card.id }}">{{ serviceType }} {% if card.generalType.chegoSingular is defined %}{{ card.generalType.chegoSingular }}{% else %}{% endif %} {{ card.markModel.Mark.header }} {{ card.markModel.header }} в {{ card.city.gde }}
-
+        <a class="uk-text-truncate uk-display-block uk-position-relative c_white" href="/card/{{ card.id }}" title="{{ serviceType }} {% if card.generalType.chegoSingular is defined %}{{ card.generalType.chegoSingular }}{% else %}{% endif %} {{ card.markModel.Mark.header }} {{ card.markModel.header }} в {{ card.city.gde }}">
+            {{ card.markModel.Mark.header }} {{ card.markModel.header }}
         </a>
         {#<div class="uk-text-truncate uk-text-small c_grey"></div>#}
         <div uk-grid class="uk-grid-collapse">
