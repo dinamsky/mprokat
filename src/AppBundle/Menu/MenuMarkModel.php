@@ -356,72 +356,74 @@ class MenuMarkModel extends Controller
             foreach($marks as $m){
                 $gt = $this->getCarTypeUrl($m->getCarTypeId());
 
-                $header = $m->getHeader().' '.$gt['header'];
+                if($gt) {
+                    $header = $m->getHeader() . ' ' . $gt['header'];
 
-                $hdr = explode(" ",$m->getHeader());
+                    $hdr = explode(" ", $m->getHeader());
 
-                if ($hdr[count($hdr)-1] == '(COMMERCIAL)'){
-                    unset($hdr[count($hdr)-1]);
-                    $header = implode(" ",$hdr).' - легкий коммерческий транспорт';
-                }
-                if ($hdr[count($hdr)-1] == '(HEAVY)'){
-                    unset($hdr[count($hdr)-1]);
-                    $header = implode(" ",$hdr).' - тягач';
-                }
-                if ($hdr[count($hdr)-1] == '(TRAILER)'){
-                    unset($hdr[count($hdr)-1]);
-                    $header = implode(" ",$hdr).' - прицеп';
-                }
-                if ($hdr[count($hdr)-1] == '(BUS)'){
-                    unset($hdr[count($hdr)-1]);
-                    $header = implode(" ",$hdr).' - автобус';
-                }
-                if ($hdr[count($hdr)-1] == '(CRANE)'){
-                    unset($hdr[count($hdr)-1]);
-                    $header = implode(" ",$hdr).' - кран';
-                }
-                if ($hdr[count($hdr)-1] == '(BULLDOZER)'){
-                    unset($hdr[count($hdr)-1]);
-                    $header = implode(" ",$hdr).' - бульдозер';
-                }
-                if ($hdr[count($hdr)-1] == '(EXCAVATOR)'){
-                    unset($hdr[count($hdr)-1]);
-                    $header = implode(" ",$hdr).' - экскаватор';
-                }
-                if ($hdr[count($hdr)-1] == '(AGRO)'){
-                    unset($hdr[count($hdr)-1]);
-                    $header = implode(" ",$hdr).' - сельхозтехника';
-                }
-                if ($hdr[count($hdr)-1] == '(CITY)'){
-                    unset($hdr[count($hdr)-1]);
-                    $header = implode(" ",$hdr).' - коммунальный транспорт';
-                }
-                if ($hdr[count($hdr)-1] == '(LOADER)'){
-                    unset($hdr[count($hdr)-1]);
-                    $header = implode(" ",$hdr).' - самопогрузчик';
-                }
-                if ($hdr[count($hdr)-1] == '(RETRO)'){
-                    unset($hdr[count($hdr)-1]);
-                    $header = implode(" ",$hdr).' - ретро';
-                }
-                if ($hdr[count($hdr)-1] == '(JETBOAT)'){
-                    unset($hdr[count($hdr)-1]);
-                    $header = implode(" ",$hdr).' - рективный катер';
-                }
-                if ($hdr[count($hdr)-1] == '(HYDROCYCLE)'){
-                    unset($hdr[count($hdr)-1]);
-                    $header = implode(" ",$hdr).' - гидроцикл';
-                }
-                if ($hdr[count($hdr)-1] == '(BOAT)'){
-                    unset($hdr[count($hdr)-1]);
-                    $header = implode(" ",$hdr).' - лодка';
-                }
-                if ($hdr[count($hdr)-1] == '(FORKLIFT)'){
-                    unset($hdr[count($hdr)-1]);
-                    $header = implode(" ",$hdr).' - автопогрузчик';
-                }
+                    if ($hdr[count($hdr) - 1] == '(COMMERCIAL)') {
+                        unset($hdr[count($hdr) - 1]);
+                        $header = implode(" ", $hdr) . ' - легкий коммерческий транспорт';
+                    }
+                    if ($hdr[count($hdr) - 1] == '(HEAVY)') {
+                        unset($hdr[count($hdr) - 1]);
+                        $header = implode(" ", $hdr) . ' - тягач';
+                    }
+                    if ($hdr[count($hdr) - 1] == '(TRAILER)') {
+                        unset($hdr[count($hdr) - 1]);
+                        $header = implode(" ", $hdr) . ' - прицеп';
+                    }
+                    if ($hdr[count($hdr) - 1] == '(BUS)') {
+                        unset($hdr[count($hdr) - 1]);
+                        $header = implode(" ", $hdr) . ' - автобус';
+                    }
+                    if ($hdr[count($hdr) - 1] == '(CRANE)') {
+                        unset($hdr[count($hdr) - 1]);
+                        $header = implode(" ", $hdr) . ' - кран';
+                    }
+                    if ($hdr[count($hdr) - 1] == '(BULLDOZER)') {
+                        unset($hdr[count($hdr) - 1]);
+                        $header = implode(" ", $hdr) . ' - бульдозер';
+                    }
+                    if ($hdr[count($hdr) - 1] == '(EXCAVATOR)') {
+                        unset($hdr[count($hdr) - 1]);
+                        $header = implode(" ", $hdr) . ' - экскаватор';
+                    }
+                    if ($hdr[count($hdr) - 1] == '(AGRO)') {
+                        unset($hdr[count($hdr) - 1]);
+                        $header = implode(" ", $hdr) . ' - сельхозтехника';
+                    }
+                    if ($hdr[count($hdr) - 1] == '(CITY)') {
+                        unset($hdr[count($hdr) - 1]);
+                        $header = implode(" ", $hdr) . ' - коммунальный транспорт';
+                    }
+                    if ($hdr[count($hdr) - 1] == '(LOADER)') {
+                        unset($hdr[count($hdr) - 1]);
+                        $header = implode(" ", $hdr) . ' - самопогрузчик';
+                    }
+                    if ($hdr[count($hdr) - 1] == '(RETRO)') {
+                        unset($hdr[count($hdr) - 1]);
+                        $header = implode(" ", $hdr) . ' - ретро';
+                    }
+                    if ($hdr[count($hdr) - 1] == '(JETBOAT)') {
+                        unset($hdr[count($hdr) - 1]);
+                        $header = implode(" ", $hdr) . ' - рективный катер';
+                    }
+                    if ($hdr[count($hdr) - 1] == '(HYDROCYCLE)') {
+                        unset($hdr[count($hdr) - 1]);
+                        $header = implode(" ", $hdr) . ' - гидроцикл';
+                    }
+                    if ($hdr[count($hdr) - 1] == '(BOAT)') {
+                        unset($hdr[count($hdr) - 1]);
+                        $header = implode(" ", $hdr) . ' - лодка';
+                    }
+                    if ($hdr[count($hdr) - 1] == '(FORKLIFT)') {
+                        unset($hdr[count($hdr) - 1]);
+                        $header = implode(" ", $hdr) . ' - автопогрузчик';
+                    }
 
-                $res[] = $header.'|/rent/'.$request->request->get('cityUrl').'/all/'.$gt['url'].'/'.$m->getHeader();
+                    $res[] = $header . '|/rent/' . $request->request->get('cityUrl') . '/all/' . $gt['url'] . '/' . $m->getHeader();
+                }
             }
 
 
@@ -438,10 +440,12 @@ class MenuMarkModel extends Controller
 
     public function getCarTypeUrl($carTypeId)
     {
+        dump($carTypeId);
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.carTypeIds = ?1');
         $query->setParameter(1, $carTypeId);
-        $result = $query->getResult()[0];
-        return ['url'=>$result->getUrl(),'header'=>$result->getHeader()];
+        $result = $query->getResult();
+        if (isset($result[0])) return ['url'=>$result[0]->getUrl(),'header'=>$result[0]->getHeader()];
+        else return false;
     }
 }
