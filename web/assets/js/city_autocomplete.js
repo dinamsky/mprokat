@@ -10,6 +10,7 @@ $( document ).ready(function() {
                 dataType: 'json',
                 data: {q: term},
                 success: function(json){
+                    console.log(json);
                     response(json);
                 }
             });

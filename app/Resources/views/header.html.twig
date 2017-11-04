@@ -16,7 +16,11 @@
                                                 ">
 
                             </a></div>
-                        <div class="uk-width-expand"><div class="uk-text-center uk-text-truncate">{{ include('selector/global_city_selector.html.twig') }}</div></div>
+                        <div class="uk-width-expand"><div class="uk-text-center uk-text-truncate">
+                                {% if is_mobile() %}
+                                {{ include('selector/global_city_selector.html.twig') }}
+                                {% endif %}
+                            </div></div>
                     </div>
 
                 </div>
@@ -57,7 +61,11 @@
                 <div class="uk-width-expand">
 
                     <div class="uk-grid uk-grid-small uk-flex-right">
-                        <div class="c_grey">{{ include('selector/global_city_selector.html.twig') }}</div>
+                        <div class="c_grey">
+                            {% if not is_mobile() %}
+                            {{ include('selector/global_city_selector.html.twig') }}
+                            {% endif %}
+                        </div>
                         <div>{{ include('user/auth_button_modal.html.twig') }}</div>
 
                         <div>
