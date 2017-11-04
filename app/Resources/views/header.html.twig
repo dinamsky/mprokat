@@ -1,6 +1,6 @@
 <header>
-    {% if is_mobile() and not is_tablet() %}
-        <div uk-grid class="uk-grid-collapse mobile_header" uk-sticky>
+
+        <div uk-grid class="uk-grid-collapse mobile_header  " uk-sticky>
             <div class="uk-width-expand">
                 <div class="bg_blue left_part">
                     <div uk-grid class="uk-grid-collapse">
@@ -32,9 +32,9 @@
                 {#<a href="/card/new" class="uk-button uk-button-success uk-width-1-1 m_add_card_button">Сдать</a>#}
             </div>
         </div>
-    {% else %}
 
-    <div class="top_sticky" uk-sticky>
+
+    <div class="top_sticky desktop_header uk-hidden\@s" uk-sticky>
 
         <div class="standard_wide">
             <div uk-grid>
@@ -81,5 +81,5 @@
 
 
 
-    {% endif %}
+
 </header>

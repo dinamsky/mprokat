@@ -206,6 +206,14 @@
         text-align: center;
         border-bottom: 0 ;
     }
+
+    header .uk-button{
+        box-shadow: none !important;
+    }
+
+    .desktop_header{
+        display: none;
+    }
 }
 
 @media (min-width: 600px) and (max-width: 1024px){
@@ -216,5 +224,20 @@
     }
     .top_sticky{
         width: 100% !important;
+    }
+
+    img.logo{
+        width: 100px !important;
+    }
+
+    .add_card_button{
+        width: 50px !important;
+        font-size: 10px !important;
+    }
+}
+
+@media (min-width: 600px) {
+    .mobile_header{
+        display: none;
     }
 }

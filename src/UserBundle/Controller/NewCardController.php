@@ -166,6 +166,7 @@ class NewCardController extends Controller
                 'cities' => $mc->getCities($city->getParentId()),
                 'cityId' => $city->getId(),
                 'city' => $city,
+                'in_city' => $city->getUrl(),
 
                 'admin' => $admin,
                 'user' => $user,
