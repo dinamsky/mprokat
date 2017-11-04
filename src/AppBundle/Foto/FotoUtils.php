@@ -224,6 +224,10 @@ class FotoUtils extends Controller
             ->getRepository(Foto::class)
             ->find($id);
 
+        @unlink ($main_dir.'/'.$foto->getFolder().'/'.$id.'.jpg');
+        @unlink ($main_dir.'/'.$foto->getFolder().'/t/'.$id.'.jpg');
+
+
         $card = $this->em
             ->getRepository(Card::class)
             ->find($foto->getCardId());
@@ -244,10 +248,6 @@ class FotoUtils extends Controller
             $this->em->persist($foto);
             $this->em->flush();
         }
-
-
-        unlink ($main_dir.'/'.$foto->getFolder().'/'.$id.'.jpg');
-        unlink ($main_dir.'/'.$foto->getFolder().'/t/'.$id.'.jpg');
 
         return new Response();
     }

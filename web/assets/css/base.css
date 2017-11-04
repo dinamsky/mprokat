@@ -1086,3 +1086,7 @@ footer a:hover{
     display: block;
     width:auto !important;
 }
+
+.reg_in_signin_block{
+    margin-top: 30px;
+}
