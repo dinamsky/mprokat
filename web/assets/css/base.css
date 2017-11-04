@@ -1090,3 +1090,8 @@ footer a:hover{
 .reg_in_signin_block{
     margin-top: 30px;
 }
+
+.glb::-webkit-input-placeholder {color: #d0d0d0;font-size: 13px;}
+.glb::-moz-placeholder          {color: #d0d0d0;font-size: 13px;}/* Firefox 19+ */
+.glb:-moz-placeholder           {color: #d0d0d0;font-size: 13px;}/* Firefox 18- */
+.glb:-ms-input-placeholder      {color: #d0d0d0;font-size: 13px;}
