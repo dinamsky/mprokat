@@ -270,10 +270,10 @@ class MenuMarkModel extends Controller
             $model_ids = $mid;
 
 
-            $carType = $general->getCarTypeIds();
+            //$carType = $general->getCarTypeIds();
 
             sort($model_ids);
-            $query = $this->em->createQuery('SELECT m.carMarkId FROM MarkBundle:CarModel m WHERE m.carTypeId = ' . $carType . ' AND m.id IN (' . implode(",", $model_ids) . ') ORDER BY m.carMarkId');
+            $query = $this->em->createQuery('SELECT m.carMarkId FROM MarkBundle:CarModel m WHERE m.id IN (' . implode(",", $model_ids) . ') ORDER BY m.carMarkId');
             foreach ($query->getScalarResult() as $row) {
                 $mark_ids[] = $row['carMarkId'];
             }
