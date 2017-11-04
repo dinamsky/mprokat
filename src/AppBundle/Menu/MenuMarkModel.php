@@ -265,6 +265,12 @@ class MenuMarkModel extends Controller
 //        $query->setParameter(1, $general->getUrl());
 //        $carType = $query->getResult();
 //        $carType = $carType[0];
+            $mid = [];
+            $mi = explode(",",$model_ids);
+            foreach($mi as $m) if($m!='') $mid[] = $m;
+            $model_ids = implode(",",$mid);
+
+
             $carType = $general->getCarTypeIds();
 
             sort($model_ids);
