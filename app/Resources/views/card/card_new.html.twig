@@ -66,7 +66,7 @@
 
                 <div class="">{{ include('card/card_new_elements/new_type.html.twig') }}
                     <div class="uk-text-center uk-margin">
-                        <button class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_address">Продолжить</button>
+                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_address">Продолжить</button>
                     </div>
                 </div>
 
@@ -74,7 +74,7 @@
                     {#<div class="uk-flex uk-flex-center"><hr class="uk-width-3-5"></div>#}
                     {{ include('card/card_new_elements/new_address.html.twig') }}
                     <div class="uk-text-center uk-margin">
-                        <button class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_general">Продолжить</button>
+                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_general">Продолжить</button>
                     </div>
                 </div>
 
@@ -82,7 +82,7 @@
                     {#<div class="uk-flex uk-flex-center"><hr class="uk-width-3-5"></div>#}
                     {{ include('card/card_new_elements/new_general.html.twig') }}
                     <div class="uk-text-center uk-margin">
-                        <button class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_mark">Продолжить</button>
+                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_mark">Продолжить</button>
                     </div>
                 </div>
 
@@ -90,7 +90,7 @@
                     {#<hr>#}
                     {{ include('card/card_new_elements/new_mark.html.twig') }}
                     <div class="uk-text-center uk-margin">
-                        <button class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_foto">Продолжить</button>
+                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_foto">Продолжить</button>
                     </div>
                 </div>
 
@@ -98,7 +98,7 @@
                     {#<hr>#}
                     {{ include('card/card_new_elements/new_foto.html.twig') }}
                     <div class="uk-text-center uk-margin">
-                        <button class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_prices">Продолжить</button>
+                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_prices">Продолжить</button>
                     </div>
                 </div>
 
@@ -106,7 +106,7 @@
                     {#<hr>#}
                     {{ include('card/card_new_elements/new_prices.html.twig') }}
                     <div class="uk-text-center uk-margin">
-                        <button class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_description">Продолжить</button>
+                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_description">Продолжить</button>
                     </div>
                 </div>
 
@@ -114,7 +114,7 @@
                     {#<hr>#}
                     {{ include('card/card_new_elements/new_description.html.twig') }}
                     <div class="uk-text-center uk-margin">
-                        <button class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_dops_switcher">Продолжить</button>
+                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_dops_switcher">Продолжить</button>
                     </div>
                 </div>
 
@@ -132,7 +132,7 @@
                     </div>
 
                     <div class="uk-text-center uk-margin uk-width-1-1">
-                        <button class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="{{ not admin and not user ? 'new_password' : 'new_tariffs' }}">Продолжить</button>
+                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="{{ not admin and not user ? 'new_password' : 'new_tariffs' }}">Продолжить</button>
                     </div>
                 </div>
 
@@ -148,7 +148,7 @@
                             <input type="password" form="new_card_form"  name="r_password" placeholder="Придумайте пароль для входа" class="uk-input uk-width-1-3 uk-margin-top">
                         </div>
                         <div class="uk-text-center uk-margin uk-width-1-1">
-                            <button class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_tariffs">Продолжить</button>
+                            <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_tariffs">Продолжить</button>
                         </div>
                     </div>
                 {% endif %}
