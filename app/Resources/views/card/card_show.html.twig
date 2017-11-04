@@ -55,41 +55,7 @@
         }(document, 'script', 'facebook-jssdk'));</script>
     <!-- FB -->
 
-    {% if not is_mobile() %}
-    {#<div class="uk-flex uk-flex-bottom card_cover {{  app.session.has('share') ? 'share' }}"#}
-         {#style="background:url('{{ mainFoto }}') center center;#}
-                 {#background-size: cover;#}
-                 {#height: 500px;#}
-                 {#position: relative;">#}
-        {#<div class="cover_gradient">#}
-            {#<div class="card_cover_description">#}
-                {#<div class="standard_wide">#}
-                    {#<h1>{{ include(':seo_templates:p_h1.html.twig') }}</h1>#}
-                    {#<div>#}
-                        {#{% if card.address != '' %}#}
-                            {#<i class="fa fa-map-marker"></i> {{ card.address }}#}
-                        {#{% else %}#}
-                            {#<i class="fa fa-map-marker"></i> {{ card.getCity.header }}, {{ card.getCity.getParent.header }}, {{ card.getCity.country }}#}
-                        {#{% endif %}#}
-                     {#</div>#}
-                    {#<div><i class="fa fa-calendar"></i> {{ card.dateCreate|date("d.m.Y") }} <i class="fa fa-eye"></i> {{ card.views }}</div>#}
-                {#</div>#}
-            {#</div>#}
-        {#</div>#}
-    {#</div>#}
-    {% else %}
-        <div class="standard_wide">
-            <h1>{{ include(':seo_templates:p_h1.html.twig') }}</h1>
-            <div>
-                {% if card.address != '' %}
-                    <i class="fa fa-map-marker"></i> {{ card.address }}
-                {% else %}
-                    <i class="fa fa-map-marker"></i> {{ card.getCity.header }}, {{ card.getCity.getParent.header }}, {{ card.getCity.country }}
-                {% endif %}
-            </div>
-            <div><i class="fa fa-calendar"></i> {{ card.dateCreate|date("d.m.Y") }} <i class="fa fa-eye"></i> {{ card.views }}</div>
-        </div>
-    {% endif %}
+
 
     {% if app.session.has('share') %}
         {{ app.session.remove('share') }}
@@ -263,7 +229,7 @@
 
                 {% if not app.session.has('first_card') %}
                     <div uk-grid class="uk-margin-top">
-                        <div class="uk-width-1-2">
+                        <div class="uk-width-1-2@s">
                             <h2 class="pf_style_header"><span>Комментарии</span></h2>
 
                             <div class="card_blanc">
@@ -292,7 +258,7 @@
                                 {% endif %}
                             </div>
                         </div>
-                        <div class="uk-width-1-2">
+                        <div class="uk-width-1-2@s">
                             <h2 class="pf_style_header"><span>Отзывы</span></h2>
 
                             <div class="card_blanc">
@@ -356,7 +322,7 @@
             </div>
             <div class="uk-width-1-4@s">
 
-                <div class="uk-margin-bottom card_page_phone" uk-sticky="offset: 64">
+                <div class="uk-margin-bottom card_page_phone" {{ is_mobile() ? '' : 'uk-sticky="offset: 64"' }}>
                     <div uk-grid class="uk-grid-collapse uk-grid-match b_shadowed">
                         <div class="phone_block uk-width-1-1">
                             {% if app.session.get('phone')[card.user.id] is not defined %}
