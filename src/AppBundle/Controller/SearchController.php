@@ -330,6 +330,8 @@ class SearchController extends Controller
         $mark_arr_sorted = $mark_arr['typed_marks'];
         $models_in_mark = $mark_arr['models_in_mark'];
 
+
+
         $gtm_ids = $mm->getExistMarkGtId($city->getId());
         $all_gts = $mm->getExistGt($gtm_ids['gts']);
         if ($general) $all_marks = $mm->getExistMark($gtm_ids['models'],$general);
@@ -340,7 +342,7 @@ class SearchController extends Controller
         if ($this->get('session')->has('city')){
             $in_city = $this->get('session')->get('city');
             if(is_array($in_city)) $in_city = $in_city[0]->getUrl();
-            else $in_city = $city->getUrl();
+            else $in_city = $in_city->getUrl();
         }
         else $in_city = $city->getUrl();
 

@@ -105,4 +105,9 @@ $( document ).ready(function() {
         UIkit.modal('#share_butons').show();
     }
 
+
+
+    $('.show_full_content').on('click', function () {
+        $('#card_content').css('max-height','none').css('overflow','auto');
+    });
 });
