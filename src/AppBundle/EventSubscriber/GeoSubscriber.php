@@ -52,8 +52,6 @@ class GeoSubscriber implements EventSubscriberInterface
                                 $event->getRequest()->getSession()->set('city', $city[0]);
                                 $default = false;
                             }
-                        } else {
-                            dump($geo);
                         }
                     }
                 }
