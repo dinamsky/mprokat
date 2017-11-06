@@ -220,6 +220,7 @@ button{
     width: 80px;
     font-weight: bold;
     text-align: right;
+    vertical-align: top;
 }
 
 .price_highlighted .price_value, .price_highlighted .price_descriptor {

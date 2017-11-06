@@ -345,7 +345,7 @@
                     {% for price in card.getCardPrices %}
                         <div class="uk-text-center {{ price.priceId == 2 ? 'price_highlighted' : ''}}">
                             <span class="price_value">{{ price.value|number_format(0,'.','<span class="thousand_separator"></span>')|raw }}</span>
-                            <span class="price_descriptor"> ₽ / {{ price.getPrice.header }}</span>
+                            <span class="price_descriptor uk-text-truncate"> ₽ / {{ price.getPrice.header }}</span>
                         </div>
                     {% endfor %}
                 </div>

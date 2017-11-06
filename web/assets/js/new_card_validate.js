@@ -14,6 +14,7 @@ function new_card_validate(){
     $('textarea[name="content"]').css('border-color','#e5e5e5');
 
     var general_type = $('#generalTypeId').find('option:selected').val();
+    var gt_top = $('#generalTypeTopLevelId').find('option:selected').val()-0;
     //var header = $('#new_card_form').find('input[name="header"]').val();
     var mark = $('#markId').find('option:selected').val()-0;
     var model = $('#markModelId').find('option:selected').val()-0;
@@ -69,9 +70,18 @@ function new_card_validate(){
         $('.foto_placeholder').addClass('error');
     }
 
-    if(!priceHour && !priceDay) {
-        message.push('<br>Цена');
-        $('input[name="price[2]"]').css('border-color','red');
+    if(gt_top !== 29) {
+        if (!priceHour && !priceDay) {
+            message.push('<br>Цена');
+            $('input[name="price[2]"]').css('border-color', 'red');
+        }
+    } else { // if this is plane
+        $('input[name="price[6]"]').css('border-color','#e5e5e5');
+        var price_plane = $('input[name="price[6]"]').val();
+        if (!price_plane) {
+            message.push('<br>Цена');
+            $('input[name="price[6]"]').css('border-color', 'red');
+        }
     }
 
     if(!desc){
