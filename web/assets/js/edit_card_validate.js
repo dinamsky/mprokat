@@ -6,7 +6,7 @@ $( document ).ready(function() {
 
 function edit_card_validate(){
     var general_type = $('#generalTypeId').find('option:selected').val();
-    var header = $('#edit_card_form').find('input[name="header"]').val();
+    //var header = $('#edit_card_form').find('input[name="header"]').val();
     var model = $('#markModelId').find('option:selected').val()-0;
     var city = $('form select[name="cityId"]').find('option:selected').val();
     var noMark = $('input[name="noMark"]').prop('checked');
@@ -20,7 +20,7 @@ function edit_card_validate(){
     // }
 
     if (!general_type) message.push('\nТип транспорта');
-    if (!header) message.push('\nЗаголовок');
+    //if (!header) message.push('\nЗаголовок');
     if (!model || model === 0) message.push('\nМодель');
     if (!city || city === '0') message.push('\nГород');
 
