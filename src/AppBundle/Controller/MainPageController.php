@@ -15,6 +15,10 @@ use AppBundle\Entity\City;
 use AppBundle\Entity\GeneralType;
 use Symfony\Component\HttpFoundation\Request;
 
+use Symfony\Component\Translation\Loader\PoFileLoader;
+use Symfony\Component\Translation\Translator;
+use Symfony\Component\Translation\MessageSelector;
+
 class MainPageController extends Controller
 {
     /**
@@ -22,6 +26,8 @@ class MainPageController extends Controller
      */
     public function indexAction(MenuGeneralType $mgt, MenuCity $mc, EntityManagerInterface $em, MenuMarkModel $mm, Request $request, ServiceStat $stat)
     {
+
+
 
         $topSlider = $this->getDoctrine()
             ->getRepository(Card::class)
@@ -79,6 +85,13 @@ class MainPageController extends Controller
             'page_type' => 'main',
         ];
         $stat->setStat($stat_arr);
+
+
+        $translator = new Translator('ru', new MessageSelector());
+         $request->getSession()->set('_locale', 'ru');
+        $translator->addLoader('pofile', new PoFileLoader());
+        $translator->addResource('pofile', 'messages.en.po', 'en');
+        $translator->addResource('pofile', 'messages.ru.po', 'ru');
 
         return $this->render('main_page/main.html.twig', [
 

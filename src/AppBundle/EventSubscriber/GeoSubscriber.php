@@ -64,6 +64,8 @@ class GeoSubscriber implements EventSubscriberInterface
                 ->find(77);
             $event->getRequest()->getSession()->set('city', $city);
         }
+
+
     }
 
     public static function getSubscribedEvents()
