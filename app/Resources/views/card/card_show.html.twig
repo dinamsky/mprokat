@@ -415,7 +415,7 @@
                     <div class="uk-modal-dialog uk-modal-body">
                         <h2 class="uk-modal-title">Сообщение пользователю</h2>
                         <button class="uk-modal-close-default" type="button" uk-close></button>
-                        <form action="/user/sendMessage" uk-grid class="uk-grid-small" method="POST" onsubmit="return check_if_capcha_is_filled()">
+                        <form action="/user/sendMessage" uk-grid class="uk-grid-small" method="POST" >
                             <div class="uk-width-1-1"><input type="text" name="name" class="uk-input" placeholder="Имя"></div>
                             <div class="uk-width-1-1"><input type="text" name="phone" class="uk-input uk-width-1-1" placeholder="Телефон"></div>
                             <div class="uk-width-1-1"><input type="text" name="email" class="uk-input" placeholder="Email" required></div>
@@ -513,7 +513,7 @@
         <div class="uk-modal-dialog uk-modal-body">
             <h2 class="uk-modal-title">Жалоба</h2>
             <button class="uk-modal-close-default" type="button" uk-close></button>
-            <form action="/user/sendAbuse" uk-grid class="uk-grid-small" method="POST" onsubmit="return check_if_capcha_is_filled()">
+            <form action="/user/sendAbuse" uk-grid class="uk-grid-small" method="POST" >
                 <div class="uk-width-1-1">
                     <label><input type="checkbox" name="abuse[]" value="Телефон не отвечает">Телефон не отвечает</label>
                 </div>
