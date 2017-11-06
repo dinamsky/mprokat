@@ -11,6 +11,7 @@ use UserBundle\Entity\UserInfo;
 use UserBundle\Security\Password;
 use UserBundle\Entity\User;
 use AdminBundle\Entity\Admin;
+use Symfony\Component\Filesystem\Filesystem;
 
 class AdminController extends Controller
 {
@@ -252,6 +253,10 @@ class AdminController extends Controller
         }
         if($request->isMethod('POST')) {
             file_put_contents('../app/Resources/views/email/'.$request->request->get('file'), $request->request->get('email'));
+
+            $fs = new Filesystem();
+            $fs->remove($this->container->getParameter('kernel.cache_dir'));
+
             if($request->request->has('sendCheck')){
                 $card = $this->getDoctrine()
                     ->getRepository(Card::class)
