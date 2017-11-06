@@ -32,17 +32,23 @@
             {% for price in card.cardPrices if price.priceId == 2 %}
 
                 {% set c_price = price.value %}
-                {% set c_ed = 'день' %}
+                {% set c_ed = '/день' %}
             {% endfor %}
 
             {% for price in card.cardPrices if price.priceId == 1 and c_price == '' %}
 
                 {% set c_price = price.value %}
-                {% set c_ed = 'час' %}
+                {% set c_ed = '/час' %}
+            {% endfor %}
+
+            {% for price in card.cardPrices if price.priceId == 6 and c_price == '' %}
+
+                {% set c_price = price.value %}
+                {% set c_ed = '' %}
             {% endfor %}
 
             {% if c_price != '' %}
-            <b>{{ c_price|number_format(0,'.','<span class="thousand_separator"></span>')|raw }}</b> ₽<span class="">/{{ c_ed }}</span>
+            <b>{{ c_price|number_format(0,'.','<span class="thousand_separator"></span>')|raw }}</b> ₽<span class="">{{ c_ed }}</span>
             {% endif %}
 
         </div>
