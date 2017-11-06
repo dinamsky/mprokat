@@ -15,6 +15,7 @@
     <script src="{{ asset('assets/js/sliderSettings.js') }}"></script>
     <script src="{{ asset('assets/js/auto-complete.min.js') }}"></script>
     <script src="{{ asset('assets/js/mark_autocomplete.js') }}"></script>
+    <script src="{{ asset('assets/js/recaptcha_settings.js') }}"></script>
     <script src="{{ asset('assets/js/recapthcha_validate.js') }}"></script>
 {% endblock %}
 
@@ -24,7 +25,7 @@
     <script type="text/javascript">VK.init({apiId: 6213461, onlyWidgets: true});</script>
     <script type="text/javascript" src="https://vk.com/js/api/share.js?95" charset="windows-1251"></script>
     <!-- VK -->
-    <script src='https://www.google.com/recaptcha/api.js'></script>
+    {#<script src='https://www.google.com/recaptcha/api.js'></script>#}
 {% endblock %}
 
 
@@ -130,6 +131,9 @@
 
                 </div>
 
+                <div class="uk-text-right">
+                    <button type="button" class="uk-button uk-button-default" uk-toggle="target: #user_abuse">Пожаловаться</button>
+                </div>
 
                 <ul id="tt" uk-tab>
                     <li><a href="#">Информация</a></li>
@@ -421,10 +425,11 @@
                             <div class="uk-width-1-1">
                                 <button class="uk-button uk-button-default uk-width-1-1">Отправить</button>
                             </div>
-                            <div class="g-recaptcha"
-                                 data-callback="capcha_filled"
-                                 data-expired-callback="capcha_expired"
-                                 data-sitekey="6LcGCzUUAAAAADpeaCQhkXWZqdhnB6_ZEGRm7Z2m"></div>
+                            {#<div id="recap_1" class="g-recaptcha"#}
+                                 {#data-callback="capcha_filled"#}
+                                 {#data-expired-callback="capcha_expired"#}
+                                 {#data-sitekey="6LcGCzUUAAAAADpeaCQhkXWZqdhnB6_ZEGRm7Z2m"></div>#}
+                            <div id="recap1"></div>
                         </form>
                     </div>
                 </div>
@@ -503,5 +508,39 @@
     {% if app.session.has('first_card') %}
         {{ app.session.remove('first_card') }}
     {% endif %}
+
+    <div id="user_abuse" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <h2 class="uk-modal-title">Жалоба</h2>
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+            <form action="/user/sendAbuse" uk-grid class="uk-grid-small" method="POST" onsubmit="return check_if_capcha_is_filled()">
+                <div class="uk-width-1-1">
+                    <label><input type="checkbox" name="abuse[]" value="Телефон не отвечает">Телефон не отвечает</label>
+                </div>
+                <div class="uk-width-1-1">
+                    <label><input type="checkbox" name="abuse[]" value="Объявление больше не актуально">Объявление больше не актуально</label>
+                </div>
+                <div class="uk-width-1-1">
+                    <label><input type="checkbox" name="abuse[]" value="Ворованные фото">Ворованные фото</label>
+                </div>
+                <div class="uk-width-1-1">
+                    <label><input type="checkbox" name="abuse[]" value="Грубый владелец">Грубый владелец</label>
+                </div>
+                <input type="hidden" name="card_id" value="{{ card.id }}">
+                <div class="uk-width-1-1">
+                    <button class="uk-button uk-button-default uk-width-1-1">Отправить</button>
+                </div>
+                {#<div id="recap_2" class="g-recaptcha"#}
+                     {#data-callback="capcha_filled"#}
+                     {#data-expired-callback="capcha_expired"#}
+                     {#data-sitekey="6LcGCzUUAAAAADpeaCQhkXWZqdhnB6_ZEGRm7Z2m"></div>#}
+                <div id="recap2"></div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+        async defer>
+    </script>
 
 {% endblock %}
