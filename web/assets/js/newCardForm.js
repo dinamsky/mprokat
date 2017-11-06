@@ -25,7 +25,16 @@ $( document ).ready(function() {
     });
 
     $('#generalTypeTopLevelId').on('change',function(){
-        var generalTypeTopLevelId = $(this).children('option:selected').val();
+        var generalTypeTopLevelId = $(this).children('option:selected').val()-0;
+
+        if(generalTypeTopLevelId === 29){
+            $('.plane').show();
+            $('.non_plane').hide();
+        } else {
+            $('.plane').hide();
+            $('.non_plane').show();
+        }
+
         $.ajax({
             url: '/ajax/getGeneralTypeSecondLevel',
             type: 'POST',
