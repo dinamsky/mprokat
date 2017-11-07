@@ -4,9 +4,12 @@ namespace AppBundle\EventSubscriber;
 
 use AppBundle\Entity\City;
 use Doctrine\ORM\EntityManagerInterface as em;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpFoundation\Cookie;
 
 class GeoSubscriber implements EventSubscriberInterface
 {
@@ -65,13 +68,32 @@ class GeoSubscriber implements EventSubscriberInterface
             $event->getRequest()->getSession()->set('city', $city);
         }
 
+        if (isset($city)) $cookie_data = $city->getId();
+        else $cookie_data = $event->getRequest()->getSession()->get('city')->getId();
+            $event->getRequest()->attributes->set('cookie_data', $cookie_data);
+    }
 
+    public function onKernelResponse(FilterResponseEvent $event)
+    {
+        $response = new Response();
+        $request = $event->getRequest();
+
+
+
+            $cookie_data = $request->attributes->get('cookie_data');
+            $cookie = new Cookie('multiprokat_geo', $cookie_data, strtotime('now +1 year'));
+            //dump($cookie);
+            $response->headers->setCookie($cookie);
+            $response->send();
+        //return $response;
+        //dump($response);
     }
 
     public static function getSubscribedEvents()
     {
         return array(
             KernelEvents::CONTROLLER => 'onKernelController',
+            KernelEvents::RESPONSE => 'onKernelResponse'
         );
     }
 
