@@ -88,8 +88,9 @@ class GeoSubscriber implements EventSubscriberInterface
             //dump($cookie);
             $response->headers->setCookie($cookie);
             $response->send();
+            //dump($response->headers);
         //return $response;
-        //dump($response);
+
     }
 
     public static function getSubscribedEvents()
