@@ -78,19 +78,14 @@ class GeoSubscriber implements EventSubscriberInterface
 
     public function onKernelResponse(FilterResponseEvent $event)
     {
-        $response = new Response();
+        $response = $event->getResponse();
         $request = $event->getRequest();
 
+        $cookie_data = $request->attributes->get('cookie_data');
+        $cookie = new Cookie('geo_city_id', $cookie_data, strtotime('now +1 year'));
 
-
-            $cookie_data = $request->attributes->get('cookie_data');
-            $cookie = new Cookie('multiprokat_geo', $cookie_data, strtotime('now +1 year'));
-            //dump($cookie);
-            $response->headers->setCookie($cookie);
-            $response->send();
-            //dump($response->headers);
-        //return $response;
-
+        $response->headers->setCookie($cookie);
+        $response->send();
     }
 
     public static function getSubscribedEvents()
