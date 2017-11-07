@@ -68,7 +68,10 @@ class GeoSubscriber implements EventSubscriberInterface
             $event->getRequest()->getSession()->set('city', $city);
         }
 
-        if (isset($city)) $cookie_data = $city->getId();
+        if (isset($city)){
+            if(is_array($city)) $cookie_data = $city[0]->getId();
+            else $cookie_data = $city->getId();
+        }
         else $cookie_data = $event->getRequest()->getSession()->get('city')->getId();
             $event->getRequest()->attributes->set('cookie_data', $cookie_data);
     }
