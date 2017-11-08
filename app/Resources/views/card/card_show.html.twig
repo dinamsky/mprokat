@@ -160,7 +160,7 @@
                                 <div>{{ card.getColor != null ? 'Цвет: '~card.getColor.header }}</div>
 
 
-                                {% for subfield in sub_fields if subfield.value is not null %}
+                                {% for subfield in sub_fields if subfield.value is not null and subfield.value != 0 and subfield.value != '' %}
                                     <div>
                                         {{ subfield.label }}:
                                         {% if subfield.type == 'subfield' %}
