@@ -187,6 +187,48 @@ class ProfileController extends Controller
     }
 
     /**
+     * @Route("/user/sendAbuse")
+     */
+    public function sendAbuseAction(Request $request, \Swift_Mailer $mailer)
+    {
+        $post = $request->request;
+
+        $card_id = $post->get('card_id');
+
+        if ($this->captchaVerify($post->get('g-recaptcha-response'))) {
+
+            foreach($post->get('abuse') as $ms){
+                $msg[] = $ms.'<br>';
+            }
+            $msg[] = 'Жалоба отправлена со <a href="https://multiprokat.com/card/'.$card_id.'">страницы</a>';
+            $msg = implode("",$msg);
+
+            $message = (new \Swift_Message('Жалоба от пользователя'))
+                ->setFrom(['mail@multiprokat.com' => 'Робот Мультипрокат'])
+                ->setTo('mail@multiprokat.com')
+                ->setBody(
+                    $msg,
+                    'text/html'
+                );
+            $mailer->send($message);
+
+            $this->addFlash(
+                'notice',
+                'Ваша жалоба успешно отправлена!'
+            );
+        } else {
+            $this->addFlash(
+                'notice',
+                'Каптча не пройдена!'
+            );
+        }
+
+        return $this->redirect('/card/'.$card_id);
+
+    }
+
+
+    /**
  * @Route("/user/sendMessage")
  */
     public function sendMessageAction(Request $request, \Swift_Mailer $mailer)
@@ -413,4 +455,6 @@ class ProfileController extends Controller
 
         return $data->success;
     }
+
+
 }

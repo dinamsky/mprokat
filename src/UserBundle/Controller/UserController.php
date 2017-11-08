@@ -27,6 +27,7 @@ use AppBundle\Menu\MenuGeneralType;
 use AppBundle\Menu\MenuMarkModel;
 use AppBundle\Menu\MenuSubFieldAjax;
 use AppBundle\SubFields\SubFieldUtils;
+use UserBundle\Security\CookieMaster;
 use UserBundle\Security\Password;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,15 +35,18 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Cookie;
 
 class UserController extends Controller
 {
 
     protected $mailer;
+    protected $cookieMaster;
 
-    public function __construct(\Swift_Mailer $mailer)
+    public function __construct(\Swift_Mailer $mailer, CookieMaster $cookieMaster)
     {
         $this->mailer = $mailer;
+        $this->cookieMaster = $cookieMaster;
     }
 
     /**
@@ -83,6 +87,15 @@ class UserController extends Controller
         }
     }
 
+    private function setAuthCookie(User $user)
+    {
+        $response = new Response();
+        $hash = $this->cookieMaster->setHash($user->getId());
+        $cookie = new Cookie('the_hash', $hash.base64_encode($user->getId()), strtotime('now +1 year'));
+        $response->headers->setCookie($cookie);
+        $response->sendHeaders();
+    }
+
     /**
      * @Route("/userSignIn")
      */
@@ -101,6 +114,9 @@ class UserController extends Controller
             if ($password->CheckPassword($request->request->get('password'), $user->getPassword())){
 
                 $this->get('session')->set('logged_user', $user);
+
+                $this->setAuthCookie($user);
+
                 $this->addFlash(
                     'notice',
                     'Вы успешно вошли в аккаунт!'
@@ -129,6 +145,9 @@ class UserController extends Controller
      */
     public function logoutAction(Request $request)
     {
+        $response = new Response();
+        $response->headers->clearCookie('the_hash');
+        $response->sendHeaders();
         $this->get('session')->remove('logged_user');
         $this->addFlash(
             'notice',
@@ -226,6 +245,9 @@ class UserController extends Controller
             $em->persist($user);
             $em->flush();
             $this->get('session')->set('logged_user', $user);
+
+            $this->setAuthCookie($user);
+
             $this->addFlash(
                 'notice',
                 $message

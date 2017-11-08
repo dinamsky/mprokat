@@ -192,20 +192,26 @@ class AdminController extends Controller
                 ->getRepository(User::class)
                 ->findOneBy(['email' => $request->request->get('user_email')]);
 
-            $admin = new Admin();
-            $admin->setPassword($user->getPassword());
-            $admin->setEmail($user->getEmail());
-            $admin->setRole($request->request->get('role'));
+            if($user) {
+                $admin = new Admin();
+                $admin->setPassword($user->getPassword());
+                $admin->setEmail($user->getEmail());
+                $admin->setRole($request->request->get('role'));
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($admin);
-            $em->flush();
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($admin);
+                $em->flush();
 
-            $this->addFlash(
-                'notice',
-                'Администратор '.$user->getEmail().' успешно назначен!'
-            );
-
+                $this->addFlash(
+                    'notice',
+                    'Администратор ' . $user->getEmail() . ' успешно назначен!'
+                );
+            } else {
+                $this->addFlash(
+                    'notice',
+                    'Пользователь ' . $user->getEmail() . ' не найден!'
+                );
+            }
             return $this->redirectToRoute('admin_main');
         }
     }
