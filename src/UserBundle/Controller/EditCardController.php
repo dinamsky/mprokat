@@ -259,28 +259,35 @@ class EditCardController extends Controller
         $stat->setStat($stat_arr);
 
 
-        if ($post->get('subField') !== null) foreach($post->get('subField') as $fieldId=>$value) if($value!=0 and $value!=''){
+        if ($post->get('subField') !== null) foreach($post->get('subField') as $fieldId=>$value) {
+
             $subfield = $this->getDoctrine()
                 ->getRepository(FieldType::class)
                 ->find($fieldId);
+            //numberInput
 
-            $dql = 'SELECT s FROM AppBundle:'.$subfield->getStorageType().' s WHERE s.cardId = ?1 AND s.cardFieldId = ?2';
-            $query = $em->createQuery($dql);
-            $query->setParameter(1, $card->getId());
-            $query->setParameter(2, $fieldId);
-            try {
-                $storage = $query->getSingleResult();
+            if($subfield->getFormElementType() == 'ajaxMenu' and ($value == 0 or $value == ''))
+            {
+
+            } else {
+
+
+                $dql = 'SELECT s FROM AppBundle:' . $subfield->getStorageType() . ' s WHERE s.cardId = ?1 AND s.cardFieldId = ?2';
+                $query = $em->createQuery($dql);
+                $query->setParameter(1, $card->getId());
+                $query->setParameter(2, $fieldId);
+                try {
+                    $storage = $query->getSingleResult();
+                } catch (\Doctrine\ORM\NoResultException $e) {
+                    $storageTypeName = "\AppBundle\Entity\\" . $subfield->getStorageType();
+                    $storage = new $storageTypeName();
+                    $storage->setCard($card);
+                    $storage->setCardFieldId($fieldId);
+                }
+
+                $storage->setValue($value);
+                $em->persist($storage);
             }
-            catch (\Doctrine\ORM\NoResultException $e){
-                $storageTypeName = "\AppBundle\Entity\\".$subfield->getStorageType();
-                $storage = new $storageTypeName();
-                $storage->setCard($card);
-                $storage->setCardFieldId($fieldId);
-            }
-
-            $storage->setValue($value);
-            $em->persist($storage);
-
         }
 
         $query = $em->createQuery('DELETE AppBundle\Entity\CardFeature c WHERE c.cardId = ?1');
