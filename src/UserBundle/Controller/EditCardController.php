@@ -271,6 +271,7 @@ class EditCardController extends Controller
 
             } else {
 
+                if($subfield->getFormElementType() == 'numberInput' and $value == '') $value = 0;
 
                 $dql = 'SELECT s FROM AppBundle:' . $subfield->getStorageType() . ' s WHERE s.cardId = ?1 AND s.cardFieldId = ?2';
                 $query = $em->createQuery($dql);
