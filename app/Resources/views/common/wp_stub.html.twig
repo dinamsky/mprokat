@@ -26,7 +26,7 @@
                 <div uk-grid class="uk-grid-small">
                     {% for gt in generalTypes if gt.cards is not empty%}
                         <div class="uk-width-1-4@l uk-width-1-2">
-                            <a href="/rent/{{ in }}/all/{{ gt.url }}" class="generals_in_main"><span class="gim_text uk-text-truncate">{{ gt.header }}</span><span class="gim_count">{{ gt.cards|length }}</span></a>
+                            <a href="/rent/{{ in_city }}/all/{{ gt.url }}" class="generals_in_main"><span class="gim_text uk-text-truncate">{{ gt.header }}</span><span class="gim_count">{{ gt.cards|length }}</span></a>
                         </div>
                     {% endfor %}
                 </div>
