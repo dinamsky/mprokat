@@ -41,7 +41,7 @@ msgid "Объявлений"
 msgstr "Cards"
 
 #: loco:5a00679e820ee9d6368b456b
-msgid "Просмотров"
+msgid "Просмотров объявлений"
 msgstr "Views"
 
 #: loco:5a0067a6820ee9cd368b4567
@@ -51,6 +51,9 @@ msgstr "Cities"
 #: loco:5a0067ae820ee9cb368b4569
 msgid "Категорий"
 msgstr "Categories"
+
+
+# -------------------------------------------- footer -----------------------------------------
 
 #: loco:5a0067d0820ee9a6368b4567
 msgid "Категории"
@@ -63,3 +66,36 @@ msgstr "New on website"
 #: loco:5a0067e9820ee9bb368b4567
 msgid "Информация"
 msgstr "Information"
+
+msgid "Легковые автомобили"
+msgstr "Cars"
+
+msgid "Свадебные авто"
+msgstr "Wedding cars"
+
+msgid "Вертолеты"
+msgstr "Helicopters"
+
+msgid "Снегоходы"
+msgstr "Snowmobiles"
+
+msgid "Грузовые автомобили"
+msgstr "Trucks"
+
+msgid "Новости"
+msgstr "News"
+
+msgid "Контакты"
+msgstr "Contacts"
+
+msgid "Сдать свой автомобиль"
+msgstr "Rent out your car"
+
+msgid "Сервис аренды автотранспорта"
+msgstr "Vehicle rent service"
+
+msgid "Условия и положения"
+msgstr "Terms and conditions"
+
+msgid "Конфиденциальность"
+msgstr "Confidential"

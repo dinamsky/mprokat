@@ -4,47 +4,50 @@
         <div class="standard_wide c_white">
             <div uk-grid>
                 <div class="uk-width-1-4@l">
-                    <div class="uk-margin-bottom uk-text-uppercase"><b>Категории</b></div>
-                    <a href="/rent/rus/all/cars" class="c_grey">Легковые авто</a>
+                    <div class="uk-margin-bottom uk-text-uppercase"><b>{% trans %}Категории{% endtrans %}</b></div>
+                    <a href="/rent/rus/all/cars" class="c_grey">{% trans %}Легковые автомобили{% endtrans %}</a>
                     <hr>
-                    <a href="/rent/rus/all/bicycles" class="c_grey">Велосипеды</a>
+                    <a href="/rent/rus/all/wedding" class="c_grey">{% trans %}Свадебные авто{% endtrans %}</a>
                     <hr>
-                    <a href="/rent/rus/all/special-machines" class="c_grey">Спецтехника</a>
+                    <a href="/rent/rus/all/helicopters" class="c_grey">{% trans %}Вертолеты{% endtrans %}</a>
                     <hr>
-                    <a href="/rent/rus/all/yachts" class="c_grey">Яхты</a>
+                    <a href="/rent/rus/all/snowride" class="c_grey">{% trans %}Снегоходы{% endtrans %}</a>
                     <hr>
-                    <a href="/rent/rus/all/bikes" class="c_grey">Мотоциклы</a>
+                    <a href="/rent/rus/all/trucks" class="c_grey">{% trans %}Грузовые автомобили{% endtrans %}</a>
                 </div>
                 <div class="uk-width-1-4@l uk-visible@l">
-                    <div class="uk-margin-bottom uk-text-uppercase"><b>Лучшие предложения</b></div>
+                    <div class="uk-margin-bottom uk-text-uppercase"><b>{% trans %}Лучшие предложения{% endtrans %}</b></div>
                     {% for card in t3_new.getTop3 %}
                         {{ include(':footer:top_new_tpl.html.twig', {'card':card}) }}
                     {% endfor %}
                 </div>
                 <div class="uk-width-1-4@l uk-visible@l">
-                    <div class="uk-margin-bottom uk-text-uppercase"><b>Новые на сайте</b></div>
+                    <div class="uk-margin-bottom uk-text-uppercase"><b>{% trans %}Новые на сайте{% endtrans %}</b></div>
                     {% for card in t3_new.getNew %}
                         {{ include(':footer:top_new_tpl.html.twig', {'card':card}) }}
                     {% endfor %}
                 </div>
                 <div class="uk-width-1-4@l">
-                    <div class="uk-margin-bottom uk-text-uppercase"><b>Информация</b></div>
-                        <a href="/news" class="c_grey">Новости</a>
+                    <div class="uk-margin-bottom uk-text-uppercase"><b>{% trans %}Информация{% endtrans %}</b></div>
+                        <a href="/news" class="c_grey">{% trans %}Новости{% endtrans %}</a>
                         <hr>
-                        <a href="/contacts" class="c_grey">Контакты</a>
+                        <a href="/contacts" class="c_grey">{% trans %}Контакты{% endtrans %}</a>
                         <hr>
 
                         {% if page_type is defined %}
                             {#<a href="/card/new" class="c_grey">Сдать в прокат/аренду {{ general.headerSingular|lower }} в {{ city.gde }}</a>#}
                         {% else %}
-                            <a href="/article/kak-sdavat-avto" class="c_grey">Сдать свой автомобиль</a>
+                            <a href="/article/kak-sdavat-avto" class="c_grey">{% trans %}Сдать свой автомобиль{% endtrans %}</a>
                         {% endif %}
 
                         <hr>
 
+                        {% if lang == 'ru' %}
+                            <a href="/regions" class="c_grey">Россия. Регионы</a>
+                            <hr>
+                        {%  endif %}
 
-                        <a href="/regions" class="c_grey">Россия. Регионы</a>
-                        <hr>
+
                         <div class="">
                             <a class="c_grey" rel="nofollow" href="https://www.facebook.com/multiprokatcom/"><span uk-icon="icon:facebook"></span></a>
                             &nbsp;
@@ -66,10 +69,10 @@
     <div class="bottom_line bg_black">
         <div class="standard_wide uk-clearfix">
             <div uk-grid>
-                <div class="uk-width-2-5@s">&copy; {{ date()|date("Y") }} МультиПрокат | Сервис аренды автотранспорта</div>
+                <div class="uk-width-2-5@s">&copy; {{ date()|date("Y") }} {{ app.request.host }} | {% trans %}Сервис аренды автотранспорта{% endtrans %}</div>
                 <div class="uk-width-2-5@s">
-                    <a href="/article/term-conditions" class="c_grey">Условия и положения</a> /
-                    <a href="/article/politika-konfidentsialnosti" class="c_grey">Конфиденциальность</a>
+                    <a href="/article/term-conditions" class="c_grey">{% trans %}Условия и положения{% endtrans %}</a> /
+                    <a href="/article/politika-konfidentsialnosti" class="c_grey">{% trans %}Конфиденциальность{% endtrans %}</a>
                 </div>
 
             </div>
