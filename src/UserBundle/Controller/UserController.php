@@ -93,6 +93,7 @@ class UserController extends Controller
         $hash = $this->cookieMaster->setHash($user->getId());
         $cookie = new Cookie('the_hash', $hash.base64_encode($user->getId()), strtotime('now +1 year'));
         $response->headers->setCookie($cookie);
+        $response->headers->sendHeaders();
     }
 
     /**
@@ -146,7 +147,7 @@ class UserController extends Controller
     {
         $response = new Response();
         $response->headers->clearCookie('the_hash');
-        $response->send();
+        $response->sendHeaders();
         $this->get('session')->remove('logged_user');
         $this->addFlash(
             'notice',
