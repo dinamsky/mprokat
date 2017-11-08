@@ -29,7 +29,7 @@
 
     </head>
     <body {% block bodyVars %}{% endblock %} class="{{ is_mobile() ? 'mobile' : 'desktop' }} {% block bodyClass %}{% endblock %}">
-
+    {{ include('yandex_metrica.html.twig') }}
 
 
 

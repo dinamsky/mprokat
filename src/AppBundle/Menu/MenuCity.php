@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\City;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Cookie;
 
 class MenuCity extends Controller
 {
@@ -88,7 +89,13 @@ class MenuCity extends Controller
             $this->get('session')->set('city', $city);
         } else $this->get('session')->set('city', $this->getCity($request->request->get('cityId'))[0]);
 
-        return new Response();
+        $response = new Response();
+
+        $cookie = new Cookie('geo_city_id', $request->request->get('cityId'), strtotime('now +1 year'));
+        $response->headers->setCookie($cookie);
+        $response->send();
+
+        return $response;
     }
 
     /**
