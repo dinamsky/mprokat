@@ -93,7 +93,6 @@ class UserController extends Controller
         $hash = $this->cookieMaster->setHash($user->getId());
         $cookie = new Cookie('the_hash', $hash.base64_encode($user->getId()), strtotime('now +1 year'));
         $response->headers->setCookie($cookie);
-        $response->send();
     }
 
     /**
@@ -114,8 +113,6 @@ class UserController extends Controller
             if ($password->CheckPassword($request->request->get('password'), $user->getPassword())){
 
                 $this->get('session')->set('logged_user', $user);
-
-
 
                 $this->setAuthCookie($user);
 
