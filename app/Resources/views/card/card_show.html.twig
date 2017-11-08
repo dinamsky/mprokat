@@ -131,9 +131,22 @@
 
                 </div>
 
+                {% if not is_mobile() %}
                 <div class="uk-text-right">
                     <button type="button" class="uk-button uk-button-default" uk-toggle="target: #user_abuse">Пожаловаться</button>
                 </div>
+                {% endif %}
+
+                {% if is_mobile() %}
+                <div class="uk-margin-bottom card_blanc2 uk-margin-top">
+                    {% for price in card.getCardPrices %}
+                        <div class="uk-text-center {{ price.priceId == 2 ? 'price_highlighted' : ''}}">
+                            <span class="price_value">{{ price.value|number_format(0,'.','<span class="thousand_separator"></span>')|raw }}</span>
+                            <span class="price_descriptor uk-text-truncate"> ₽ / {{ price.getPrice.header }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
 
                 <ul id="tt" uk-tab>
                     <li><a href="#">Информация</a></li>
@@ -393,7 +406,7 @@
                 </div>
 
                 <div class="uk-margin-bottom card_blanc">
-                    <div class="cursor-pointer" uk-toggle="target: #user_message_form"><i class="fa fa-commenting"></i> Написать сообщение</div>
+                    <div class="cursor-pointer uk-text-center" uk-toggle="target: #user_message_form"><i class="fa fa-commenting"></i> Написать сообщение</div>
                 </div>
 
                 <div class="uk-margin-bottom card_blanc">
@@ -499,6 +512,12 @@
 
             </div>
         </div>
+
+        {% if is_mobile() %}
+        <div class="uk-width-1-1 uk-text-center">
+                    <button type="button" class="uk-button uk-button-default uk-width-1-1" uk-toggle="target: #user_abuse">Пожаловаться</button>
+                </div>
+        {% endif %}
 
         <div class="uk-margin-large">
 
