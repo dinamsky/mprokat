@@ -93,7 +93,7 @@ class UserController extends Controller
         $hash = $this->cookieMaster->setHash($user->getId());
         $cookie = new Cookie('the_hash', $hash.base64_encode($user->getId()), strtotime('now +1 year'));
         $response->headers->setCookie($cookie);
-        $response->headers->sendHeaders();
+        $response->sendHeaders();
     }
 
     /**
