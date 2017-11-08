@@ -27,6 +27,8 @@ $( document ).ready(function() {
     $('#generalTypeTopLevelId').on('change',function(){
         var generalTypeTopLevelId = $(this).children('option:selected').val()-0;
 
+        $('#new_general').find('.expander_button').html($(this).find('option:selected').html()+'<i uk-icon="icon:chevron-down" class="uk-icon"></i>');
+
         if(generalTypeTopLevelId === 29){
             $('.plane').show();
             $('.non_plane').hide();
@@ -34,6 +36,15 @@ $( document ).ready(function() {
             $('.plane').hide();
             $('.non_plane').show();
         }
+
+        $.ajax({
+            url: '/ajax/getAllSubFields',
+            type: 'POST',
+            data: {generalTypeId:generalTypeTopLevelId},
+            success: function(html){
+                $('#subfields').html(html);
+            }
+        });
 
         $.ajax({
             url: '/ajax/getGeneralTypeSecondLevel',
@@ -67,6 +78,8 @@ $( document ).ready(function() {
 
     $('#generalTypeId').on('change',function(){
         var generalTypeId = $(this).children('option:selected').val();
+        $('#new_general').find('.expander_button').html($(this).find('option:selected').html()+'<i uk-icon="icon:chevron-down" class="uk-icon"></i>');
+
         $.ajax({
             url: '/ajax/getAllSubFields',
             type: 'POST',

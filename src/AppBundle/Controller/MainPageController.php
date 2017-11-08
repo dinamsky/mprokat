@@ -93,6 +93,8 @@ class MainPageController extends Controller
         $translator->addResource('pofile', 'messages.en.po', 'en');
         $translator->addResource('pofile', 'messages.ru.po', 'ru');
 
+
+
         return $this->render('main_page/main.html.twig', [
 
             'city' => $city,

@@ -20,7 +20,7 @@ class LocaleSubscriber implements EventSubscriberInterface
     {
         $request = $event->getRequest();
 
-            $request->setLocale('en');
+            $request->setLocale('ru');
 
     }
 

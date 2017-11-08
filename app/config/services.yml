@@ -59,6 +59,11 @@ services:
     UserBundle\Security\:
             resource: '../../src/UserBundle/Security'
             public: true
+            arguments: ['secret']
+
+    UserBundle\Security\CookieMaster:
+            class: UserBundle\Security\CookieMaster
+            arguments: ['%secret%']
 
     AppBundle\Twig\Extension\:
             resource: '../../src/AppBundle/Twig/Extension'
