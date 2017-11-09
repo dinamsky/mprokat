@@ -245,9 +245,73 @@
 
                 {% endif %}
 
+                {% if is_mobile() %}
+                <div class="user_block uk-text-center uk-margin-bottom">
+
+                    <div uk-grid class="uk-grid-small">
+                        {% if user_foto %}
+                            <div class="uk-width-auto">
+                                <a href="/user/{{ card.user.id }}" style="background: url('{{ user_foto }}') center center no-repeat;
+                                        background-size: contain;
+                                        width: 50px;
+                                        height: 50px;
+                                        display: inline-block;
+                                        ">
+                                </a>
+                            </div>
+                        {% else %}
+                        {% endif %}
+
+                        <div class="uk-width-expand">
+                            <div class="uk-text-small">Собственник</div>
+                            <h3 class="uk-margin-remove uk-text-truncate" style="line-height: 31px;"><a href="/user/{{ card.user.id }}" class="uk-text-truncate">{{ card.user.header }}</a></h3>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="">
+                        {% for info in card.user.information %}
+                            {% if info.uiKey == 'vk' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_vk"><i class="fa fa-vk"></i></a>{% endif %}
+                            {% if info.uiKey == 'fb' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_fb"><i class="fa fa-facebook"></i></a>{% endif %}
+                            {% if info.uiKey == 'ok' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_ok"><i class="fa fa-odnoklassniki"></i></a>{% endif %}
+                            {% if info.uiKey == 'tw' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_tw"><i class="fa fa-twitter"></i></a>{% endif %}
+                            {% if info.uiKey == 'gp' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_gp"><i class="fa fa-google-plus"></i></a>{% endif %}
+                            {% if info.uiKey == 'ig' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_ig"><i class="fa fa-instagram"></i></a>{% endif %}
+                            {% if info.uiKey == 'yt' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_yt"><i class="fa fa-youtube"></i></a>{% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="uk-margin-bottom card_blanc">
+                    <div class="cursor-pointer uk-text-center" uk-toggle="target: #user_message_form"><i class="fa fa-commenting"></i> Написать сообщение</div>
+                </div>
+
+                <div class="uk-margin-bottom card_blanc">
+                    <div><i class="fa fa-eye c_green"></i> {{ card.views }} <span class="uk-text-small c_grey">просмотров</span></div>
+                    <div><i class="fa fa-heart c_red"></i> <span id="card_likes">{{ card.likes }}</span> <span class="uk-text-small c_grey">лайков</span></div>
+                    <div>
+                        <i class="fa fa-star c_gold"></i> {{ opinions }}/5 <span class="uk-text-small c_grey">звезд из</span> {{ total_opinions }}
+                        <span class="uk-text-small c_grey">отзывов</span>
+                    </div>
+                    <hr>
+                    <div class="uk-text-center"><a href="/user/{{ card.user.id }}">Все объявления<br>пользователя ({{ card.user.cards|length }})</a></div>
+
+                </div>
+                {% endif %}
+
+
+
 
                 {% if not app.session.has('first_card') %}
-                    <div uk-grid class="uk-margin-top">
+
+
+                    {% if is_mobile() %}
+                        <button class="uk-button uk-button-default uk-width-1-1" uk-toggle="target: #coms_opins">Комментарии и отзывы</button>
+                    {% endif %}
+
+                    <div uk-grid class="uk-margin-top" {{ is_mobile() ? 'id="coms_opins" hidden' }}>
                         <div class="uk-width-1-2@s">
                             <h2 class="pf_style_header"><span>Комментарии</span></h2>
 
@@ -338,6 +402,13 @@
                     {% endfor %}
                 </div>
 
+                {% if is_mobile() %}
+                    <div class="uk-margin-top">
+                        {{ include('search/search_form.html.twig') }}
+                    </div>
+                {% endif %}
+
+
             </div>
             <div class="uk-width-1-4@s">
 
@@ -371,6 +442,7 @@
                 </div>
                 {% endif %}
 
+                {% if not is_mobile() %}
                 <div class="user_block uk-text-center uk-margin-bottom">
 
                     <div uk-grid class="uk-grid-small">
@@ -424,7 +496,7 @@
                     <div class="uk-text-center"><a href="/user/{{ card.user.id }}">Все объявления<br>пользователя ({{ card.user.cards|length }})</a></div>
 
                 </div>
-
+                {% endif %}
 
 
 

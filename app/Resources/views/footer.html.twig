@@ -37,7 +37,7 @@
                         <hr>
 
                         {% if page_type is defined and general is defined%}
-                            <a href="/card/new/{{ general.url }}" class="c_grey">Сдать в прокат/аренду {{ general.headerSingular|lower }} в {{ city.gde }}</a>
+                            <a href="/card/new/{{ general.url }}" class="c_grey">Сдать в {{ general.url == 'special-machines' or general.url == 'airplanes' ? 'аренду' : 'прокат/аренду' }} {{ general.headerSingular|lower }} в {{ city.gde }}</a>
                         {% else %}
                             <a href="/article/kak-sdavat-avto" class="c_grey">Сдать свой автомобиль</a>
                         {% endif %}
@@ -71,7 +71,7 @@
         <div class="standard_wide c_white">
             <div uk-grid class="uk-grid-small">
                 {% for gt in generalTypes %}
-                    <div><a href="/rent/{{ city.url }}/all/{{ gt.url }}" class="uk-text-small c_grey">Прокат и аренда {{ gt.chegoPlural }} в {{ city.gde }}</a></div>
+                    <div><a href="/rent/{{ city.url }}/all/{{ gt.url }}" class="uk-text-small c_grey">{{ gt.url == 'special-machines' or gt.url == 'airplanes' ? 'Аренда' : 'Прокат и аренда' }} {{ gt.chegoPlural }} в {{ city.gde }}</a></div>
                 {% endfor %}
             </div>
         </div>
