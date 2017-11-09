@@ -115,10 +115,8 @@ button{
     bottom: 0;
 }
 
-.breadcrumbs{
-    border-bottom: 1px solid lightgrey;
-    padding: 10px 0;
-    background: #ffffff;
+.breadcrumbs a{
+    font-size: 13px;
 }
 
 .pf_style_header{
@@ -1104,3 +1102,8 @@ footer a:hover{
 .glb::-moz-placeholder          {color: #d0d0d0;font-size: 13px;}/* Firefox 19+ */
 .glb:-moz-placeholder           {color: #d0d0d0;font-size: 13px;}/* Firefox 18- */
 .glb:-ms-input-placeholder      {color: #d0d0d0;font-size: 13px;}
+
+.mid_footer{
+    background: #131313;
+    padding: 20px 0;
+}

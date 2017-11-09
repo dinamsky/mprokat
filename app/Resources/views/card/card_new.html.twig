@@ -33,7 +33,12 @@
 {% block content %}
 
     <div class="standard_wide uk-margin-top">
-        <h1>Новое объявление</h1>
+        {% if gt_url != '' %}
+            <h1>Сдать в прокат/аренду {{ gt_url.headerSingular|lower }} в {{ city.gde }}</h1>
+        {% else %}
+            <h1>Новое объявление</h1>
+        {% endif %}
+
         <div>Разместите объявление и будьте готовы принимать звонки и email-сообщения от клиентов.</div>
         <hr>
     </div>
@@ -182,6 +187,20 @@
         {#<button class="uk-button uk-button-primary">Готово</button>#}
 
     </form>
+
+    {%  if random != '' %}
+
+        <div class="standard_wide uk-margin-top">
+            <h3>Похожие предложения в {{ city.gde }}</h3>
+            <div uk-grid class="uk-grid-small uk-grid-match">
+                {% for card in random %}
+                    <div class="uk-width-1-6@s">
+                        {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
 
 
     <div id="new_card_alert" uk-modal>

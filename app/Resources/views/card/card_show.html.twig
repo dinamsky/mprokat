@@ -83,7 +83,7 @@
                 </div>
 
                 <div class=" uk-margin-bottom">
-                    <div class="standard_wide">
+                    <div class="standard_wide breadcrumbs">
                         <a href="/">Главная</a>
                         <i uk-icon="icon:chevron-right"></i>
                         <a href="/rent/{{ card.city.url }}">{{ card.city.header }}</a>
@@ -97,9 +97,9 @@
 
                         {% if card.modelId != 20991 %}
                             <i uk-icon="icon:chevron-right"></i>
-                            <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ card.markModel.mark.header }}">{{ card.markModel.mark.header }}</a>
+                            <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ card.markModel.mark.header }}">{{ card.serviceTypeId == 1 ? 'Прокат' : 'Аренда' }} {{ card.generalType.chegoPlural }} {{ card.markModel.mark.header }} в {{ card.city.gde }}</a>
                             <i uk-icon="icon:chevron-right"></i>
-                            <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ card.markModel.mark.header }}/{{ card.markModel.header }}">{{ card.markModel.header }}</a>
+                            <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ card.markModel.mark.header }}/{{ card.markModel.header }}">{{ card.markModel.mark.header }} {{ card.markModel.header }}</a>
                         {% endif %}
                     </div>
                 </div>
@@ -173,15 +173,17 @@
                                 <div>{{ card.getColor != null ? 'Цвет: '~card.getColor.header }}</div>
 
 
-                                {% for subfield in sub_fields if subfield.value is not null and subfield.value.getValue != 0 and subfield.value.getValue != '' %}
-                                    <div>
-                                        {{ subfield.label }}:
-                                        {% if subfield.type == 'subfield' %}
-                                            {{ subfield.value.getHeader }}
-                                        {% else %}
-                                            {{ subfield.value.getValue }}
-                                        {% endif %}
-                                    </div>
+                                {% for subfield in sub_fields if subfield.value is not null %}
+                                    {% if subfield.type == 'subfield' %}
+                                        <div>
+                                            {{ subfield.label }}: {{ subfield.value.getHeader }}
+                                        </div>
+                                    {% elseif subfield.value.getValue != 0 and subfield.value.getValue != '' %}
+                                        <div>
+                                            {{ subfield.label }}: {{ subfield.value.getValue }}
+                                        </div>
+                                    {% endif %}
+
                                 {% endfor %}
 
 

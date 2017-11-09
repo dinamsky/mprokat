@@ -1,5 +1,7 @@
 <footer class="uk-margin-top">
 
+
+
     <div class="footer_info bg_dark">
         <div class="standard_wide c_white">
             <div uk-grid>
@@ -34,8 +36,8 @@
                         <a href="/contacts" class="c_grey">Контакты</a>
                         <hr>
 
-                        {% if page_type is defined %}
-                            {#<a href="/card/new" class="c_grey">Сдать в прокат/аренду {{ general.headerSingular|lower }} в {{ city.gde }}</a>#}
+                        {% if page_type is defined and general is defined%}
+                            <a href="/card/new/{{ general.url }}" class="c_grey">Сдать в прокат/аренду {{ general.headerSingular|lower }} в {{ city.gde }}</a>
                         {% else %}
                             <a href="/article/kak-sdavat-avto" class="c_grey">Сдать свой автомобиль</a>
                         {% endif %}
@@ -63,6 +65,19 @@
             </div>
         </div>
     </div>
+
+    {% if generalTypes is defined and city is defined and not is_mobile() %}
+    <div class="mid_footer">
+        <div class="standard_wide c_white">
+            <div uk-grid class="uk-grid-small">
+                {% for gt in generalTypes %}
+                    <div><a href="/rent/{{ city.url }}/all/{{ gt.url }}" class="uk-text-small c_grey">Прокат и аренда {{ gt.chegoPlural }} в {{ city.gde }}</a></div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
     <div class="bottom_line bg_black">
         <div class="standard_wide uk-clearfix">
             <div uk-grid>
