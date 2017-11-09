@@ -43,9 +43,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class NewCardController extends Controller
 {
     /**
-     * @Route("/card/new")
+     * @Route("/card/new/{gt_url}")
      */
-    public function indexAction(MenuMarkModel $markmenu, MenuGeneralType $mgt, MenuCity $mc, Request $request, FotoUtils $fu, EntityManagerInterface $em, \Swift_Mailer $mailer, ServiceStat $stat, Password $pass)
+    public function indexAction($gt_url = '', MenuMarkModel $markmenu, MenuGeneralType $mgt, MenuCity $mc, Request $request, FotoUtils $fu, EntityManagerInterface $em, \Swift_Mailer $mailer, ServiceStat $stat, Password $pass)
     {
 
         $admin = false;
@@ -114,6 +114,30 @@ class NewCardController extends Controller
                 ->getRepository(GeneralType::class)
                 ->find(2);
 
+            $random = '';
+            if($gt_url != ''){
+                $gt_url = $this->getDoctrine()
+                ->getRepository(GeneralType::class)
+                ->findOneBy(['url'=>$gt_url]);
+
+
+                $query = $em->createQuery('SELECT c.id FROM AppBundle:Card c WHERE c.generalTypeId = ?1 AND c.cityId = ?2 ORDER BY RAND()');
+                $query->setParameter(1, $gt_url->getId());
+                $query->setParameter(2, $city->getId());
+                $query->setMaxResults(12);
+                if(count($query->getScalarResult())<1) {
+                    $query = $em->createQuery('SELECT c.id FROM AppBundle:Card c WHERE c.generalTypeId = ?1 ORDER BY RAND()');
+                    $query->setParameter(1, $gt_url->getId());
+                    $query->setMaxResults(12);
+                    if(count($query->getScalarResult())<1) {
+                        $query = $em->createQuery('SELECT c.id FROM AppBundle:Card c ORDER BY RAND()');
+                        $query->setMaxResults(12);
+                    }
+                }
+                foreach ($query->getScalarResult() as $cars_id) $cars_ids[] = $cars_id['id'];
+                $query = $em->createQuery('SELECT c,p,f FROM AppBundle:Card c LEFT JOIN c.cardPrices p LEFT JOIN c.fotos f WHERE c.id IN ('.implode(",",$cars_ids).') ');
+                $random = $query->getResult();
+            }
 
 
             $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.total DESC, c.header ASC');
@@ -143,7 +167,7 @@ class NewCardController extends Controller
 
             if ($this->get('session')->has('admin')) $phone = true;
 
-            $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.total DESC');
+            $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g ORDER BY g.total DESC');
             $generalTypes = $query->getResult();
 
             $response = $this->render('card/card_new.html.twig', [
@@ -175,6 +199,8 @@ class NewCardController extends Controller
 
                 'popular_city' => $popular_city,
                 'phone' => $phone,
+                'gt_url' => $gt_url,
+                'random' => $random
             ]);
 
             return $response;
