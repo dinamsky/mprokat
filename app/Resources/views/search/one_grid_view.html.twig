@@ -19,7 +19,7 @@
 
 
 
-    <a id="card_img_{{ card.id }}" href="/card/{{ card.id }}" style="background: {{ bgrnd }} center center;
+    <a target="_blanc" id="card_img_{{ card.id }}" href="/card/{{ card.id }}" style="background: {{ bgrnd }} center center;
             background-size: cover;
             height: {{ height }};
             display: block;
@@ -58,7 +58,7 @@
 
 
     <div class="padding20 bg_darkgrey">
-        <a class="uk-text-truncate uk-display-block uk-position-relative c_white" href="/card/{{ card.id }}" title="{{ serviceType }} {% if card.generalType.chegoSingular is defined %}{{ card.generalType.chegoSingular }}{% else %}{% endif %} {{ card.markModel.Mark.header }} {{ card.markModel.header }} в {{ card.city.gde }}">
+        <a target="_blanc" class="uk-text-truncate uk-display-block uk-position-relative c_white" href="/card/{{ card.id }}" title="{{ serviceType }} {% if card.generalType.chegoSingular is defined %}{{ card.generalType.chegoSingular }}{% else %}{% endif %} {{ card.markModel.Mark.header }} {{ card.markModel.header }} в {{ card.city.gde }}">
             {{ card.markModel.Mark.header }} {{ card.markModel.header }}
         </a>
         {#<div class="uk-text-truncate uk-text-small c_grey"></div>#}
