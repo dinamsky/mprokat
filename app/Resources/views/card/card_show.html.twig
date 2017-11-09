@@ -97,7 +97,7 @@
 
                         {% if card.modelId != 20991 %}
                             <i uk-icon="icon:chevron-right"></i>
-                            <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ card.markModel.mark.header }}">{{ card.serviceTypeId == 1 ? 'Прокат' : 'Аренда' }} {{ card.generalType.chegoPlural }} {{ card.markModel.mark.header }} в {{ card.city.gde }}</a>
+                            <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ card.markModel.mark.header }}">{{ card.serviceTypeId == 1 ? 'Прокат' : 'Аренда' }} {{ card.markModel.mark.header }} в {{ card.city.gde }}</a>
                             <i uk-icon="icon:chevron-right"></i>
                             <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ card.markModel.mark.header }}/{{ card.markModel.header }}">{{ card.markModel.mark.header }} {{ card.markModel.header }}</a>
                         {% endif %}
