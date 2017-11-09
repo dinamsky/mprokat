@@ -50,8 +50,11 @@
                         <div class="uk-width-expand">
                             {#<i uk-icon="icon:search"></i> <input class="glob_search" type="text" name="glob_search" placeholder="Поиск">#}
                             <div class="uk-inline uk-width-1-1">
-                                <span class="uk-form-icon" uk-icon="icon: search"></span>
+                                <span class="uk-form-icon" uk-icon="icon: search" uk-toggle="target: #search_popup"></span>
                                 <input class="uk-input glb" name="glob_search" placeholder="Поиск, например: bmw">
+
+                                {{ include('search_popup.html.twig') }}
+
                             </div>
                         </div>
                     </div>
@@ -91,3 +94,4 @@
 
 
 </header>
+
