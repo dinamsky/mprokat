@@ -36,10 +36,10 @@
         {% if gt_url != '' %}
             <h1>Сдать в прокат/аренду {{ gt_url.headerSingular|lower }} в {{ city.gde }}</h1>
         {% else %}
-            <h1>Новое объявление</h1>
+            <h1>{% trans %}Новое объявление{% endtrans %}</h1>
         {% endif %}
 
-        <div>Разместите объявление и будьте готовы принимать звонки и email-сообщения от клиентов.</div>
+        <div>{% trans %}Разместите объявление и будьте готовы принимать звонки и email-сообщения от клиентов.{% endtrans %}</div>
         <hr>
     </div>
 
@@ -64,14 +64,14 @@
             <div class="uk-width-1-1@s">
                 {% if not phone %}
                 <div class="uk-margin-bottom uk-position-relative">
-                    <input type="text" name="phone" id="phone" placeholder="Заполните номер телефона" class="uk-input phone_validate">
+                    <input type="text" name="phone" id="phone" placeholder="{% trans %}Заполните номер телефона{% endtrans %}" class="uk-input phone_validate">
                     <div class="uk-position-absolute uk-position-top-left" style="left:5px;"><span class="red_star">*</span></div>
                 </div>
                 {% endif %}
 
                 <div class="">{{ include('card/card_new_elements/new_type.html.twig') }}
                     <div class="uk-text-center uk-margin">
-                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_address">Продолжить</button>
+                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_address">{% trans %}Продолжить{% endtrans %}</button>
                     </div>
                 </div>
 
@@ -79,7 +79,7 @@
                     {#<div class="uk-flex uk-flex-center"><hr class="uk-width-3-5"></div>#}
                     {{ include('card/card_new_elements/new_address.html.twig') }}
                     <div class="uk-text-center uk-margin">
-                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_general">Продолжить</button>
+                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_general">{% trans %}Продолжить{% endtrans %}</button>
                     </div>
                 </div>
 
@@ -87,7 +87,7 @@
                     {#<div class="uk-flex uk-flex-center"><hr class="uk-width-3-5"></div>#}
                     {{ include('card/card_new_elements/new_general.html.twig') }}
                     <div class="uk-text-center uk-margin">
-                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_mark">Продолжить</button>
+                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_mark">{% trans %}Продолжить{% endtrans %}</button>
                     </div>
                 </div>
 
@@ -95,7 +95,7 @@
                     {#<hr>#}
                     {{ include('card/card_new_elements/new_mark.html.twig') }}
                     <div class="uk-text-center uk-margin">
-                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_foto">Продолжить</button>
+                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_foto">{% trans %}Продолжить{% endtrans %}</button>
                     </div>
                 </div>
 
@@ -103,7 +103,7 @@
                     {#<hr>#}
                     {{ include('card/card_new_elements/new_foto.html.twig') }}
                     <div class="uk-text-center uk-margin">
-                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_prices">Продолжить</button>
+                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_prices">{% trans %}Продолжить{% endtrans %}</button>
                     </div>
                 </div>
 
@@ -111,7 +111,7 @@
                     {#<hr>#}
                     {{ include('card/card_new_elements/new_prices.html.twig') }}
                     <div class="uk-text-center uk-margin">
-                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_description">Продолжить</button>
+                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_description">{% trans %}Продолжить{% endtrans %}</button>
                     </div>
                 </div>
 
@@ -119,7 +119,7 @@
                     {#<hr>#}
                     {{ include('card/card_new_elements/new_description.html.twig') }}
                     <div class="uk-text-center uk-margin">
-                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_dops_switcher">Продолжить</button>
+                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_dops_switcher">{% trans %}Продолжить{% endtrans %}</button>
                     </div>
                 </div>
 
@@ -128,7 +128,7 @@
                     <div class="uk-width-1-1"><hr></div>
                     <div class="uk-width-1-5"></div>
                     <div class="uk-width-4-5">
-                        Можно <a id="fill_dop_button">заполнить дополнительную информацию</a>, но не обязательно
+                        {% trans %}Можно{% endtrans %} <a id="fill_dop_button">{% trans %}заполнить дополнительную информацию{% endtrans %}</a>, {% trans %}но не обязательно{% endtrans %}
                     </div>
 
 
@@ -137,33 +137,33 @@
                     </div>
 
                     <div class="uk-text-center uk-margin uk-width-1-1">
-                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="{{ not admin and not user ? 'new_password' : 'new_tariffs' }}">Продолжить</button>
+                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="{{ not admin and not user ? 'new_password' : 'new_tariffs' }}">{% trans %}Продолжить{% endtrans %}</button>
                     </div>
                 </div>
 
 
                 {% if not admin and not user %}
                     <div class="uk-hidden uk-margin-medium-top" id="new_password" uk-grid>
-                        <div class="uk-width-1-5">Регистрация <span class="red_star">*</span></div>
+                        <div class="uk-width-1-5">{% trans %}Регистрация{% endtrans %} <span class="red_star">*</span></div>
                         <div class="uk-width-4-5">
 
-                            <div class=""><input type="text" form="new_card_form"  name="r_email" class="uk-input uk-width-1-2" placeholder="Введите ваш email" ><span class="uk-text-small c_grey"> - ваш email не будет показан на сайте</span></div>
-                            <div class="uk-margin-top"><input  type="text" form="new_card_form"  name="r_header" class="uk-input uk-width-1-2" placeholder="Введите ваше имя или наименование компании" ><span class="uk-text-small c_grey"> - необходимо, чтобы клиенты могли обращаться к вам</span></div>
-                            <div class="uk-margin-top"><input  type="text" form="new_card_form"  name="r_phone" class="uk-input uk-width-1-2 phone_validate" placeholder="Введите ваш телефон" ><span class="uk-text-small c_grey"> - необходим для связи с вами</span></div>
-                            <input type="password" form="new_card_form"  name="r_password" placeholder="Придумайте пароль для входа" class="uk-input uk-width-1-3 uk-margin-top">
+                            <div class=""><input type="text" form="new_card_form"  name="r_email" class="uk-input uk-width-1-2" placeholder="Email" ><span class="uk-text-small c_grey"> - {% trans %}ваш email не будет показан на сайте{% endtrans %}</span></div>
+                            <div class="uk-margin-top"><input  type="text" form="new_card_form"  name="r_header" class="uk-input uk-width-1-2" placeholder="{% trans %}Введите название компании или ваше имя{% endtrans %}" ><span class="uk-text-small c_grey"> - {% trans %}необходимо, чтобы клиенты могли обращаться к вам{% endtrans %}</span></div>
+                            <div class="uk-margin-top"><input  type="text" form="new_card_form"  name="r_phone" class="uk-input uk-width-1-2 phone_validate" placeholder="{% trans %}Телефон{% endtrans %}" ><span class="uk-text-small c_grey"> - {% trans %}необходим для связи с вами{% endtrans %}</span></div>
+                            <input type="password" form="new_card_form"  name="r_password" placeholder="{% trans %}Пароль{% endtrans %}" class="uk-input uk-width-1-3 uk-margin-top">
                         </div>
                         <div class="uk-text-center uk-margin uk-width-1-1">
-                            <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_tariffs">Продолжить</button>
+                            <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_tariffs">{% trans %}Продолжить{% endtrans %}</button>
                         </div>
                     </div>
                 {% endif %}
 
                 <div class="uk-hidden uk-margin-medium-top" id="new_tariffs">
-                    <h3>Выберите тариф размещения</h3>
+                    <h3>{% trans %}Выберите тариф размещения{% endtrans %}</h3>
                     {{ include(':card:tariff_selector.html.twig', {'tariffId':0}) }}
                     <div class="uk-margin-top">
-                        После выбора тарифа на ваш email будет отправлено письмо. Перейдите по ссылке в письме для завершения регистрации.<br>
-                        <input type="checkbox" name="subscriber" checked> Получать новости и спецпредложения
+                        {% trans %}После выбора тарифа на ваш email будет отправлено письмо. Перейдите по ссылке в письме для завершения регистрации.{% endtrans %}<br>
+                        <input type="checkbox" name="subscriber" checked> {% trans %}Получать новости и спецпредложения{% endtrans %}
                     </div>
                 </div>
 
@@ -191,7 +191,7 @@
     {%  if random != '' %}
 
         <div class="standard_wide uk-margin-top">
-            <h3>Похожие предложения в {{ city.gde }}</h3>
+            <h3>{% trans %}Похожие предложения в{% endtrans %} {{ city.gde }}</h3>
             <div uk-grid class="uk-grid-small uk-grid-match">
                 {% for card in random %}
                     <div class="uk-width-1-6@s">
@@ -207,7 +207,7 @@
         <div class="uk-modal-dialog c_red">
             <button class="uk-modal-close-default" type="button" uk-close></button>
             <div class="uk-modal-header">
-                <h2 class="uk-modal-title c_red">Заполните поля</h2>
+                <h2 class="uk-modal-title c_red">{% trans %}Заполните поля{% endtrans %}</h2>
             </div>
             <div class="uk-modal-body" id="alert_content"></div>
         </div>

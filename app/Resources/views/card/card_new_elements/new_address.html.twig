@@ -1,13 +1,13 @@
 <div uk-grid>
     <div class="uk-width-1-5">
-        Адрес <span class="red_star">*</span>
-        <div class="help_text">Укажите адрес размещения вашего транспорта</div>
+        {% trans %}Адрес{% endtrans %} <span class="red_star">*</span>
+        <div class="help_text">{% trans %}Укажите адрес размещения вашего транспорта{% endtrans %}</div>
     </div>
     <div class="uk-width-3-5">
         <span class="expander_button" uk-toggle="target: #city_selector">{{ city.header }} <i uk-icon="icon:chevron-down"></i></span>
 
         <div class="expandable_block" id="city_selector" hidden>
-            <div class="uk-text-small">Страна</div>
+            <div class="uk-text-small">{% trans %}Страна{% endtrans %}</div>
             <select name="countryCode" id="countryCode" class="uk-select">
                 {#<option value="0">-выберите страну-</option>#}
                 {#{% for country_code, country_title in countries %}#}
@@ -15,19 +15,19 @@
                 {#{% endfor %}#}
                 {{ include( 'common/ajax_edit_options.html.twig', { 'options': countries, 'id': countryCode }) }}
             </select>
-            <div class="uk-text-small">Регион</div>
+            <div class="uk-text-small">{% trans %}Регион{% endtrans %}</div>
             <select name="regionId" id="regionId" class="uk-select">
                 {{ include( 'common/ajax_edit_options.html.twig', { 'options': regions, 'id': regionId }) }}
             </select>
-            <div class="uk-text-small">Город</div>
+            <div class="uk-text-small">{% trans %}Город{% endtrans %}</div>
             <select name="cityId" id="cityId" class="uk-select">
                 {{ include( 'common/ajax_edit_options.html.twig', { 'options': cities, 'id': cityId }) }}
             </select>
-            <div class="uk-text-small">Адрес</div>
+            <div class="uk-text-small">{% trans %}Адрес{% endtrans %}</div>
             <div>
                 <textarea name="address" class="uk-textarea"></textarea>
             </div>
-            <div class="uk-text-small" uk-toggle="target: #map_selector" id="show_map">Карта <i uk-icon="icon:chevron-down"></i></div>
+            <div class="uk-text-small" uk-toggle="target: #map_selector" id="show_map">{% trans %}Карта{% endtrans %} <i uk-icon="icon:chevron-down"></i></div>
             <div id="map_selector" hidden>
                 {% if app.session.has('admin') %}
                     <input name="coords" type="hidden" value="">
