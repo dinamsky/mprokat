@@ -24,9 +24,10 @@ class LocaleSubscriber implements EventSubscriberInterface
     {
         $request = $event->getRequest();
 
-            $request->setLocale('en');
+        if(!isset($_SERVER['LANG'])) $_SERVER['LANG'] = 'ru';
 
-        if(!isset($_SERVER['LANG'])) $_SERVER['LANG'] = 'en';
+        $request->setLocale($_SERVER['LANG']);
+
 
         $translator = new Translator('ru', new MessageSelector());
 
