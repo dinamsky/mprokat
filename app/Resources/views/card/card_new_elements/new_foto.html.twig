@@ -1,11 +1,11 @@
 <div uk-grid>
     <div class="uk-width-1-5">
-        Фотографии <span class="red_star">*</span>
+        {% trans %}Фотографии{% endtrans %} <span class="red_star">*</span>
         <div class="help_text">Выберите фотографии транспорта</div>
     </div>
     <div class="uk-width-3-5">
         <div class="foto_placeholder">
-            <input id="foto_upload" type="file" name="fotos[]" multiple> (до 5 одновременно)
+            <input id="foto_upload" type="file" name="fotos[]" multiple> ({% trans %}до 5 одновременно{% endtrans %})
             <div id="foto_list_view" uk-grid uk-sortable class="uk-grid-small"></div>
         </div>
     </div>

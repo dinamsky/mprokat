@@ -241,6 +241,7 @@
                     <div class="uk-width-1-3">
                         <div class="uk-text-small"><span class="red_star">*</span>Цвет</div>
                         <select name="colorId" class="uk-select">
+                            <option value="0" {{ 0 == card.colorId ? 'selected' : '' }}>- выберите -</option>
                             {% for color in colors %}
                                 <option value="{{ color.id }}" {{ color.id == card.colorId ? 'selected' : '' }}>{{ color.header }}</option>
                             {% endfor %}

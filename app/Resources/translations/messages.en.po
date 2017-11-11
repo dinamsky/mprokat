@@ -363,6 +363,9 @@ msgstr "Share"
 msgid "Поиск"
 msgstr "Search"
 
+msgid "Час"
+msgstr "Hour"
+
 msgid "3 дня"
 msgstr "3 day"
 
@@ -408,14 +411,168 @@ msgstr "Illegal foto"
 msgid "Грубый владелец"
 msgstr "Rude owner"
 
-msgid ""
-msgstr ""
 
-msgid ""
-msgstr ""
+# -------------------------------------------- new card -----------------------------------------
 
-msgid ""
-msgstr ""
+
+msgid "Новое объявление"
+msgstr "New card"
+
+msgid "Разместите объявление и будьте готовы принимать звонки и email-сообщения от клиентов."
+msgstr "Place card and be ready to get calls and emails from your new clients"
+
+msgid "Заполните номер телефона"
+msgstr "Type your phone number"
+
+msgid "Тип объявления"
+msgstr "Card type"
+
+msgid "Сдаете в прокат или в аренду?"
+msgstr "Rent or lease?"
+
+msgid "Продолжить"
+msgstr "Next"
+
+msgid "Адрес"
+msgstr "Address"
+
+msgid "Укажите адрес размещения вашего транспорта"
+msgstr "Type address of your vehicle"
+
+msgid "Страна"
+msgstr "Country"
+
+msgid "Регион"
+msgstr "Region"
+
+msgid "Город"
+msgstr "City"
+
+msgid "Тип транспорта"
+msgstr "Vehicle type"
+
+msgid "Выберите группу и тип транспорта"
+msgstr "Select group and type of vehicle"
+
+msgid "Группа"
+msgstr "Group"
+
+msgid "Тип"
+msgstr "Type"
+
+msgid "Марка и модель"
+msgstr "Vehicle brand and model"
+
+msgid "Выберите марку и модель транспорта"
+msgstr "Select vehicle brand and model"
+
+msgid "Если не нашли свою марку/модель - поставьте галочку и укажите требуемое"
+msgstr "Set checkbox if you don't find your vegicle brand/model"
+
+msgid "Марки нет в списке"
+msgstr "My vehicle brand not in list"
+
+msgid "впишите свою марку"
+msgstr "type your vehicle brand"
+
+msgid "Модели нет в списке"
+msgstr "My model not in list"
+
+msgid "впишите свою модель"
+msgstr "type your model"
+
+msgid "Фотографии"
+msgstr "Foto"
+
+msgid "Выберите фотографии транспорта"
+msgstr "Select vehicle foto"
+
+msgid "до 5 одновременно"
+msgstr "about 5 same time"
+
+msgid "Цены"
+msgstr "Prices"
+
+msgid "Укажите свои расценки по периодам"
+msgstr "Type your price by time periods"
+
+msgid "Одна из расценок: в час/в день обязательна!"
+msgstr "One of price is obligatory"
+
+msgid "Еще расценки"
+msgstr "More types of price"
+
+msgid "Описание"
+msgstr "Description"
+
+msgid "Подробно опишите все условия аренды/проката вашего транспорта. Не указывайте здесь свой номер телефона!"
+msgstr "Write rent/lease details of your vehicle. Don't type your phone number here!"
+
+msgid "Тут можно указать условия аренды или проката"
+msgstr "Rent or lease condition may be here"
+
+msgid "Можно"
+msgstr "You can"
+
+msgid "заполнить дополнительную информацию"
+msgstr "fill additional info"
+
+msgid "но не обязательно"
+msgstr "but is not necessary"
+
+msgid "Показать"
+msgstr "Show"
+
+msgid "Дополнительно"
+msgstr "Additional"
+
+msgid "Дополнительные параметры объявления будут участвовать в фильтрации"
+msgstr "Additional params will take part in filter"
+
+msgid "например"
+msgstr "for exapmle"
+
+msgid "ваш email не будет показан на сайте"
+msgstr "your email will not be shown in website"
+
+msgid "необходимо, чтобы клиенты могли обращаться к вам"
+msgstr "need to client can call you"
+
+msgid "необходим для связи с вами"
+msgstr "need to connect with you"
+
+msgid "Выберите тариф размещения"
+msgstr "Select placement tariff"
+
+msgid "После выбора тарифа на ваш email будет отправлено письмо. Перейдите по ссылке в письме для завершения регистрации."
+msgstr "After tariff selection we will send email to you. Click to link in email to finish sign up process."
+
+msgid "Получать новости и спецпредложения"
+msgstr "Get news and specials"
+
+msgid "Похожие предложения в"
+msgstr "Similar offers in"
+
+msgid "Заполните поля"
+msgstr "Fill fields"
+
+msgid "Если вы уже зарегистрированы - выполните"
+msgstr "If you already registered - "
+
+msgid "и продолжайте подавать объявление."
+msgstr " and continue place your card"
+
+msgid "Если вы здесь впервые - нажмите"
+msgstr "If you are new here - click"
+
+msgid "заполните свою информацию и в конце вам будет предложено зарегистрироваться."
+msgstr "fill your info and we will offer you to register at the end"
+
+msgid "вход"
+msgstr "sign in"
+
+msgid "продолжить"
+msgstr "continue"
 
 msgid ""
 msgstr ""
