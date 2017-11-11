@@ -80,7 +80,7 @@ msgid "Поиск, например: bmw"
 msgstr "Type to search: bmw, for example"
 
 msgid "Вход"
-msgstr "Login"
+msgstr "Sign in"
 
 msgid "Профиль"
 msgstr "Profile"
@@ -256,3 +256,166 @@ msgstr "crossover"
 
 msgid "ещё"
 msgstr "more"
+
+
+# -------------------------------------------- card -----------------------------------------
+
+
+msgid "Главная"
+msgstr "Mainpage"
+
+msgid "Пожаловаться"
+msgstr "Complain"
+
+msgid "День"
+msgstr "day"
+
+msgid "Карта"
+msgstr "Map"
+
+msgid "Местность"
+msgstr "Street view"
+
+msgid "Видео"
+msgstr "Video"
+
+msgid "Год выпуска"
+msgstr "Production year"
+
+msgid "Состояние"
+msgstr "Condition"
+
+msgid "Цвет"
+msgstr "Color"
+
+msgid "показать полностью"
+msgstr "show full"
+
+msgid "Характеристики"
+msgstr "Features"
+
+msgid "Собственник"
+msgstr "Owner"
+
+msgid "Написать сообщение"
+msgstr "Send message"
+
+msgid "просмотров"
+msgstr "views"
+
+msgid "лайков"
+msgstr "likes"
+
+msgid "звезд из"
+msgstr "stars from"
+
+msgid "отзывов"
+msgstr "opinions"
+
+msgid "Все объявления"
+msgstr "All cards"
+
+msgid "пользователя"
+msgstr "of user"
+
+msgid "Комментарии и отзывы"
+msgstr "Comments ans opinions"
+
+msgid "Комментарии"
+msgstr "Comments"
+
+msgid "Ваш комментарий"
+msgstr "Your comment"
+
+msgid "Отправить"
+msgstr "Send"
+
+msgid "зарегистрируйтесь"
+msgstr "sign up"
+
+msgid "чтобы написать комментарий"
+msgstr "to type comment"
+
+msgid "Отзывы"
+msgstr "Opinions"
+
+msgid "Ваш отзыв"
+msgstr "Your opinion"
+
+msgid "чтобы оставить отзыв"
+msgstr "to send opinion"
+
+msgid "Разместить еще объявление"
+msgstr "Place one more card"
+
+msgid "Редактировать объявление"
+msgstr "Edit card"
+
+msgid "Похожие объявления"
+msgstr "Similar cards"
+
+msgid "Показать телефон"
+msgstr "Show phone"
+
+msgid "Поделиться"
+msgstr "Share"
+
+msgid "Поиск"
+msgstr "Search"
+
+msgid "3 дня"
+msgstr "3 day"
+
+msgid "Неделя"
+msgstr "week"
+
+msgid "Месяц"
+msgstr "month"
+
+msgid "Ориентировочная"
+msgstr "indicative"
+
+msgid "Сообщение пользователю"
+msgstr "Message for user"
+
+msgid "Имя"
+msgstr "Name"
+
+msgid "Телефон"
+msgstr "Phone"
+
+msgid "Сообщение"
+msgstr "Message"
+
+msgid "Не забудьте сообщить владельцу, что звоните с сайта Мультипрокат и спросить скидку!"
+msgstr "Don't forget to message for owner: 'I am from mix.rent and I need discount!'"
+
+msgid "Расскажи всем!"
+msgstr "Share for all!"
+
+msgid "Жалоба"
+msgstr "Complain"
+
+msgid "Телефон не отвечает"
+msgstr "Phone don't answer"
+
+msgid "Объявление больше не актуально"
+msgstr "Card is not actual more"
+
+msgid "Ворованные фото"
+msgstr "Illegal foto"
+
+msgid "Грубый владелец"
+msgstr "Rude owner"
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
