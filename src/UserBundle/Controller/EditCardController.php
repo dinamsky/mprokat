@@ -165,6 +165,7 @@ class EditCardController extends Controller
             'tariffs' => $tariffs,
             'popular_city' => $popular_city,
             'generalTypes' => $generalTypes,
+            'lang' => $_SERVER['LANG']
         ]);
     }
 

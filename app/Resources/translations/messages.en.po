@@ -1,72 +1,43 @@
-msgid ""
-msgstr ""
-"Project-Id-Version: multiprokat\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-06 18:37+0500\n"
-"PO-Revision-Date: 2017-11-06 19:01+0500\n"
-"Last-Translator: Timur info\n"
-"Language-Team: English\n"
-"Language: en\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Loco https://localise.biz\n"
-"X-Loco-Source-Locale: ru-RU\n"
-"X-Loco-Project-Id: 33886\n"
-"X-Loco-Api-Version: 1.0.18 20171009-1"
-
-#: loco:5a00672f820ee9d6368b4567
 msgid "Сдать"
 msgstr "Rent out"
 
-#: loco:5a00674a820ee9cc368b4567
 msgid "Лучшие предложения"
 msgstr "Best offers"
 
-#: loco:5a006761820ee9cb368b4567
 msgid "Разместить объявление в ТОП"
 msgstr "Move card to TOP"
 
-#: loco:5a006777820ee9d6368b4569
 msgid "Большой выбор транспорта в аренду"
 msgstr "Wide choise for rent"
 
 msgid "Найти"
 msgstr "Find"
 
-#: loco:5a006785820ee9e1368b4567
 msgid "еще категории"
 msgstr "more categories"
 
-#: loco:5a006792820ee9d7368b4567
 msgid "Объявлений"
 msgstr "Cards"
 
-#: loco:5a00679e820ee9d6368b456b
 msgid "Просмотров объявлений"
 msgstr "Views"
 
-#: loco:5a0067a6820ee9cd368b4567
 msgid "Городов"
 msgstr "Cities"
 
-#: loco:5a0067ae820ee9cb368b4569
 msgid "Категорий"
 msgstr "Categories"
 
 
 # -------------------------------------------- footer -----------------------------------------
 
-#: loco:5a0067d0820ee9a6368b4567
+
 msgid "Категории"
 msgstr "Categories"
 
-#: loco:5a0067df820ee9d7368b4569
 msgid "Новые на сайте"
 msgstr "New on website"
 
-#: loco:5a0067e9820ee9bb368b4567
 msgid "Информация"
 msgstr "Information"
 
@@ -104,9 +75,6 @@ msgid "Конфиденциальность"
 msgstr "Confidential"
 
 # -------------------------------------------- header -----------------------------------------
-
-msgid "Сдать"
-msgstr "Rent out"
 
 msgid "Поиск, например: bmw"
 msgstr "Type to search: bmw, for example"
@@ -176,6 +144,7 @@ msgstr "to place your card"
 
 msgid "Выберите пакет 'Премиум', чтобы попасть в ТОП"
 msgstr "Choose 'Premium' to be in TOP"
+
 
 # -------------------------------------------- catalog -----------------------------------------
 
@@ -287,15 +256,3 @@ msgstr "crossover"
 
 msgid "ещё"
 msgstr "more"
-
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""

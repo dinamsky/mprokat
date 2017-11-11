@@ -29,10 +29,11 @@ class LocaleSubscriber implements EventSubscriberInterface
         $request->setLocale($_SERVER['LANG']);
 
 
-        $translator = new Translator('ru', new MessageSelector());
+            $translator = new Translator('en', new MessageSelector());
 
-        $translator->addLoader('pofile', new PoFileLoader());
-        $translator->addResource('pofile', 'messages.en.po', 'en');
+            $translator->addLoader('pofile', new PoFileLoader());
+            $translator->addResource('pofile', 'messages.en.po', 'en');
+            $translator->addResource('pofile', 'messages.ru.po', 'ru');
 
     }
 
