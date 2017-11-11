@@ -63,6 +63,7 @@ class ProfileController extends Controller
                 'in_city' => $in_city,
                 'cityId' => $city->getId(),
                 'generalTypes' => $generalTypes,
+                'lang' => $_SERVER['LANG']
             ]);
         } else return new Response("",404);
     }
@@ -93,6 +94,7 @@ class ProfileController extends Controller
             'in_city' => $in_city,
             'cityId' => $city->getId(),
             'generalTypes' => $generalTypes,
+            'lang' => $_SERVER['LANG']
         ]);
         else return new Response("",404);
     }
@@ -137,6 +139,7 @@ class ProfileController extends Controller
                 'in_city' => $in_city,
                 'cityId' => $city->getId(),
                 'generalTypes' => $generalTypes,
+                'lang' => $_SERVER['LANG']
             ]);
         }
         else return new Response("",404);
@@ -436,6 +439,7 @@ class ProfileController extends Controller
                 'mark' => $mark_arr_sorted[1][0]['mark'],
                 'model' => $mark_arr_sorted[1][0]['models'][0],
                 'generalTypes' => $generalTypes,
+                'lang' => $_SERVER['LANG']
             ]);
         } else return new Response("",404);
     }

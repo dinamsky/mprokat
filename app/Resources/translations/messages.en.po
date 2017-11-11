@@ -1,65 +1,258 @@
-msgid ""
-msgstr ""
-"Project-Id-Version: multiprokat\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-06 18:37+0500\n"
-"PO-Revision-Date: 2017-11-06 19:01+0500\n"
-"Last-Translator: Timur info\n"
-"Language-Team: English\n"
-"Language: en\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Loco https://localise.biz\n"
-"X-Loco-Source-Locale: ru-RU\n"
-"X-Loco-Project-Id: 33886\n"
-"X-Loco-Api-Version: 1.0.18 20171009-1"
-
-#: loco:5a00672f820ee9d6368b4567
 msgid "Сдать"
 msgstr "Rent out"
 
-#: loco:5a00674a820ee9cc368b4567
 msgid "Лучшие предложения"
 msgstr "Best offers"
 
-#: loco:5a006761820ee9cb368b4567
 msgid "Разместить объявление в ТОП"
 msgstr "Move card to TOP"
 
-#: loco:5a006777820ee9d6368b4569
 msgid "Большой выбор транспорта в аренду"
 msgstr "Wide choise for rent"
 
-#: loco:5a006785820ee9e1368b4567
+msgid "Найти"
+msgstr "Find"
+
 msgid "еще категории"
 msgstr "more categories"
 
-#: loco:5a006792820ee9d7368b4567
 msgid "Объявлений"
 msgstr "Cards"
 
-#: loco:5a00679e820ee9d6368b456b
-msgid "Просмотров"
+msgid "Просмотров объявлений"
 msgstr "Views"
 
-#: loco:5a0067a6820ee9cd368b4567
 msgid "Городов"
 msgstr "Cities"
 
-#: loco:5a0067ae820ee9cb368b4569
 msgid "Категорий"
 msgstr "Categories"
 
-#: loco:5a0067d0820ee9a6368b4567
+
+# -------------------------------------------- footer -----------------------------------------
+
+
 msgid "Категории"
 msgstr "Categories"
 
-#: loco:5a0067df820ee9d7368b4569
 msgid "Новые на сайте"
 msgstr "New on website"
 
-#: loco:5a0067e9820ee9bb368b4567
 msgid "Информация"
 msgstr "Information"
+
+msgid "Легковые автомобили"
+msgstr "Cars"
+
+msgid "Свадебные авто"
+msgstr "Wedding cars"
+
+msgid "Вертолеты"
+msgstr "Helicopters"
+
+msgid "Снегоходы"
+msgstr "Snowmobiles"
+
+msgid "Грузовые автомобили"
+msgstr "Trucks"
+
+msgid "Новости"
+msgstr "News"
+
+msgid "Контакты"
+msgstr "Contacts"
+
+msgid "Сдать свой автомобиль"
+msgstr "Rent out your car"
+
+msgid "Сервис аренды автотранспорта"
+msgstr "Vehicle rent service"
+
+msgid "Условия и положения"
+msgstr "Terms and conditions"
+
+msgid "Конфиденциальность"
+msgstr "Confidential"
+
+# -------------------------------------------- header -----------------------------------------
+
+msgid "Поиск, например: bmw"
+msgstr "Type to search: bmw, for example"
+
+msgid "Вход"
+msgstr "Login"
+
+msgid "Профиль"
+msgstr "Profile"
+
+msgid "Объявления"
+msgstr "My cards"
+
+msgid "Выход"
+msgstr "Logout"
+
+msgid "Пароль"
+msgstr "Password"
+
+msgid "Войти"
+msgstr "Login"
+
+msgid "Забыли пароль?"
+msgstr "Forgot password?"
+
+msgid "Нет аккаунта?"
+msgstr "Have no account?"
+
+msgid "Регистрация"
+msgstr "Signup"
+
+msgid "Введите название компании или ваше имя"
+msgstr "Type your name or company name"
+
+msgid "Зарегистрироваться"
+msgstr "Signup"
+
+msgid "Смена пароля"
+msgstr "Change password"
+
+msgid "Введите email использованный при регистрации"
+msgstr "Type your email, used in sign up form"
+
+msgid "Придумайте новый пароль"
+msgstr "Type your new password"
+
+msgid "Повторите новый пароль"
+msgstr "Repeat your new password"
+
+msgid "Сменить пароль"
+msgstr "Change password"
+
+msgid "Что дальше?"
+msgstr "What next?"
+
+msgid "Войдите"
+msgstr "Login"
+
+msgid "или пройдите"
+msgstr "or pass"
+
+msgid "быструю регистрацию"
+msgstr "fast signup"
+
+msgid "чтобы разместить ваше объявление"
+msgstr "to place your card"
+
+msgid "Выберите пакет 'Премиум', чтобы попасть в ТОП"
+msgstr "Choose 'Premium' to be in TOP"
+
+
+# -------------------------------------------- catalog -----------------------------------------
+
+
+msgid "Найдено"
+msgstr "Founded"
+
+msgid "объявлений"
+msgstr "cards"
+
+msgid "Объявлений не найдено"
+msgstr "Cards not found"
+
+msgid "Любой кузов"
+msgstr "Any bodytype"
+
+msgid "Цена"
+msgstr "Price"
+
+msgid "дешевле"
+msgstr "cheaper"
+
+msgid "дороже"
+msgstr "expensive"
+
+msgid "Марка"
+msgstr "Vehicle brand"
+
+msgid "выбрать"
+msgstr "select"
+
+msgid "Выберите тип транспорта"
+msgstr "Select vehicle type"
+
+msgid "Любой тип транспорта"
+msgstr "Any type"
+
+msgid "Тип транспорта"
+msgstr "Vehicle type"
+
+msgid "Любая марка"
+msgstr "Any vehicle brand"
+
+msgid "Выберите марку"
+msgstr "Select vehicle brand"
+
+msgid "или начните вводить наименование марки"
+msgstr "or start typing brand of vehicle"
+
+msgid "показать все марки"
+msgstr "show all"
+
+msgid "Модель"
+msgstr "Vehicle model"
+
+msgid "Выберите Модель"
+msgstr "Select Vehicle model"
+
+msgid "Любая модель"
+msgstr "Any vehicle model"
+
+msgid "Прокат и аренда"
+msgstr "Rent and lease"
+
+msgid "Прокат"
+msgstr "Rent"
+
+msgid "Аренда"
+msgstr "Lease"
+
+msgid "день"
+msgstr "day"
+
+msgid "час"
+msgstr "hour"
+
+msgid "Пока никто не разместил объявление в этом городе и категории."
+msgstr "Nobody place card in this category and city."
+
+msgid "Будь первым - добавь объявления и получай клиентов!"
+msgstr "Be first - add your card and get profit!"
+
+msgid "Разместить объявление!"
+msgstr "Place card!"
+
+msgid "На странице"
+msgstr "On page"
+
+msgid "объявлений"
+msgstr "cards"
+
+msgid "Показать"
+msgstr "Show"
+
+msgid "или"
+msgstr "or"
+
+msgid "Кузов"
+msgstr "Vehicle bodytype"
+
+msgid "седан"
+msgstr "sedan"
+
+msgid "хетчбек"
+msgstr "hatchback"
+
+msgid "кроссовер"
+msgstr "crossover"
+
+msgid "ещё"
+msgstr "more"
