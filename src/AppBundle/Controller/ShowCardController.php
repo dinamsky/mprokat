@@ -305,7 +305,8 @@ class ShowCardController extends Controller
             'total_opinions' => $total_opinions,
             'in_city' => $in_city,
             'bodyType' => $bodyType,
-            'page_type' => 'card'
+            'page_type' => 'card',
+            'lang' => $_SERVER['LANG']
 
         ]);
     }

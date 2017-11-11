@@ -4,15 +4,15 @@
 
 
         <div uk-drop="offset: 0" class="user_top_drop bg_blue" style="height: 40px">
-            <a href="/profile">Профиль</a><br>
-            <a href="/user/cards">Объявления</a>
+            <a href="/profile">{% trans %}Профиль{% endtrans %}</a><br>
+            <a href="/user/cards">{% trans %}Объявления{% endtrans %}</a>
         </div>
         {#<a href="/userLogout" class="uk-position-relative right_quit"><span><i uk-icon="icon:sign-out"></i> Выход</span></a>#}
     {% elseif app.session.get('admin').email is defined %}
         <a href="/admin"><span uk-icon="icon:user"></span> {{ app.session.get('admin').email }}</a>
-        <a href="/adminLogout" class=""><span><i uk-icon="icon:sign-out"></i> Выход</span></a>
+        <a href="/adminLogout" class=""><span><i uk-icon="icon:sign-out"></i> {% trans %}Выход{% endtrans %}</span></a>
     {% else %}
-        <div  uk-toggle="target: #sign_in" class="top_user_actions_button"><span uk-icon="icon:sign-in"></span> Вход</div>
+        <div  uk-toggle="target: #sign_in" class="top_user_actions_button"><span uk-icon="icon:sign-in"></span> {% trans %}Вход{% endtrans %}</div>
         {#<div  uk-toggle="target: #sign_up" class="top_user_actions_button"><span uk-icon="icon:lock"></span>Регистрация</div>#}
     {% endif %}
 </div>

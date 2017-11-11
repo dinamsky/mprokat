@@ -200,7 +200,8 @@ class NewCardController extends Controller
                 'popular_city' => $popular_city,
                 'phone' => $phone,
                 'gt_url' => $gt_url,
-                'random' => $random
+                'random' => $random,
+                'lang' => $_SERVER['LANG']
             ]);
 
             return $response;

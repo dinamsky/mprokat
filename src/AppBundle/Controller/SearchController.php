@@ -48,7 +48,7 @@ class SearchController extends Controller
         if (isset($get['view'])) $view = $get['view'];
 
 
-
+        $_t = $this->get('translator');
 
         $is_body = false;
         $city_condition = '';
@@ -221,7 +221,7 @@ class SearchController extends Controller
 
             $mark_condition = ' AND c.modelId = '.$model->getId();
         } else {
-            $model = array('groupName' => 'cars','id' => 0,'header'=>'Любая модель');
+            $model = array('groupName' => 'cars','id' => 0,'header'=>$_t->trans('Любая модель'));
             if (!$models) $models = array();
         }
 
@@ -288,15 +288,15 @@ class SearchController extends Controller
         }
 
         $seo = [];
-        if ($p_service == 'all') $seo['service'] = 'Прокат и аренда';
-        if ($p_service == 'prokat') $seo['service'] = 'Прокат';
-        if ($p_service == 'arenda') $seo['service'] = 'Аренда';
+        if ($p_service == 'all') $seo['service'] = $_t->trans('Прокат и аренда');
+        if ($p_service == 'prokat') $seo['service'] = $_t->trans('Прокат');
+        if ($p_service == 'arenda') $seo['service'] = $_t->trans('Аренда');
         if (!$general) {
-            $seo['type']['singular'] = 'транспорта';
-            $seo['type']['plural'] = 'транспорта';
+            $seo['type']['singular'] = $_t->trans('транспорта');
+            $seo['type']['plural'] = $_t->trans('транспорта');
         } else {
-            $seo['type']['singular'] = $general->getChegoSingular();
-            $seo['type']['plural'] = $general->getChegoPlural();
+            if ($_SERVER['LANG'] == 'ru') $seo['type']['singular'] = $general->getChegoSingular(); else $seo['type']['singular'] = $general->getUrl();
+            if ($_SERVER['LANG'] == 'ru') $seo['type']['plural'] = $general->getChegoPlural(); else $seo['type']['plural'] = $general->getUrl();
         }
         if (!is_array($mark)) $seo['mark'] = $mark->getHeader();
         else $seo['mark'] = '';
@@ -402,7 +402,8 @@ class SearchController extends Controller
             'in_city' => $in_city,
             'is_body' => $is_body,
 
-            'page_type' => 'catalog'
+            'page_type' => 'catalog',
+            'lang' => $_SERVER['LANG']
 
         ]);
     }

@@ -27,18 +27,18 @@
 
     </div>
     <div class="uk-text-center uk-margin-top">
-        На странице
+        {% trans %}На странице{% endtrans %}
         <select name="onpage" id="onpage" class="uk-select" form="searchForm" style="width:50px">
             <option value="12" {{ 12 == onpage ? 'selected' : '' }}>12</option>
             <option value="24" {{ 24 == onpage ? 'selected' : '' }}>24</option>
             <option value="48" {{ 48 == onpage ? 'selected' : '' }}>48</option>
         </select>
-        объявлений
+        {% trans %}объявлений{% endtrans %}
     </div>
     <div class="uk-text-center uk-margin-top">
-        Показать
+        {% trans %}Показать{% endtrans %}
         <button class="view_select {{ view == 'grid_view' ? 'uk-button-primary' : '' }}" type="button" value="grid_view" uk-icon="icon:grid"></button>
-        или
+        {% trans %}или{% endtrans %}
         <button class="view_select {{ view == 'list_view' ? 'uk-button-primary' : '' }}" type="button" value="list_view" uk-icon="icon:list"></button>
     </div>
 {% endif %}
