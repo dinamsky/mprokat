@@ -6,5 +6,7 @@
     >
         {% if lang == 'en' and option.url is defined %}{{ option.url }}{% endif %}
         {% if lang == 'en' and option.url is not defined %}{{ option.header }}{% endif %}
+        {% if lang == 'ru' and option.url is defined %}{{ option.url }}{% endif %}
+        {% if lang == 'ru' and option.url is not defined %}{{ option.header }}{% endif %}
     </option>
 {% endfor %}
