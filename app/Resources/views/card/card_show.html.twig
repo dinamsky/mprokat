@@ -84,20 +84,20 @@
 
                 <div class=" uk-margin-bottom">
                     <div class="standard_wide breadcrumbs">
-                        <a href="/">Главная</a>
+                        <a href="/">{% trans %}Главная{% endtrans %}</a>
                         <i uk-icon="icon:chevron-right"></i>
                         <a href="/rent/{{ card.city.url }}">{{ card.city.header }}</a>
                         <i uk-icon="icon:chevron-right"></i>
-                        <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}">{{ card.generalType.header }}</a>
+                        <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}">{{ lang == 'ru' ? card.generalType.header : card.generalType.url }}</a>
 
                         {% if bodyType %}
                             <i uk-icon="icon:chevron-right"></i>
-                            <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ bodyType.url }}">{{ bodyType.header }}</a>
+                            <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ bodyType.url }}">{{ lang == 'ru' ? bodyType.header : bodyType.url }}</a>
                         {% endif %}
 
                         {% if card.modelId != 20991 %}
                             <i uk-icon="icon:chevron-right"></i>
-                            <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ card.markModel.mark.header }}">{{ card.serviceTypeId == 1 ? 'Прокат' : 'Аренда' }} {{ card.markModel.mark.header }} в {{ card.city.gde }}</a>
+                            <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ card.markModel.mark.header }}">{{ card.serviceTypeId == 1 ? 'Прокат'|trans : 'Аренда'|trans }} {{ card.markModel.mark.header }} в {{ card.city.gde }}</a>
                             <i uk-icon="icon:chevron-right"></i>
                             <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ card.markModel.mark.header }}/{{ card.markModel.header }}">{{ card.markModel.mark.header }} {{ card.markModel.header }}</a>
                         {% endif %}
@@ -133,7 +133,7 @@
 
                 {% if not is_mobile() %}
                 <div class="uk-text-right">
-                    <button type="button" class="uk-button uk-button-default" uk-toggle="target: #user_abuse">Пожаловаться</button>
+                    <button type="button" class="uk-button uk-button-default" uk-toggle="target: #user_abuse">{% trans %}Пожаловаться{% endtrans %}</button>
                 </div>
                 {% endif %}
 
@@ -142,22 +142,22 @@
                     {% for price in card.getCardPrices %}
                         <div class="uk-text-center {{ price.priceId == 2 ? 'price_highlighted' : ''}}">
                             <span class="price_value">{{ price.value|number_format(0,'.','<span class="thousand_separator"></span>')|raw }}</span>
-                            <span class="price_descriptor uk-text-truncate"> ₽ / {{ price.getPrice.header }}</span>
+                            <span class="price_descriptor uk-text-truncate"> ₽ / {{ price.getPrice.header|trans }}</span>
                         </div>
                     {% endfor %}
                 </div>
                 {% endif %}
 
                 <ul id="tt" uk-tab>
-                    <li><a href="#">Информация</a></li>
+                    <li><a href="#">{% trans %}Информация{% endtrans %}</a></li>
                     {% if card.coords != NULL and card.coords != ''%}
-                    <li><a href="#">Карта</a></li>
+                    <li><a href="#">{% trans %}Карта{% endtrans %}</a></li>
                     {% endif %}
                     {% if streetView %}
-                        <li><a href="#">Местность</a></li>
+                        <li><a href="#">{% trans %}Местность{% endtrans %}</a></li>
                     {% endif %}
                     {% if video %}
-                        <li><a href="#">Видео</a></li>
+                        <li><a href="#">{% trans %}Видео{% endtrans %}</a></li>
                     {% endif %}
                 </ul>
 
@@ -166,11 +166,11 @@
                         <div uk-grid>
                             <div class="uk-width-1-2@s">
 
-                                {% if card.prodYear != 0 %}<div>Год выпуска: {{ card.prodYear }}</div>{% endif %}
+                                {% if card.prodYear != 0 %}<div>{% trans %}Год выпуска{% endtrans %}: {{ card.prodYear }}</div>{% endif %}
 
-                                <div>Состояние: {{ card.getCondition.header }}</div>
+                                <div>{% trans %}Состояние{% endtrans %}: {{ card.getCondition.header }}</div>
 
-                                <div>{{ card.getColor != null ? 'Цвет: '~card.getColor.header }}</div>
+                                <div>{{ card.getColor != null ? 'Цвет'|trans~': '~card.getColor.header }}</div>
 
 
                                 {% for subfield in sub_fields if subfield.value is not null %}
@@ -191,7 +191,7 @@
                             <div class="uk-width-1-2@s">
                                 <div id="card_content">{{ card.content|raw }}</div>
                                 {% if card.content|length>300 %}
-                                <div class="uk-text-small uk-text-center uk-margin-top show_full_content cursor-pointer">показать полностью</div>
+                                <div class="uk-text-small uk-text-center uk-margin-top show_full_content cursor-pointer">{% trans %}показать полностью{% endtrans %}</div>
                                 {% endif %}
                             </div>
                         </div>
@@ -230,7 +230,7 @@
 
 
                 {% if card.getCardFeatures is not empty%}
-                    <h2 class="pf_style_header"><span>Характеристики</span>{{ is_mobile() ? '<a class="toggle_chars" uk-toggle="target: #car_chars">Развернуть</a>' }}</h2>
+                    <h2 class="pf_style_header"><span>{% trans %}Характеристики{% endtrans %}</span>{{ is_mobile() ? '<a class="toggle_chars" uk-toggle="target: #car_chars">Развернуть</a>' }}</h2>
 
                     <div id="car_chars" class="card_blanc" {{ is_mobile() ? 'hidden' }}>
                         <div uk-grid>
@@ -263,7 +263,7 @@
                         {% endif %}
 
                         <div class="uk-width-expand">
-                            <div class="uk-text-small">Собственник</div>
+                            <div class="uk-text-small">{% trans %}Собственник{% endtrans %}</div>
                             <h3 class="uk-margin-remove uk-text-truncate" style="line-height: 31px;"><a href="/user/{{ card.user.id }}" class="uk-text-truncate">{{ card.user.header }}</a></h3>
                         </div>
                     </div>
@@ -285,18 +285,18 @@
                 </div>
 
                 <div class="uk-margin-bottom card_blanc">
-                    <div class="cursor-pointer uk-text-center" uk-toggle="target: #user_message_form"><i class="fa fa-commenting"></i> Написать сообщение</div>
+                    <div class="cursor-pointer uk-text-center" uk-toggle="target: #user_message_form"><i class="fa fa-commenting"></i> {% trans %}Написать сообщение{% endtrans %}</div>
                 </div>
 
                 <div class="uk-margin-bottom card_blanc">
-                    <div><i class="fa fa-eye c_green"></i> {{ card.views }} <span class="uk-text-small c_grey">просмотров</span></div>
-                    <div><i class="fa fa-heart c_red"></i> <span id="card_likes">{{ card.likes }}</span> <span class="uk-text-small c_grey">лайков</span></div>
+                    <div><i class="fa fa-eye c_green"></i> {{ card.views }} <span class="uk-text-small c_grey">{% trans %}просмотров{% endtrans %}</span></div>
+                    <div><i class="fa fa-heart c_red"></i> <span id="card_likes">{{ card.likes }}</span> <span class="uk-text-small c_grey">{% trans %}лайков{% endtrans %}</span></div>
                     <div>
-                        <i class="fa fa-star c_gold"></i> {{ opinions }}/5 <span class="uk-text-small c_grey">звезд из</span> {{ total_opinions }}
-                        <span class="uk-text-small c_grey">отзывов</span>
+                        <i class="fa fa-star c_gold"></i> {{ opinions }}/5 <span class="uk-text-small c_grey">{% trans %}звезд из{% endtrans %}</span> {{ total_opinions }}
+                        <span class="uk-text-small c_grey">{% trans %}отзывов{% endtrans %}</span>
                     </div>
                     <hr>
-                    <div class="uk-text-center"><a href="/user/{{ card.user.id }}">Все объявления<br>пользователя ({{ card.user.cards|length }})</a></div>
+                    <div class="uk-text-center"><a href="/user/{{ card.user.id }}">{% trans %}Все объявления{% endtrans %}<br>{% trans %}пользователя{% endtrans %} ({{ card.user.cards|length }})</a></div>
 
                 </div>
                 {% endif %}
@@ -308,21 +308,21 @@
 
 
                     {% if is_mobile() %}
-                        <button class="uk-button uk-button-default uk-width-1-1" uk-toggle="target: #coms_opins">Комментарии и отзывы</button>
+                        <button class="uk-button uk-button-default uk-width-1-1" uk-toggle="target: #coms_opins">{% trans %}Комментарии и отзывы{% endtrans %}</button>
                     {% endif %}
 
                     <div uk-grid class="uk-margin-top" {{ is_mobile() ? 'id="coms_opins" hidden' }}>
                         <div class="uk-width-1-2@s">
-                            <h2 class="pf_style_header"><span>Комментарии</span></h2>
+                            <h2 class="pf_style_header"><span>{% trans %}Комментарии{% endtrans %}</span></h2>
 
                             <div class="card_blanc">
                                 {% if app.session.has('logged_user') %}
                                     <form action="/userAddComment" method="POST">
-                                        <textarea name="comment" class="uk-textarea" placeholder="Ваш комментарий" required></textarea>
+                                        <textarea name="comment" class="uk-textarea" placeholder="{% trans %}Ваш комментарий{% endtrans %}" required></textarea>
                                         <input type="hidden" name="user_id" value="{{ app.session.get('logged_user').id }}">
                                         <input type="hidden" name="card_id" value="{{ card.id }}">
                                         <input type="hidden" name="return" value="{{ app.request.requestUri }}">
-                                        <button class="uk-button uk-button-primary uk-margin-top">Отправить</button>
+                                        <button class="uk-button uk-button-primary uk-margin-top">{% trans %}Отправить{% endtrans %}</button>
                                     </form>
 
                                     <div class="uk-margin-top">
@@ -336,13 +336,13 @@
                                     </div>
                                 {% else %}
                                     <div>
-                                        <a uk-toggle="target: #sign_in">Войдите</a> или <a uk-toggle="target: #sign_up">зарегистрируйтесь</a>, чтобы написать комментарий.
+                                        <a uk-toggle="target: #sign_in">{% trans %}Войдите{% endtrans %}</a> {% trans %}или{% endtrans %} <a uk-toggle="target: #sign_up">{% trans %}зарегистрируйтесь{% endtrans %}</a>, {% trans %}чтобы написать комментарий{% endtrans %}.
                                     </div>
                                 {% endif %}
                             </div>
                         </div>
                         <div class="uk-width-1-2@s">
-                            <h2 class="pf_style_header"><span>Отзывы</span></h2>
+                            <h2 class="pf_style_header"><span>{% trans %}Отзывы{% endtrans %}</span></h2>
 
                             <div class="card_blanc">
                                 {% if app.session.has('logged_user') %}
@@ -353,12 +353,12 @@
                                             {% endfor %}
                                             <span id="stars">1</span>
                                         </div>
-                                        <textarea name="content" class="uk-textarea" placeholder="Ваш отзыв" required></textarea>
+                                        <textarea name="content" class="uk-textarea" placeholder="{% trans %}Ваш отзыв{% endtrans %}" required></textarea>
                                         <input type="hidden" name="stars" value="1">
                                         <input type="hidden" name="user_id" value="{{ app.session.get('logged_user').id }}">
                                         <input type="hidden" name="card_id" value="{{ card.id }}">
                                         <input type="hidden" name="return" value="{{ app.request.requestUri }}">
-                                        <button class="uk-button uk-button-primary uk-margin-top">Отправить</button>
+                                        <button class="uk-button uk-button-primary uk-margin-top">{% trans %}Отправить{% endtrans %}</button>
                                     </form>
                                     <div class="uk-margin-top">
                                         {% for opinion in card.opinions %}
@@ -373,7 +373,7 @@
 
                                 {% else %}
                                     <div>
-                                        <a uk-toggle="target: #sign_in">Войдите</a> или <a uk-toggle="target: #sign_up">зарегистрируйтесь</a>, чтобы оставить отзыв.
+                                        <a uk-toggle="target: #sign_in">{% trans %}Войдите{% endtrans %}</a> {% trans %}или{% endtrans %} <a uk-toggle="target: #sign_up">{% trans %}зарегистрируйтесь{% endtrans %}</a>, {% trans %}чтобы оставить отзыв{% endtrans %}.
                                     </div>
                                 {% endif %}
                             </div>
@@ -383,17 +383,17 @@
 
 
                 {% else %}
-                    <a href="/card/new" class="uk-button uk-button-success uk-width-1-1 uk-margin-top">Разместить еще объявление</a>
+                    <a href="/card/new" class="uk-button uk-button-success uk-width-1-1 uk-margin-top">{% trans %}Разместить еще объявление{% endtrans %}</a>
                 {% endif %}
 
 
                 {% if app.session.has('admin') or ( app.session.has('logged_user') and card.user.id == app.session.get('logged_user').id ) %}
                     <hr>
-                    <a class="uk-button uk-button-primary" href="/user/edit/card/{{ card.id }}">Редактировать объявление</a>
+                    <a class="uk-button uk-button-primary" href="/user/edit/card/{{ card.id }}">{% trans %}Редактировать объявление{% endtrans %}</a>
                 {% endif %}
 
 
-                <h2 class="pf_style_header"><span>Похожие объявления</span></h2>
+                <h2 class="pf_style_header"><span>{% trans %}Похожие объявления{% endtrans %}</span></h2>
                 <div uk-grid class="uk-grid-small uk-grid-match">
                     {% for card in similar %}
                         <div class="uk-width-1-3@s">
@@ -417,7 +417,7 @@
                         <div class="phone_block uk-width-1-1">
                             {% if app.session.get('phone')[card.user.id] is not defined %}
                                 <div class="hidden_phone bg_blue show_phone uk-text-center c_white" data-card_id="{{ card.id }}" data-profile="0">
-                                    <div class="uk-text-center">Показать телефон</div>
+                                    <div class="uk-text-center">{% trans %}Показать телефон{% endtrans %}</div>
                                     <i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue|slice(0,5) }} XXX-XX-XX{% endfor %}
                                 </div>
 
@@ -436,7 +436,7 @@
                     {% for price in card.getCardPrices %}
                         <div class="uk-text-center {{ price.priceId == 2 ? 'price_highlighted' : ''}}">
                             <span class="price_value">{{ price.value|number_format(0,'.','<span class="thousand_separator"></span>')|raw }}</span>
-                            <span class="price_descriptor uk-text-truncate"> ₽ / {{ price.getPrice.header }}</span>
+                            <span class="price_descriptor uk-text-truncate"> ₽ / {{ price.getPrice.header|trans }}</span>
                         </div>
                     {% endfor %}
                 </div>
@@ -460,7 +460,7 @@
                         {% endif %}
 
                         <div class="uk-width-expand">
-                            <div class="uk-text-small">Собственник</div>
+                            <div class="uk-text-small">{% trans %}Собственник{% endtrans %}</div>
                             <h3 class="uk-margin-remove uk-text-truncate" style="line-height: 31px;"><a href="/user/{{ card.user.id }}" class="uk-text-truncate">{{ card.user.header }}</a></h3>
                         </div>
                     </div>
@@ -482,18 +482,18 @@
                 </div>
 
                 <div class="uk-margin-bottom card_blanc">
-                    <div class="cursor-pointer uk-text-center" uk-toggle="target: #user_message_form"><i class="fa fa-commenting"></i> Написать сообщение</div>
+                    <div class="cursor-pointer uk-text-center" uk-toggle="target: #user_message_form"><i class="fa fa-commenting"></i> {% trans %}Написать сообщение{% endtrans %}</div>
                 </div>
 
                 <div class="uk-margin-bottom card_blanc">
-                    <div><i class="fa fa-eye c_green"></i> {{ card.views }} <span class="uk-text-small c_grey">просмотров</span></div>
-                    <div><i class="fa fa-heart c_red"></i> <span id="card_likes">{{ card.likes }}</span> <span class="uk-text-small c_grey">лайков</span></div>
+                    <div><i class="fa fa-eye c_green"></i> {{ card.views }} <span class="uk-text-small c_grey">{% trans %}просмотров{% endtrans %}</span></div>
+                    <div><i class="fa fa-heart c_red"></i> <span id="card_likes">{{ card.likes }}</span> <span class="uk-text-small c_grey">{% trans %}лайков{% endtrans %}</span></div>
                     <div>
-                        <i class="fa fa-star c_gold"></i> {{ opinions }}/5 <span class="uk-text-small c_grey">звезд из</span> {{ total_opinions }}
-                        <span class="uk-text-small c_grey">отзывов</span>
+                        <i class="fa fa-star c_gold"></i> {{ opinions }}/5 <span class="uk-text-small c_grey">{% trans %}звезд из{% endtrans %}</span> {{ total_opinions }}
+                        <span class="uk-text-small c_grey">{% trans %}отзывов{% endtrans %}</span>
                     </div>
                     <hr>
-                    <div class="uk-text-center"><a href="/user/{{ card.user.id }}">Все объявления<br>пользователя ({{ card.user.cards|length }})</a></div>
+                    <div class="uk-text-center"><a href="/user/{{ card.user.id }}">{% trans %}Все объявления{% endtrans %}<br>{% trans %}пользователя{% endtrans %} ({{ card.user.cards|length }})</a></div>
 
                 </div>
                 {% endif %}
@@ -502,17 +502,17 @@
 
                 <div id="user_message_form" uk-modal>
                     <div class="uk-modal-dialog uk-modal-body">
-                        <h2 class="uk-modal-title">Сообщение пользователю</h2>
+                        <h2 class="uk-modal-title">{% trans %}Сообщение пользователю{% endtrans %}</h2>
                         <button class="uk-modal-close-default" type="button" uk-close></button>
                         <form action="/user/sendMessage" uk-grid class="uk-grid-small" method="POST" >
-                            <div class="uk-width-1-1"><input type="text" name="name" class="uk-input" placeholder="Имя"></div>
-                            <div class="uk-width-1-1"><input type="text" name="phone" class="uk-input uk-width-1-1" placeholder="Телефон"></div>
+                            <div class="uk-width-1-1"><input type="text" name="name" class="uk-input" placeholder="{% trans %}Имя{% endtrans %}"></div>
+                            <div class="uk-width-1-1"><input type="text" name="phone" class="uk-input uk-width-1-1" placeholder="{% trans %}Телефон{% endtrans %}"></div>
                             <div class="uk-width-1-1"><input type="text" name="email" class="uk-input" placeholder="Email" required></div>
-                            <div class="uk-width-1-1"><textarea name="message" class="uk-width-1-1 short_textarea" placeholder="Сообщение" required></textarea>
+                            <div class="uk-width-1-1"><textarea name="message" class="uk-width-1-1 short_textarea" placeholder="{% trans %}Сообщение{% endtrans %}" required></textarea>
                             </div>
                             <input type="hidden" name="card_id" value="{{ card.id }}">
                             <div class="uk-width-1-1">
-                                <button class="uk-button uk-button-default uk-width-1-1">Отправить</button>
+                                <button class="uk-button uk-button-default uk-width-1-1">{% trans %}Отправить{% endtrans %}</button>
                             </div>
                             {#<div id="recap_1" class="g-recaptcha"#}
                                  {#data-callback="capcha_filled"#}
@@ -531,17 +531,17 @@
                         <a class="modal_phone" href=""></a>
                         <hr>
                         <div class="modal_text tx_19">
-                            Не забудьте сообщить владельцу, что звоните с сайта Мультипрокат и спросить скидку!
+                            {% trans %}Не забудьте сообщить владельцу, что звоните с сайта Мультипрокат и спросить скидку!{% endtrans %}
                         </div>
                     </div>
                 </div>
 
 
-                <div uk-toggle="target: #share_butons" class="share_button uk-margin-bottom"><i uk-icon="icon:social"></i> Поделиться</div>
+                <div uk-toggle="target: #share_butons" class="share_button uk-margin-bottom"><i uk-icon="icon:social"></i> {% trans %}Поделиться{% endtrans %}</div>
 
                 <div id="share_butons" uk-modal>
                     <div class="uk-modal-dialog uk-modal-body">
-                        <h2 class="uk-modal-title">Расскажи всем!</h2>
+                        <h2 class="uk-modal-title">{% trans %}Расскажи всем!{% endtrans %}</h2>
                         <button class="uk-modal-close-default" type="button" uk-close></button>
                         <div class="">
                             <div class="">
@@ -568,10 +568,10 @@
                 </div>
 
                 <div class="uk-visible@s">
-                    <h3 class="pf_style_header"><span>Поиск</span></h3>
+                    <h3 class="pf_style_header"><span>{% trans %}Поиск{% endtrans %}</span></h3>
                     {{ include('search/search_form.html.twig') }}
 
-                    <h3 class="pf_style_header"><span>Лучшие предложения</span></h3>
+                    <h3 class="pf_style_header"><span>{% trans %}Лучшие предложения{% endtrans %}</span></h3>
                     {% for card in t3_new.getTop3 %}
                         {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}
                         <hr>
@@ -579,9 +579,9 @@
 
                     <div class="uk-text-center">
                         {% if app.session.has('logged_user') %}
-                            <a href="/card/new" class="" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip>Разместить объявление в ТОП</a>
+                            <a href="/card/new" class="" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip>{% trans %}Разместить объявление в ТОП{% endtrans %}</a>
                         {% else %}
-                            <a class="" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip uk-toggle="target: #sign_in_or_up">Разместить объявление в ТОП</a>
+                            <a class="" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip uk-toggle="target: #sign_in_or_up">{% trans %}Разместить объявление в ТОП{% endtrans %}</a>
                         {% endif %}
                     </div>
                 </div>
@@ -591,7 +591,7 @@
 
         {% if is_mobile() %}
         <div class="uk-width-1-1 uk-text-center">
-                    <button type="button" class="uk-button uk-button-default uk-width-1-1" uk-toggle="target: #user_abuse">Пожаловаться</button>
+                    <button type="button" class="uk-button uk-button-default uk-width-1-1" uk-toggle="target: #user_abuse">{% trans %}Пожаловаться{% endtrans %}</button>
                 </div>
         {% endif %}
 
@@ -607,24 +607,24 @@
 
     <div id="user_abuse" uk-modal>
         <div class="uk-modal-dialog uk-modal-body">
-            <h2 class="uk-modal-title">Жалоба</h2>
+            <h2 class="uk-modal-title">{% trans %}Жалоба{% endtrans %}</h2>
             <button class="uk-modal-close-default" type="button" uk-close></button>
             <form action="/user/sendAbuse" uk-grid class="uk-grid-small" method="POST" >
                 <div class="uk-width-1-1">
-                    <label><input type="checkbox" name="abuse[]" value="Телефон не отвечает">Телефон не отвечает</label>
+                    <label><input type="checkbox" name="abuse[]" value="Телефон не отвечает">{% trans %}Телефон не отвечает{% endtrans %}</label>
                 </div>
                 <div class="uk-width-1-1">
-                    <label><input type="checkbox" name="abuse[]" value="Объявление больше не актуально">Объявление больше не актуально</label>
+                    <label><input type="checkbox" name="abuse[]" value="Объявление больше не актуально">{% trans %}Объявление больше не актуально{% endtrans %}</label>
                 </div>
                 <div class="uk-width-1-1">
-                    <label><input type="checkbox" name="abuse[]" value="Ворованные фото">Ворованные фото</label>
+                    <label><input type="checkbox" name="abuse[]" value="Ворованные фото">{% trans %}Ворованные фото{% endtrans %}</label>
                 </div>
                 <div class="uk-width-1-1">
-                    <label><input type="checkbox" name="abuse[]" value="Грубый владелец">Грубый владелец</label>
+                    <label><input type="checkbox" name="abuse[]" value="Грубый владелец">{% trans %}Грубый владелец{% endtrans %}</label>
                 </div>
                 <input type="hidden" name="card_id" value="{{ card.id }}">
                 <div class="uk-width-1-1">
-                    <button class="uk-button uk-button-default uk-width-1-1">Отправить</button>
+                    <button class="uk-button uk-button-default uk-width-1-1">{% trans %}Отправить{% endtrans %}</button>
                 </div>
                 {#<div id="recap_2" class="g-recaptcha"#}
                      {#data-callback="capcha_filled"#}
