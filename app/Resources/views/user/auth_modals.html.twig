@@ -2,20 +2,20 @@
     <div id="sign_in" class="uk-modal" uk-modal>
         <div class="uk-modal-dialog uk-modal-body">
             <button class="uk-modal-close-default" type="button" uk-close></button>
-            <h2 class="uk-modal-title">Вход</h2>
+            <h2 class="uk-modal-title">{% trans %}Вход{% endtrans %}</h2>
             <form action="/userSignIn" method="POST">
-                <input type="text" name="email" placeholder="login" class="uk-input uk-margin-bottom">
-                <input type="password" name="password" placeholder="password" class="uk-input uk-margin-bottom">
+                <input type="text" name="email" placeholder="Email" class="uk-input uk-margin-bottom">
+                <input type="password" name="password" placeholder="{% trans %}Пароль{% endtrans %}" class="uk-input uk-margin-bottom">
                 <input type="hidden" name="return" value="{{ app.request.requestUri }}">
                 <div class="uk-clearfix">
-                    <div class="uk-float-left"><button class="uk-button uk-button-primary">Войти</button></div>
-                    <div class="uk-float-right"><a uk-toggle="target: #pass_recover">Забыли пароль?</a></div>
+                    <div class="uk-float-left"><button class="uk-button uk-button-primary">{% trans %}Войти{% endtrans %}</button></div>
+                    <div class="uk-float-right"><a uk-toggle="target: #pass_recover">{% trans %}Забыли пароль?{% endtrans %}</a></div>
                 </div>
             </form>
             <hr>
             <div uk-grid class="reg_in_signin_block">
-                <div class="uk-width-1-2" style="font-size: 21px;">Нет аккаунта?</div>
-                <div class="uk-width-1-2 uk-text-right"><button  uk-toggle="target: #sign_up" class="uk-button uk-button-success "><span uk-icon="icon:lock"></span>Регистрация</button></div>
+                <div class="uk-width-1-2" style="font-size: 21px;">{% trans %}Нет аккаунта?{% endtrans %}</div>
+                <div class="uk-width-1-2 uk-text-right"><button  uk-toggle="target: #sign_up" class="uk-button uk-button-success "><span uk-icon="icon:lock"></span>{% trans %}Регистрация{% endtrans %}</button></div>
             </div>
         </div>
     </div>
@@ -23,12 +23,12 @@
     <div id="sign_up" class="uk-modal" uk-modal>
         <div class="uk-modal-dialog uk-modal-body">
             <button class="uk-modal-close-default" type="button" uk-close></button>
-            <h2 class="uk-modal-title">Регистрация</h2>
+            <h2 class="uk-modal-title">{% trans %}Регистрация{% endtrans %}</h2>
             <form id="signUpForm" action="/userSignUp" method="POST" onsubmit="return signup_validate();">
-                <input type="text" name="header" placeholder="Введите название компании или ваше имя" class="uk-input uk-margin-bottom">
-                <input type="text" name="email" placeholder="email" required class="uk-input uk-margin-bottom">
-                <input type="password" name="password" placeholder="password" required class="uk-input uk-margin-bottom">
-                <button class="uk-button uk-button-primary">Зарегистрироваться</button>
+                <input type="text" name="header" placeholder="{% trans %}Введите название компании или ваше имя{% endtrans %}" class="uk-input uk-margin-bottom">
+                <input type="text" name="email" placeholder="Email" required class="uk-input uk-margin-bottom">
+                <input type="password" name="password" placeholder="{% trans %}Пароль{% endtrans %}" required class="uk-input uk-margin-bottom">
+                <button class="uk-button uk-button-primary">{% trans %}Зарегистрироваться{% endtrans %}</button>
             </form>
         </div>
     </div>
@@ -36,13 +36,13 @@
     <div id="pass_recover" class="uk-modal" uk-modal>
         <div class="uk-modal-dialog uk-modal-body">
             <button class="uk-modal-close-default" type="button" uk-close></button>
-            <h2 class="uk-modal-title">Смена пароля</h2>
+            <h2 class="uk-modal-title">{% trans %}Смена пароля{% endtrans %}</h2>
             <form action="/userRecover" method="POST">
-                <input type="text" name="email" placeholder="Введите email использованный при регистрации" class="uk-input uk-margin-bottom">
-                <input type="password" name="password1" placeholder="Придумайте новый пароль" class="uk-input uk-margin-bottom">
-                <input type="password" name="password2" placeholder="Повторите новый пароль" class="uk-input uk-margin-bottom">
+                <input type="text" name="email" placeholder="{% trans %}Введите email использованный при регистрации{% endtrans %}" class="uk-input uk-margin-bottom">
+                <input type="password" name="password1" placeholder="{% trans %}Придумайте новый пароль{% endtrans %}" class="uk-input uk-margin-bottom">
+                <input type="password" name="password2" placeholder="{% trans %}Повторите новый пароль{% endtrans %}" class="uk-input uk-margin-bottom">
                 <input type="hidden" name="return" value="{{ app.request.requestUri }}">
-                <button class="uk-button uk-button-primary">Сменить пароль</button>
+                <button class="uk-button uk-button-primary">{% trans %}Сменить пароль{% endtrans %}</button>
             </form>
         </div>
     </div>
@@ -50,9 +50,9 @@
     <div id="sign_in_or_up" class="uk-modal" uk-modal>
         <div class="uk-modal-dialog uk-modal-body">
             <button class="uk-modal-close-default" type="button" uk-close></button>
-            <h2 class="uk-modal-title">Что дальше?</h2>
-            <div><a uk-toggle="target: #sign_in">Войдите</a> или пройдите <a uk-toggle="target: #sign_up">быструю регистрацию</a> чтобы разместить ваше объявление.</div>
-            <div>Выберите пакет "Премиум", чтобы попасть в ТОП.</div>
+            <h2 class="uk-modal-title">{% trans %}Что дальше?{% endtrans %}</h2>
+            <div><a uk-toggle="target: #sign_in">{% trans %}Войдите{% endtrans %}</a> {% trans %}или пройдите{% endtrans %} <a uk-toggle="target: #sign_up">{% trans %}быструю регистрацию{% endtrans %}</a> {% trans %}чтобы разместить ваше объявление{% endtrans %}.</div>
+            <div>{% trans %}Выберите пакет 'Премиум', чтобы попасть в ТОП{% endtrans %}.</div>
         </div>
     </div>
 {% endif %}

@@ -32,6 +32,9 @@ msgstr "Move card to TOP"
 msgid "Большой выбор транспорта в аренду"
 msgstr "Wide choise for rent"
 
+msgid "Найти"
+msgstr "Find"
+
 #: loco:5a006785820ee9e1368b4567
 msgid "еще категории"
 msgstr "more categories"
@@ -99,3 +102,200 @@ msgstr "Terms and conditions"
 
 msgid "Конфиденциальность"
 msgstr "Confidential"
+
+# -------------------------------------------- header -----------------------------------------
+
+msgid "Сдать"
+msgstr "Rent out"
+
+msgid "Поиск, например: bmw"
+msgstr "Type to search: bmw, for example"
+
+msgid "Вход"
+msgstr "Login"
+
+msgid "Профиль"
+msgstr "Profile"
+
+msgid "Объявления"
+msgstr "My cards"
+
+msgid "Выход"
+msgstr "Logout"
+
+msgid "Пароль"
+msgstr "Password"
+
+msgid "Войти"
+msgstr "Login"
+
+msgid "Забыли пароль?"
+msgstr "Forgot password?"
+
+msgid "Нет аккаунта?"
+msgstr "Have no account?"
+
+msgid "Регистрация"
+msgstr "Signup"
+
+msgid "Введите название компании или ваше имя"
+msgstr "Type your name or company name"
+
+msgid "Зарегистрироваться"
+msgstr "Signup"
+
+msgid "Смена пароля"
+msgstr "Change password"
+
+msgid "Введите email использованный при регистрации"
+msgstr "Type your email, used in sign up form"
+
+msgid "Придумайте новый пароль"
+msgstr "Type your new password"
+
+msgid "Повторите новый пароль"
+msgstr "Repeat your new password"
+
+msgid "Сменить пароль"
+msgstr "Change password"
+
+msgid "Что дальше?"
+msgstr "What next?"
+
+msgid "Войдите"
+msgstr "Login"
+
+msgid "или пройдите"
+msgstr "or pass"
+
+msgid "быструю регистрацию"
+msgstr "fast signup"
+
+msgid "чтобы разместить ваше объявление"
+msgstr "to place your card"
+
+msgid "Выберите пакет 'Премиум', чтобы попасть в ТОП"
+msgstr "Choose 'Premium' to be in TOP"
+
+# -------------------------------------------- catalog -----------------------------------------
+
+
+msgid "Найдено"
+msgstr "Founded"
+
+msgid "объявлений"
+msgstr "cards"
+
+msgid "Объявлений не найдено"
+msgstr "Cards not found"
+
+msgid "Любой кузов"
+msgstr "Any bodytype"
+
+msgid "Цена"
+msgstr "Price"
+
+msgid "дешевле"
+msgstr "cheaper"
+
+msgid "дороже"
+msgstr "expensive"
+
+msgid "Марка"
+msgstr "Vehicle brand"
+
+msgid "выбрать"
+msgstr "select"
+
+msgid "Выберите тип транспорта"
+msgstr "Select vehicle type"
+
+msgid "Любой тип транспорта"
+msgstr "Any type"
+
+msgid "Тип транспорта"
+msgstr "Vehicle type"
+
+msgid "Любая марка"
+msgstr "Any vehicle brand"
+
+msgid "Выберите марку"
+msgstr "Select vehicle brand"
+
+msgid "или начните вводить наименование марки"
+msgstr "or start typing brand of vehicle"
+
+msgid "показать все марки"
+msgstr "show all"
+
+msgid "Модель"
+msgstr "Vehicle model"
+
+msgid "Выберите Модель"
+msgstr "Select Vehicle model"
+
+msgid "Любая модель"
+msgstr "Any vehicle model"
+
+msgid "Прокат и аренда"
+msgstr "Rent and lease"
+
+msgid "Прокат"
+msgstr "Rent"
+
+msgid "Аренда"
+msgstr "Lease"
+
+msgid "день"
+msgstr "day"
+
+msgid "час"
+msgstr "hour"
+
+msgid "Пока никто не разместил объявление в этом городе и категории."
+msgstr "Nobody place card in this category and city."
+
+msgid "Будь первым - добавь объявления и получай клиентов!"
+msgstr "Be first - add your card and get profit!"
+
+msgid "Разместить объявление!"
+msgstr "Place card!"
+
+msgid "На странице"
+msgstr "On page"
+
+msgid "объявлений"
+msgstr "cards"
+
+msgid "Показать"
+msgstr "Show"
+
+msgid "или"
+msgstr "or"
+
+msgid "Кузов"
+msgstr "Vehicle bodytype"
+
+msgid "седан"
+msgstr "sedan"
+
+msgid "хетчбек"
+msgstr "hatchback"
+
+msgid "кроссовер"
+msgstr "crossover"
+
+msgid "ещё"
+msgstr "more"
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""

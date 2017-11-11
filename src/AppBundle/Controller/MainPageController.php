@@ -87,11 +87,11 @@ class MainPageController extends Controller
         $stat->setStat($stat_arr);
 
 
-        $translator = new Translator('ru', new MessageSelector());
-        //$request->getSession()->set('_locale', 'ru');
-        $translator->addLoader('pofile', new PoFileLoader());
-        $translator->addResource('pofile', 'messages.en.po', 'en');
-        //$translator->addResource('pofile', 'messages.ru.po', 'ru');
+//        $translator = new Translator('ru', new MessageSelector());
+//
+//        $translator->addLoader('pofile', new PoFileLoader());
+//        $translator->addResource('pofile', 'messages.en.po', 'en');
+
 
 
 
