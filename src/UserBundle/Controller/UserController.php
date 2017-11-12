@@ -60,6 +60,7 @@ class UserController extends Controller
 
         return $this->render('all_subfields.html.twig', [
             'result' => $result,
+            'lang' => $_SERVER['LANG']
         ]);
     }
 
@@ -77,7 +78,8 @@ class UserController extends Controller
 
         if(!empty($result)) {
             return $this->render('common/ajax_select.html.twig', [
-                'options' => $result
+                'options' => $result,
+                'lang' => $_SERVER['LANG']
             ]);
         }
         else{

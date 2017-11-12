@@ -19,11 +19,11 @@
             </div>
         </div>
         <div class="uk-width-expand">
-            <div class="c_white uk-text-truncate uk-text-small">{{ card.header }}</div>
+            <div class="c_white uk-text-truncate uk-text-small">{{ card.markModel.mark.header }} {{ card.markModel.header }}</div>
             <div class="c_grey uk-text-truncate uk-text-small"><i class="fa fa-map-marker"></i> {{ card.getCity.header }}, {{ card.getCity.getParent.header }}</div>
             <div class="c_grey uk-text-truncate uk-text-small">
                 {% for price in card.cardPrices if price.priceId == 2 %}
-                    {{ price.value|number_format(0,'.','<span class="thousand_separator"></span>')|raw }} ₽/день
+                    {{ price.value|number_format(0,'.','<span class="thousand_separator"></span>')|raw }} ₽/{% trans %}день{% endtrans %}
                 {% endfor %}</div>
         </div>
     </div>
