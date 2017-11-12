@@ -28,6 +28,12 @@ class State
      */
     private $header;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="header_en", type="string", length=255)
+     */
+    private $headerEn;
 
     /**
      * Get id
@@ -62,5 +68,28 @@ class State
     {
         return $this->header;
     }
-}
 
+    /**
+     * Set headerEn
+     *
+     * @param string $headerEn
+     *
+     * @return State
+     */
+    public function setHeaderEn($headerEn)
+    {
+        $this->headerEn = $headerEn;
+
+        return $this;
+    }
+
+    /**
+     * Get headerEn
+     *
+     * @return string
+     */
+    public function getHeaderEn()
+    {
+        return $this->headerEn;
+    }
+}
