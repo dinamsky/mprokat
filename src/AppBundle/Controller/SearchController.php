@@ -104,7 +104,9 @@ class SearchController extends Controller
         }
 
         if($service){
-            if ($service == 'prokat') $service = 1; else $service = 2;
+            if ($service == 'prokat') $service = 1;
+            if ($service == 'arenda') $service = 2;
+            if ($service == 'leasebuyout') $service = 3;
             $service_condition = ' AND c.serviceTypeId = '.$service;
         }
 
@@ -284,13 +286,15 @@ class SearchController extends Controller
         if (!$service) $p_service = 'all';
         else {
             if ($service == 1) $p_service = 'prokat';
-            else $p_service = 'arenda';
+            if ($service == 2) $p_service = 'arenda';
+            if ($service == 3) $p_service = 'leasebuyout';
         }
 
         $seo = [];
         if ($p_service == 'all') $seo['service'] = $_t->trans('Прокат и аренда');
         if ($p_service == 'prokat') $seo['service'] = $_t->trans('Прокат');
         if ($p_service == 'arenda') $seo['service'] = $_t->trans('Аренда');
+        if ($p_service == 'leasebuyout') $seo['service'] = $_t->trans('Аренда с правом выкупа');
         if (!$general) {
             $seo['type']['singular'] = $_t->trans('транспорта');
             $seo['type']['plural'] = $_t->trans('транспорта');
@@ -404,6 +408,7 @@ class SearchController extends Controller
 
             'page_type' => 'catalog',
             'lang' => $_SERVER['LANG']
+
 
         ]);
     }

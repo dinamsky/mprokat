@@ -36,7 +36,7 @@
 
                 <div class="uk-visible@s uk-width-1-5@s" ></div>
                 <div class="uk-width-4-5@s">
-                    <div class="">Собственник</div>
+                    <div class="">{% trans %}Собственник{% endtrans %}</div>
                     <h1 class=" uk-margin-remove">
                         {{ user.header }}
                         {% if user.accountTypeId == 0 and app.session.has('admin') %}
@@ -113,13 +113,13 @@
                             <div class="phone_block uk-width-5-6">
                                 {% if app.session.get('phone')[user.id] is not defined %}
                                     <div class="hidden_phone bg_green show_phone uk-text-center c_white" data-card_id="{{ user.cards[0].id }}" data-profile="1">
-                                        <div class="uk-text-center">Показать телефон</div>
+                                        <div class="uk-text-center">{% trans %}Показать телефон{% endtrans %}</div>
                                         <i class="fa fa-phone"></i> {% for info in user.information if info.uiKey == 'phone' %}{{ info.uiValue|slice(0,5) }} XXX-XX-XX{% endfor %}
                                     </div>
 
                                 {% else %}
                                     <span class="opened_phone bg_green c_white uk-text-center">
-                                    <i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}
+                                    <i class="fa fa-phone"></i> {% for info in user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}
                                 </span>
                                 {% endif %}
                             </div>
@@ -131,17 +131,17 @@
 
                     <div id="user_message_form" class="uk-modal" uk-modal>
                         <div class="uk-modal-dialog uk-modal-body">
-                            <h2 class="uk-modal-title">Сообщение пользователю</h2>
+                            <h2 class="uk-modal-title">{% trans %}Сообщение пользователю{% endtrans %}</h2>
                             <button class="uk-modal-close-default" type="button" uk-close></button>
                             <form action="/user/sendMessage" uk-grid class="uk-grid-small" method="POST" onsubmit="return check_if_capcha_is_filled();">
-                                <div class="uk-width-1-1"><input type="text" name="name" class="uk-input" placeholder="Имя"></div>
-                                <div class="uk-width-1-1"><input type="text" name="phone" class="uk-input uk-width-1-1" placeholder="Телефон"></div>
+                                <div class="uk-width-1-1"><input type="text" name="name" class="uk-input" placeholder="{% trans %}Имя{% endtrans %}"></div>
+                                <div class="uk-width-1-1"><input type="text" name="phone" class="uk-input uk-width-1-1" placeholder="{% trans %}Телефон{% endtrans %}"></div>
                                 <div class="uk-width-1-1"><input type="text" name="email" class="uk-input" placeholder="Email" required></div>
-                                <div class="uk-width-1-1"><textarea name="message" class="uk-width-1-1 short_textarea" placeholder="Сообщение" required></textarea>
+                                <div class="uk-width-1-1"><textarea name="message" class="uk-width-1-1 short_textarea" placeholder="{% trans %}Сообщение{% endtrans %}" required></textarea>
                                 </div>
                                 <input type="hidden" name="user_id" value="{{ user.id }}">
                                 <div class="uk-width-1-1">
-                                    <button class="uk-button uk-button-default uk-width-1-1">Отправить</button>
+                                    <button class="uk-button uk-button-default uk-width-1-1">{% trans %}Отправить{% endtrans %}</button>
                                 </div>
                                 <div class="g-recaptcha"
                                      data-callback="capcha_filled"
@@ -158,7 +158,7 @@
                             <div class="modal_phone"></div>
                             <hr>
                             <div class="modal_text tx_19">
-                                Не забудьте сообщить владельцу, что звоните с сайта Мультипрокат и спросить скидку!
+                                {% trans %}Не забудьте сообщить владельцу, что звоните с сайта Мультипрокат и спросить скидку!{% endtrans %}
                             </div>
                         </div>
                     </div>
@@ -174,7 +174,7 @@
     </div>
 
     <div class="standard_wide uk-margin-large">
-        <h2 class="pf_style_header"><span>Объявления пользователя: {{ user.cards|length }}</span></h2>
+        <h2 class="pf_style_header"><span>{% trans %}Объявления пользователя{% endtrans %}: {{ user.cards|length }}</span></h2>
         <div uk-grid class="uk-grid-small uk-grid-match uk-margin-large-bottom">
             {% for card in user.cards %}
                 <div class="uk-width-1-4@s">

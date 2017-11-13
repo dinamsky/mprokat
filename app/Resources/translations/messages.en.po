@@ -391,7 +391,7 @@ msgid "Сообщение"
 msgstr "Message"
 
 msgid "Не забудьте сообщить владельцу, что звоните с сайта Мультипрокат и спросить скидку!"
-msgstr "Don't forget to message for owner: 'I am from mix.rent and I need discount!'"
+msgstr "Don't forget to message for owner: I am from mix.rent and I need discount!"
 
 msgid "Расскажи всем!"
 msgstr "Share for all!"
@@ -574,5 +574,121 @@ msgstr "sign in"
 msgid "продолжить"
 msgstr "continue"
 
-msgid ""
-msgstr ""
+
+# -------------------------------------------- edit card -----------------------------------------
+
+
+msgid "Сохранить"
+msgstr "Save"
+
+msgid "Сменить тариф"
+msgstr "Change tariff"
+
+msgid "Удалить"
+msgstr "Delete"
+
+
+# -------------------------------------------- profile -----------------------------------------
+
+
+msgid "Мой профиль"
+msgstr "My profile"
+
+msgid "Мои объявления"
+msgstr "My cards"
+
+msgid "Выход"
+msgstr "Logout"
+
+msgid "Ваш аккаунт"
+msgstr "Account type"
+
+msgid "стандартный"
+msgstr "standart"
+
+msgid "Вы можете разместить не более 2-х объявлений"
+msgstr "You can place no more than 2 cards"
+
+msgid "Оплатить PRO аккаунт"
+msgstr "Pay for PRO account"
+
+msgid "Оплаченный PRO аккаунт действует бессрочно"
+msgstr "Payed PRO account has unlimited lifetime"
+
+msgid "и дает больше возможностей, в том числе: размещать больше объявлений и получать больше звонков от клиентов"
+msgstr "and give more possibilities, like: to place more cards and get more calls from customers"
+
+msgid "Вы можете разместить неограниченное количество объявлений"
+msgstr "You can place unlimited amount of cards"
+
+msgid "Кратко о себе/компании"
+msgstr "About"
+
+msgid "Ссылки на соцсети"
+msgstr "Social links"
+
+msgid "Фото"
+msgstr "Foto"
+
+msgid "Объявления пользователя"
+msgstr "User cards"
+
+msgid "все"
+msgstr "all"
+
+msgid "выберите"
+msgstr "select"
+
+
+# -------------------------------------------- tariffs -----------------------------------------
+
+
+msgid "Премиум размещение"
+msgstr "Premium"
+
+msgid "Экспресс продвижение"
+msgstr "Express"
+
+msgid "Обычная публикация"
+msgstr "Standard"
+
+msgid "ваш текущий тариф"
+msgstr "current tariff"
+
+msgid "Разместить и оплатить"
+msgstr "Pay and place"
+
+msgid "Разместить бесплатно"
+msgstr "Place for free"
+
+msgid "Ваше объявление на самом заметном месте сайта: на главной странице, на первом месте в выбранной вами категории.<br>Премиум размещение дает плюс 1000 просмотров.<br>Размещение объявления на главной странице сайта привлекает больше просмотров, вы повысите количество клиентов за короткий срок."
+msgstr "Your card will be in best position: on main page and first place in category<br>Premium give you +1000 views<br>Place in main page give your more views and customers for short time"
+
+msgid "Разместите ваше объявление в разделе «похожие объявления».<br>Ваше объявление в течении 7-ми дней будет размещено в карточках похожих объявлений выбранного региона.<br>Будьте лидером в своем регионе!"
+msgstr "Place your card in «similars»<br>Your card will be in similar cards for one week in region<br>Be a leader in your region!"
+
+msgid "Бесплатное размещение вашего объявления на 365 дней<br>Объявление вытесняется другими, не участвует в продвижении на сайте.<br>Нужно больше клиентов в вашем городе?<br>Воспользуйтесь тарифами"
+msgstr "Free placement for one year<br>Your card will move down with other new cards and not take part in advancement in website<br>Do you need more customers? Choose tariffs"
+
+
+# -------------------------------------------- modals -----------------------------------------
+
+
+msgid "Выберите город"
+msgstr "Select city"
+
+msgid "или начните вводить наименование города"
+msgstr "or start typing city name"
+
+msgid "показать все города"
+msgstr "show all cities"
+
+
+# -------------------------------------------- other -----------------------------------------
+
+
+msgid "Аренда с правом выкупа"
+msgstr "Lease with buyout"
+
+msgid "транспорта"
+msgstr "transport"

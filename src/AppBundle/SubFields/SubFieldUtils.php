@@ -34,14 +34,14 @@ class SubFieldUtils extends Controller
                 $result[] = array(
                     'template' => 'common/input.html.twig',
                     'value' => $field->getfieldId(),
-                    'label' => $field->getfieldType()->getHeader()
+                    'label' => $_SERVER['LANG'] == 'ru' ? $field->getfieldType()->getHeader() : $field->getfieldType()->getHeaderEn()
                 );
             }
             if ($field->getfieldType()->getformElementType() == 'ajaxMenu'){
                 $result[] = array(
                     'template' => 'common/ajax_select.html.twig',
                     'value' => $this->menu->getSubField($field->getfieldId(),0),
-                    'label' => $field->getfieldType()->getHeader()
+                    'label' => $_SERVER['LANG'] == 'ru' ? $field->getfieldType()->getHeader() : $field->getfieldType()->getHeaderEn()
                 );
             }
         }
@@ -78,9 +78,10 @@ class SubFieldUtils extends Controller
                     $result[] = array(
                         'template' => 'common/input_edit.html.twig',
                         'value' => $field->getfieldId(),
-                        'label' => $field->getfieldType()->getHeader(),
+                        'label' => $_SERVER['LANG'] == 'ru' ? $field->getfieldType()->getHeader() : $field->getfieldType()->getHeaderEn(),
                         'data' => $fieldInteger[$field->getfieldType()->getId()],
-                        'subfield' => $subfield
+                        'subfield' => $subfield,
+                        'lang' => $_SERVER['LANG']
                     );
                 }
                 if ($field->getfieldType()->getformElementType() == 'ajaxMenu') {
@@ -98,13 +99,14 @@ class SubFieldUtils extends Controller
 
                     $result[] = array(
                         'template' => 'common/ajax_select_edit.html.twig',
-                        'label' => $field->getfieldType()->getHeader(),
+                        'label' => $_SERVER['LANG'] == 'ru' ? $field->getfieldType()->getHeader() : $field->getfieldType()->getHeaderEn(),
                         'data' => $fieldInteger[$field->getfieldType()->getId()],
                         'subfield_first' => $subfield,
                         'subfield_last' => $last,
                         'first' => $first,
                         'level' => $level,
-                        'field_id' => $field->getfieldId()
+                        'field_id' => $field->getfieldId(),
+                        'lang' => $_SERVER['LANG']
                     );
                 }
             }
@@ -144,7 +146,7 @@ class SubFieldUtils extends Controller
 
             $result[] = array(
                 'value' => $value,
-                'label' => $field->getfieldType()->getHeader(),
+                'label' => $_SERVER['LANG'] == 'ru' ? $field->getfieldType()->getHeader() : $field->getfieldType()->getHeaderEn(),
                 'type' => $type
             );
 

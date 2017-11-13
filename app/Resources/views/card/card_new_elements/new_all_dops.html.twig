@@ -7,12 +7,12 @@
             <div >
                 {% for feature in features %}
                     <div>
-                        <b>{{ feature.header }}</b>
+                        <b>{{ lang == 'ru' ? feature.header : feature.headerEn }}</b>
                         <div>
                             {% for item in feature.getChildren %}
                                 <div>
                                     <label>
-                                        <input type="checkbox" name="feature[{{ item.id }}]"> {{ item.header }}
+                                        <input type="checkbox" name="feature[{{ item.id }}]"> {{ lang == 'ru' ? item.header : item.headerEn }}
                                     </label>
                                 </div>
                             {% endfor %}
@@ -40,7 +40,7 @@
     <div class="uk-width-4-5">
         <select name="conditionId" class="uk-select uk-width-1-5">
             {% for condition in conditions %}
-                <option value="{{ condition.id }}" {{ condition.id == 2 ? 'selected' }}>{{ condition.header }}</option>
+                <option value="{{ condition.id }}" {{ condition.id == 2 ? 'selected' }}>{{ lang == 'ru' ? condition.header : condition.headerEn }}</option>
             {% endfor %}
         </select>
     </div>
@@ -50,9 +50,9 @@
     <div class="uk-width-1-5">{% trans %}Цвет{% endtrans %}</div>
     <div class="uk-width-4-5">
         <select name="colorId" class="uk-select uk-width-1-5">
-            <option value="0">- выберите -</option>
+            <option value="0">- {% trans %}выберите{% endtrans %} -</option>
             {% for color in colors %}
-                <option value="{{ color.id }}">{{ color.header }}</option>
+                <option value="{{ color.id }}">{{ lang == 'ru' ? color.header : color.headerEn }}</option>
             {% endfor %}
         </select>
     </div>
@@ -62,7 +62,7 @@
     <div class="uk-width-1-5">{% trans %}Год выпуска{% endtrans %}</div>
     <div class="uk-width-4-5">
         <select name="prodYear" class="uk-select uk-width-1-5">
-            <option value="0" selected>- выберите -</option>
+            <option value="0" selected>- {% trans %}выберите{% endtrans %} -</option>
             {% for year in 'now'|date('Y')..1950 %}
                 <option value="{{ year }}">{{ year }}</option>
             {% endfor %}

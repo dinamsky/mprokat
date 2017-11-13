@@ -18,7 +18,7 @@ $( document ).ready(function() {
             type: 'POST',
             data: {subId:subId, fieldId:fieldId},
             success: function(html){
-                console.log(html);
+                //console.log(html);
                 if (html) {
                     $(element).attr('name', 'old').attr('class','old_select uk-select');
                     $(element).next('select').remove();
@@ -29,7 +29,7 @@ $( document ).ready(function() {
                 }
             },
             error: function (response) {
-                console.log(response);
+                //console.log(response);
             }
         });
     });

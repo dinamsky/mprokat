@@ -32,6 +32,13 @@ class FieldType
     /**
      * @var string
      *
+     * @ORM\Column(name="header_en", type="string", length=255)
+     */
+    private $headerEn;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="storage_type", type="string", length=255)
      */
     private $storageType;
@@ -179,5 +186,29 @@ class FieldType
     public function getFormElementType()
     {
         return $this->formElementType;
+    }
+
+    /**
+     * Set headerEn
+     *
+     * @param string $headerEn
+     *
+     * @return FieldType
+     */
+    public function setHeaderEn($headerEn)
+    {
+        $this->headerEn = $headerEn;
+
+        return $this;
+    }
+
+    /**
+     * Get headerEn
+     *
+     * @return string
+     */
+    public function getHeaderEn()
+    {
+        return $this->headerEn;
     }
 }
