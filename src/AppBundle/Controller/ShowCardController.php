@@ -32,6 +32,8 @@ class ShowCardController extends Controller
      */
     public function showCardAction($id, MenuGeneralType $mgt, SubFieldUtils $sf, MenuCity $mc, MenuMarkModel $mm, Request $request, ServiceStat $stat)
     {
+        $_t = $this->get('translator');
+
         $em = $this->get('doctrine')->getManager();
 
         $card = $this->getDoctrine()
@@ -206,10 +208,13 @@ class ShowCardController extends Controller
 
 
         $seo = [];
-        if ($card->getServiceTypeId() == 1) $seo['service'] = 'Прокат';
-        if ($card->getServiceTypeId() == 2) $seo['service'] = 'Аренда';
-        $seo['type']['singular'] = $general->getChegoSingular();
-        $seo['type']['plural'] = $general->getChegoPlural();
+        if ($card->getServiceTypeId() == 1) $seo['service'] = $_t->trans('Прокат');
+        if ($card->getServiceTypeId() == 2) $seo['service'] = $_t->trans('Аренда');
+        if ($card->getServiceTypeId() == 3) $seo['service'] = $_t->trans('Аренда с правом выкупа');
+//        $seo['type']['singular'] = $general->getChegoSingular();
+//        $seo['type']['plural'] = $general->getChegoPlural();
+        if ($_SERVER['LANG'] == 'ru') $seo['type']['singular'] = $general->getChegoSingular(); else $seo['type']['singular'] = $general->getUrl();
+        if ($_SERVER['LANG'] == 'ru') $seo['type']['plural'] = $general->getChegoPlural(); else $seo['type']['plural'] = $general->getUrl();
         $seo['mark'] = $mark->getHeader();
         $seo['model'] = $model->getHeader();
         $seo['city']['chto'] = $city->getHeader();
