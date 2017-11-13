@@ -682,3 +682,13 @@ msgstr "or start typing city name"
 
 msgid "показать все города"
 msgstr "show all cities"
+
+
+# -------------------------------------------- other -----------------------------------------
+
+
+msgid "Аренда с правом выкупа"
+msgstr "Lease with buyout"
+
+msgid "транспорта"
+msgstr "transport"

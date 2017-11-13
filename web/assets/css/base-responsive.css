@@ -211,6 +211,11 @@
         box-shadow: none !important;
     }
 
+    .m_add_card_button{
+        line-height: 14px;
+        padding: 5px 0;
+    }
+
     .desktop_header{
         display: none;
     }

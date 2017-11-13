@@ -104,11 +104,21 @@
                         {% endif %}
 
                         {% if general.url != 'alltypes' %}
-                        <div class="uk-width-1-3@s">
+                        <div class="uk-width-1-3@s {{ not is_mobile() ? 'uk-text-center' }}">
                             <span class="uk-text-small">{% trans %}Марка{% endtrans %}: </span>
                             <button class="sort_button" uk-toggle="target: #top_mark_links">{% trans %}выбрать{% endtrans %}</button>
                         </div>
                         {% endif %}
+
+                        <div class="uk-width-1-3@s {{ not is_mobile() ? 'uk-text-right' : 'uk-text-center' }}">
+                            {% if service == 'all' %}
+                                <a class="sort_button {{ is_mobile() ? 'uk-width-1-1' }}" href="/rent/{{ city.url }}/leasebuyout/{{ general.url }}{{ mark ? '/'~mark.header }}{{ model ? '/'~model.header }}">{{ 'Аренда с правом выкупа'|trans }}</a>
+                            {% endif %}
+                            {% if service == 'leasebuyout' %}
+                                <a class="sort_button {{ is_mobile() ? 'uk-width-1-1' }}" href="/rent/{{ city.url }}/all/{{ general.url }}{{ mark ? '/'~mark.header }}{{ model ? '/'~model.header }}">{{ 'Прокат и аренда'|trans }}</a>
+                            {% endif %}
+                        </div>
+
                     </div>
                 </div>
 
