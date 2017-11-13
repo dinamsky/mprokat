@@ -103,6 +103,8 @@ class UserController extends Controller
      */
     public function signInAction(Request $request, Password $password)
     {
+        $_t = $this->get('translator');
+
         $em = $this->getDoctrine()->getManager();
         $dql = 'SELECT u FROM UserBundle:User u WHERE u.isBanned = 0 AND (u.email = ?1 OR u.login = ?1)';
         $query = $em->createQuery($dql);
@@ -121,7 +123,7 @@ class UserController extends Controller
 
                 $this->addFlash(
                     'notice',
-                    'Вы успешно вошли в аккаунт!'
+                    $_t->trans('Вы успешно вошли в аккаунт!')
                 );
 
                 $this->get('session')->set('user_pic', false);
@@ -136,7 +138,7 @@ class UserController extends Controller
 
         $this->addFlash(
             'notice',
-            'Неправильная пара логин/пароль!'
+            $_t->trans('Неправильная пара логин/пароль!')
         );
 
         return $this->redirectToRoute('homepage');
@@ -147,13 +149,15 @@ class UserController extends Controller
      */
     public function logoutAction(Request $request)
     {
+        $_t = $this->get('translator');
+
         $response = new Response();
         $response->headers->clearCookie('the_hash');
         $response->sendHeaders();
         $this->get('session')->remove('logged_user');
         $this->addFlash(
             'notice',
-            'Вы успешно вышли из аккаунта'
+            $_t->trans('Вы успешно вышли из аккаунта')
         );
         return $this->redirectToRoute('homepage');
     }
@@ -164,6 +168,8 @@ class UserController extends Controller
      */
     public function signUpAction(Request $request, Password $password, \Swift_Mailer $mailer)
     {
+        $_t = $this->get('translator');
+
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->findBy(array(
@@ -173,7 +179,7 @@ class UserController extends Controller
         if ($user) {
             $this->addFlash(
                 'notice',
-                'Пользователь уже зарегистрирован!'
+                $_t->trans('Пользователь уже зарегистрирован!')
             );
             return $this->redirectToRoute('homepage');
         }
@@ -192,7 +198,7 @@ class UserController extends Controller
         $em->persist($user);
         $em->flush();
 
-        $message = (new \Swift_Message('Регистрация на сайте multiprokat.com'))
+        $message = (new \Swift_Message($_t->trans('Регистрация на сайте multiprokat.com')))
             ->setFrom('mail@multiprokat.com')
             ->setTo($user->getEmail())
             ->setBody(
@@ -209,7 +215,7 @@ class UserController extends Controller
 
         $this->addFlash(
             'notice',
-            'На вашу почту было отправлено письмо для активации аккаунта!'
+            $_t->trans('На вашу почту было отправлено письмо для активации аккаунта!')
         );
         return $this->redirectToRoute('homepage');
     }
@@ -219,6 +225,8 @@ class UserController extends Controller
      */
     public function activateAccountAction($code)
     {
+        $_t = $this->get('translator');
+
         $return_url = 'homepage';
 
         $user = $this->getDoctrine()
@@ -228,10 +236,10 @@ class UserController extends Controller
             ));
 
         if($user){
-            $message = 'Ваш аккаунт успешно активирован!';
+            $message = $_t->trans('Ваш аккаунт успешно активирован!');
             if ($user->getTempPassword() != '') {
                 $user->setPassword($user->getTempPassword());
-                $message = 'Ваш новый пароль успешно активирован!';
+                $message = $_t->trans('Ваш новый пароль успешно активирован!');
             } else {
                 $msg = (new \Swift_Message('Регистрация на сайте multiprokat.com'))
                 ->setFrom('mail@multiprokat.com')
@@ -265,7 +273,7 @@ class UserController extends Controller
         } else {
             $this->addFlash(
                 'notice',
-                'Произошла ошибка, попробуйте еще раз.'
+                $_t->trans('Произошла ошибка, попробуйте еще раз.')
             );
         }
 
@@ -278,6 +286,8 @@ class UserController extends Controller
      */
     public function recoverAction(Request $request, \Swift_Mailer $mailer, Password $password)
     {
+        $_t = $this->get('translator');
+
         if($request->request->get('password1') == $request->request->get('password2')) {
             $user = $this->getDoctrine()
                 ->getRepository(User::class)
@@ -292,12 +302,12 @@ class UserController extends Controller
             $em->persist($user);
             $em->flush();
 
-            $message = (new \Swift_Message('Восстановление пароля на сайте multiprokat.com'))
+            $message = (new \Swift_Message($_t->trans('Восстановление пароля на сайте multiprokat.com')))
                 ->setFrom('mail@multiprokat.com')
                 ->setTo($user->getEmail())
                 ->setBody(
                     $this->renderView(
-                        'email/recover.html.twig',
+                        $_SERVER['LANG'] == 'ru' ? 'email/recover.html.twig' : 'email/recover_'.$_SERVER['LANG'].'.html.twig',
                         array(
                             'header' => $user->getHeader(),
                             'code' => $code
@@ -309,14 +319,14 @@ class UserController extends Controller
 
             $this->addFlash(
                 'notice',
-                'Вам отправлено письмо с активацией нового пароля'
+                $_t->trans('Вам отправлено письмо с активацией нового пароля')
             );
 
             return $this->redirect($request->request->get('return'));
         } else {
             $this->addFlash(
                 'notice',
-                'Пароли не совпадают!'
+                $_t->trans('Пароли не совпадают!')
             );
             return $this->redirect($request->request->get('return'));
         }
@@ -375,6 +385,8 @@ class UserController extends Controller
  */
     public function robokassaSuccessUrlAction(Request $request)
     {
+        $_t = $this->get('translator');
+
         $mrh_pass1 = "Wf1bYXSd5V8pKS3ULwb3";  // merchant pass1 here
         $out_summ = $_REQUEST["OutSum"];
         $inv_id = $_REQUEST["InvId"];
@@ -388,7 +400,7 @@ class UserController extends Controller
             return new Response($text, 200);
         }
 
-        $message = 'Ваш новый тариф успешно оплачен!';
+        $message = $_t->trans('Ваш новый тариф успешно оплачен!');
         $url = '/user/cards';
 
         $order = $this->getDoctrine()
@@ -401,7 +413,7 @@ class UserController extends Controller
                 ->find($order->getUserId());
             $this->get('session')->set('logged_user', $user);
 
-            $message = 'Ваш PRO аккаунт успешно оплачен!';
+            $message = $_t->trans('Ваш PRO аккаунт успешно оплачен!');
             $url = '/user/cards';
         }
 
@@ -419,9 +431,11 @@ class UserController extends Controller
      */
     public function robokassaFailUrlAction(Request $request)
     {
+        $_t = $this->get('translator');
+
         $this->addFlash(
             'notice',
-            'К сожалению оплата не прошла!'
+            $_t->trans('К сожалению оплата не прошла!')
         );
 
         return $this->redirectToRoute('user_cards');

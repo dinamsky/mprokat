@@ -1,1 +1,1 @@
-Пользователь выбрал свою марку как: {{ mark }} <br /> <a href="{{ url('showCard',{'id': card.id}) }}">Посмотреть</a> объявление<br />Еще текст<br />и еще
+{% extends ':email:email_base.html.twig' %} {% block content %} <br />Пользователь выбрал свою марку как: {{ mark }} <br /> <a href="{{ url('showCard',{'id': card.id}) }}">Посмотреть</a> объявление<br /><br />{% endblock %}

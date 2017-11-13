@@ -32,7 +32,7 @@ function new_card_validate(){
 
     var message = [];
 
-
+    var lang = $('body').data('lang');
 
 
     if($('#new_card_form').hasClass('no_phone')){
