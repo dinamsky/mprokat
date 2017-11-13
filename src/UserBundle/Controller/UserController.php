@@ -197,7 +197,7 @@ class UserController extends Controller
             ->setTo($user->getEmail())
             ->setBody(
                 $this->renderView(
-                    'email/registration.html.twig',
+                    $_SERVER['LANG'] == 'ru' ? 'email/registration.html.twig' : 'email/registration_'.$_SERVER['LANG'].'.html.twig',
                     array(
                         'header' => $user->getHeader(),
                         'code' => $code
