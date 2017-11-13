@@ -194,6 +194,8 @@ class ProfileController extends Controller
      */
     public function sendAbuseAction(Request $request, \Swift_Mailer $mailer)
     {
+        $_t = $this->get('translator');
+
         $post = $request->request;
 
         $card_id = $post->get('card_id');
@@ -217,12 +219,12 @@ class ProfileController extends Controller
 
             $this->addFlash(
                 'notice',
-                'Ваша жалоба успешно отправлена!'
+                $_t->trans('Ваша жалоба успешно отправлена!')
             );
         } else {
             $this->addFlash(
                 'notice',
-                'Каптча не пройдена!'
+                $_t->trans('Каптча не пройдена!')
             );
         }
 
@@ -236,6 +238,8 @@ class ProfileController extends Controller
  */
     public function sendMessageAction(Request $request, \Swift_Mailer $mailer)
     {
+        $_t = $this->get('translator');
+
         $post = $request->request;
 
         if ($this->captchaVerify($post->get('g-recaptcha-response'))) {
@@ -256,7 +260,7 @@ class ProfileController extends Controller
             }
 
 
-            $message = (new \Swift_Message('Сообщение от пользователя'))
+            $message = (new \Swift_Message($_t->trans('Сообщение от пользователя')))
                 ->setFrom(['mail@multiprokat.com' => 'Робот Мультипрокат'])
                 ->setTo($user->getEmail())
                 ->setCc('mail@multiprokat.com')
@@ -279,12 +283,12 @@ class ProfileController extends Controller
 
             $this->addFlash(
                 'notice',
-                'Ваше сообщение успешно отправлено!'
+                $_t->trans('Ваше сообщение успешно отправлено!')
             );
         } else {
             $this->addFlash(
                 'notice',
-                'Каптча не пройдена!'
+                $_t->trans('Каптча не пройдена!')
             );
         }
 
@@ -297,6 +301,8 @@ class ProfileController extends Controller
      */
     public function contactsMessageAction(Request $request, \Swift_Mailer $mailer)
     {
+        $_t = $this->get('translator');
+
         $post = $request->request;
 
 //        $card_id = $post->get('card_id');
@@ -307,12 +313,12 @@ class ProfileController extends Controller
 //
 //        $user = $card->getUser();
 
-        $message = (new \Swift_Message('Сообщение от пользователя'))
+        $message = (new \Swift_Message($_t->trans('Сообщение от пользователя')))
             ->setFrom(['mail@multiprokat.com' => 'Робот Мультипрокат'])
             ->setTo('mail@multiprokat.com')
             ->setBody(
                 $this->renderView(
-                    'email/request.html.twig',
+                    $_SERVER['LANG'] == 'ru' ? 'email/request.html.twig' : 'email/request_'.$_SERVER['LANG'].'.html.twig',
                     array(
                         'header' => 'Админ',
                         'message' => $post->get('message'),
@@ -327,7 +333,7 @@ class ProfileController extends Controller
 
         $this->addFlash(
             'notice',
-            'Ваше сообщение успешно отправлено!'
+            $_t->trans('Ваше сообщение успешно отправлено!')
         );
 
         return $this->redirect('/');
