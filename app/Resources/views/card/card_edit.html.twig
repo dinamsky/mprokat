@@ -25,6 +25,8 @@
 
 {% endblock %}
 
+{% block bodyVars %}data-lang="{{ lang }}"{% endblock %}
+
 {% block content %}
 
     <form id="edit_card_form" action="/card/update" method="POST" enctype="multipart/form-data" class="standard_wide uk-margin-top" onsubmit="return edit_card_validate();">

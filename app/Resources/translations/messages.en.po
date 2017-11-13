@@ -692,3 +692,60 @@ msgstr "Lease with buyout"
 
 msgid "транспорта"
 msgstr "transport"
+
+msgid "Ваша жалоба успешно отправлена!"
+msgstr "Your complain has been sent"
+
+msgid "Каптча не пройдена!"
+msgstr "Wrong captcha"
+
+msgid "Ваше сообщение успешно отправлено!"
+msgstr "Your message has been sent"
+
+msgid "Сообщение от пользователя"
+msgstr "Message from user"
+
+msgid "Вы успешно вошли в аккаунт!"
+msgstr "Your logged in!"
+
+msgid "Неправильная пара логин/пароль!"
+msgstr "Wrong login/password"
+
+msgid "Вы успешно вышли из аккаунта"
+msgstr "You log out!"
+
+msgid "Пользователь уже зарегистрирован!"
+msgstr "User already registered"
+
+msgid "Регистрация на сайте multiprokat.com"
+msgstr "Sign up on mix.rent"
+
+msgid "На вашу почту было отправлено письмо для активации аккаунта!"
+msgstr "We sent mail to you to activate your account"
+
+msgid "Ваш аккаунт успешно активирован!"
+msgstr "Your account activated!"
+
+msgid "Ваш новый пароль успешно активирован!"
+msgstr "Your new password activated!"
+
+msgid "Произошла ошибка, попробуйте еще раз."
+msgstr "Something wrong. Repeat please"
+
+msgid "Восстановление пароля на сайте multiprokat.com"
+msgstr "Password recovery on mix.rent"
+
+msgid "Вам отправлено письмо с активацией нового пароля"
+msgstr "We sent you mail with new password activation link"
+
+msgid "Пароли не совпадают!"
+msgstr "Passwords mismatch"
+
+msgid "Ваш новый тариф успешно оплачен!"
+msgstr "Your new tariff successfully payed!"
+
+msgid "Ваш PRO аккаунт успешно оплачен!"
+msgstr "Your PRO account successfully payed!"
+
+msgid "К сожалению оплата не прошла!"
+msgstr "Unfortunately payment not passed!"

@@ -226,10 +226,14 @@ class AdminController extends Controller
 
             $names = array(
                 "admin_registration.html.twig" => 'Регистрация админом',
+                "admin_registration_en.html.twig" => 'Регистрация админом EN',
                 "newmark.html.twig" => 'Новая марка',
                 "recover.html.twig" => 'Восстановление пароля',
+                "recover_en.html.twig" => 'Восстановление пароля EN',
                 "registration.html.twig" => 'Регистрация самостоятельная',
-                "request.html.twig" => 'Запрос между пользователями'
+                "registration_en.html.twig" => 'Регистрация самостоятельная EN',
+                "request.html.twig" => 'Запрос между пользователями',
+                "request_en.html.twig" => 'Запрос между пользователями EN'
             );
 
 
