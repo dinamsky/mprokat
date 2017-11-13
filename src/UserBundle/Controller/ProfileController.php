@@ -262,7 +262,7 @@ class ProfileController extends Controller
                 ->setCc('mail@multiprokat.com')
                 ->setBody(
                     $this->renderView(
-                        $_SERVER['LANG'] == 'ru' ? 'email/request.html.twig' : 'email/request'.$_SERVER['LANG'].'.html.twig',
+                        $_SERVER['LANG'] == 'ru' ? 'email/request.html.twig' : 'email/request_'.$_SERVER['LANG'].'.html.twig',
                         array(
                             'header' => $user->getHeader(),
                             'message' => $post->get('message'),
