@@ -211,6 +211,7 @@ button{
     display: inline-block;
     max-width: 165px;
     text-align: left;
+    font-size: 16px;
 }
 
 .price_value{
@@ -219,6 +220,7 @@ button{
     font-weight: bold;
     text-align: right;
     vertical-align: top;
+    font-size: 16px;
 }
 
 .price_highlighted .price_value, .price_highlighted .price_descriptor {
@@ -1106,4 +1108,8 @@ footer a:hover{
 .mid_footer{
     background: #131313;
     padding: 20px 0;
+}
+
+.datepickers-container{
+    z-index: 2000;
 }
