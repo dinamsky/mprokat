@@ -5,6 +5,7 @@
     <link href="{{ asset('assets/css/owl.carousel.min.css') }}" rel="stylesheet"/>
     <link href="{{ asset('assets/css/owl.theme.default.css') }}" rel="stylesheet"/>
     <link href="{{ asset('assets/css/auto-complete.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/datepicker.min.css') }}" rel="stylesheet" />
 {% endblock %}
 
 {% block javascripts %}
@@ -15,8 +16,10 @@
     <script src="{{ asset('assets/js/sliderSettings.js') }}"></script>
     <script src="{{ asset('assets/js/auto-complete.min.js') }}"></script>
     <script src="{{ asset('assets/js/mark_autocomplete.js') }}"></script>
+    <script src="{{ asset('assets/js/form_city_autocomplete.js') }}"></script>
     <script src="{{ asset('assets/js/recaptcha_settings.js') }}"></script>
     <script src="{{ asset('assets/js/recapthcha_validate.js') }}"></script>
+    <script src="{{ asset('assets/js/datepicker.min.js') }}"></script>
 {% endblock %}
 
 {% block socialScripts %}
@@ -432,6 +435,12 @@
                 </div>
 
                 {% if not is_mobile() %}
+                <div class="uk-margin-bottom card_blanc">
+                    <div class="cursor-pointer uk-text-center" uk-toggle="target: #user_book_form"><i class="fa fa-pencil-square-o"></i> {% trans %}Забронировать{% endtrans %}</div>
+                </div>
+                {% endif %}
+
+                {% if not is_mobile() %}
                 <div class="uk-margin-bottom card_blanc2">
                     {% for price in card.getCardPrices %}
                         <div class="uk-text-center {{ price.priceId == 2 ? 'price_highlighted' : ''}}">
@@ -520,6 +529,70 @@
                                  {#data-sitekey="6LcGCzUUAAAAADpeaCQhkXWZqdhnB6_ZEGRm7Z2m"></div>#}
                             <input type="hidden" name="g-recaptcha-response">
                             <div id="recap1"></div>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="user_book_form" uk-modal="bg-close:false">
+                    <div class="uk-modal-dialog uk-modal-body">
+                        <h2 class="uk-modal-title">{% trans %}Забронировать{% endtrans %}</h2>
+                        <button class="uk-modal-close-default" type="button" uk-close></button>
+                        <form action="/user/bookMessage" uk-grid class="uk-grid-small" method="POST" >
+
+                            <div class="uk-width-1-1">
+                                <span class="uk-text-small">{% trans %}Транспортное средство{% endtrans %}</span>
+                                <input type="text" name="header" class="uk-input" value="{{ card.markModel.mark.header }} {{ card.markModel.header }}">
+                            </div>
+
+                            <div class="uk-width-1-2">
+                                <span class="uk-text-small">{% trans %}Дата приема{% endtrans %}</span>
+                                <input type="text" name="date_in" class="uk-input uk-width-1-1 datepicker-here">
+                            </div>
+
+                            <div class="uk-width-1-2">
+                                <span class="uk-text-small">{% trans %}Дата возврата{% endtrans %}</span>
+                                <input type="text" name="date_out" class="uk-input uk-width-1-1 datepicker-here">
+                            </div>
+
+                            <div class="uk-width-1-2">
+                                <span class="uk-text-small">{% trans %}Город приема{% endtrans %}</span>
+                                <input type="text" name="city_in" class="uk-input uk-width-1-1" value="{{ card.city.header }}">
+                            </div>
+
+                            <div class="uk-width-1-2">
+                                <span class="uk-text-small">{% trans %}Город возврата{% endtrans %}</span>
+                                <input type="text" name="city_out" class="uk-input uk-width-1-1" value="{{ card.city.header }}">
+                            </div>
+
+                            <div class="uk-width-1-1">
+                                <span class="uk-text-small">{% trans %}Имя и фамилия{% endtrans %}</span>
+                                <input type="text" name="full_name" class="uk-input uk-width-1-1" value="{{ app.session.get('logged_user') ? app.session.get('logged_user').header }}">
+                            </div>
+
+                            <div class="uk-width-1-2">
+                                <span class="uk-text-small">Email</span>
+                                <input type="text" name="email" class="uk-input uk-width-1-1" value="{{ app.session.get('logged_user') ? app.session.get('logged_user').email }}">
+                            </div>
+
+                            <div class="uk-width-1-2">
+                                <span class="uk-text-small">{% trans %}Телефон{% endtrans %}</span>
+                                <input type="text" name="phone" class="uk-input uk-width-1-1" value="{% if app.session.has('logged_user') %}{% for info in app.session.get('logged_user').information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}{% endif %}">
+                            </div>
+
+
+                            <div class="uk-width-1-1">
+                                <span class="uk-text-small">{% trans %}Укажите альтернативу, если выбранный транспорт окажется недоступен{% endtrans %}</span>
+                                <textarea name="alternative" class="uk-width-1-1 short_textarea"></textarea>
+                            </div>
+
+                            <input type="hidden" name="card_id" value="{{ card.id }}">
+
+                            <div class="uk-width-1-1">
+                                <button class="uk-button uk-button-default uk-width-1-1">{% trans %}Отправить{% endtrans %}</button>
+                            </div>
+
+                            <input type="hidden" name="g-recaptcha-response">
+                            <div id="recap3"></div>
                         </form>
                     </div>
                 </div>

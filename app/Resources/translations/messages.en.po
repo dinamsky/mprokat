@@ -749,3 +749,35 @@ msgstr "Your PRO account successfully payed!"
 
 msgid "К сожалению оплата не прошла!"
 msgstr "Unfortunately payment not passed!"
+
+# -------------------------------------------- booking form -----------------------------------------
+
+msgid "Забронировать"
+msgstr "Book this"
+
+msgid "Запрос на бронирование"
+msgstr "Booking request"
+
+msgid "Транспортное средство"
+msgstr "Vehicle"
+
+msgid "Дата приема"
+msgstr "Date pickup"
+
+msgid "Дата возврата"
+msgstr "Date drop"
+
+msgid "Город приема"
+msgstr "City pickup"
+
+msgid "Город возврата"
+msgstr "City drop"
+
+msgid "Имя и фамилия"
+msgstr "Full name"
+
+msgid "Укажите альтернативу, если выбранный транспорт окажется недоступен"
+msgstr "Type alternative variant of vehicle if chosen is busy"
+
+msgid ""
+msgstr ""

@@ -296,6 +296,69 @@ class ProfileController extends Controller
         else return $this->redirect('/user/'.$user->getId());
     }
 
+     /**
+ * @Route("/user/bookMessage")
+ */
+    public function bookMessageAction(Request $request, \Swift_Mailer $mailer)
+    {
+        $_t = $this->get('translator');
+
+        $post = $request->request;
+
+        if ($this->captchaVerify($post->get('g-recaptcha-response'))) {
+
+
+            $card_id = $post->get('card_id');
+
+            $card = $this->getDoctrine()
+                ->getRepository(Card::class)
+                ->find($card_id);
+            $user = $card->getUser();
+
+
+
+
+            $message = (new \Swift_Message($_t->trans('Запрос на бронирование')))
+                ->setFrom(['mail@multiprokat.com' => 'Робот Мультипрокат'])
+                ->setTo($user->getEmail())
+                ->setCc('mail@multiprokat.com')
+                ->setBody(
+                    $this->renderView(
+                        $_SERVER['LANG'] == 'ru' ? 'email/book.html.twig' : 'email/book_'.$_SERVER['LANG'].'.html.twig',
+                        array(
+                            'header' => $post->get('header'),
+                            'date_in' => $post->get('date_in'),
+                            'date_out' => $post->get('date_out'),
+                            'city_in' => $post->get('city_in'),
+                            'city_out' => $post->get('city_out'),
+                            'alternative' => $post->get('alternative'),
+                            'email' => $post->get('email'),
+                            'full_name' => $post->get('full_name'),
+                            'phone' => $post->get('phone'),
+                            'card' => $card,
+                            'user' => $user
+                        )
+                    ),
+                    'text/html'
+                );
+            $mailer->send($message);
+
+            $this->addFlash(
+                'notice',
+                $_t->trans('Ваше сообщение успешно отправлено!')
+            );
+        } else {
+            $this->addFlash(
+                'notice',
+                $_t->trans('Каптча не пройдена!')
+            );
+        }
+
+        return $this->redirect('/card/'.$card->getId());
+
+    }
+
+
     /**
      * @Route("/user/contactsMessage")
      */
