@@ -151,6 +151,12 @@
                 </div>
                 {% endif %}
 
+                {% if is_mobile() %}
+                <div class="uk-margin-bottom card_blanc border_green">
+                    <div class="cursor-pointer uk-text-center" uk-toggle="target: #user_book_form"><i class="fa fa-pencil-square-o"></i> {% trans %}Забронировать{% endtrans %}</div>
+                </div>
+                {% endif %}
+
                 <ul id="tt" uk-tab>
                     <li><a href="#">{% trans %}Информация{% endtrans %}</a></li>
                     {% if card.coords != NULL and card.coords != ''%}
@@ -435,7 +441,7 @@
                 </div>
 
                 {% if not is_mobile() %}
-                <div class="uk-margin-bottom card_blanc">
+                <div class="uk-margin-bottom card_blanc border_green">
                     <div class="cursor-pointer uk-text-center" uk-toggle="target: #user_book_form"><i class="fa fa-pencil-square-o"></i> {% trans %}Забронировать{% endtrans %}</div>
                 </div>
                 {% endif %}
