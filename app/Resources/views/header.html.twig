@@ -50,7 +50,7 @@
                         <div class="uk-width-expand">
                             {#<i uk-icon="icon:search"></i> <input class="glob_search" type="text" name="glob_search" placeholder="Поиск">#}
                             <div class="uk-inline uk-width-1-1 uk-position-relative">
-                                <span class="uk-form-icon search_popup_trigger" uk-icon="icon: search"></span>
+                                <a class="uk-form-icon search_popup_trigger" href="#" uk-icon="icon: search"></a>
                                 <input class="uk-input glb" name="glob_search" placeholder="{% trans %}Поиск, например: bmw{% endtrans %}">
                                 {{ include('search_popup.html.twig') }}
                             </div>

@@ -1113,3 +1113,21 @@ footer a:hover{
 .datepickers-container{
     z-index: 2000;
 }
+
+.search_popup_trigger{
+    z-index: 2;
+}
+
+.uk-input.glb{
+    z-index: 1;
+}
+
+#search_popup{
+position: absolute;
+    background: white;
+    top: 0;
+    padding: 20px;
+    width: 400px;
+    border: 1px solid lightgray;
+    z-index: 3;
+}
