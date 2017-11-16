@@ -779,5 +779,11 @@ msgstr "Full name"
 msgid "Укажите альтернативу, если выбранный транспорт окажется недоступен"
 msgstr "Type alternative variant of vehicle if chosen is busy"
 
+msgid "Напишите город, если он отличается от вашего"
+msgstr "Type city name if it differ than yours"
+
+msgid "Выберите категорию транспорта"
+msgstr "Select vehicle category"
+
 msgid ""
 msgstr ""
