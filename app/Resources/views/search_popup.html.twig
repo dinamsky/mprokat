@@ -13,15 +13,15 @@
 
     <div class="uk-margin-small-top">
         <div uk-grid class="uk-flex uk-flex-center uk-grid-small">
-            {% for gt in t3_new.getGt|slice(0,4) if gt.carTypeIds %}
-                <div class="gt_selector" data-url="{{ gt.url }}" data-header="{{ gt.header }}">
+            {% for gt in t3_new.getGt|slice(0,6) if gt.carTypeIds %}
+                <div class="gt_selector uk-margin-small-bottom" data-url="{{ gt.url }}" data-header="{{ gt.header }}">
                     <a data-gt="{{ gt.url }}" href="/rent/{{ city.url }}/all/{{ gt.url }}" class="pop_s_link uk-button uk-button-primary uk-button-small"><i class="fa fa-{{ gt.icon }}"></i> {{ lang == 'ru' ? gt.header : gt.url }}</a>
                 </div>
             {% endfor %}
         </div>
         <div class="uk-text-center uk-margin-small-top cursor-pointer " uk-toggle="target: #more_gt">{% trans %}еще категории{% endtrans %} <i uk-icon="icon:chevron-down"></i></div>
         <div id="more_gt" uk-grid class="uk-flex uk-flex-center uk-margin-top uk-grid-small" hidden>
-            {% for gt in t3_new.getGt|slice(4) if gt.carTypeIds %}
+            {% for gt in t3_new.getGt|slice(6) if gt.carTypeIds %}
                 <div class="gt_selector uk-width-1-2 uk-width-auto@s" data-url="{{ gt.url }}" data-header="{{ gt.header }}">
                     <a data-gt="{{ gt.url }}" href="/rent/{{ city.url }}/all/{{ gt.url }}" class="pop_s_link uk-button uk-button-primary uk-button-small"><i class="fa fa-{{ gt.icon }}"></i> {{ lang == 'ru' ? gt.header : gt.url }}</a>
                 </div>
