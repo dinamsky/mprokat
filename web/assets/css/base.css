@@ -1151,8 +1151,10 @@ position: absolute;
     vertical-align: top;
 }
 
-.gt_button i{
-
+.gt_button.active{
+    color:white;
+    text-decoration: none;
+    background: #1976d2;
 }
 
 .top_pop_carousel{
