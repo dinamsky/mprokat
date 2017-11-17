@@ -63,4 +63,10 @@ class ServiceT3new extends Controller
         $query = $this->em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.header ASC');
         return $query->getResult();
     }
+
+    public function getGt()
+    {
+        $query = $this->em->createQuery('SELECT g FROM AppBundle:GeneralType g ORDER BY g.weight ASC');
+        return $query->getResult();
+    }
 }

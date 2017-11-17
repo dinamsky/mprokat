@@ -1113,3 +1113,91 @@ footer a:hover{
 .datepickers-container{
     z-index: 2000;
 }
+
+/*.search_popup_trigger{*/
+    /*z-index: 2;*/
+/*}*/
+
+/*.uk-input.glb{*/
+    /*z-index: 1;*/
+/*}*/
+
+#search_popup{
+position: absolute;
+    background: white;
+    top: 0;
+    /*padding: 20px;*/
+    width: 560px;
+    border: 1px solid lightgray;
+    z-index: 3;
+}
+
+.gt_button{
+    display: block;
+    border: 1px solid lightgrey;
+    box-sizing: border-box;
+    text-align: center;
+    color: grey;
+    height: 60px;
+
+}
+
+.gt_button span{
+    font-size: 10px;
+    line-height: 10px;
+    display: inline-block;
+    width: 80%;
+    height: 30px;
+    vertical-align: top;
+}
+
+.gt_button.active{
+    color:white;
+    text-decoration: none;
+    background: #1976d2;
+}
+
+.top_pop_carousel{
+    padding: 0 40px;
+    box-sizing: border-box;
+    height: 60px;
+    overflow: hidden;
+}
+
+.top_pop_carousel .owl-prev{
+     top: 80%;
+    left: 10px;
+}
+
+.top_pop_carousel .owl-prev.disabled{
+    display: none;
+
+}
+
+.top_pop_carousel .owl-next{
+top: 80%;
+    right: 10px;
+}
+
+.popup_city_search input{
+    border: 0;
+    border-bottom: 1px solid lightgrey;
+}
+
+.search_popup_trigger{
+    border: 1px solid lightgray;
+    padding: 5px;
+    color: lightgray;
+}
+
+.gt_button:hover{
+    color:white;
+    text-decoration: none;
+    background: #1976d2;
+}
+
+.owl-carousel.loading{
+
+ display:none;
+
+}

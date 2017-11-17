@@ -10,7 +10,7 @@ $( document ).ready(function() {
                 dataType: 'json',
                 data: {q: term},
                 success: function(json){
-                    console.log(json);
+
                     response(json);
                 }
             });
@@ -28,6 +28,10 @@ $( document ).ready(function() {
             $('input[name="input_city"]').val('');
         }
     });
+
+
+
+    
 
 });
 

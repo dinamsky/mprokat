@@ -117,7 +117,7 @@
                         {% endif %}
                     </div>
 
-                    <div id="page_slider" class="owl-carousel owl-theme" data-items="1" data-full="1">
+                    <div id="page_slider" class="owl-carousel owl-carousel-all owl-theme" data-items="1" data-full="1">
                         {% for foto in card.getFotos %}
                             <div uk-lightbox>
                             <a href="/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg" class="slide uk-width-1-1" style="
@@ -134,7 +134,7 @@
 
                 </div>
 
-                //
+
 
                 {% if not is_mobile() %}
                 <div class="uk-text-right">

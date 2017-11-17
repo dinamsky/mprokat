@@ -101,7 +101,7 @@
         {% if similar %}
         <div class="uk-margin-large">
             <h2 class="pf_style_header"><span>{{ general.header }} в {{ city.gde }}</span></h2>
-            <div class="owl-carousel in_row_4 owl-theme uk-width-1-1" data-items="4">
+            <div class="owl-carousel owl-carousel-all in_row_4 owl-theme uk-width-1-1" data-items="4">
                 {% for card in similar %}
                     {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}
                 {% endfor %}
@@ -112,7 +112,7 @@
         {% if allincity %}
             <div class="uk-margin-large">
                 <h2 class="pf_style_header"><span>Прокат/аренда транспорта в {{ city.gde }}</span></h2>
-                <div class="owl-carousel in_row_4 owl-theme uk-width-1-1" data-items="4">
+                <div class="owl-carousel owl-carousel-all in_row_4 owl-theme uk-width-1-1" data-items="4">
                     {% for card in allincity %}
                         {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}
                     {% endfor %}
