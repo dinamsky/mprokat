@@ -4,14 +4,13 @@
 {% block stylesheets %}
     {{ parent() }}
     <link href="{{ asset('assets/css/main_page/top_slider.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/css/owl.carousel.min.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/css/owl.theme.default.css') }}" rel="stylesheet"/>
+
     <link href="{{ asset('assets/css/auto-complete.css') }}" rel="stylesheet" />
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
+
     <script src="{{ asset('assets/js/mainPage.js') }}"></script>
     <script src="{{ asset('assets/js/city_general_mark_selector.js') }}"></script>
     <script src="{{ asset('assets/js/sliderSettings.js') }}"></script>
@@ -42,7 +41,7 @@
 <div class="top_slider_block">
     <div class="standard_wide uk-position-relative">
         <div class="uk-text-center tx_24 uk-margin-bottom">{% trans %}Лучшие предложения{% endtrans %}</div>
-        <div class="owl-carousel owl-theme uk-width-1-1" data-items="6" data-dots="0">
+        <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-items="6" data-dots="0">
             {% for card in topSlider %}
                 {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px', 'micro':true}) }}
             {% endfor %}
@@ -186,7 +185,7 @@
                 {#<div>#}
                     {#{{ include('search/one_grid_view.html.twig', {'card':cars, 'height':'150px'}) }}#}
                 {#</div>#}
-                <div class="owl-carousel owl-theme uk-width-1-1" data-items="1" data-dots="0">
+                <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-items="1" data-dots="0">
                     {% for card in cars %}
                         {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px'}) }}
                     {% endfor %}
@@ -198,7 +197,7 @@
                 {#<div>#}
                     {#{{ include('search/one_grid_view.html.twig', {'card':moto, 'height':'150px'}) }}#}
                 {#</div>#}
-                <div class="owl-carousel owl-theme uk-width-1-1" data-items="1" data-dots="0">
+                <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-items="1" data-dots="0">
                     {% for card in wedding %}
                         {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px'}) }}
                     {% endfor %}
@@ -210,7 +209,7 @@
                 {#<div>#}
                     {#{{ include('search/one_grid_view.html.twig', {'card':trucks, 'height':'150px'}) }}#}
                 {#</div>#}
-                <div class="owl-carousel owl-theme uk-width-1-1" data-items="1" data-dots="0">
+                <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-items="1" data-dots="0">
                     {% for card in heli %}
                         {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px'}) }}
                     {% endfor %}
@@ -222,7 +221,7 @@
                 {#<div>#}
                     {#{{ include('search/one_grid_view.html.twig', {'card':bicycles, 'height':'150px'}) }}#}
                 {#</div>#}
-                <div class="owl-carousel owl-theme uk-width-1-1" data-items="1" data-dots="0">
+                <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-items="1" data-dots="0">
                     {% for card in snow %}
                         {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px'}) }}
                     {% endfor %}
