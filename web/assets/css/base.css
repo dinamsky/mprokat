@@ -1139,6 +1139,7 @@ position: absolute;
     text-align: center;
     color: grey;
     height: 60px;
+
 }
 
 .gt_button span{
@@ -1155,13 +1156,15 @@ position: absolute;
 }
 
 .top_pop_carousel{
-    padding: 0 20px;
+    padding: 0 40px;
     box-sizing: border-box;
+    height: 60px;
+    overflow: hidden;
 }
 
 .top_pop_carousel .owl-prev{
      top: 80%;
-    left: -10px;
+    left: 10px;
 }
 
 .top_pop_carousel .owl-prev.disabled{
@@ -1171,7 +1174,7 @@ position: absolute;
 
 .top_pop_carousel .owl-next{
 top: 80%;
-    right: -10px;
+    right: 10px;
 }
 
 .popup_city_search input{
@@ -1189,4 +1192,10 @@ top: 80%;
     color:white;
     text-decoration: none;
     background: #1976d2;
+}
+
+.owl-carousel.loading{
+
+ display:none;
+
 }

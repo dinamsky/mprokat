@@ -41,7 +41,13 @@ $( document ).ready(function() {
         e.stopPropagation();
     });
 
-    $('.top_pop_carousel').owlCarousel({
+    var top_carousel = $('.top_pop_carousel');
+
+    top_carousel.on({
+        'initialized.owl.carousel': function () {
+             top_carousel.find('.owl-item div').css('display','block');
+        }
+    }).owlCarousel({
         'nav': true,
         'margin' : 5,
         'slideBy' : 4,
