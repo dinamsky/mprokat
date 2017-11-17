@@ -9,13 +9,15 @@
 
 
 
-    <div class="padding20">
-        <div class="uk-text-center uk-margin-bottom">
+
+        <div class="uk-text-center uk-margin-bottom uk-margin-top">
         {% trans %}Наши категории{% endtrans %}:
         </div>
-        <div  class=" top_pop_carousel owl-carousel">
+
+
+    <div  class=" top_pop_carousel owl-carousel uk-margin-bottom">
             {% for gt in t3_new.getGt if gt.carTypeIds %}
-                <div class="uk-width-1-1">
+                <div class="uk-width-1-1" style="display: none">
                     <a href="/rent/{{ city.url }}/all/{{ gt.url }}" class="gt_button">
                         <i class="fa fa-{{ gt.icon }}"></i>
                         <br>
@@ -24,6 +26,5 @@
                 </div>
             {% endfor %}
         </div>
-    </div>
 
 </div>
