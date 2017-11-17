@@ -5,6 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% block stylesheets %}
             <link href="{{ asset('assets/css/uikit.css') }}" rel="stylesheet" />
+            <link href="{{ asset('assets/css/owl.carousel.min.css') }}" rel="stylesheet"/>
+            <link href="{{ asset('assets/css/owl.theme.default.css') }}" rel="stylesheet"/>
             <link href="{{ asset('assets/css/base.css') }}" rel="stylesheet" />
             <link href="{{ asset('assets/css/font-awesome.min.css') }}" rel="stylesheet" />
             <link href="{{ asset('assets/css/colors.css') }}" rel="stylesheet" />
@@ -58,6 +60,7 @@
             <script src="{{ asset('assets/js/auto-complete.min.js') }}"></script>
             <script src="{{ asset('assets/js/city_autocomplete.js') }}"></script>
             <script src="{{ asset('assets/js/top_autocomplete.js') }}"></script>
+            <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
             <script src="{{ asset('assets/js/search_popup.js') }}"></script>
         {% endblock %}
         {{ include('counters.html.twig') }}

@@ -1,5 +1,5 @@
 $( document ).ready(function() {
-    $(".owl-carousel").each(function() {
+    $(".owl-carousel-all").each(function() {
         var items = $(this).data('items');
         var dots = $(this).data('dots');
         var full = $(this).data('full');
@@ -47,7 +47,7 @@ $( document ).ready(function() {
 
     function recount(fnc)
     {
-        if (fnc === 'recount') $(".owl-carousel").find('div.owl-item').height($(".owl-carousel").height());
+        // if (fnc === 'recount') $(".owl-carousel-all").find('div.owl-item').height($(".owl-carousel").height());
     }
 
 });
