@@ -131,6 +131,11 @@ $( document ).ready(function() {
         });
     });
 
+    $('.cityIdSelect').on('change',function(){
+        var cityName = $(this).children('option:selected').html();
+        $('#xpb_name').html(cityName);
+    });
+
     $('input[name="noMark"]').on('change',function(){
         var checked = $(this).prop('checked');
         if(checked) $('input[name="ownMark"]').removeClass('uk-hidden');

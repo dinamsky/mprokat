@@ -4,7 +4,7 @@
         <div class="help_text">{% trans %}Укажите адрес размещения вашего транспорта{% endtrans %}</div>
     </div>
     <div class="uk-width-3-5">
-        <span class="expander_button" uk-toggle="target: #city_selector">{{ city.header }} <i uk-icon="icon:chevron-down"></i></span>
+        <span class="expander_button" uk-toggle="target: #city_selector"><span id="xpb_name">{{ city.header }}</span> <i uk-icon="icon:chevron-down"></i></span>
 
         <div class="expandable_block" id="city_selector" hidden>
             <div class="uk-text-small">{% trans %}Страна{% endtrans %}</div>
@@ -13,14 +13,19 @@
                 {#{% for country_code, country_title in countries %}#}
                 {#<option value="{{ country_code }}" {{ country_code == countryCode ? 'selected' : '' }}>{{ country_title }}</option>#}
                 {#{% endfor %}#}
-                {{ include( 'common/ajax_edit_options.html.twig', { 'options': countries, 'id': countryCode }) }}
+                {#{{ include( 'common/ajax_edit_options.html.twig', { 'options': countries, 'id': countryCode }) }}#}
+
+                <option value="0">-выберите страну-</option>
+                <option value="RUS">Россия</option>
+                <option value="CAN">Canada</option>
+                <option value="USA">USA</option>
             </select>
             <div class="uk-text-small">{% trans %}Регион{% endtrans %}</div>
             <select name="regionId" id="regionId" class="uk-select">
                 {{ include( 'common/ajax_edit_options.html.twig', { 'options': regions, 'id': regionId }) }}
             </select>
             <div class="uk-text-small">{% trans %}Город{% endtrans %}</div>
-            <select name="cityId" id="cityId" class="uk-select">
+            <select name="cityId" id="cityId" class="uk-select cityIdSelect">
                 {{ include( 'common/ajax_edit_options.html.twig', { 'options': cities, 'id': cityId }) }}
             </select>
             <div class="uk-text-small">{% trans %}Адрес{% endtrans %}</div>

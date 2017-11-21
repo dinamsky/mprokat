@@ -126,7 +126,8 @@ class MenuCity extends Controller
             ->getResult();
 
         foreach($cities as $c){
-            $res[] = $c->getHeader().'|'.$c->getId().'|'.$c->getUrl();
+            if($c->getIso()!='') $iso = ', '.$c->getIso(); else $iso = '';
+            $res[] = $c->getHeader().$iso.', '.$c->getCountry().'|'.$c->getId().'|'.$c->getUrl();
         }
 
         return new Response(json_encode($res));
