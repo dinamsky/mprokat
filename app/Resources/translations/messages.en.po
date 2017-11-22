@@ -785,5 +785,8 @@ msgstr "Type city name if it differ than yours"
 msgid "Выберите категорию транспорта"
 msgstr "Select vehicle category"
 
+msgid "Наши категории"
+msgstr "Our categories"
+
 msgid ""
 msgstr ""

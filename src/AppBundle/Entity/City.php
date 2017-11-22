@@ -46,6 +46,13 @@ class City
     /**
      * @var string
      *
+     * @ORM\Column(name="iso", type="string", length=255)
+     */
+    private $iso;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="coords", type="string", length=255)
      */
     private $coords;
@@ -398,5 +405,29 @@ class City
     public function getCards()
     {
         return $this->cards;
+    }
+
+    /**
+     * Set iso
+     *
+     * @param string $iso
+     *
+     * @return City
+     */
+    public function setIso($iso)
+    {
+        $this->iso = $iso;
+
+        return $this;
+    }
+
+    /**
+     * Get iso
+     *
+     * @return string
+     */
+    public function getIso()
+    {
+        return $this->iso;
     }
 }

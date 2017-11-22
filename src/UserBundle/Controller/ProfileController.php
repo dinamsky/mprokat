@@ -321,7 +321,7 @@ class ProfileController extends Controller
             $message = (new \Swift_Message($_t->trans('Запрос на бронирование')))
                 ->setFrom(['mail@multiprokat.com' => 'Робот Мультипрокат'])
                 ->setTo($user->getEmail())
-                ->setCc('mail@multiprokat.com')
+                ->setBcc('mail@multiprokat.com')
                 ->setBody(
                     $this->renderView(
                         $_SERVER['LANG'] == 'ru' ? 'email/book.html.twig' : 'email/book_'.$_SERVER['LANG'].'.html.twig',
