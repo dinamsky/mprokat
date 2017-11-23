@@ -141,8 +141,10 @@ $( document ).ready(function() {
             data: {cityId:cityId},
             success: function(){
                 UIkit.modal('#city_popular').hide();
-                if(!$('body').hasClass('main_page')) document.location.href = getSelectorUrl() + getQueryVars();
-                else document.location.href = '/';
+                var go_href = getSelectorUrl() + getQueryVars();
+                if($('body').hasClass('main_page')) go_href = '/';
+                if($('body').hasClass('promo')) go_href = '/promo';
+                document.location.href = go_href;
             }
         });
     });
