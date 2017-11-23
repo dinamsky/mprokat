@@ -31,7 +31,7 @@
 
     </head>
     <body {% block bodyVars %}{% endblock %} class="{{ is_mobile() ? 'mobile' : 'desktop' }} {% block bodyClass %}{% endblock %}">
-    {{ include('yandex_metrica.html.twig') }}
+
 
 
 
@@ -63,6 +63,7 @@
             <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
             <script src="{{ asset('assets/js/search_popup.js') }}"></script>
         {% endblock %}
+        {{ include('yandex_metrica.html.twig') }}
         {{ include('counters.html.twig') }}
         {{ include('user/auth_modals.html.twig') }}
     </body>

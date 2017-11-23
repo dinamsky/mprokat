@@ -1,0 +1,330 @@
+{% extends 'base.html.twig' %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('assets/css/main_page/top_slider.css') }}" rel="stylesheet"/>
+
+    <link href="{{ asset('assets/css/auto-complete.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/select2.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/promo.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('assets/js/mainPage.js') }}"></script>
+    <script src="{{ asset('assets/js/city_general_mark_selector.js') }}"></script>
+    <script src="{{ asset('assets/js/sliderSettings.js') }}"></script>
+    <script src="{{ asset('assets/js/mark_autocomplete.js') }}"></script>
+
+    <script src="{{ asset('assets/js/new_card_settings.js') }}"></script>
+    <script src="{{ asset('assets/js/newCardForm.js') }}"></script>
+
+    <script src="{{ asset('assets/js/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/js/select_combo.js') }}"></script>
+    <script src="{{ asset('assets/js/promo.js') }}"></script>
+
+
+
+{% endblock %}
+
+{% block metaTags %}
+    {{ parent() }}
+
+{% endblock %}
+
+{% block title %}promo{% endblock %}
+
+{% block bodyClass %}promo{% endblock %}
+
+
+{% block content %}
+
+    {#{% set promo = [] %}#}
+    {#{% set promo = promo|merge({'b1_h1': 'Зарабатывайте на аренде своего<br>автомобиля в Мультипрокат!'}) %}#}
+    {#{% set promo = promo|merge({'b1_a1': 'Сколько я смогу заработать?'}) %}#}
+    {#{% set promo = promo|merge({'b1_a2': 'Сдать авто'}) %}#}
+
+    {#{% set promo = promo|merge({'b2_h2': 'ЗАЧЕМ ВЛАДЕЛЬЦЫ СДАЮТ СВОИ АВТОМОБИЛИ В АРЕНДУ?'}) %}#}
+    {#{% set promo = promo|merge({'b2_list': '- Авто не используется<br>#}
+                                            {#- Стоит на стоянке, пока вы заграницей<br>#}
+                                            {#- Вас лишили прав<br>#}
+                                            {#- Автомобиль не продается<br>#}
+                                            {#- Есть желание зарабатывать в арендном бизнесе'}) %}#}
+    {#{% set promo = promo|merge({'b2_case': 'Ваш случай'}) %}#}
+
+    {#{% set promo = promo|merge({'b3_h2': 'Узнайте Ваш примерный доход в месяц'}) %}#}
+    {#{% set promo = promo|merge({'b3_desc': 'Укажите модель и марку автомобиля, чтобы убедиться на реальных примерах наших клиентов, сколько денег будет приносить Ваш автомобиль'}) %}#}
+
+    {#{% set promo = promo|merge({'b4_t1': 'Почему сдавать авто нужно в Мультипрокате?'}) %}#}
+    {#{% set promo = promo|merge({'b4_t1_text': 'мы помогаем сдавать автомобили в 215 городах России<br>#}
+                                {#более 600 марок, более 1200 моделей уже сдаются<br>#}
+                                {#наш сайт специально создан для индустрии "аренда и прокат транспорта"<br>#}
+                                {#высокая посещаемость тех, кто ищет авто в аренду в городе __________<br>#}
+                                {#38 000 рублей в среднем зарабатывает наш пользователь, сдавая авто среднего класса'}) %}#}
+
+    {#{% set promo = promo|merge({'b4_t2': 'Я должен делиться прибылью?'}) %}#}
+    {#{% set promo = promo|merge({'b4_t2_text': 'Мы не берем никаких комиссий:<br>#}
+                                {#вы сами решаете за сколько, кому и на какой срок сдавать автомобиль<br>#}
+                                {#все деньги вы забираете себе, в отличии от конкурентов Мультипрокат не берет комиссию от сделок'}) %}#}
+
+    {#{% set promo = promo|merge({'b4_t3': 'Мне нужно куда-то отдать автомобиль?'}) %}#}
+    {#{% set promo = promo|merge({'b4_t3_text': 'Автомобиль остается у вас пока мы не найдем клиента на аренду:<br>#}
+                                {#вы пользуетесь автомобилем тогда, когда это нужно<br>#}
+                                {#мы находим клиента и отправляем вам заявку<br>#}
+                                {#вы можете сами планировать время аренды и время когда автомобилем будете пользоваться сами'}) %}#}
+
+    {#{% set promo = promo|merge({'b4_t4': 'Как это работает?'}) %}#}
+    {#{% set promo = promo|merge({'b4_t4_text': 'Вы размещаете объявление с описанием авто:<br>#}
+                                {#указываете цену<br>#}
+                                {#добавляете фотографии автомобиля<br>#}
+                                {#указываете условия аренды<br>#}
+                                {#ваши мейл и телефон<br>#}
+                                {#принимаете клиентов и заключаете с ними договор аренды авто (ссылка на скачивание договора)'}) %}#}
+
+    {#{% set promo = promo|merge({'b5_h2': 'Наши рекомендации по безопасности'}) %}#}
+    {#{% set promo = promo|merge({'b5_desc': 'Что делают владельцы, сдавая автомобили в аренду, чтобы защитить себя от рисков:'}) %}#}
+
+
+    {#{% set promo = promo|merge({'b5_h3_1': 'Автострахование'}) %}#}
+    {#{% set promo = promo|merge({'b5_h3_desc_1': 'Расширенное ОСАГО и ДОСАГО<br>Эти страховки возмещают ущерб до 1. 5 млн при затратах в 5000-11000 руб.'}) %}#}
+
+    {#{% set promo = promo|merge({'b5_h3_2': 'Договор аренды'}) %}#}
+    {#{% set promo = promo|merge({'b5_h3_desc_2': 'Подписывая договор аренды с арендатором вы страхуете себя от любых рисков.<br>#}
+{#Скачать договор аренды транспорта можно тут: ссылка '}) %}#}
+
+    {#{% set promo = promo|merge({'b5_h3_3': 'Аренда для опытных'}) %}#}
+    {#{% set promo = promo|merge({'b5_h3_desc_3': 'Наши владельцы сдают свои автомобили только тем, кто имеет стаж вождения от 3-х и более лет за рулем. Авто бизнес класса сдаются еще более опытным водителям'}) %}#}
+
+    {#{% set promo = promo|merge({'b5_h3_4': 'Проверка арендаторов'}) %}#}
+    {#{% set promo = promo|merge({'b5_h3_desc_4': 'Очень просто имея компьютер, проверить водительское удостоверение.<br>#}
+{#Хотите, мы сделаем проверку по своим базам и сообщим вам результаты'}) %}#}
+
+    {#{% set promo = promo|merge({'b5_h3_5': 'GPS Трекер в авто'}) %}#}
+    {#{% set promo = promo|merge({'b5_h3_desc_5': 'Этот вариант для совсем беспокойных владельцев.<br>#}
+{#Установив трекер вы можете знать все о своем транспорте. Трекеры сейчас продаются в каждом городе и стоят недорого'}) %}#}
+
+    {#{% set promo = promo|merge({'b5_h3_6': 'Залог'}) %}#}
+    {#{% set promo = promo|merge({'b5_h3_desc_6': 'Возьмите залог и удерживайте его на 5-7 дней, чтобы иметь возможность выплатить#}
+{#возможные штрафы, за того, кто брал у вас автомобиль в аренду.<br>#}
+{#Также залог мотивирует арендатора к более бережному отношению к машине'}) %}#}
+
+
+    {#{% set promo = promo|merge({'b6_h2': 'Отзывы'}) %}#}
+    {#{% set promo = promo|merge({'opinions': {#}
+    {#0: {'h4':'Георгий Власов','desc':'Сменив работу в офисе на фриланс, понял, что редко использую автомобиль. Думал даже сделать сайт, но в поиске нашел Мультипрокат. Теперь иногда сдаю порядочным людям свой#}
+{#Рено.'},#}
+    {#1: {'h4':'Георгий Власов','desc':'Сменив работу в офисе на фриланс, понял, что редко использую автомобиль. Думал даже сделать сайт, но в поиске нашел Мультипрокат. Теперь иногда сдаю порядочным людям свой#}
+{#Рено.'}#}
+    {#}}) %}#}
+
+
+    {#{% set promo = promo|merge({'b7_t1': 'Присоединяйтесь! Ваш авто может зарабатывать!'}) %}#}
+    {#{% set promo = promo|merge({'b7_a1': 'Добавить свой авто'}) %}#}
+
+<div class="promo_block block_1 uk-flex uk-flex-center uk-flex-middle" style="
+
+     background: linear-gradient( rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6) ), url({{ asset('assets/images/interface/promo/b1.jpg') }}) center center; background-size: cover;height: 700px;">
+    <div class="standard_wide">
+
+
+                <h1 class="c_white uk-text-bold tx_40">{{ promo.b1_h1|raw }}</h1>
+                <div>
+                    <a href="#calculator" uk-scroll="offset:150" class="uk-button uk-button-large c_black bg_yellow">{{ promo.b1_a1 }}</a>
+                    <a href="/card/new" class="uk-button uk-button-large c_white border_white">{{ promo.b1_a2 }}</a>
+                </div>
+
+
+    </div>
+</div>
+
+<div class="promo_block block_2 block_padding  bg_white">
+    <div class="standard_wide">
+        <div uk-grid>
+            <div class="uk-width-1-2">
+                <h2 class="uk-text-bold">{{ promo.b2_h2 }}</h2>
+                <div id="promo_case_list">{{ promo.b2_list|raw }}</div>
+                <div class="uk-margin-top">{{ promo.b2_case }}
+                    <input id="promo_case" type="text" name="case" class="uk-input uk-width-1-2" placeholder="Укажите свой случай">
+                    <button id="promo_add_case" type="button"><i uk-icon="icon:plus"></i></button>
+                </div>
+            </div>
+            <div class="uk-width-1-2">
+                <div style="background: url({{ asset('assets/images/interface/promo/b2.jpg') }}) center center; background-size: cover;height: 400px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="calculator" class="promo_block block_3  bg_white">
+    <div class="standard_wide">
+        <h2 class="tx_30 uk-text-bold">{{ promo.b3_h2 }}</h2>
+        <div class="tx_24">{{ promo.b3_desc|raw }}</div>
+
+        <div uk-grid class="block_padding">
+            <div class="uk-width-1-3">
+                <div>Укажите марку автомобиля</div>
+                <select name="mark" id="markId" class="uk-select sel_combo">
+                    {{ include( 'common/ajax_edit_options.html.twig', { 'options': marks, 'id': 0 }) }}
+                </select>
+
+                <div class="uk-margin-top">Выберите модель авто</div>
+                <select name="modelId" id="markModelId" class="uk-select sel_combo"></select>
+
+                <div class="uk-margin-top">Планируемый срок аренды, суток</div>
+                <input id="dayz" type="text" class="uk-input" value="20">
+
+                <button id="promo_count" type="button" class="uk-button uk-button-success uk-width-1-1 uk-margin-top">Узнать стоимость</button>
+            </div>
+            <div class="uk-width-2-3 uk-animation-slide-right uk-hidden" id="counted">
+                <div>&nbsp;</div>
+                <div class="bg_blue c_white padding20">
+                    <div>Ваш автомобиль - <span id="promo_result_car"></span></div>
+                    <div>Рекомендуемая средняя стоимость 1 суток - <span id="promo_result_day"></span><i class="fa fa-ruble"></i></div>
+                    <div>Планируемый доход за <span id="promo_result_dayz"></span> суток - <span id="promo_result_total"></span><i class="fa fa-ruble"></i></div>
+                </div>
+                <div class="uk-margin-small">Примеры объявлений на multiprokat.com</div>
+                <div id="promo_result_slider"></div>
+            </div>
+            <div class="uk-width-2-3 uk-animation-slide-right uk-hidden" id="nothing">
+                <div>&nbsp;</div>
+                <div>
+                    К сожалению, данной модели нет в нашей базе.<br>
+                    Попробуйте другую модель
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="promo_block block_4 block_padding  bg_white">
+    <div class="promo_wide">
+        <div class="b4_toggler tx_24 uk-text-bold c_black uk-clearfix" uk-toggle="target: #b4_t1"><span class="uk-float-left">{{ promo.b4_t1 }}</span><span class="uk-float-right promo_plus"><i uk-icon="plus"></i></span></div>
+        <div id="b4_t1" class="b4_toggler_text uk-margin-top" hidden>{{ promo.b4_t1_text|raw }}</div>
+        <hr>
+        <div class="b4_toggler tx_24 uk-text-bold c_black uk-clearfix" uk-toggle="target: #b4_t2"><span class="uk-float-left">{{ promo.b4_t2 }}</span><span class="uk-float-right promo_plus"><i uk-icon="plus"></i></span></div>
+        <div id="b4_t2" class="b4_toggler_text uk-margin-top" hidden>{{ promo.b4_t2_text|raw }}</div>
+        <hr>
+        <div class="b4_toggler tx_24 uk-text-bold c_black uk-clearfix" uk-toggle="target: #b4_t3"><span class="uk-float-left">{{ promo.b4_t3 }}</span><span class="uk-float-right promo_plus"><i uk-icon="plus"></i></span></div>
+        <div id="b4_t3" class="b4_toggler_text uk-margin-top" hidden>{{ promo.b4_t3_text|raw }}</div>
+        <hr>
+        <div class="b4_toggler tx_24 uk-text-bold c_black uk-clearfix" uk-toggle="target: #b4_t4"><span class="uk-float-left">{{ promo.b4_t4 }}</span><span class="uk-float-right promo_plus"><i uk-icon="plus"></i></span></div>
+        <div id="b4_t4" class="b4_toggler_text uk-margin-top" hidden>{{ promo.b4_t4_text|raw }}</div>
+    </div>
+</div>
+
+<div class="promo_block block_5 block_padding  bg_white">
+    <div class="promo_wide">
+        <h2 class=" tx_30 uk-text-bold c_black uk-text-center">{{ promo.b5_h2 }}</h2>
+        <div class=" tx_24 c_black uk-text-center">{{ promo.b5_desc|raw }}</div>
+        <div uk-grid class="block_padding">
+            <div class="uk-width-1-2">
+                <div uk-grid>
+                    <div class="uk-width-1-5">
+                        <img src="{{ asset('assets/images/interface/promo/star.svg') }}" alt="">
+                    </div>
+                    <div class="uk-width-4-5">
+                        <h3 class="uk-text-bold">{{ promo.b5_h3_1 }}</h3>
+                        <div>{{ promo.b5_h3_desc_1|raw }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="uk-width-1-2">
+                <div uk-grid>
+                    <div class="uk-width-1-5">
+                        <img src="{{ asset('assets/images/interface/promo/pen.svg') }}" alt="">
+                    </div>
+                    <div class="uk-width-4-5">
+                        <h3 class="uk-text-bold">{{ promo.b5_h3_2 }}</h3>
+                        <div>{{ promo.b5_h3_desc_2|raw }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="uk-width-1-2">
+                <div uk-grid>
+                    <div class="uk-width-1-5">
+                        <img src="{{ asset('assets/images/interface/promo/wallet.svg') }}" alt="">
+                    </div>
+                    <div class="uk-width-4-5">
+                        <h3 class="uk-text-bold">{{ promo.b5_h3_3 }}</h3>
+                        <div>{{ promo.b5_h3_desc_3|raw }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="uk-width-1-2">
+                <div uk-grid>
+                    <div class="uk-width-1-5">
+                        <img src="{{ asset('assets/images/interface/promo/target.svg') }}" alt="">
+                    </div>
+                    <div class="uk-width-4-5">
+                        <h3 class="uk-text-bold">{{ promo.b5_h3_4 }}</h3>
+                        <div>{{ promo.b5_h3_desc_4|raw }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="uk-width-1-2">
+                <div uk-grid>
+                    <div class="uk-width-1-5">
+                        <img src="{{ asset('assets/images/interface/promo/gps.svg') }}" alt="">
+                    </div>
+                    <div class="uk-width-4-5">
+                        <h3 class="uk-text-bold">{{ promo.b5_h3_5 }}</h3>
+                        <div>{{ promo.b5_h3_desc_5|raw }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="uk-width-1-2">
+                <div uk-grid>
+                    <div class="uk-width-1-5">
+                        <img src="{{ asset('assets/images/interface/promo/bill.svg') }}" alt="">
+                    </div>
+                    <div class="uk-width-4-5">
+                        <h3 class="uk-text-bold">{{ promo.b5_h3_6 }}</h3>
+                        <div>{{ promo.b5_h3_desc_6|raw }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="promo_block block_6 bg_white">
+    <div class="standard_wide">
+        <h2 class="tx_30 uk-text-bold uk-text-center">{{ promo.b6_h2 }}</h2>
+        <div uk-grid class="block_padding">
+
+            {% for op in opinions %}
+                <div class="uk-width-1-2">
+                    <div uk-grid>
+                        <div class="uk-width-1-5">
+                            <img src="{{ asset('assets/images/interface/promo/op_user.jpg') }}" alt="">
+                        </div>
+                        <div class="uk-width-4-5">
+                            <h4 class="c_black uk-margin-remove uk-text-bold">{{ op.name }}</h4>
+                            <div>{{ op.desc }}</div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="promo_block block_7 block_padding">
+    <div class="promo_wide">
+        <div class="uk-text-center">
+
+                <span class="tx_24 c_black">{{ promo.b7_t1 }}</span><span style="padding: 30px"></span><a href="/card/new" class="uk-button uk-button-primary">{{ promo.b7_a1 }}</a>
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
