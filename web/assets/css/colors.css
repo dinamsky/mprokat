@@ -26,6 +26,14 @@
     background: #464646;
 }
 
+.bg_yellow{
+    background: #f5e503;
+}
+
+.c_black{
+    color: black;
+}
+
 .c_red{
     color: red;
 }
@@ -56,4 +64,8 @@
 
 .border_green{
     border: 1px solid #25b45b;
+}
+
+.border_white{
+    border: 1px solid white;
 }

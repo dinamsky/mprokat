@@ -544,14 +544,14 @@ button{
 }
 
 .add_card_button{
-    width: 200px;
+    width: 190px;
     font-size: 13px;
     padding: 0;
     text-align: center;
 }
 
 .top_sticky.uk-active .add_card_button{
-    width: 200px;
+    width: 190px;
 }
 
 .add_card_button:hover{
