@@ -72,7 +72,7 @@ class PromoController extends Controller
             $opinions[$r['sort']] = $r;
         }
         ksort($opinions);
-        dump($opinions);
+
         if ($this->get('session')->get('admin') === null) return $this->render('AdminBundle::admin_main.html.twig');
         else {
 
