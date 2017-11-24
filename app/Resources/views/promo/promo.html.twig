@@ -49,8 +49,8 @@
 
                 <h1 class="c_white uk-text-bold tx_40">{{ promo.b1_h1|raw }}</h1>
                 <div>
-                    <a href="#calculator" uk-scroll="offset:150" class="uk-button uk-button-large c_black bg_yellow">{{ promo.b1_a1 }}</a>
-                    <a href="/card/new" class="uk-button uk-button-large c_white border_white">{{ promo.b1_a2 }}</a>
+                    <a href="#calculator" uk-scroll="offset:150" class="uk-button uk-button-large c_black bg_yellow">{{ promo.b1_a1|raw }}</a>
+                    <a href="/card/new" class="uk-button uk-button-large c_white border_white">{{ promo.b1_a2|raw }}</a>
                 </div>
 
 
@@ -61,9 +61,9 @@
     <div class="standard_wide">
         <div uk-grid>
             <div class="uk-width-1-2">
-                <h2 class="uk-text-bold">{{ promo.b2_h2 }}</h2>
+                <h2 class="uk-text-bold">{{ promo.b2_h2|raw }}</h2>
                 <div id="promo_case_list">{{ promo.b2_list|raw }}</div>
-                <div class="uk-margin-top">{{ promo.b2_case }}
+                <div class="uk-margin-top">{{ promo.b2_case|raw }}
                     <input id="promo_case" type="text" name="case" class="uk-input uk-width-1-2" placeholder="Укажите свой случай">
                     <button id="promo_add_case" type="button"><i uk-icon="icon:plus"></i></button>
                 </div>
@@ -77,7 +77,7 @@
 
 <div id="calculator" class="promo_block block_3  bg_white">
     <div class="standard_wide">
-        <h2 class="tx_30 uk-text-bold">{{ promo.b3_h2 }}</h2>
+        <h2 class="tx_30 uk-text-bold">{{ promo.b3_h2|raw }}</h2>
         <div class="tx_24">{{ promo.b3_desc|raw }}</div>
 
         <div uk-grid class="block_padding">
@@ -118,23 +118,23 @@
 
 <div class="promo_block block_4 block_padding  bg_white">
     <div class="promo_wide">
-        <div class="b4_toggler tx_24 uk-text-bold c_black uk-clearfix" uk-toggle="target: #b4_t1"><span class="uk-float-left">{{ promo.b4_t1 }}</span><span class="uk-float-right promo_plus"><i uk-icon="plus"></i></span></div>
+        <div class="b4_toggler tx_24 uk-text-bold c_black uk-clearfix" uk-toggle="target: #b4_t1"><span class="uk-float-left">{{ promo.b4_t1|raw }}</span><span class="uk-float-right promo_plus"><i uk-icon="plus"></i></span></div>
         <div id="b4_t1" class="b4_toggler_text uk-margin-top" hidden>{{ promo.b4_t1_text|raw }}</div>
         <hr>
-        <div class="b4_toggler tx_24 uk-text-bold c_black uk-clearfix" uk-toggle="target: #b4_t2"><span class="uk-float-left">{{ promo.b4_t2 }}</span><span class="uk-float-right promo_plus"><i uk-icon="plus"></i></span></div>
+        <div class="b4_toggler tx_24 uk-text-bold c_black uk-clearfix" uk-toggle="target: #b4_t2"><span class="uk-float-left">{{ promo.b4_t2|raw }}</span><span class="uk-float-right promo_plus"><i uk-icon="plus"></i></span></div>
         <div id="b4_t2" class="b4_toggler_text uk-margin-top" hidden>{{ promo.b4_t2_text|raw }}</div>
         <hr>
-        <div class="b4_toggler tx_24 uk-text-bold c_black uk-clearfix" uk-toggle="target: #b4_t3"><span class="uk-float-left">{{ promo.b4_t3 }}</span><span class="uk-float-right promo_plus"><i uk-icon="plus"></i></span></div>
+        <div class="b4_toggler tx_24 uk-text-bold c_black uk-clearfix" uk-toggle="target: #b4_t3"><span class="uk-float-left">{{ promo.b4_t3|raw }}</span><span class="uk-float-right promo_plus"><i uk-icon="plus"></i></span></div>
         <div id="b4_t3" class="b4_toggler_text uk-margin-top" hidden>{{ promo.b4_t3_text|raw }}</div>
         <hr>
-        <div class="b4_toggler tx_24 uk-text-bold c_black uk-clearfix" uk-toggle="target: #b4_t4"><span class="uk-float-left">{{ promo.b4_t4 }}</span><span class="uk-float-right promo_plus"><i uk-icon="plus"></i></span></div>
+        <div class="b4_toggler tx_24 uk-text-bold c_black uk-clearfix" uk-toggle="target: #b4_t4"><span class="uk-float-left">{{ promo.b4_t4|raw }}</span><span class="uk-float-right promo_plus"><i uk-icon="plus"></i></span></div>
         <div id="b4_t4" class="b4_toggler_text uk-margin-top" hidden>{{ promo.b4_t4_text|raw }}</div>
     </div>
 </div>
 
 <div class="promo_block block_5 block_padding  bg_white">
     <div class="promo_wide">
-        <h2 class=" tx_30 uk-text-bold c_black uk-text-center">{{ promo.b5_h2 }}</h2>
+        <h2 class=" tx_30 uk-text-bold c_black uk-text-center">{{ promo.b5_h2|raw }}</h2>
         <div class=" tx_24 c_black uk-text-center">{{ promo.b5_desc|raw }}</div>
         <div uk-grid class="block_padding">
             <div class="uk-width-1-2">
@@ -143,7 +143,7 @@
                         <img src="{{ asset('assets/images/interface/promo/star.svg') }}" alt="">
                     </div>
                     <div class="uk-width-4-5">
-                        <h3 class="uk-text-bold">{{ promo.b5_h3_1 }}</h3>
+                        <h3 class="uk-text-bold">{{ promo.b5_h3_1|raw }}</h3>
                         <div>{{ promo.b5_h3_desc_1|raw }}</div>
                     </div>
                 </div>
@@ -155,7 +155,7 @@
                         <img src="{{ asset('assets/images/interface/promo/pen.svg') }}" alt="">
                     </div>
                     <div class="uk-width-4-5">
-                        <h3 class="uk-text-bold">{{ promo.b5_h3_2 }}</h3>
+                        <h3 class="uk-text-bold">{{ promo.b5_h3_2|raw }}</h3>
                         <div>{{ promo.b5_h3_desc_2|raw }}</div>
                     </div>
                 </div>
@@ -167,7 +167,7 @@
                         <img src="{{ asset('assets/images/interface/promo/wallet.svg') }}" alt="">
                     </div>
                     <div class="uk-width-4-5">
-                        <h3 class="uk-text-bold">{{ promo.b5_h3_3 }}</h3>
+                        <h3 class="uk-text-bold">{{ promo.b5_h3_3|raw }}</h3>
                         <div>{{ promo.b5_h3_desc_3|raw }}</div>
                     </div>
                 </div>
@@ -179,7 +179,7 @@
                         <img src="{{ asset('assets/images/interface/promo/target.svg') }}" alt="">
                     </div>
                     <div class="uk-width-4-5">
-                        <h3 class="uk-text-bold">{{ promo.b5_h3_4 }}</h3>
+                        <h3 class="uk-text-bold">{{ promo.b5_h3_4|raw }}</h3>
                         <div>{{ promo.b5_h3_desc_4|raw }}</div>
                     </div>
                 </div>
@@ -191,7 +191,7 @@
                         <img src="{{ asset('assets/images/interface/promo/gps.svg') }}" alt="">
                     </div>
                     <div class="uk-width-4-5">
-                        <h3 class="uk-text-bold">{{ promo.b5_h3_5 }}</h3>
+                        <h3 class="uk-text-bold">{{ promo.b5_h3_5|raw }}</h3>
                         <div>{{ promo.b5_h3_desc_5|raw }}</div>
                     </div>
                 </div>
@@ -203,7 +203,7 @@
                         <img src="{{ asset('assets/images/interface/promo/bill.svg') }}" alt="">
                     </div>
                     <div class="uk-width-4-5">
-                        <h3 class="uk-text-bold">{{ promo.b5_h3_6 }}</h3>
+                        <h3 class="uk-text-bold">{{ promo.b5_h3_6|raw }}</h3>
                         <div>{{ promo.b5_h3_desc_6|raw }}</div>
                     </div>
                 </div>
@@ -224,8 +224,8 @@
                             <img src="{{ asset('assets/images/interface/promo/op_'~op.id~'.jpg') }}" alt="">
                         </div>
                         <div class="uk-width-4-5">
-                            <h4 class="c_black uk-margin-remove uk-text-bold">{{ op.name }}</h4>
-                            <div>{{ op.desc }}</div>
+                            <h4 class="c_black uk-margin-remove uk-text-bold">{{ op.name|raw }}</h4>
+                            <div>{{ op.desc|raw }}</div>
                         </div>
                     </div>
                 </div>
@@ -238,7 +238,7 @@
     <div class="promo_wide">
         <div class="uk-text-center">
 
-                <span class="tx_24 c_black">{{ promo.b7_t1 }}</span><span style="padding: 30px"></span><a href="/card/new" class="uk-button uk-button-primary">{{ promo.b7_a1 }}</a>
+                <span class="tx_24 c_black">{{ promo.b7_t1|raw }}</span><span style="padding: 30px"></span><a href="/card/new" class="uk-button uk-button-primary">{{ promo.b7_a1|raw }}</a>
 
         </div>
     </div>
