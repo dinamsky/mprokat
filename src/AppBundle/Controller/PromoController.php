@@ -61,9 +61,11 @@ class PromoController extends Controller
         $query = $em->createQuery($dql);
         foreach($query->getResult() as $row){
 
-            $opinions[] = json_decode($row->getPValue(),true);
+            $r = json_decode($row->getPValue(),true);
+            $r['id'] = $row->getId();
+            $opinions[$r['sort']] = $r;
         }
-
+        ksort($opinions);
 
         return $this->render('promo/promo.html.twig', [
 
