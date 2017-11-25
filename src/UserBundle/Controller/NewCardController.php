@@ -433,16 +433,16 @@ class NewCardController extends Controller
             $em->flush();
 
             if($this->get('session')->has('admin') and isset($new_card)){
-                $message = (new \Swift_Message('Администратор зарегистрировал аккаунт для вас на сайте multiprokat.com'))
-                    ->setFrom('mail@multiprokat.com')
+                $message = (new \Swift_Message('Ваша компания теперь на сайте multiprokat.com. Мы разместили ваше объявление: '.$card->getMarkModel()->getMark()->getHeader().' '.$card->getMarkModel()->getHeader()))
+                    ->setFrom('mail@multiprokat.com','Multiprokat.com - прокат и аренда транспорта')
                     ->setTo($user->getEmail())
-                    ->setCc('mail@multiprokat.com')
+                    ->setBcc('mail@multiprokat.com')
                     ->setBody(
                         $this->renderView(
                             'email/admin_registration.html.twig',
                             array(
                                 'header' => $user->getHeader(),
-                                'password' => $request->request->get('password'),
+                                'password' => $user->getTempPassword(),
                                 'email' => $user->getEmail(),
                                 'card' => $card
                             )
@@ -450,6 +450,10 @@ class NewCardController extends Controller
                         'text/html'
                     );
                 $mailer->send($message);
+
+                $user->setTempPassword('');
+                $em->persist($user);
+                $em->flush();
             }
 
             if($user){
