@@ -15,7 +15,7 @@ $( document ).ready(function() {
             dataType: 'json',
             success: function (json) {
                 if(! json.error) {
-                    $('#promo_result_car').html(mark + ' ' + model);
+                    $('.promo_result_car').html(mark + ' ' + model);
                     $('#promo_result_day').html(json.price);
                     $('#promo_result_dayz').html(days);
                     $('#promo_result_total').html(json.price * days);

@@ -21,9 +21,11 @@ class AdminController extends Controller
     public function indexAction(Password $password)
     {
 
+        $city = $this->get('session')->get('city');
+
         if ($this->get('session')->get('admin') === null) return $this->render('AdminBundle::admin_enter_form.html.twig');
         else {
-            return $this->render('AdminBundle::admin_main.html.twig');
+            return $this->render('AdminBundle::admin_main.html.twig',['city'=>$city]);
         }
     }
 
@@ -76,7 +78,8 @@ class AdminController extends Controller
         if($request->isMethod('GET')) {
             if ($this->get('session')->get('admin') === null) return $this->render('AdminBundle::admin_enter_form.html.twig');
             else {
-                return $this->render('AdminBundle::admin_new_user.html.twig');
+                $city = $this->get('session')->get('city');
+                return $this->render('AdminBundle::admin_new_user.html.twig',['city'=>$city]);
             }
         }
         if($request->isMethod('POST')) {
@@ -124,7 +127,7 @@ class AdminController extends Controller
             $user->setPassword($password->HashPassword($request->request->get('password')));
             $user->setHeader($request->request->get('header'));
             $user->setActivateString('');
-            $user->setTempPassword('');
+            $user->setTempPassword($request->request->get('password'));
             $user->setIsActivated(true);
             $user->setAdmin($admin);
             $user->setIsSubscriber(true);
