@@ -64,7 +64,7 @@
                 <h2 class="uk-text-bold">{{ promo.b2_h2|raw }}</h2>
                 <div id="promo_case_list">{{ promo.b2_list|raw }}</div>
                 <div class="uk-margin-top">{{ promo.b2_case|raw }}
-                    <input id="promo_case" type="text" name="case" class="uk-input uk-width-1-2" placeholder="Укажите свой случай">
+                    <input id="promo_case" type="text" name="case" class="uk-input uk-width-1-2" style="border:0;border-bottom: 1px solid lightgrey">
                     <button id="promo_add_case" type="button"><i uk-icon="icon:plus"></i></button>
                 </div>
             </div>
@@ -93,16 +93,16 @@
                 <div class="uk-margin-top">Планируемый срок аренды, суток</div>
                 <input id="dayz" type="text" class="uk-input" value="20">
 
-                <button id="promo_count" type="button" class="uk-button uk-button-success uk-width-1-1 uk-margin-top">Узнать стоимость</button>
+                <button id="promo_count" type="button" class="uk-button uk-button-success uk-width-1-1 uk-margin-top">Показать доход</button>
             </div>
             <div class="uk-width-2-3 uk-animation-slide-right uk-hidden" id="counted">
                 <div>&nbsp;</div>
                 <div class="bg_blue c_white padding20">
-                    <div>Ваш автомобиль - <span id="promo_result_car"></span></div>
+                    <div>Ваш автомобиль - <span class="promo_result_car"></span></div>
                     <div>Рекомендуемая средняя стоимость 1 суток - <span id="promo_result_day"></span><i class="fa fa-ruble"></i></div>
                     <div>Планируемый доход за <span id="promo_result_dayz"></span> суток - <span id="promo_result_total"></span><i class="fa fa-ruble"></i></div>
                 </div>
-                <div class="uk-margin-small">Примеры объявлений на multiprokat.com</div>
+                <div class="uk-margin-small">Примеры <span class="promo_result_car"></span> на multiprokat.com</div>
                 <div id="promo_result_slider"></div>
             </div>
             <div class="uk-width-2-3 uk-animation-slide-right uk-hidden" id="nothing">
