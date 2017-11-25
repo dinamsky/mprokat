@@ -8,6 +8,8 @@ $( document ).ready(function() {
         var modelId = $('#markModelId').find('option:selected').val();
         var days = $('#dayz').val()-0;
 
+        $('#example').addClass('uk-hidden');
+
         $.ajax({
             url: '/promo_ajax_counter',
             type: 'POST',
