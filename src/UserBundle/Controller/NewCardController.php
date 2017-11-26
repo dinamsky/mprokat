@@ -535,34 +535,51 @@ class NewCardController extends Controller
             if($this->get('session')->has('admin') and isset($new_card)){
 
 
-                $this_card = $this->getDoctrine()
-                    ->getRepository(Card::class)
-                    ->find($card->getId());
+                $main_foto = $this->getDoctrine()
+                    ->getRepository(Foto::class)
+                    ->findOneBy(['cardId'=>$card->getId(), 'isMain'=>1]);
 
-                $main_foto = $this_card->getFotos()[0];
-                foreach($this_card->getFotos() as $f){
-                    if($f->getIsMain()) $main_foto = $f;
-                }
+
+//                $dql = 'SELECT c,f,p FROM AppBundle:Card c LEFT JOIN c.fotos f LEFT JOIN c.cardPrices p WHERE c.id='.$card->getId();
+//                $query = $em->createQuery($dql);
+//                $this_card = $query->getResult()[0];
+
+
+                //dump($main_foto);
+
+//                $main_foto = $this_card->getFotos()[0];
+//                foreach($this_card->getFotos() as $f){
+//                    if($f->getIsMain()) $main_foto = $f;
+//                }
+
+
+                $prices = $this->getDoctrine()
+                    ->getRepository(CardPrice::class)
+                    ->findBy(['cardId'=>$card->getId()]);
+
+
+                //dump($prices);
 
                 $c_price = '';
                 $c_ed = '';
-                foreach ($this_card->getCardPrices() as $p){
-                    if($p->getPriceId() == 2) {
+                foreach ($prices as $p){
+                    if($p->getPrice()->getId() == 2) {
                         $c_price = $p->getValue();
                         $c_ed = '/день';
                     }
-                    if($p->getPriceId() == 1) {
+                    if($p->getPrice()->getId() == 1) {
                         $c_price = $p->getValue();
                         $c_ed = '/час';
                     }
-                    if($p->getPriceId() == 6 and $c_price == '') {
+                    if($p->getPrice()->getId() == 6 and $c_price == '') {
                         $c_price = $p->getValue();
                         $c_ed = '';
                     }
                 }
 
+                //
 
-                $message = (new \Swift_Message('Ваша компания теперь на сайте multiprokat.com. Мы разместили ваше объявление: '.$this_card->getMarkModel()->getMark()->getHeader().' '.$this_card->getMarkModel()->getHeader()))
+                $message = (new \Swift_Message('Ваша компания теперь на сайте multiprokat.com. Мы разместили ваше объявление: '.$card->getMarkModel()->getMark()->getHeader().' '.$card->getMarkModel()->getHeader()))
                     ->setFrom('mail@multiprokat.com','Multiprokat.com - прокат и аренда транспорта')
                     ->setTo($user->getEmail())
                     ->setBcc('mail@multiprokat.com')
@@ -573,7 +590,7 @@ class NewCardController extends Controller
                                 'header' => $user->getHeader(),
                                 'password' => $user->getTempPassword(),
                                 'email' => $user->getEmail(),
-                                'card' => $this_card,
+                                'card' => $card,
                                 'main_foto' => 'http://multiprokat.com/assets/images/cards/'.$main_foto->getFolder().'/t/'.$main_foto->getId().'.jpg',
                                 'c_price' => $c_price,
                                 'c_ed' => $c_ed
