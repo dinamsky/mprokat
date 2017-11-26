@@ -1,7 +1,7 @@
 {% extends ':email:email_base.html.twig' %}
 {% block content %}
-<h3>Добрый день!</h3>
-{{ header }}!<br>
+    <h3>Добрый день!</h3>
+    {{ header }}!<br>
     Наш администратор успешно зарегистрировал вашу компанию на сайте <a href="https://multiprokat.com">https://multiprokat.com</a>
     <br />
     <br />
@@ -13,60 +13,23 @@
     <br />
     <br />
 
+    <table>
+        <tr>
+            <td width="50%">
+                <a href="{{ url('showCard',{'id': card.id}) }}" style="display:block;"><img src="{{ main_foto }}" alt="" width="200"></a>
+            </td>
+            <td width="50%" valign="top">
+                {{ card.markModel.Mark.header }} {{ card.markModel.header }}<br><br>
+                по цене: <b>{{ c_price|number_format(0,'.','&nbsp;')|raw }}</b> Р{{ c_ed }}<br><br>
+                <a href="{{ url('showCard',{'id': card.id}) }}" style="background: green;color:white;text-decoration: none;padding: 5px;display: block;">посмотреть на сайте</a>
+            </td>
+        </tr>
+    </table>
 
-    {% set main_foto = main_foto(card.getFotos) %}
-
-    {% set bgrnd = 'white' %}
-
-    {% if main_foto  %}
-        {% set bgrnd = 'url(http://multiprokat.com/assets/images/cards/'~main_foto.folder~'/t/'~main_foto.id~'.jpg)' %}
-    {% else %}
-        {% set bgrnd = 'url(/assets/images/interface/no_image.jpg)' %}
-    {% endif %}
-
-    {% set c_price = '' %}
-            {% set c_ed = '' %}
-
-            {% for price in card.cardPrices if price.priceId == 2 %}
-                {% set c_price = price.value %}
-                {% set c_ed = '/'~'день'|trans %}
-            {% endfor %}
-
-            {% for price in card.cardPrices if price.priceId == 1 and c_price == '' %}
-                {% set c_price = price.value %}
-                {% set c_ed = '/'~'час'|trans %}
-            {% endfor %}
-
-            {% for price in card.cardPrices if price.priceId == 6 and c_price == '' %}
-                {% set c_price = price.value %}
-                {% set c_ed = '' %}
-            {% endfor %}
-
-    <a href="{{ url('showCard',{'id': card.id}) }}" style="background: {{ bgrnd }} center center;
-            background-size: cover;
-            height: 150px;
-            display: inline-block;
-            width:200px;
-            "></a>
-
-
-
-    <div style="display: inline-block;margin-left:20px;width:370px;vertical-align: top;">
-        <div>{{ card.markModel.Mark.header }} {{ card.markModel.header }}</div>
-        <div>по цене:
-            {% if c_price != '' %}
-                <b>{{ c_price|number_format(0,'.','&nbsp;')|raw }}</b> Р<span class="">{{ c_ed }}</span>
-            {% endif %}
-        </div>
-        <br><br>
-        <div><a href="{{ url('showCard',{'id': card.id}) }}" style="background: green;color:white;text-decoration: none;padding: 5px;">посмотреть на сайте</a></div>
-    </div>
     <br>
     <br>
     Для входа в ваш аккаунт, используйте:
     <br /> - email: {{ email }}
     <br /> - пароль: {{ password }}
     <br /> (вы всегда можете сменить пароль через форму восстановления пароля)
-
-
 {% endblock %}

@@ -196,7 +196,7 @@ class EditCardController extends Controller
             $em->remove($card);
             $em->flush();
             if ($this->get('session')->get('admin') === null) return $this->redirectToRoute('user_cards');
-            else return $this->redirect($post->get('return'));
+            else return $this->redirectToRoute('admin_main');
         }
 
         $card->setHeader(strip_tags($post->get('header')));
@@ -367,7 +367,7 @@ class EditCardController extends Controller
                 $em->flush();
             }
             if ($this->get('session')->get('admin') === null) return $this->redirectToRoute('user_cards');
-            else return $this->redirectToRoute('search');
+            else return $this->redirectToRoute('admin_main');
         }
     }
 
