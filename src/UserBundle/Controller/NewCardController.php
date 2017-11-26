@@ -535,14 +535,18 @@ class NewCardController extends Controller
             if($this->get('session')->has('admin') and isset($new_card)){
 
 
-                $main_foto = $card->getFotos()[0];
-                foreach($card->getFotos() as $f){
+                $this_card = $this->getDoctrine()
+                    ->getRepository(Card::class)
+                    ->find($card->getId());
+
+                $main_foto = $this_card->getFotos()[0];
+                foreach($this_card->getFotos() as $f){
                     if($f->getIsMain()) $main_foto = $f;
                 }
 
                 $c_price = '';
                 $c_ed = '';
-                foreach ($card->getCardPrices() as $p){
+                foreach ($this_card->getCardPrices() as $p){
                     if($p->getPriceId() == 2) {
                         $c_price = $p->getValue();
                         $c_ed = '/день';
@@ -558,7 +562,7 @@ class NewCardController extends Controller
                 }
 
 
-                $message = (new \Swift_Message('Ваша компания теперь на сайте multiprokat.com. Мы разместили ваше объявление: '.$card->getMarkModel()->getMark()->getHeader().' '.$card->getMarkModel()->getHeader()))
+                $message = (new \Swift_Message('Ваша компания теперь на сайте multiprokat.com. Мы разместили ваше объявление: '.$this_card->getMarkModel()->getMark()->getHeader().' '.$this_card->getMarkModel()->getHeader()))
                     ->setFrom('mail@multiprokat.com','Multiprokat.com - прокат и аренда транспорта')
                     ->setTo($user->getEmail())
                     ->setBcc('mail@multiprokat.com')
@@ -569,7 +573,7 @@ class NewCardController extends Controller
                                 'header' => $user->getHeader(),
                                 'password' => $user->getTempPassword(),
                                 'email' => $user->getEmail(),
-                                'card' => $card,
+                                'card' => $this_card,
                                 'main_foto' => 'http://multiprokat.com/assets/images/cards/'.$main_foto->getFolder().'/t/'.$main_foto->getId().'.jpg',
                                 'c_price' => $c_price,
                                 'c_ed' => $c_ed
