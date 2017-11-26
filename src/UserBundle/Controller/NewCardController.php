@@ -432,57 +432,7 @@ class NewCardController extends Controller
 
             $em->flush();
 
-            if($this->get('session')->has('admin') and isset($new_card)){
 
-
-                $main_foto = $card->getFotos()[0];
-                foreach($card->getFotos() as $f){
-                    if($f->getIsMain()) $main_foto = $f;
-                }
-
-                $c_price = '';
-                $c_ed = '';
-                foreach ($card->getCardPrices() as $p){
-                    if($p->getPriceId() == 2) {
-                        $c_price = $p->getValue();
-                        $c_ed = '/день';
-                    }
-                    if($p->getPriceId() == 1) {
-                        $c_price = $p->getValue();
-                        $c_ed = '/час';
-                    }
-                    if($p->getPriceId() == 6 and $c_price == '') {
-                        $c_price = $p->getValue();
-                        $c_ed = '';
-                    }
-                }
-
-
-                $message = (new \Swift_Message('Ваша компания теперь на сайте multiprokat.com. Мы разместили ваше объявление: '.$card->getMarkModel()->getMark()->getHeader().' '.$card->getMarkModel()->getHeader()))
-                    ->setFrom('mail@multiprokat.com','Multiprokat.com - прокат и аренда транспорта')
-                    ->setTo($user->getEmail())
-                    ->setBcc('mail@multiprokat.com')
-                    ->setBody(
-                        $this->renderView(
-                            'email/admin_registration.html.twig',
-                            array(
-                                'header' => $user->getHeader(),
-                                'password' => $user->getTempPassword(),
-                                'email' => $user->getEmail(),
-                                'card' => $card,
-                                'main_foto' => 'http://multiprokat.com/assets/images/cards/'.$main_foto->getFolder().'/t/'.$main_foto->getId().'.jpg',
-                                'c_price' => $c_price,
-                                'c_ed' => $c_ed
-                            )
-                        ),
-                        'text/html'
-                    );
-                $mailer->send($message);
-
-                $user->setTempPassword('');
-                $em->persist($user);
-                $em->flush();
-            }
 
             if($user){
                 $phone = false;
@@ -580,6 +530,61 @@ class NewCardController extends Controller
             $em->flush();
 
             $fu->uploadImages($card);
+
+
+            if($this->get('session')->has('admin') and isset($new_card)){
+
+
+                $main_foto = $card->getFotos()[0];
+                foreach($card->getFotos() as $f){
+                    if($f->getIsMain()) $main_foto = $f;
+                }
+
+                $c_price = '';
+                $c_ed = '';
+                foreach ($card->getCardPrices() as $p){
+                    if($p->getPriceId() == 2) {
+                        $c_price = $p->getValue();
+                        $c_ed = '/день';
+                    }
+                    if($p->getPriceId() == 1) {
+                        $c_price = $p->getValue();
+                        $c_ed = '/час';
+                    }
+                    if($p->getPriceId() == 6 and $c_price == '') {
+                        $c_price = $p->getValue();
+                        $c_ed = '';
+                    }
+                }
+
+
+                $message = (new \Swift_Message('Ваша компания теперь на сайте multiprokat.com. Мы разместили ваше объявление: '.$card->getMarkModel()->getMark()->getHeader().' '.$card->getMarkModel()->getHeader()))
+                    ->setFrom('mail@multiprokat.com','Multiprokat.com - прокат и аренда транспорта')
+                    ->setTo($user->getEmail())
+                    ->setBcc('mail@multiprokat.com')
+                    ->setBody(
+                        $this->renderView(
+                            'email/admin_registration.html.twig',
+                            array(
+                                'header' => $user->getHeader(),
+                                'password' => $user->getTempPassword(),
+                                'email' => $user->getEmail(),
+                                'card' => $card,
+                                'main_foto' => 'http://multiprokat.com/assets/images/cards/'.$main_foto->getFolder().'/t/'.$main_foto->getId().'.jpg',
+                                'c_price' => $c_price,
+                                'c_ed' => $c_ed
+                            )
+                        ),
+                        'text/html'
+                    );
+                $mailer->send($message);
+
+                $user->setTempPassword('');
+                $em->persist($user);
+                $em->flush();
+            }
+
+
 
             $mc->updateCityTotal($card->getCityId(),$card->getModelId());
 
