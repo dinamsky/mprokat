@@ -131,19 +131,67 @@ class PromoController extends Controller
     }
 
      /**
-     * @Route("/mail_test")
+     * @Route("/mail_test/{id}")
      */
-    public function mtAction(Request $request)
+    public function mtAction($id, Request $request, \Swift_Mailer $mailer)
     {
         $card = $this->getDoctrine()
                     ->getRepository(Card::class)
-                    ->find(5020);
+                    ->find($id);
+
+        $main_foto = $card->getFotos()[0];
+        foreach($card->getFotos() as $f){
+            if($f->getIsMain()) $main_foto = $f;
+        }
+
+        $c_price = '';
+        $c_ed = '';
+        foreach ($card->getCardPrices() as $p){
+            if($p->getPriceId() == 2) {
+                $c_price = $p->getValue();
+                $c_ed = '/день';
+            }
+            if($p->getPriceId() == 1) {
+                $c_price = $p->getValue();
+                $c_ed = '/час';
+            }
+            if($p->getPriceId() == 6 and $c_price == '') {
+                $c_price = $p->getValue();
+                $c_ed = '';
+            }
+        }
+
+        $message = (new \Swift_Message('Ваша компания теперь на сайте multiprokat.com. Мы разместили ваше объявление: '.$card->getMarkModel()->getMark()->getHeader().' '.$card->getMarkModel()->getHeader()))
+                    ->setFrom('mail@multiprokat.com','Multiprokat.com - прокат и аренда транспорта')
+                    ->setTo('wqs-info@mail.ru')
+                    //->setBcc('mail@multiprokat.com')
+                    ->setBody(
+                        $this->renderView(
+                            'email/admin_registration.html.twig',
+                            array(
+                                'header' => '11',
+                                'password' => '22',
+                                'email' => '33',
+                                'card' => $card,
+                                'main_foto' => 'http://multiprokat.com/assets/images/cards/'.$main_foto->getFolder().'/t/'.$main_foto->getId().'.jpg',
+                                'c_price' => $c_price,
+                                'c_ed' => $c_ed
+                            )
+                        ),
+                        'text/html'
+                    );
+                $mailer->send($message);
+
 
         return $this->render('email/admin_registration.html.twig', [
             'header' => '111',
             'email' => '123123',
             'password' => 'sdfsdf',
-            'card' => $card
+            'card' => $card,
+            'main_foto' => 'http://multiprokat.com/assets/images/cards/'.$main_foto->getFolder().'/t/'.$main_foto->getId().'.jpg',
+            'c_price' => $c_price,
+            'c_ed' => $c_ed
+
 
         ]);
     }
