@@ -14,10 +14,12 @@ use Symfony\Component\HttpFoundation\Cookie;
 class MenuCity extends Controller
 {
     private $em;
+    private $stat;
 
-    public function __construct(em $em)
+    public function __construct(em $em, ServiceStat $stat)
     {
         $this->em = $em;
+        $this->stat = $stat;
     }
 
     public function getCountry()
@@ -77,7 +79,7 @@ class MenuCity extends Controller
     /**
      * @Route("/ajax/setCity")
      */
-    public function setCityAction(Request $request, ServiceStat $stat)
+    public function setCityAction(Request $request)
     {
         $old_city = $this->get('session')->get('city');
 
@@ -100,7 +102,7 @@ class MenuCity extends Controller
             'event_type' => 'city_change'
         ];
 
-        $stat->setStat($stat_arr);
+        $this->stat->setStat($stat_arr);
 
 
         $response = new Response();
