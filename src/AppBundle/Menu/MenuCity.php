@@ -2,11 +2,12 @@
 
 namespace AppBundle\Menu;
 
+
 use Doctrine\ORM\EntityManagerInterface as em;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\City;
-use AppBundle\Menu\ServiceStat;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Cookie;
