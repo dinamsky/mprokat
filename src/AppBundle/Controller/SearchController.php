@@ -372,7 +372,7 @@ class SearchController extends Controller
             $query = $em->createQuery($dql);
             $query->setParameter(1, $this->get('session')->get('city')->getId());
 
-            dump($model);
+
 
             $query->setParameter(3, is_array($model) ? 0 : $model->getId());
             $query->setMaxResults(9);
@@ -390,15 +390,22 @@ class SearchController extends Controller
 
                 $query->setMaxResults(9);
 
+
+
                 if (count($query->getScalarResult()) < 1) {
-                    $dql = 'SELECT c.id FROM AppBundle:Card c JOIN c.tariff t WHERE c.cityId=?1 AND c.generalTypeId = ' . $general->getId() . ' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
+
+                    if(!$general or is_array($general)) $dql = 'SELECT c.id FROM AppBundle:Card c JOIN c.tariff t WHERE c.cityId=?1 ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
+                    else $dql = 'SELECT c.id FROM AppBundle:Card c JOIN c.tariff t WHERE c.cityId=?1 AND c.generalTypeId = ' . $general->getId() . ' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
+
                     $query = $em->createQuery($dql);
                     $query->setParameter(1, $this->get('session')->get('city')->getId());
 
                     $query->setMaxResults(9);
 
                     if (count($query->getScalarResult()) < 1) {
-                        $dql = 'SELECT c.id FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId = ' . $general->getId() . ' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
+                        if(!$general or is_array($general)) $dql = 'SELECT c.id FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId = 2 ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
+                        else $dql = 'SELECT c.id FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId = ' . $general->getId() . ' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
+
                         $query = $em->createQuery($dql);
 
                         $query->setMaxResults(9);
