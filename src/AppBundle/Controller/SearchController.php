@@ -384,7 +384,9 @@ class SearchController extends Controller
                 foreach ($query->getScalarResult() as $row) {
                     $model_ids[] = $row['id'];
                 }
-                $dql = 'SELECT c.id FROM AppBundle:Card c WHERE c.cityId=?1 AND c.modelId IN (' . implode(",", $model_ids) . ') ORDER BY c.dateUpdate DESC';
+                if(isset($model_ids)) $dql = 'SELECT c.id FROM AppBundle:Card c WHERE c.cityId=?1 AND c.modelId IN (' . implode(",", $model_ids) . ') ORDER BY c.dateUpdate DESC';
+                else $dql = 'SELECT c.id FROM AppBundle:Card c WHERE c.cityId=?1 ORDER BY c.dateUpdate DESC';
+
                 $query = $em->createQuery($dql);
                 $query->setParameter(1, $this->get('session')->get('city')->getId());
 
