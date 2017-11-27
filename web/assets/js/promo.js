@@ -71,7 +71,11 @@ $( document ).ready(function() {
         $.ajax({
             url: '/promo_ajax_case',
             type: 'POST',
-            data: {p_case: p_case}
+            data: {p_case: p_case},
+            dataType: 'html',
+            success: function (html) {
+                console.log(html);
+            }
         });
     });
 
