@@ -166,6 +166,14 @@ class Card
      */
     private $adminId = 1;
 
+
+     /**
+     * @var int
+     *
+     * @ORM\Column(name="delivery_status", type="integer", nullable=true, options={"default" : 2})
+     */
+    private $deliveryStatus = 2;
+
     /**
      * @ORM\ManyToOne(targetEntity="AdminBundle\Entity\Admin", inversedBy="cards")
      * @ORM\JoinColumn(name="admin_id", referencedColumnName="id")
@@ -1312,5 +1320,29 @@ class Card
     public function getOpinions()
     {
         return $this->opinions;
+    }
+
+    /**
+     * Set deliveryStatus
+     *
+     * @param integer $deliveryStatus
+     *
+     * @return Card
+     */
+    public function setDeliveryStatus($deliveryStatus)
+    {
+        $this->deliveryStatus = $deliveryStatus;
+
+        return $this;
+    }
+
+    /**
+     * Get deliveryStatus
+     *
+     * @return integer
+     */
+    public function getDeliveryStatus()
+    {
+        return $this->deliveryStatus;
     }
 }

@@ -7,15 +7,15 @@
             <div uk-grid>
                 <div class="uk-width-1-4@l">
                     <div class="uk-margin-bottom uk-text-uppercase"><b>{% trans %}Категории{% endtrans %}</b></div>
-                    <a href="/rent/rus/all/cars" class="c_grey">{% trans %}Легковые автомобили{% endtrans %}</a>
+                    <a rel="nofollow" href="/rent/{{ city.url }}/all/cars" class="c_grey">{% trans %}Легковые автомобили{% endtrans %}</a>
                     <hr>
-                    <a href="/rent/rus/all/wedding" class="c_grey">{% trans %}Свадебные авто{% endtrans %}</a>
+                    <a rel="nofollow" href="/rent/{{ city.url }}/all/wedding" class="c_grey">{% trans %}Свадебные авто{% endtrans %}</a>
                     <hr>
-                    <a href="/rent/rus/all/helicopters" class="c_grey">{% trans %}Вертолеты{% endtrans %}</a>
+                    <a rel="nofollow" href="/rent/{{ city.url }}/all/helicopters" class="c_grey">{% trans %}Вертолеты{% endtrans %}</a>
                     <hr>
-                    <a href="/rent/rus/all/snowride" class="c_grey">{% trans %}Снегоходы{% endtrans %}</a>
+                    <a rel="nofollow" href="/rent/{{ city.url }}/all/snowride" class="c_grey">{% trans %}Снегоходы{% endtrans %}</a>
                     <hr>
-                    <a href="/rent/rus/all/trucks" class="c_grey">{% trans %}Грузовые автомобили{% endtrans %}</a>
+                    <a rel="nofollow" href="/rent/{{ city.url }}/all/trucks" class="c_grey">{% trans %}Грузовые автомобили{% endtrans %}</a>
                 </div>
                 <div class="uk-width-1-4@l uk-visible@l">
                     <div class="uk-margin-bottom uk-text-uppercase"><b>{% trans %}Лучшие предложения{% endtrans %}</b></div>
@@ -31,9 +31,9 @@
                 </div>
                 <div class="uk-width-1-4@l">
                     <div class="uk-margin-bottom uk-text-uppercase"><b>{% trans %}Информация{% endtrans %}</b></div>
-                        <a href="/news" class="c_grey">{% trans %}Новости{% endtrans %}</a>
+                        <a rel="nofollow" href="/news" class="c_grey">{% trans %}Новости{% endtrans %}</a>
                         <hr>
-                        <a href="/contacts" class="c_grey">{% trans %}Контакты{% endtrans %}</a>
+                        <a rel="nofollow" href="/contacts" class="c_grey">{% trans %}Контакты{% endtrans %}</a>
                         <hr>
 
                         {% if page_type is defined and general is defined%}
@@ -86,8 +86,8 @@
             <div uk-grid>
                 <div class="uk-width-2-5@s">&copy; {{ date()|date("Y") }} {{ app.request.host }} | {% trans %}Сервис аренды автотранспорта{% endtrans %}</div>
                 <div class="uk-width-2-5@s">
-                    <a href="/article/term-conditions" class="c_grey">{% trans %}Условия и положения{% endtrans %}</a> /
-                    <a href="/article/politika-konfidentsialnosti" class="c_grey">{% trans %}Конфиденциальность{% endtrans %}</a>
+                    <a rel="nofollow" href="/article/term-conditions" class="c_grey">{% trans %}Условия и положения{% endtrans %}</a> /
+                    <a rel="nofollow" href="/article/politika-konfidentsialnosti" class="c_grey">{% trans %}Конфиденциальность{% endtrans %}</a>
                 </div>
 
             </div>
