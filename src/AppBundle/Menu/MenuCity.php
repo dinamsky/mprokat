@@ -2,11 +2,12 @@
 
 namespace AppBundle\Menu;
 
+
 use Doctrine\ORM\EntityManagerInterface as em;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\City;
-use AppBundle\Menu\ServiceStat;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -14,7 +15,7 @@ use Symfony\Component\HttpFoundation\Cookie;
 class MenuCity extends Controller
 {
     private $em;
-    private $stat;
+    //private $stat;
 
     public function __construct(em $em)
     {
@@ -79,7 +80,7 @@ class MenuCity extends Controller
     /**
      * @Route("/ajax/setCity")
      */
-    public function setCityAction(Request $request)
+    public function setCityAction(Request $request, ServiceStat $stat)
     {
         $old_city = $this->get('session')->get('city');
 
@@ -102,7 +103,7 @@ class MenuCity extends Controller
             'event_type' => 'city_change'
         ];
 
-        //$this->stat->setStat($stat_arr);
+        $stat->setStat($stat_arr);
 
 
         $response = new Response();
