@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface as em;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\City;
+use AppBundle\Menu\ServiceStat;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -76,8 +77,10 @@ class MenuCity extends Controller
     /**
      * @Route("/ajax/setCity")
      */
-    public function setCityAction(Request $request)
+    public function setCityAction(Request $request, ServiceStat $stat)
     {
+        $old_city = $this->get('session')->get('city');
+
         if($request->request->get('cityId') == 0 ){
             $city = new City();
             $city->setCountry('RUS');
@@ -88,6 +91,17 @@ class MenuCity extends Controller
             $city->setGde('России');
             $this->get('session')->set('city', $city);
         } else $this->get('session')->set('city', $this->getCity($request->request->get('cityId'))[0]);
+
+        $new_city = $this->get('session')->get('city');
+
+        $stat_arr = [
+            'url' => $old_city->getHeader(),
+            'page_type' => $new_city->getHeader(),
+            'event_type' => 'city_change'
+        ];
+
+        $stat->setStat($stat_arr);
+
 
         $response = new Response();
 

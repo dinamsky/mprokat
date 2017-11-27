@@ -196,4 +196,20 @@ class PromoController extends Controller
         ]);
     }
 
+
+
+    /**
+     * @Route("/promo_ajax_case")
+     */
+    public function caseAction(Request $request, ServiceStat $stat)
+    {
+        $stat_arr = [
+            'url' => '/promo',
+            'page_type' => $request->request->get('p_case'),
+            'event_type' => 'promo_case'
+        ];
+
+        $stat->setStat($stat_arr);
+        return new Response();
+    }
 }
