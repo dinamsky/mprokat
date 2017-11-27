@@ -64,8 +64,15 @@ $( document ).ready(function() {
     });
 
     $('#promo_add_case').on('click', function () {
+        var p_case = $('#promo_case').val();
         $('#promo_case_list').append('<br>- '+$('#promo_case').val());
         $('#promo_case').val('');
+
+        $.ajax({
+            url: '/promo_ajax_case',
+            type: 'POST',
+            data: {p_case: p_case}
+        });
     });
 
     $('.promo_plus').on('click', function () {

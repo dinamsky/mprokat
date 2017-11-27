@@ -60,7 +60,9 @@ class ServiceT3new extends Controller
 
     public function popularCities()
     {
-        $query = $this->em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.header ASC');
+        $country = $this->sess->get('city')->getCountry();
+        $query = $this->em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 AND c.country = ?1 ORDER BY c.header ASC');
+        $query->setParameter(1, $country);
         return $query->getResult();
     }
 

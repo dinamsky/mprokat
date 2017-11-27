@@ -197,6 +197,11 @@
 
                                 {% endfor %}
 
+                                <div>Доставка до клиента:
+                                    {{ card.deliveryStatus == 0 ? 'нет, клиент забирает транспорт самостоятельно' }}
+                                    {{ card.deliveryStatus == 1 ? 'да, мы доставляем транспорт' }}
+                                    {{ card.deliveryStatus == 2 ? 'возможна, по согласованию' }}
+                                </div>
 
                             </div>
                             <div class="uk-width-1-2@s">

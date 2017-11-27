@@ -360,6 +360,76 @@ class SearchController extends Controller
 
         $stat->setStat($stat_arr);
 
+
+        // ---------------------------- start of similar ----------------------------------
+
+        $similar = false;
+
+        if($total_cards == 0) {
+
+            $dql = 'SELECT c.id FROM AppBundle:Card c WHERE c.cityId=?1 AND c.modelId=?3 ORDER BY c.dateUpdate DESC'; // -- get by model
+
+            $query = $em->createQuery($dql);
+            $query->setParameter(1, $this->get('session')->get('city')->getId());
+
+            dump($model);
+
+            $query->setParameter(3, is_array($model) ? 0 : $model->getId());
+            $query->setMaxResults(9);
+
+            if (count($query->getScalarResult()) < 1) { // -- get by mark
+                $dql = 'SELECT m.id FROM MarkBundle:CarModel m WHERE m.carMarkId=?1';
+                $query = $em->createQuery($dql);
+                $query->setParameter(1, $mark->getId());
+                foreach ($query->getScalarResult() as $row) {
+                    $model_ids[] = $row['id'];
+                }
+                $dql = 'SELECT c.id FROM AppBundle:Card c WHERE c.cityId=?1 AND c.modelId IN (' . implode(",", $model_ids) . ') ORDER BY c.dateUpdate DESC';
+                $query = $em->createQuery($dql);
+                $query->setParameter(1, $this->get('session')->get('city')->getId());
+
+                $query->setMaxResults(9);
+
+                if (count($query->getScalarResult()) < 1) {
+                    $dql = 'SELECT c.id FROM AppBundle:Card c JOIN c.tariff t WHERE c.cityId=?1 AND c.generalTypeId = ' . $general->getId() . ' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
+                    $query = $em->createQuery($dql);
+                    $query->setParameter(1, $this->get('session')->get('city')->getId());
+
+                    $query->setMaxResults(9);
+
+                    if (count($query->getScalarResult()) < 1) {
+                        $dql = 'SELECT c.id FROM AppBundle:Card c JOIN c.tariff t WHERE c.generalTypeId = ' . $general->getId() . ' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
+                        $query = $em->createQuery($dql);
+
+                        $query->setMaxResults(9);
+
+                        if (count($query->getScalarResult()) < 1) {
+                            $dql = 'SELECT c.id FROM AppBundle:Card c JOIN c.tariff t ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
+                            $query = $em->createQuery($dql);
+
+                            $query->setMaxResults(9);
+                        }
+                    }
+
+                }
+            }
+
+            foreach ($query->getScalarResult() as $row) {
+                $sim_ids[] = $row['id'];
+            }
+            $sim_ids = implode(",", $sim_ids);
+
+            $dql = 'SELECT c,p,f FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.cardPrices p LEFT JOIN c.fotos f WHERE c.id IN (' . $sim_ids . ') ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
+            $query = $em->createQuery($dql);
+
+            $similar = $query->getResult();
+        }
+
+        // ---------------------------- end of similar ----------------------------------
+
+
+
+
         return $this->render('search/search_main.html.twig', [
 
             'cards' => $cards,
@@ -407,7 +477,8 @@ class SearchController extends Controller
             'is_body' => $is_body,
 
             'page_type' => 'catalog',
-            'lang' => $_SERVER['LANG']
+            'lang' => $_SERVER['LANG'],
+            'similar' => $similar
 
 
         ]);

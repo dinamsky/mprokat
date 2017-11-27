@@ -205,6 +205,7 @@ class EditCardController extends Controller
         $card->setCoords($post->get('coords'));
         $card->setVideo($post->get('video'));
         $card->setStreetView($post->get('streetView'));
+        $card->setDeliveryStatus($post->get('deliveryStatus'));
 
         $model = $this->getDoctrine()
             ->getRepository(CarModel::class)

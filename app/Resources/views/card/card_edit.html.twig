@@ -51,6 +51,13 @@
 
                 <div class=""><span class="red_star">*</span>{% trans %}Адрес{% endtrans %}: <span uk-toggle="target: #city_selector">{{ city.header }} <i uk-icon="icon:chevron-down"></i></span></div>
 
+                <div class="uk-display-inline-block uk-margin-top">
+                    Доставка транспорта клиенту:
+                    <label><input type="radio" name="deliveryStatus" value="0" {{ card.deliveryStatus == 0 ? 'checked' }}> нет</label>
+                    <label><input type="radio" name="deliveryStatus" value="1" {{ card.deliveryStatus == 1 ? 'checked' }}> да</label>
+                    <label><input type="radio" name="deliveryStatus" value="2" {{ card.deliveryStatus == 2 ? 'checked' }}> возможна</label>
+                </div>
+
                 <div class="expandable_block" id="city_selector" hidden>
                     <div class="uk-text-small">{% trans %}Страна{% endtrans %}</div>
                     <select name="countryCode" id="countryCode" class="uk-select">
