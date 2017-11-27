@@ -89,7 +89,7 @@ class PromoController extends Controller
     /**
      * @Route("/promo_ajax_counter")
      */
-    public function countAction(Request $request)
+    public function countAction(Request $request, ServiceStat $stat)
     {
         $error = false;
         $city = $this->get('session')->get('city');
@@ -126,6 +126,20 @@ class PromoController extends Controller
             'slider' => $slider,
             'error' => $error
         );
+
+        $model = $em->getRepository(CarModel::class)
+            ->find($request->request->get('modelId'));
+
+        $mark = $model->getMark();
+
+        $stat_arr = [
+            'url' => $city->getHeader(),
+            'page_type' => $mark->getHeader().' '.$model->getHeader(),
+            'event_type' => 'promo_calc'
+        ];
+
+        $stat->setStat($stat_arr);
+
 
         return new Response(json_encode($res));
     }
@@ -210,6 +224,6 @@ class PromoController extends Controller
         ];
 
         $stat->setStat($stat_arr);
-        return new Response();
+        return new Response('ok');
     }
 }
