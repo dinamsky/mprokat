@@ -16,10 +16,10 @@ class MenuCity extends Controller
     private $em;
     private $stat;
 
-    public function __construct(em $em, ServiceStat $stat)
+    public function __construct(em $em)
     {
         $this->em = $em;
-        $this->stat = $stat;
+        //$this->stat = $stat;
     }
 
     public function getCountry()
@@ -102,7 +102,7 @@ class MenuCity extends Controller
             'event_type' => 'city_change'
         ];
 
-        $this->stat->setStat($stat_arr);
+        //$this->stat->setStat($stat_arr);
 
 
         $response = new Response();
