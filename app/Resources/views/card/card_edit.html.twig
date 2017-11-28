@@ -4,6 +4,7 @@
     {{ parent() }}
     <link href="{{ asset('assets/css/auto-complete.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/select2.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/datepicker.min.css') }}" rel="stylesheet" />
 {% endblock %}
 
 {% block javascripts %}
@@ -21,6 +22,7 @@
     <script src="{{ asset('assets/js/image_upload_preview.js') }}"></script>
     <script src="{{ asset('assets/js/select2.min.js') }}"></script>
     <script src="{{ asset('assets/js/select_combo.js') }}"></script>
+    <script src="{{ asset('assets/js/datepicker.min.js') }}"></script>
     {% if not subfields %}<script src="{{ asset('assets/js/get_new_subfields.js') }}"></script>{% endif %}
 
 {% endblock %}
@@ -45,6 +47,20 @@
                         <button type="button" class="uk-button {{ card.serviceTypeId == 3 ? 'uk-button-primary' : '' }}uk-width-1-1" value="3">{% trans %}Аренда с правом выкупа{% endtrans %}</button>
                     </div>
                     <input type="hidden" name="serviceTypeId" value="{{ card.serviceTypeId }}">
+                </div>
+
+                <hr>
+
+                <div uk-grid>
+                    <div class="uk-width-1-2">
+                        <span class="uk-text-small">{% trans %}Дата начала аренды{% endtrans %}</span>
+                        <input type="text" name="date_rent_start" class="uk-input uk-width-1-1 datepicker-here" value="{{ card.dateRentStart|date("d.m.Y") }}">
+                    </div>
+
+                    <div class="uk-width-1-2">
+                        <span class="uk-text-small">{% trans %}Дата окончания аренды{% endtrans %}</span>
+                        <input type="text" name="date_rent_finish" class="uk-input uk-width-1-1 datepicker-here" value="{{ card.dateRentFinish|date("d.m.Y") }}">
+                    </div>
                 </div>
 
                 <hr>

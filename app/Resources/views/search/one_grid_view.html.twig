@@ -57,7 +57,7 @@
 
 
 
-    <div class="padding20 bg_darkgrey">
+    <div class="padding20 bg_darkgrey uk-position-relative">
         <a target="_blanc" class="uk-text-truncate uk-display-block uk-position-relative c_white" href="/card/{{ card.id }}" title="{{ serviceType }} {% if card.generalType.chegoSingular is defined %}{{ card.generalType.chegoSingular }}{% else %}{% endif %} {{ card.markModel.Mark.header }} {{ card.markModel.header }} в {{ card.city.gde }}">
             {{ card.markModel.Mark.header }} {{ card.markModel.header }}
         </a>
@@ -69,6 +69,9 @@
             <div class="uk-width-auto uk-text-small c_grey {{ micro is defined ? 'micro' : '' }}"><i class="fa fa-eye"></i> {{ card.views }}</div>
         </div>
 
+        {% if card.dateRentFinish > date() %}
+            <div class="reserved">бронь до {{ card.dateRentFinish|date("d.m.Y") }}</div>
+        {% endif %}
     </div>
 
 
