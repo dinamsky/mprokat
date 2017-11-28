@@ -264,6 +264,8 @@ class ShowCardController extends Controller
             }
         }
 
+
+
         return $this->render('card/card_show.html.twig', [
 
             'card' => $card,
@@ -311,7 +313,8 @@ class ShowCardController extends Controller
             'in_city' => $in_city,
             'bodyType' => $bodyType,
             'page_type' => 'card',
-            'lang' => $_SERVER['LANG']
+            'lang' => $_SERVER['LANG'],
+            'reserved' => $card->getDateRentFinish() > new \DateTime() ? true : false
 
         ]);
     }

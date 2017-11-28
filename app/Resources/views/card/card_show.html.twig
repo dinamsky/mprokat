@@ -132,6 +132,10 @@
                         {% endfor %}
                     </div>
 
+                    {% if reserved %}
+                        <div class="page_reserved">Бронь до {{ card.dateRentFinish|date("d.m.Y") }}</div>
+                    {% endif %}
+
                 </div>
 
 
@@ -155,7 +159,7 @@
 
                 {% if is_mobile() %}
                 <div class="uk-margin-bottom card_blanc border_green">
-                    <div class="cursor-pointer uk-text-center" uk-toggle="target: #user_book_form"><i class="fa fa-pencil-square-o"></i> {% trans %}Забронировать{% endtrans %}</div>
+                    <div class="cursor-pointer uk-text-center c_green" uk-toggle="target: #user_book_form"><i class="fa fa-pencil-square-o"></i> {% trans %}Отправить заявку{% endtrans %}</div>
                 </div>
                 {% endif %}
 
@@ -428,6 +432,7 @@
             </div>
             <div class="uk-width-1-4@s">
 
+                {% if not reserved %}
                 <div class="uk-margin-bottom card_page_phone" {{ is_mobile() ? '' : 'uk-sticky="offset: 64"' }}>
                     <div uk-grid class="uk-grid-collapse uk-grid-match b_shadowed">
                         <div class="phone_block uk-width-1-1">
@@ -446,10 +451,11 @@
 
                     </div>
                 </div>
+                {% endif %}
 
                 {% if not is_mobile() %}
                 <div class="uk-margin-bottom card_blanc border_green">
-                    <div class="cursor-pointer uk-text-center" uk-toggle="target: #user_book_form"><i class="fa fa-pencil-square-o"></i> {% trans %}Забронировать{% endtrans %}</div>
+                    <div class="cursor-pointer uk-text-center c_green" uk-toggle="target: #user_book_form"><i class="fa fa-pencil-square-o"></i> {% trans %}Отправить заявку{% endtrans %}</div>
                 </div>
                 {% endif %}
 
@@ -546,9 +552,9 @@
                     </div>
                 </div>
 
-                <div id="user_book_form" uk-modal="bg-close:false">
+                <div id="user_book_form" uk-modal="bg-close:false" data-res="{{ reserved ? card.dateRentFinish|date_modify("+1 day")|date('Y/m/d') : '' }}">
                     <div class="uk-modal-dialog uk-modal-body">
-                        <h2 class="uk-modal-title">{% trans %}Забронировать{% endtrans %}</h2>
+                        <h2 class="uk-modal-title">{% trans %}Заявка{% endtrans %}</h2>
                         <button class="uk-modal-close-default" type="button" uk-close></button>
                         <form action="/user/bookMessage" uk-grid class="uk-grid-small" method="POST" >
 
@@ -558,13 +564,13 @@
                             </div>
 
                             <div class="uk-width-1-2">
-                                <span class="uk-text-small">{% trans %}Дата приема{% endtrans %}</span>
-                                <input type="text" name="date_in" class="uk-input uk-width-1-1 datepicker-here">
+                                <span class="uk-text-small">{% trans %}Дата приема{% endtrans %} <span class="c_red">{{ reserved ? 'с '~card.dateRentFinish|date_modify("+1 day")|date('d.m.Y') }}</span></span>
+                                <input type="text" name="date_in" class="uk-input uk-width-1-1 datepicker-reserve" >
                             </div>
 
                             <div class="uk-width-1-2">
-                                <span class="uk-text-small">{% trans %}Дата возврата{% endtrans %}</span>
-                                <input type="text" name="date_out" class="uk-input uk-width-1-1 datepicker-here">
+                                <span class="uk-text-small">{% trans %}Дата возврата{% endtrans %} <span class="c_red">{{ reserved ? 'с '~card.dateRentFinish|date_modify("+1 day")|date('d.m.Y') }}</span></span>
+                                <input type="text" name="date_out" class="uk-input uk-width-1-1 datepicker-reserve">
                             </div>
 
                             <div class="uk-width-1-2">
@@ -594,7 +600,7 @@
 
 
                             <div class="uk-width-1-1">
-                                <span class="uk-text-small">{% trans %}Укажите альтернативу, если выбранный транспорт окажется недоступен{% endtrans %}</span>
+                                <span class="uk-text-small">{% trans %}Ваш коментарий к заявке{% endtrans %}</span>
                                 <textarea name="alternative" class="uk-width-1-1 short_textarea"></textarea>
                             </div>
 

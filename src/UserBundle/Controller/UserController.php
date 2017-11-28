@@ -145,6 +145,55 @@ class UserController extends Controller
     }
 
     /**
+     * @Route("/fromMail")
+     */
+    public function signInFromMailAction(Request $request, Password $password)
+    {
+        if(!$this->get('session')->has('logged_user')) {
+
+            $_t = $this->get('translator');
+
+            $em = $this->getDoctrine()->getManager();
+            $dql = 'SELECT u FROM UserBundle:User u WHERE u.isBanned = 0 AND (u.email = ?1 OR u.login = ?1)';
+            $query = $em->createQuery($dql);
+            $query->setParameter(1, urlencode($request->query->get('email')));
+            $users = $query->getResult();
+
+            foreach ($users as $user) {
+
+                if ($password->CheckPassword(urlencode($request->query->get('password')), $user->getPassword())) {
+
+                    $this->get('session')->set('logged_user', $user);
+
+                    $this->setAuthCookie($user);
+
+                    $this->addFlash(
+                        'notice',
+                        $_t->trans('Вы успешно вошли в аккаунт!')
+                    );
+
+                    $this->get('session')->set('user_pic', false);
+                    foreach ($user->getInformation() as $info) {
+                        if ($info->getUiKey() == 'foto') $this->get('session')->set('user_pic', $info->getUiValue());
+                    }
+
+                    $route = 'homepage';
+                    if ($request->query->has('rentout')) $route = 'card_new';
+
+                    return $this->redirectToRoute($route);
+                    break;
+                }
+            }
+
+            $this->addFlash(
+                'notice',
+                $_t->trans('Неправильная пара логин/пароль!')
+            );
+        }
+        return $this->redirectToRoute('homepage');
+    }
+
+    /**
      * @Route("/userLogout")
      */
     public function logoutAction(Request $request)

@@ -110,4 +110,11 @@ $( document ).ready(function() {
     $('.show_full_content').on('click', function () {
         $('#card_content').css('max-height','none').css('overflow','auto');
     });
+
+
+    //var dat = $(this).data('res').split("-");
+
+    $('.datepicker-reserve').datepicker({
+        minDate: new Date(document.getElementById('user_book_form').getAttribute('data-res'))
+    });
 });

@@ -217,6 +217,18 @@ class Card
 
     /**
      * @var \DateTime
+     * @ORM\Column(name="date_rent_start", type="datetime", nullable=true)
+     */
+    private $dateRentStart = null;
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(name="date_rent_finish", type="datetime", nullable=true)
+     */
+    private $dateRentFinish = null;
+
+    /**
+     * @var \DateTime
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="date_tariff_start", type="datetime", nullable=true)
      */
@@ -1344,5 +1356,53 @@ class Card
     public function getDeliveryStatus()
     {
         return $this->deliveryStatus;
+    }
+
+    /**
+     * Set dateRentStart
+     *
+     * @param \DateTime $dateRentStart
+     *
+     * @return Card
+     */
+    public function setDateRentStart($dateRentStart)
+    {
+        $this->dateRentStart = $dateRentStart;
+
+        return $this;
+    }
+
+    /**
+     * Get dateRentStart
+     *
+     * @return \DateTime
+     */
+    public function getDateRentStart()
+    {
+        return $this->dateRentStart;
+    }
+
+    /**
+     * Set dateRentFinish
+     *
+     * @param \DateTime $dateRentFinish
+     *
+     * @return Card
+     */
+    public function setDateRentFinish($dateRentFinish)
+    {
+        $this->dateRentFinish = $dateRentFinish;
+
+        return $this;
+    }
+
+    /**
+     * Get dateRentFinish
+     *
+     * @return \DateTime
+     */
+    public function getDateRentFinish()
+    {
+        return $this->dateRentFinish;
     }
 }
