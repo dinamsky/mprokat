@@ -43,7 +43,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class NewCardController extends Controller
 {
     /**
-     * @Route("/card/new/{gt_url}")
+     * @Route("/card/new/{gt_url}", name="card_new")
      */
     public function indexAction($gt_url = '', MenuMarkModel $markmenu, MenuGeneralType $mgt, MenuCity $mc, Request $request, FotoUtils $fu, EntityManagerInterface $em, \Swift_Mailer $mailer, ServiceStat $stat, Password $pass)
     {

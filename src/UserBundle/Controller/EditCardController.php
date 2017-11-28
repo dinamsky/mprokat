@@ -206,6 +206,8 @@ class EditCardController extends Controller
         $card->setVideo($post->get('video'));
         $card->setStreetView($post->get('streetView'));
         $card->setDeliveryStatus($post->get('deliveryStatus'));
+        $card->setDateRentStart(new \DateTime(implode("-",array_reverse(explode(".",$post->get('date_rent_start'))))));
+        $card->setDateRentFinish(new \DateTime(implode("-",array_reverse(explode(".",$post->get('date_rent_finish'))))));
 
         $model = $this->getDoctrine()
             ->getRepository(CarModel::class)
