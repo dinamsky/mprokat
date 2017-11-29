@@ -24,3 +24,9 @@
 
 /app/Resources/views/email/*
 !app/Resources/views/email/.gitkeep
+/bin/symfony_requirements
+/tests/*
+Apache-PHP-7-x64_vhost.conf
+LICENSE
+phpunit.xml.dist
+README.md
