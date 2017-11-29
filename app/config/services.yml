@@ -39,6 +39,11 @@ services:
         public: true
         tags: ['controller.service_arguments']
 
+    InfoBundle\Controller\:
+        resource: '../../src/InfoBundle/Controller'
+        public: true
+        tags: ['controller.service_arguments']
+
     # add more services, or override services that need manual wiring
     # AppBundle\Service\ExampleService:
     #     arguments:

@@ -14,6 +14,8 @@ class NewsController extends Controller
     public function indexAction($slug)
     {
 
+        $city = $this->get('session')->get('city');
+
         $news = $this->getDoctrine()
             ->getRepository(News::class)
             ->findOneBy(['slug' => $slug]);
@@ -22,6 +24,8 @@ class NewsController extends Controller
 
         return $this->render('InfoBundle:news:one_news.html.twig', [
             'news' => $news,
+            'city' => $city,
+            'lang' => $_SERVER['LANG'],
         ]);
     }
 
@@ -30,12 +34,16 @@ class NewsController extends Controller
      */
     public function contactsAction()
     {
+        $city = $this->get('session')->get('city');
+
         $news = $this->getDoctrine()
             ->getRepository(News::class)
             ->findBy([],['dateCreate' => 'DESC']);
 
         return $this->render('InfoBundle:news:all_news.html.twig', [
             'all_news' => $news,
+            'city' => $city,
+            'lang' => $_SERVER['LANG'],
         ]);
     }
 }

@@ -32,6 +32,13 @@ class News
     /**
      * @var string
      *
+     * @ORM\Column(name="anons", type="text")
+     */
+    private $anons;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="content", type="text")
      */
     private $content;
@@ -50,6 +57,12 @@ class News
      */
     private $slug;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="thumbnail", type="string", length=255)
+     */
+    private $thumbnail;
 
     /**
      * Get id
@@ -156,5 +169,52 @@ class News
     {
         return $this->slug;
     }
-}
 
+    /**
+     * Set thumbnail
+     *
+     * @param string $thumbnail
+     *
+     * @return News
+     */
+    public function setThumbnail($thumbnail)
+    {
+        $this->thumbnail = $thumbnail;
+
+        return $this;
+    }
+
+    /**
+     * Get thumbnail
+     *
+     * @return string
+     */
+    public function getThumbnail()
+    {
+        return $this->thumbnail;
+    }
+
+    /**
+     * Set anons
+     *
+     * @param string $anons
+     *
+     * @return News
+     */
+    public function setAnons($anons)
+    {
+        $this->anons = $anons;
+
+        return $this;
+    }
+
+    /**
+     * Get anons
+     *
+     * @return string
+     */
+    public function getAnons()
+    {
+        return $this->anons;
+    }
+}

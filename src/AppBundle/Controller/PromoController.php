@@ -101,6 +101,12 @@ class PromoController extends Controller
         $query = $em->createQuery($dql);
         $result = $query->getResult();
 
+        if(count($result)<1){
+            $dql = 'SELECT c,f,p FROM AppBundle:Card c LEFT JOIN c.fotos f LEFT JOIN c.cardPrices p WHERE c.generalTypeId = 2 AND c.modelId = '.(int)$modelId;
+            $query = $em->createQuery($dql);
+            $result = $query->getResult();
+        }
+
         $i = 0;
         $p = 0;
         foreach($result as $r){
