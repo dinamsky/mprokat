@@ -3,10 +3,32 @@
 
 {% block content %}
     <div class="standard_wide">
-        <h1 class="pf_style_header"><span>Новости</span></h1>
 
+
+        <div uk-grid class="uk-margin-top uk-grid-match uk-grid-small">
         {% for news in all_news %}
-            <div><span>{{ news.dateCreate|date('d.m.Y') }}</span> <a href="/news/{{ news.slug }}">{{ news.header }}</a></div>
+            {#<div><span>{{ news.dateCreate|date('d.m.Y') }}</span> <a href="/news/{{ news.slug }}">{{ news.header }}</a></div>#}
+            <div class="uk-width-1-2">
+                <div class="bordered padding20">
+                <div class="uk-grid uk-grid-small">
+                    {% if news.thumbnail != '' %}
+                    <div class="uk-width-1-3">
+                        <a href="/news/{{ news.slug }}" style="background: url(/assets/images/articles/{{ news.thumbnail }}) center center;
+                                background-size: cover;
+                                height: 150px;
+                                display: block;
+                                "></a>
+                    </div>
+                    {% endif %}
+                    <div class="{{ news.thumbnail != '' ? 'uk-width-2-3' : 'uk-width-1-1' }}">
+                        <h3 class="news_h3">{{ news.header }}</h3>
+                        <div class="uk-text-small">{{ news.anons|raw }}</div>
+                        <a class="uk-button uk-button-default uk-margin-top" href="/news/{{ news.slug }}">Подробнее</a>
+                    </div>
+                </div>
+                </div>
+            </div>
         {% endfor %}
+        </div>
     </div>
 {% endblock %}
