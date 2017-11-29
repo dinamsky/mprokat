@@ -209,16 +209,16 @@ button{
 
 .price_descriptor{
     display: inline-block;
-    max-width: 165px;
-    text-align: left;
+
+
     font-size: 16px;
 }
 
 .price_value{
     display: inline-block;
-    width: 65px;
+
     font-weight: bold;
-    text-align: right;
+
     vertical-align: top;
     font-size: 16px;
 }
@@ -1221,4 +1221,9 @@ top: 80%;
     background: gold;
     color: white;
     padding: 3px;
+}
+
+.news_h3{
+    line-height: 1;
+    margin-bottom: 10px;
 }

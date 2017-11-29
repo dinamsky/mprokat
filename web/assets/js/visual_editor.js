@@ -19,6 +19,9 @@ $( document ).ready(function() {
         statusbar: false,
         verify_html: false,
         autoresize_bottom_margin: 16,
+        convert_urls: false,
+        relative_urls: false,
+        remove_script_host: false,
         language: 'ru'
     });
 

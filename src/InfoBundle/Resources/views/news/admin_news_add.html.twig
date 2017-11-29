@@ -12,34 +12,28 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Новость</h1>
+    <h1>Новый материал</h1>
 
-    <form action="/adminNewsEdit" method="POST" enctype="multipart/form-data">
+    <form action="/adminNewsAdd" method="POST" enctype="multipart/form-data">
         <div>Миниатюра
-            <div>
-                <img src="/assets/images/articles/{{ news.thumbnail }}" style="height:150px;">
-            </div>
             <div uk-form-custom>
                 <input type="file" name="thumbnail">
                 <button class="uk-button uk-button-default" type="button" tabindex="-1">Выбрать файл</button>
             </div>
         </div>
         <div>Заголовок
-            <input type="text" name="header" value="{{ news.header }}" class="uk-input">
-        </div>
-        <div class="uk-margin-top">Путь
-            <input type="text" name="slug" value="{{ news.slug }}" class="uk-input">
+            <input type="text" name="header"  class="uk-input">
         </div>
         <div class="uk-margin-top">
             Анонс
-            <textarea name="anons" class="visual_editor">{{ news.anons }}</textarea>
+            <textarea name="anons" class="visual_editor"></textarea>
         </div>
         <div class="uk-margin-top">
             Контент
-            <textarea name="content" class="visual_editor">{{ news.content }}</textarea>
+            <textarea name="content" class="visual_editor"></textarea>
         </div>
-        <input type="hidden" name="id" value="{{ news.id }}">
-        <button class="uk-button uk-button-primary">Записать</button>
+
+        <button class="uk-button uk-button-primary">Добавить</button>
     </form>
 
 {% endblock %}
