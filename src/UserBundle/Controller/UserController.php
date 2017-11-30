@@ -344,33 +344,39 @@ class UserController extends Controller
                     'email' => $request->request->get('email'),
                 ));
 
-            $code = md5(rand(0, 99999999));
-            $user->setActivateString($code);
-            $user->setTempPassword($password->HashPassword($request->request->get('password1')));
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            if($user) {
+                $code = md5(rand(0, 99999999));
+                $user->setActivateString($code);
+                $user->setTempPassword($password->HashPassword($request->request->get('password1')));
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
 
-            $message = (new \Swift_Message($_t->trans('Восстановление пароля на сайте multiprokat.com')))
-                ->setFrom('mail@multiprokat.com')
-                ->setTo($user->getEmail())
-                ->setBody(
-                    $this->renderView(
-                        $_SERVER['LANG'] == 'ru' ? 'email/recover.html.twig' : 'email/recover_'.$_SERVER['LANG'].'.html.twig',
-                        array(
-                            'header' => $user->getHeader(),
-                            'code' => $code
-                        )
-                    ),
-                    'text/html'
+                $message = (new \Swift_Message($_t->trans('Восстановление пароля на сайте multiprokat.com')))
+                    ->setFrom('mail@multiprokat.com')
+                    ->setTo($user->getEmail())
+                    ->setBody(
+                        $this->renderView(
+                            $_SERVER['LANG'] == 'ru' ? 'email/recover.html.twig' : 'email/recover_' . $_SERVER['LANG'] . '.html.twig',
+                            array(
+                                'header' => $user->getHeader(),
+                                'code' => $code
+                            )
+                        ),
+                        'text/html'
+                    );
+                $mailer->send($message);
+
+                $this->addFlash(
+                    'notice',
+                    $_t->trans('Вам отправлено письмо с активацией нового пароля')
                 );
-            $mailer->send($message);
-
-            $this->addFlash(
-                'notice',
-                $_t->trans('Вам отправлено письмо с активацией нового пароля')
-            );
-
+            } else {
+                $this->addFlash(
+                    'notice',
+                    'Данного email не  существует!'
+                );
+            }
             return $this->redirect($request->request->get('return'));
         } else {
             $this->addFlash(
