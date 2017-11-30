@@ -32,7 +32,9 @@
 
 {% block bodyVars %}data-lang="{{ lang }}"{% endblock %}
 
-{% block title %}Сдать в аренду/прокат {{ gt_url.headerSingular|lower }} в {{ city.gde }}{% endblock %}
+
+{% block title %}{% if gt_url %}Сдать в аренду/прокат {{ gt_url.headerSingular|lower }} в {{ city.gde }}{% endif %}{% endblock %}
+
 
 {% block content %}
 
