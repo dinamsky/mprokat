@@ -1,10 +1,11 @@
 $( document ).ready(function() {
 
-    var j = 0;
+
 
     var imagesPreview = function(input, placeToInsertImagePreview) {
 
         if (input.files) {
+            var j = 0;
             var filesAmount = input.files.length;
 
             console.log(input.files);

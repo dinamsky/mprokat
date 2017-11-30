@@ -271,8 +271,14 @@ class NewCardController extends Controller
                     ->find($post->get('modelId'));
             }
 
-            $card->setMarkModel($model);
-
+            if($model) $card->setMarkModel($model);
+            else {
+                $this->addFlash(
+                                'notice',
+                                'Модель не указана!'
+                            );
+                return new RedirectResponse('/card/new');
+            }
 
 
 
