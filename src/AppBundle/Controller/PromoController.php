@@ -200,7 +200,7 @@ class PromoController extends Controller
                         ),
                         'text/html'
                     );
-                $mailer->send($message);
+                //$mailer->send($message);
 
 
         return $this->render('email/admin_registration.html.twig', [
