@@ -61,7 +61,9 @@ class GeoSubscriber implements EventSubscriberInterface
                     if ($ip != '127.0.0.1') {
 
 
-                        $cacheGeo = $this->get('app.cache.geo')->getItem('ip_'.$ip);
+                        //$event->getRequest()->get
+
+                        $cacheGeo = $event->getRequest()->get('app.cache.geo')->getItem('ip_'.$ip);
 
                         if (!$cacheGeo->isHit()) {
 
@@ -92,7 +94,7 @@ class GeoSubscriber implements EventSubscriberInterface
                             }
 
                             $cacheGeo->set($city->getId());
-                            $this->get('app.cache.geo')->save($cacheGeo);
+                            $event->getRequest()->get('app.cache.geo')->save($cacheGeo);
 
                         } else {
                             $city_id = $cacheGeo->get();
