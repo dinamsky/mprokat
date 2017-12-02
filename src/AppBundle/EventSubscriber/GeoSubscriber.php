@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpFoundation\Cookie;
 use UserBundle\Security\CookieMaster;
-//use Symfony\Component\Cache\Adapter\MemcachedAdapter;
+use Symfony\Component\Cache\Adapter\MemcachedAdapter;
 
 class GeoSubscriber implements EventSubscriberInterface
 {
@@ -31,8 +31,7 @@ class GeoSubscriber implements EventSubscriberInterface
 
         $cookie = $event->getRequest()->cookies->has('geo_city_id');
 
-//        $client = MemcachedAdapter::createConnection('memcached://localhost');
-//        $cache = new MemcachedAdapter($client, $namespace = '', $defaultLifetime = 0);
+
 
         if($cookie){
             $city = $this->em
@@ -61,11 +60,12 @@ class GeoSubscriber implements EventSubscriberInterface
                     if ($ip != '127.0.0.1') {
 
 
-                        //$event->getRequest()->get
+                        $client = MemcachedAdapter::createConnection('memcached://localhost');
+                        $cache = new MemcachedAdapter($client, $namespace = '', $defaultLifetime = 0);
 
-                        $cacheGeo = $event->getRequest()->get('app.cache.geo')->getItem('ip_'.$ip);
 
-                        if (!$cacheGeo->isHit()) {
+
+                        if (!$cache->has('ip_'.$ip)) {
 
                             $ch = curl_init();
                             curl_setopt($ch, CURLOPT_URL, 'http://ip-api.com/json/' . $ip . '?lang=ru&fields=city');
@@ -93,11 +93,11 @@ class GeoSubscriber implements EventSubscriberInterface
                                 }
                             }
 
-                            $cacheGeo->set($city->getId());
-                            $event->getRequest()->get('app.cache.geo')->save($cacheGeo);
+
+                            $cache->set('ip_'.$ip, $city->getId());
 
                         } else {
-                            $city_id = $cacheGeo->get();
+                            $city_id = $cache->get('ip_'.$ip);
                             $city = $this->em->getRepository(City::class)->find($city_id);
                         }
                     }
