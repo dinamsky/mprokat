@@ -55,7 +55,15 @@ class GeoSubscriber implements EventSubscriberInterface
                         $ip = $_SERVER['REMOTE_ADDR'];
                     }
                     if ($ip != '127.0.0.1') {
-                        $get = file_get_contents('http://ip-api.com/json/' . $ip . '?lang=ru');
+
+                        $ch = curl_init();
+                        curl_setopt($ch, CURLOPT_URL, 'http://ip-api.com/json/' . $ip . '?lang=ru&fields=city');
+                        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                        $get = curl_exec($ch);
+
+                        //$data = json_decode($response);
+                        //$get = file_get_contents();
                         if ($get) {
                             $geo = json_decode($get, true);
                             if (isset($geo['city'])) {
@@ -76,9 +84,7 @@ class GeoSubscriber implements EventSubscriberInterface
             }
 
             if ($default) {
-                $city = $this->em
-                    ->getRepository(City::class)
-                    ->find(77);
+                $city = $this->em->getRepository(City::class)->find(77);
                 $event->getRequest()->getSession()->set('city', $city);
             }
 
