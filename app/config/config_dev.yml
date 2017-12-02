@@ -6,6 +6,12 @@ framework:
         resource: '%kernel.project_dir%/app/config/routing_dev.yml'
         strict_requirements: true
     profiler: { only_exceptions: false }
+    cache:
+        default_memcached_provider: "memcached://localhost"
+        pools:
+            app.cache.products:
+                adapter: cache.adapter.memcached
+                public: true
 
 web_profiler:
     toolbar: true

@@ -21,7 +21,9 @@ use Symfony\Component\HttpFoundation\Request;
 require __DIR__.'/../vendor/autoload.php';
 Debug::enable();
 
-$kernel = new AppKernel('dev', true);
+
+if($_SERVER['REMOTE_ADDR']=='127.0.0.1') $kernel = new AppKernel('test', true);
+else $kernel = new AppKernel('dev', true);
 if (PHP_VERSION_ID < 70000) {
     $kernel->loadClassCache();
 }
