@@ -120,14 +120,15 @@ class AdminController extends Controller
                 return $this->redirectToRoute('adminNewUser');
             }
 
+            $psw = md5($request->request->get('password'));
 
             $user = new User();
             $user->setEmail($request->request->get('email'));
             $user->setLogin($request->request->get('header'));
-            $user->setPassword($password->HashPassword($request->request->get('password')));
+            $user->setPassword($password->HashPassword($psw));
             $user->setHeader($request->request->get('header'));
             $user->setActivateString('');
-            $user->setTempPassword($request->request->get('password'));
+            $user->setTempPassword($psw);
             $user->setIsActivated(true);
             $user->setAdmin($admin);
             $user->setIsSubscriber(true);
