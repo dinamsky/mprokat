@@ -39,6 +39,7 @@ class MyCacheService extends Controller
             $DSNdata = [];
             preg_match('/(?<host>.*):(?<port>\d+)/', $DSN, $DSNdata);
             $this->driver->addServer($DSNdata['host'], (float)$DSNdata['port']);
+            dump($this->driver);
             return TRUE;
         }
     }
@@ -57,6 +58,7 @@ class MyCacheService extends Controller
             if ($result == FALSE) {
                 $result = $this->driver->set($this->_key($name), json_encode($value, JSON_BIGINT_AS_STRING | JSON_UNESCAPED_UNICODE), ($ttl) ? $ttl : $this->exp);
             }
+            dump($this->driver);
             return $result;
         }
 
