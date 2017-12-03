@@ -3,6 +3,7 @@
 namespace AppBundle\EventSubscriber;
 
 use AppBundle\Entity\City;
+use AppBundle\Menu\MyCacheService;
 use UserBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface as em;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,11 +20,13 @@ class GeoSubscriber implements EventSubscriberInterface
 
     private $cookieMaster;
     private $em;
+    private $mcs;
 
-    public function __construct(em $em, CookieMaster $cookieMaster)
+    public function __construct(em $em, CookieMaster $cookieMaster, MyCacheService $mcs)
     {
         $this->cookieMaster = $cookieMaster;
         $this->em = $em;
+        $this->mcs = $mcs;
     }
 
     public function onKernelController(FilterControllerEvent $event)
@@ -60,12 +63,11 @@ class GeoSubscriber implements EventSubscriberInterface
                     if ($ip != '127.0.0.1') {
 
 
-                        $client = MemcachedAdapter::createConnection('memcached://localhost');
-                        $cache = new MemcachedAdapter($client, $namespace = '', $defaultLifetime = 0);
+                    if(!$this->mcs->check('ip_'.$ip)) $this->mcs->cset('ip_'.$ip,$ip,3600);
+                    else dump($this->mcs->cget('ip_'.$ip));
 
 
 
-                        if (!$cache->has('ip_'.$ip)) {
 
                             $ch = curl_init();
                             curl_setopt($ch, CURLOPT_URL, 'http://ip-api.com/json/' . $ip . '?lang=ru&fields=city');
@@ -94,12 +96,9 @@ class GeoSubscriber implements EventSubscriberInterface
                             }
 
 
-                            $cache->set('ip_'.$ip, $city->getId());
 
-                        } else {
-                            $city_id = $cache->get('ip_'.$ip);
-                            $city = $this->em->getRepository(City::class)->find($city_id);
-                        }
+
+
                     }
                 } else $default = false;
             }
