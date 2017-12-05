@@ -1227,3 +1227,11 @@ top: 80%;
     line-height: 1;
     margin-bottom: 10px;
 }
+
+#card_content *{
+    margin:0 !important;
+}
+
+#card_content a{
+    margin:0 !important;
+}

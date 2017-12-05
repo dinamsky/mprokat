@@ -11,6 +11,7 @@ use AppBundle\Entity\CardFeature;
 use AppBundle\Entity\CardPrice;
 use AppBundle\Entity\Feature;
 use AppBundle\Entity\Foto;
+use AppBundle\Entity\Country;
 use AppBundle\Entity\Price;
 use AppBundle\Entity\Tariff;
 use AppBundle\Foto\FotoUtils;
@@ -137,6 +138,10 @@ class EditCardController extends Controller
         $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.total DESC');
         $generalTypes = $query->getResult();
 
+        $countries = $this->getDoctrine()
+                ->getRepository(Country::class)
+                ->findBy([],['header'=>'ASC']);
+
         return $this->render('card/card_edit.html.twig',[
             'card' => $card,
             'conditions' => $conditions,
@@ -147,7 +152,7 @@ class EditCardController extends Controller
             'gtid' => $gtid,
             'pgtid' => $pgtid,
 
-            'countries' => $mc->getCountry(),
+            //'countries' => $mc->getCountry(),
             'mark' => $mark,
             'model' => $model,
             'marks' => $marks,
@@ -165,7 +170,8 @@ class EditCardController extends Controller
             'tariffs' => $tariffs,
             'popular_city' => $popular_city,
             'generalTypes' => $generalTypes,
-            'lang' => $_SERVER['LANG']
+            'lang' => $_SERVER['LANG'],
+            'countries' => $countries
         ]);
     }
 

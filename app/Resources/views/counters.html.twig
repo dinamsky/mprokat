@@ -1,4 +1,4 @@
-{% if app.environment == 'prod' %}
+{% if app.environment == 'prod' and app.session.get('city').country == 'RUS'%}
     <!--Start of Zendesk Chat Script-->
     <script type="text/javascript">
         window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
@@ -22,12 +22,12 @@
     </script>
 
 
-    {% if total_cards is defined and total_cards == 0 %}
-        <script type="text/javascript">
-            window.onload = function() {
-                yaCounter43151009.reachGoal('theEmptyPage')
-            }
-        </script>
-    {% endif %}
+    {#{% if total_cards is defined and total_cards == 0 %}#}
+        {#<script type="text/javascript">#}
+            {#window.onload = function() {#}
+                {#yaCounter43151009.reachGoal('theEmptyPage')#}
+            {#}#}
+        {#</script>#}
+    {#{% endif %}#}
 
 {% endif %}

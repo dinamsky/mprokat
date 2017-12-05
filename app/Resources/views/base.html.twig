@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
+        {% if app.session.has('city') and app.session.get('city').country != 'RUS' %}
+        <meta name="robots" content="noindex">
+        {% endif %}
+
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% block stylesheets %}

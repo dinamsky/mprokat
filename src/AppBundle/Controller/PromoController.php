@@ -67,6 +67,9 @@ class PromoController extends Controller
         }
         ksort($opinions);
 
+        $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.weight, g.total DESC');
+        $generalTypes = $query->getResult();
+
         return $this->render('promo/promo.html.twig', [
 
             'city' => $city,
@@ -79,6 +82,7 @@ class PromoController extends Controller
 
             'promo' => $promo,
             'opinions' => $opinions,
+            'generalTypes' => $generalTypes,
 
             'mark_groups' => $markmenu->getGroups(),
             'marks' => $markmenu->getMarks(1),

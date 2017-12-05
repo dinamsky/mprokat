@@ -23,18 +23,35 @@
                 {#{{ include( 'common/ajax_edit_options.html.twig', { 'options': countries, 'id': countryCode }) }}#}
 
                 <option value="0">-выберите страну-</option>
-                <option value="RUS">Россия</option>
-                <option value="CAN">Canada</option>
-                <option value="USA">USA</option>
+
+                {% if app.session.has('admin') %}
+                    {% for cntr in countries %}
+                    <option value="{{ cntr.iso3 }}" {{ city.country == cntr.iso3 ? 'selected' }}>{{ cntr.header }}</option>
+                    {% endfor %}
+                {% else %}
+                    <option value="RUS" selected>Россия</option>
+                {% endif %}
+
+
             </select>
             <div class="uk-text-small">{% trans %}Регион{% endtrans %}</div>
             <select name="regionId" id="regionId" class="uk-select">
                 {{ include( 'common/ajax_edit_options.html.twig', { 'options': regions, 'id': regionId }) }}
             </select>
+            {% if app.session.has('admin') %}
+            <div>
+                <input type="checkbox" name="is_region"> нет региона <input type="text" name="new_region" placeholder="впишите свой регион" class="uk-input uk-width-1-2">
+            </div>
+            {% endif %}
             <div class="uk-text-small">{% trans %}Город{% endtrans %}</div>
             <select name="cityId" id="cityId" class="uk-select cityIdSelect">
                 {{ include( 'common/ajax_edit_options.html.twig', { 'options': cities, 'id': cityId }) }}
             </select>
+            {% if app.session.has('admin') %}
+            <div>
+                <input type="checkbox" name="is_city"> нет города <input type="text" name="new_city" placeholder="впишите свой город" class="uk-input uk-width-1-2">
+            </div>
+            {% endif %}
             <div class="uk-text-small">{% trans %}Адрес{% endtrans %}</div>
             <div>
                 <textarea name="address" class="uk-textarea"></textarea>

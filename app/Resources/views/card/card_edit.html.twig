@@ -77,7 +77,19 @@
                 <div class="expandable_block" id="city_selector" hidden>
                     <div class="uk-text-small">{% trans %}Страна{% endtrans %}</div>
                     <select name="countryCode" id="countryCode" class="uk-select">
-                        {{ include( 'common/ajax_edit_options.html.twig', { 'options': countries, 'id': countryCode }) }}
+                        {#{{ include( 'common/ajax_edit_options.html.twig', { 'options': countries, 'id': countryCode }) }}#}
+
+                        <option value="0">-выберите страну-</option>
+
+                        {% if app.session.has('admin') %}
+                            {% for cntr in countries %}
+                            <option value="{{ cntr.iso3 }}" {{ card.city.country == cntr.iso3 ? 'selected' }}>{{ cntr.header }}</option>
+                            {% endfor %}
+                        {% else %}
+                            <option value="RUS" selected>Россия</option>
+                        {% endif %}
+
+
                     </select>
                     <div class="uk-text-small">{% trans %}Регион{% endtrans %}</div>
                     <select name="regionId" id="regionId" class="uk-select">

@@ -3,6 +3,7 @@
 namespace AppBundle\EventSubscriber;
 
 use AppBundle\Entity\City;
+use AppBundle\Menu\MyCacheService;
 use UserBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface as em;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,23 +13,28 @@ use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpFoundation\Cookie;
 use UserBundle\Security\CookieMaster;
+use Symfony\Component\Cache\Adapter\MemcachedAdapter;
 
 class GeoSubscriber implements EventSubscriberInterface
 {
 
     private $cookieMaster;
     private $em;
+    private $mcs;
 
-    public function __construct(em $em, CookieMaster $cookieMaster)
+    public function __construct(em $em, CookieMaster $cookieMaster, MyCacheService $mcs)
     {
         $this->cookieMaster = $cookieMaster;
         $this->em = $em;
+        $this->mcs = $mcs;
     }
 
     public function onKernelController(FilterControllerEvent $event)
     {
 
         $cookie = $event->getRequest()->cookies->has('geo_city_id');
+
+
 
         if($cookie){
             $city = $this->em
@@ -55,30 +61,50 @@ class GeoSubscriber implements EventSubscriberInterface
                         $ip = $_SERVER['REMOTE_ADDR'];
                     }
                     if ($ip != '127.0.0.1') {
-                        $get = file_get_contents('http://ip-api.com/json/' . $ip . '?lang=ru');
-                        if ($get) {
-                            $geo = json_decode($get, true);
-                            if (isset($geo['city'])) {
-                                $city = $this->em->getRepository("AppBundle:City")->createQueryBuilder('c')
-                                    ->where('c.header LIKE :geoname')
-                                    ->andWhere('c.parentId IS NOT NULL')
-                                    ->setParameter('geoname', '%' . $geo['city'] . '%')
-                                    ->getQuery()
-                                    ->getResult();
-                                if ($city) {
-                                    $event->getRequest()->getSession()->set('city', $city[0]);
-                                    $default = false;
+
+
+//                    if(!$this->mcs->check('ip_'.$ip)) $this->mcs->cset('ip_'.$ip,$ip,3600);
+//                    else dump($this->mcs->cget('ip_'.$ip));
+
+
+
+
+                            $ch = curl_init();
+                            curl_setopt($ch, CURLOPT_URL, 'http://ip-api.com/json/' . $ip . '?lang=ru&fields=city');
+                            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                            $get = curl_exec($ch);
+
+                            //$data = json_decode($response);
+                            //$get = file_get_contents();
+                            if ($get) {
+                                $geo = json_decode($get, true);
+                                if (isset($geo['city'])) {
+                                    $city = $this->em->getRepository("AppBundle:City")->createQueryBuilder('c')
+                                        ->where('c.header LIKE :geoname')
+                                        ->andWhere('c.parentId IS NOT NULL')
+                                        ->setParameter('geoname', '%' . $geo['city'] . '%')
+                                        ->getQuery()
+                                        ->getResult();
+                                    if ($city) {
+                                        $event->getRequest()->getSession()->set('city', $city[0]);
+                                        $default = false;
+                                    }
+                                } else {
+                                    $city = $this->em->getRepository(City::class)->find(77);
                                 }
                             }
-                        }
+
+
+
+
+
                     }
                 } else $default = false;
             }
 
             if ($default) {
-                $city = $this->em
-                    ->getRepository(City::class)
-                    ->find(77);
+                $city = $this->em->getRepository(City::class)->find(77);
                 $event->getRequest()->getSession()->set('city', $city);
             }
 
