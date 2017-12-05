@@ -63,8 +63,8 @@ class GeoSubscriber implements EventSubscriberInterface
                     if ($ip != '127.0.0.1') {
 
 
-                    if(!$this->mcs->check('ip_'.$ip)) $this->mcs->cset('ip_'.$ip,$ip,3600);
-                    else dump($this->mcs->cget('ip_'.$ip));
+//                    if(!$this->mcs->check('ip_'.$ip)) $this->mcs->cset('ip_'.$ip,$ip,3600);
+//                    else dump($this->mcs->cget('ip_'.$ip));
 
 
 

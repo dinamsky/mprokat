@@ -212,12 +212,72 @@
     }
 
     .m_add_card_button{
-        line-height: 14px;
+        line-height: 28px;
         padding: 5px 0;
     }
 
     .desktop_header{
         display: none;
+    }
+
+    .promo_wide{
+        width: 100% !important;
+        /*margin: 10px !important;*/
+    }
+
+    .promo h3{
+        word-break: break-all;
+        font-size: 14px;
+    }
+
+    .promo h2{
+        font-size: 16px;
+    }
+
+    .promo .tx_24{
+        font-size: 14px;
+    }
+
+    .promo .block_padding{
+        padding: 30px 0;
+    }
+
+    .promo .block_4{
+        padding: 10px;
+    }
+
+    .promo .block_5{
+        padding: 10px;
+        padding-top: 30px;
+    }
+
+    .promo .block_4 .uk-float-left{
+        width:80%;
+    }
+
+    .promo .block_4 .uk-float-right{
+        width:20%;
+    }
+
+    .promo .b4_toggler_text {
+        width: 95%;
+    }
+
+    .block_6 img{
+        max-width: 100px;
+        max-height: 100px;
+    }
+
+    .block_1 a{
+        width: 100%;
+    font-size: 13px;
+    line-height: 15px;
+    padding: 17px 0;
+    margin-top: 10px;
+    }
+
+    .block_1 h1{
+        font-size: 31px !important;
     }
 }
 

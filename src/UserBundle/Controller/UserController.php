@@ -156,12 +156,12 @@ class UserController extends Controller
             $em = $this->getDoctrine()->getManager();
             $dql = 'SELECT u FROM UserBundle:User u WHERE u.isBanned = 0 AND (u.email = ?1 OR u.login = ?1)';
             $query = $em->createQuery($dql);
-            $query->setParameter(1, urlencode($request->query->get('email')));
+            $query->setParameter(1, urldecode($request->query->get('email')));
             $users = $query->getResult();
 
             foreach ($users as $user) {
 
-                if ($password->CheckPassword(urlencode($request->query->get('password')), $user->getPassword())) {
+                if ($password->CheckPassword(urldecode($request->query->get('password')), $user->getPassword())) {
 
                     $this->get('session')->set('logged_user', $user);
 

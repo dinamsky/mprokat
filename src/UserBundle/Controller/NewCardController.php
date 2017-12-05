@@ -14,6 +14,7 @@ use AppBundle\Entity\Feature;
 use AppBundle\Entity\Foto;
 use AppBundle\Entity\Price;
 use AppBundle\Entity\Tariff;
+use AppBundle\Entity\Country;
 use AdminBundle\Entity\Admin;
 use AppBundle\Foto\FotoUtils;
 
@@ -110,6 +111,10 @@ class NewCardController extends Controller
 
             $city = $this->get('session')->get('city');
 
+            $countries = $this->getDoctrine()
+                ->getRepository(Country::class)
+                ->findBy([],['header'=>'ASC']);
+
             $gt = $this->getDoctrine()
                 ->getRepository(GeneralType::class)
                 ->find(2);
@@ -183,7 +188,7 @@ class NewCardController extends Controller
                 'prices' => $prices,
                 'tariffs' =>$tariffs,
 
-                'countries' => $mc->getCountry(),
+                //'countries' => $mc->getCountry(),
                 'countryCode' => $city->getCountry(),
                 'regionId' => $city->getParentId(),
                 'regions' => $mc->getRegion($city->getCountry()),
@@ -201,7 +206,8 @@ class NewCardController extends Controller
                 'phone' => $phone,
                 'gt_url' => $gt_url,
                 'random' => $random,
-                'lang' => $_SERVER['LANG']
+                'lang' => $_SERVER['LANG'],
+                'countries' => $countries
             ]);
 
             return $response;
@@ -281,11 +287,65 @@ class NewCardController extends Controller
             }
 
 
+            $country = $this->getDoctrine()
+                ->getRepository(Country::class)
+                ->findOneBy(['iso3'=>$post->get('countryCode')]);
 
-            $city = $this->getDoctrine()
+            if($post->get('cityId') != 0) {
+                $city = $this->getDoctrine()
+                    ->getRepository(City::class)
+                    ->find($post->get('cityId'));
+            }
+
+            if($post->get('regionId') != 0){
+                $region = $this->getDoctrine()
                 ->getRepository(City::class)
-                ->find($post->get('cityId'));
+                ->find($post->get('regionId'));
+            }
+
+
+            if($post->has('is_region')
+                and $post->get('new_region') != ''
+                and $post->get('countryCode') != '0'
+                and $post->has('is_city')
+                and $post->get('new_city') != ''){
+
+                $region = new City();
+                $region->setCountry($post->get('countryCode'));
+                $region->setHeader($post->get('new_region'));
+                $region->setUrl($fu->translit($post->get('new_region')));
+                $region->setGde(' ');
+                $region->setTotal(1);
+                $region->setModels(' ');
+                $region->setCoords($country->getCoords());
+                $region->setIso($country->getIso2());
+                $em->persist($region);
+                $em->flush();
+            }
+
+
+
+            if($post->has('is_city')
+                and $post->get('new_city') != ''
+                and $post->get('countryCode') != '0'){
+
+                $city = new City();
+                $city->setParent($region);
+                $city->setCountry($post->get('countryCode'));
+                $city->setHeader($post->get('new_city'));
+                $city->setUrl($fu->translit($post->get('new_city')).'_'.$post->get('countryCode'));
+                $city->setGde(' ');
+                $city->setTotal(1);
+                $city->setModels(' ');
+                $city->setCoords($country->getCoords());
+                $city->setIso($country->getIso2());
+                $em->persist($city);
+                $em->flush();
+
+            }
+
             $card->setCity($city);
+
 
             $card->setProdYear($post->get('prodYear'));
 

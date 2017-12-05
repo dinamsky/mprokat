@@ -30,6 +30,9 @@ function new_card_validate(){
 
     var desc = $('textarea[name="content"]').val();
 
+    var is_new_region = $('input[name="is_region]').prop('checked');
+    var is_new_city = $('input[name="is_city]').prop('checked');
+
     var message = [];
 
     var lang = $('body').data('lang');
@@ -40,7 +43,7 @@ function new_card_validate(){
         if (!phone) message.push('<br>Заполните номер телефона!');
     }
 
-    if (!city || city === '0') message.push('<br>Город');
+    if ((!city || city === '0') && !is_new_city) message.push('<br>Город');
 
     if (!general_type) message.push('<br>Тип транспорта');
 

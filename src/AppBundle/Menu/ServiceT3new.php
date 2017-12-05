@@ -30,7 +30,7 @@ class ServiceT3new extends Controller
         $query->setMaxResults(3);
         if(count($query->getResult())<3) {
 
-            $query = $this->em->createQuery('SELECT c FROM AppBundle:Card c JOIN c.tariff t ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
+            $query = $this->em->createQuery('SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.cityId < 1260 ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
             $query->setMaxResults(3);
         }
 
@@ -48,7 +48,7 @@ class ServiceT3new extends Controller
         $query->setParameter(1, $cityId);
         $query->setMaxResults(3);
         if(count($query->getResult())<3) {
-            $query = $this->em->createQuery('SELECT c.id FROM AppBundle:Card c ORDER BY c.dateCreate DESC');
+            $query = $this->em->createQuery('SELECT c.id FROM AppBundle:Card c WHERE c.cityId < 1260 ORDER BY c.dateCreate DESC');
             $query->setMaxResults(3);
         }
 
@@ -61,8 +61,9 @@ class ServiceT3new extends Controller
     public function popularCities()
     {
         $country = $this->sess->get('city')->getCountry();
-        $query = $this->em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 AND c.country = ?1 ORDER BY c.header ASC');
+        $query = $this->em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 AND c.country = ?1 AND c.parentId IS NOT NULL ORDER BY c.header ASC');
         $query->setParameter(1, $country);
+        $query->setMaxResults(100);
         return $query->getResult();
     }
 
@@ -71,4 +72,5 @@ class ServiceT3new extends Controller
         $query = $this->em->createQuery('SELECT g FROM AppBundle:GeneralType g ORDER BY g.weight ASC');
         return $query->getResult();
     }
+
 }
