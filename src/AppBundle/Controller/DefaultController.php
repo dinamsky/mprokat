@@ -90,9 +90,9 @@ class DefaultController extends Controller
      */
     public function showRegionsAction(EntityManagerInterface $em)
     {
-        $query = $em->createQuery('SELECT c.cityId FROM AppBundle:Card c ');
+        $query = $em->createQuery("SELECT c.id FROM AppBundle:City c WHERE c.country = 'RUS'");
         foreach($query->getScalarResult() as $row){
-            $city_ids[] = $row['cityId'];
+            $city_ids[] = $row['id'];
         }
         $query = $em->createQuery('SELECT c.parentId FROM AppBundle:City c WHERE c.parentId IS NOT NULL AND c.id IN ('.implode(",",$city_ids).')');
         foreach($query->getScalarResult() as $row){
@@ -101,8 +101,13 @@ class DefaultController extends Controller
         $region_ids = array_unique($region_ids);
         $query = $em->createQuery('SELECT r FROM AppBundle:City r WHERE r.id IN ('.implode(",",$region_ids).')');
         $regions = $query->getResult();
+
+        $city = $this->get('session')->get('city');
+
         return $this->render('main_page/regions.html.twig', [
-            'regions' => $regions
+            'regions' => $regions,
+            'city' => $city,
+            'lang' => $_SERVER['LANG']
         ]);
     }
 
