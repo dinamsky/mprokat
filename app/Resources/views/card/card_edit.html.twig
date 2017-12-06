@@ -16,6 +16,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWdm1zrblFjsdUfi1-6fsPvj30ACCiCxk"></script>
     <script src="{{ asset('assets/js/edit_card_validate.js') }}"></script>
     <script src="{{ asset('assets/js/newCardForm.js') }}"></script>
+    <script src="{{ asset('assets/js/sliderSettings.js') }}"></script>
     <script src="{{ asset('assets/js/editCardForm.js') }}"></script>
     <script src="{{ asset('assets/js/tariff_selector.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.damnUploader.min.js') }}"></script>
@@ -24,6 +25,10 @@
     <script src="{{ asset('assets/js/select_combo.js') }}"></script>
     <script src="{{ asset('assets/js/datepicker.min.js') }}"></script>
     {% if not subfields %}<script src="{{ asset('assets/js/get_new_subfields.js') }}"></script>{% endif %}
+    {% if app.session.has('promote') %}
+        <script src="{{ asset('assets/js/promote.js') }}"></script>
+        {{ app.session.remove('promote') }}
+    {% endif %}
 
 {% endblock %}
 
@@ -344,4 +349,10 @@
         </div>
 
     </form>
+
+
+
+
 {% endblock %}
+
+
