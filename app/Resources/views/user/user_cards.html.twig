@@ -22,7 +22,7 @@
             </div>
             <script>document.addEventListener("DOMContentLoaded", function(event) { UIkit.modal('#first_jump').show();})</script>
 
-            {{ app.session.remove('first_jump') }}
+            <span style="display: none">{{ app.session.remove('first_jump') }}</span>
 
         {% endif %}
 
