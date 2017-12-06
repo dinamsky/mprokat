@@ -127,6 +127,15 @@ class EditCardController extends Controller
         $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.total > 0 ORDER BY c.total DESC, c.header ASC');
         $popular_city = $query->getResult();
 
+
+        $query = $em->createQuery('SELECT c.id FROM AppBundle:Card c ORDER BY c.views DESC');
+        $query->setMaxResults(9);
+        foreach ($query->getScalarResult() as $cars_id) $cars_ids[] = $cars_id['id'];
+        $dql = 'SELECT c,f,p FROM AppBundle:Card c LEFT JOIN c.fotos f LEFT JOIN c.cardPrices p WHERE c.id IN ('.implode(",",$cars_ids).') ORDER BY c.views DESC';
+        $query = $em->createQuery($dql);
+        $promoted = $query->getResult();
+
+
         $stat_arr = [
             'url' => '/user/edit/card/'.$card->getId(),
             'event_type' => 'set_form',
@@ -171,7 +180,8 @@ class EditCardController extends Controller
             'popular_city' => $popular_city,
             'generalTypes' => $generalTypes,
             'lang' => $_SERVER['LANG'],
-            'countries' => $countries
+            'countries' => $countries,
+            'promoted' => $promoted
         ]);
     }
 
@@ -365,6 +375,16 @@ class EditCardController extends Controller
 
                 $url = "https://auth.robokassa.ru/Merchant/Index.aspx?MrchLogin=$mrh_login&" .
                     "OutSum=$out_summ&InvId=$inv_id&Desc=$inv_desc&SignatureValue=$crc";
+
+                $stat_arr = [
+                    'url' => '/user/edit/card/'.$card->getId(),
+                    'event_type' => 'go_pay_tariff',
+                    'page_type' => $tariff->getId(),
+                    'user_id' => $card->getUserId(),
+                ];
+                $stat->setStat($stat_arr);
+
+
 
                 return new RedirectResponse($url);
             }
