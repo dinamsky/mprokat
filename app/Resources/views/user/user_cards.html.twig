@@ -5,4 +5,26 @@
         <h1>{% trans %}Мои объявления{% endtrans %}</h1>
         {{ include('search/grid_view.html.twig') }}
 
+        {% if app.session.has('first_jump') %}
+
+            <div id="first_jump" class="uk-modal" uk-modal>
+                <div class="uk-modal-dialog uk-modal-body">
+                    <button class="uk-modal-close-default" type="button" uk-close><i class="fa fa-close"></i></button>
+                    <h2 class="uk-modal-title">Добрый день!</h2>
+                    <p>
+                        Мы зарегистрировали вашу компанию на сайте Мультипрокат и разместили объявления о ваших услугах.<br>
+                        На сайте Мультипрокат клиенты ищут аренду и прокат транспорта, в данный момент мы работаем в 215 городах России,
+                        на сайте более 8000 единиц транспорта, мы ежедневно соединяем арендаторов и владельцев.<br>
+                        Теперь вам будут звонить клиенты и мы будем высылать заявки на ваш мейл.<br>
+                        Мы не берем никаких комиссий от ваших сделок, цель сайта создать единый портал аренды, для удобства клиентов.<br>
+                    </p>
+                </div>
+            </div>
+            <script>document.addEventListener("DOMContentLoaded", function(event) { UIkit.modal('#first_jump').show();})</script>
+
+            {{ app.session.remove('first_jump') }}
+
+        {% endif %}
+
+
 {% endblock %}

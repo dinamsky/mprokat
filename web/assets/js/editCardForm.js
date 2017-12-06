@@ -83,7 +83,13 @@ $( document ).ready(function() {
 
     $('#tariff_changer').on('click',function(){
         $('.hide_on_change').toggleClass('uk-hidden');
-        if($('.hide_on_change').hasClass('uk-hidden')) $(this).html('Отменить смену тарифа');
+        if($('.hide_on_change').hasClass('uk-hidden')) {
+            $(this).html('Отменить смену тарифа');
+            $.ajax({
+                url: '/user_controller_ajax_tariff_cancel',
+                type: 'POST'
+            });
+        }
         else $(this).html('Сменить тариф');
     });
 

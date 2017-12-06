@@ -2,6 +2,7 @@
 
 namespace UserBundle\Controller;
 
+use AppBundle\Menu\ServiceStat;
 use MarkBundle\Entity\CarModel;
 use MarkBundle\Entity\CarMark;
 use UserBundle\Entity\UserOrder;
@@ -177,7 +178,9 @@ class UserController extends Controller
                         if ($info->getUiKey() == 'foto') $this->get('session')->set('user_pic', $info->getUiValue());
                     }
 
-                    $route = 'homepage';
+                    $this->get('session')->set('first_jump', true);
+
+                    $route = 'user_cards';
                     if ($request->query->has('rentout')) $route = 'card_new';
 
                     return $this->redirectToRoute($route);
@@ -572,5 +575,51 @@ class UserController extends Controller
             ->findOneBy(['email'=>$request->request->get('email')]);
         if ($user) return new Response('ok');
         else return new Response('new');
+    }
+
+    /**
+     * @Route("/promote_card/{id}")
+     */
+    public function promoteCardAction($id, ServiceStat $stat)
+    {
+        $this->get('session')->set('promote', true);
+
+        $card = $this->getDoctrine()
+            ->getRepository(Card::class)
+            ->find($id);
+
+        $stat_arr = [
+                'url' => '/user/edit/card/'.$id,
+                'event_type' => 'promote_card',
+                'page_type' => 'form',
+                'user_id' => $card->getUserId(),
+                'card_id' => $id,
+            ];
+
+        $stat->setStat($stat_arr);
+
+        return new RedirectResponse('/user/edit/card/'.$id);
+    }
+
+
+
+    /**
+     * @Route("/user_controller_ajax_tariff_cancel/")
+     */
+    public function cancelPromoteCardAction(ServiceStat $stat)
+    {
+        $user = $this->get('session')->get('logged_user');
+
+        $stat_arr = [
+            'url' => '',
+            'event_type' => 'cancel_promote_card',
+            'page_type' => 'form',
+        ];
+
+        if($user) $stat_arr['user_id'] = $user->getId();
+
+        $stat->setStat($stat_arr);
+
+        return new Response();
     }
 }
