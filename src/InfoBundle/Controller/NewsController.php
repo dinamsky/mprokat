@@ -26,6 +26,7 @@ class NewsController extends Controller
             'news' => $news,
             'city' => $city,
             'lang' => $_SERVER['LANG'],
+
         ]);
     }
 
@@ -44,6 +45,7 @@ class NewsController extends Controller
             'all_news' => $news,
             'city' => $city,
             'lang' => $_SERVER['LANG'],
+
         ]);
     }
 }

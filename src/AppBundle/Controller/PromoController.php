@@ -236,4 +236,36 @@ class PromoController extends Controller
         $stat->setStat($stat_arr);
         return new Response('ok');
     }
+
+    /**
+     * @Route("/promo_request")
+     */
+    public function preqAction(Request $request, \Swift_Mailer $mailer)
+    {
+        $post = $request->request;
+
+        $content = 'Марка: '.$post->get('promo_mark').'<br>';
+        $content.= 'Модель: '.$post->get('promo_model').'<br>';
+        $content.= 'Год выпуска: '.$post->get('prod_year').'<br>';
+        $content.= 'Город: '.$post->get('promo_city').'<br>';
+        $content.= 'Email: '.$post->get('promo_email').'<br>';
+        $content.= 'Телефон: '.$post->get('promo_phone').'<br>';
+        $content.= 'Имя: '.$post->get('promo_name');
+
+        $message = (new \Swift_Message('Заявка с ПРОМО'))
+            ->setFrom('mail@multiprokat.com')
+            ->setTo('mail@multiprokat.com')
+            ->setBody(
+                $content,
+                'text/html'
+            );
+        $mailer->send($message);
+
+        $this->addFlash(
+            'notice',
+            'Ваша заявка успешно отправлена!'
+        );
+        return $this->redirectToRoute('promo');
+    }
+
 }
