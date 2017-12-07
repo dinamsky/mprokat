@@ -98,6 +98,7 @@ $( document ).ready(function() {
             type: 'POST',
             data: {markId:markId},
             success: function(html){
+                $('.block_8').find('.uk-hidden').removeClass('uk-hidden');
                 $('#b8_model').html(html);
             }
         });
