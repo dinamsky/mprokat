@@ -269,11 +269,11 @@
             </div>
             <div class="uk-width-1-2@s">
                 <div class="">Выберите модель авто</div>
-                <select name="promo_model_sel" id="b8_model" class="uk-select sel_combo"></select>
+                <select name="promo_model_sel" id="b8_model" class="uk-select sel_combo" required></select>
             </div>
             <div class="uk-width-1-2@s">
                 <div class="">Укажите год выпуска авто</div>
-                <select name="prod_year" class="uk-select">
+                <select name="prod_year" class="uk-select" required>
                     {% for year in 'now'|date('Y')..1950 %}
                         <option value="{{ year }}">{{ year }}</option>
                     {% endfor %}
@@ -281,19 +281,19 @@
             </div>
             <div class="uk-width-1-2@s">
                 <div class="">Укажите город нахождения авто</div>
-                <input type="text" name="promo_city" class="uk-input">
+                <input type="text" name="promo_city" class="uk-input" required>
             </div>
             <div class="uk-width-1-3@s">
                 <div class="">Укажите ваш email</div>
-                <input type="text" name="promo_email" class="uk-input">
+                <input type="text" name="promo_email" class="uk-input" required>
             </div>
             <div class="uk-width-1-3@s">
                 <div class="">Укажите ваш телефон</div>
-                <input type="text" name="promo_phone" class="uk-input">
+                <input type="text" name="promo_phone" class="uk-input" required>
             </div>
             <div class="uk-width-1-3@s">
                 <div class="">Укажите ваше имя</div>
-                <input type="text" name="promo_name" class="uk-input">
+                <input type="text" name="promo_name" class="uk-input" required>
             </div>
             <div class="uk-width-1-2@s">
                 <div id="recap1"></div>
