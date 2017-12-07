@@ -1256,3 +1256,7 @@ top: 80%;
     border: 1px solid green !important;
     color: black !important;
 }
+
+.promo .select2-container {
+    width:100% !important;
+}
