@@ -23,9 +23,10 @@
 
     <script src="{{ asset('assets/js/select2.min.js') }}"></script>
     <script src="{{ asset('assets/js/select_combo.js') }}"></script>
+    <script src="{{ asset('assets/js/promo.js') }}"></script>
     <script src="{{ asset('assets/js/recaptcha_settings.js') }}"></script>
     <script src="{{ asset('assets/js/recapthcha_validate.js') }}"></script>
-    <script src="{{ asset('assets/js/promo.js') }}"></script>
+
 
 
 
@@ -116,8 +117,11 @@
             <div class="uk-width-2-3 uk-animation-slide-right uk-hidden" id="nothing">
                 <div>&nbsp;</div>
                 <div>
-                    К сожалению, данной модели нет в нашей базе.<br>
-                    Попробуйте другую модель или город рядом.
+                   Этот автомобиль искали {{ random(['190', '200', '220']) }}
+                    раз, пока его нет в базе, <br>
+                    но вы можете его добавить и принимать заявки на аренду.<br><br>
+                    Рекомендуемая стоимость от {{ random(['1800', '1500', '2000']) }} руб.<br><br>
+                    <a href="/card/new" class="uk-button uk-button-success">Сдать</a>
                 </div>
             </div>
         </div>
