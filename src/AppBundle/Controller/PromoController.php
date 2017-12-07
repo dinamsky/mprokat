@@ -7,6 +7,7 @@ use AppBundle\Entity\Promo;
 use AppBundle\Menu\MenuGeneralType;
 use AppBundle\Menu\MenuCity;
 use AppBundle\Menu\MenuMarkModel;
+use AppBundle\Menu\ServiceCaptcha;
 use AppBundle\Menu\ServiceStat;
 use Doctrine\ORM\EntityManagerInterface;
 use MarkBundle\Entity\CarModel;
@@ -236,4 +237,44 @@ class PromoController extends Controller
         $stat->setStat($stat_arr);
         return new Response('ok');
     }
+
+    /**
+     * @Route("/promo_request")
+     */
+    public function preqAction(Request $request, \Swift_Mailer $mailer, ServiceCaptcha $captcha)
+    {
+        $post = $request->request;
+
+        $content = 'Марка: '.$post->get('promo_mark').'<br>';
+        $content.= 'Модель: '.$post->get('promo_model').'<br>';
+        $content.= 'Год выпуска: '.$post->get('prod_year').'<br>';
+        $content.= 'Город: '.$post->get('promo_city').'<br>';
+        $content.= 'Email: '.$post->get('promo_email').'<br>';
+        $content.= 'Телефон: '.$post->get('promo_phone').'<br>';
+        $content.= 'Имя: '.$post->get('promo_name').'<br>';
+
+        if ($captcha->captchaVerify($post->get('g-recaptcha-response'))) {
+            $message = (new \Swift_Message('Заявка с ПРОМО'))
+                ->setFrom('mail@multiprokat.com')
+                ->setTo('mail@multiprokat.com')
+                ->setBody(
+                    $content,
+                    'text/html'
+                );
+            $mailer->send($message);
+
+            $this->addFlash(
+                'notice',
+                'Ваша заявка успешно отправлена!'
+            );
+
+        } else {
+            $this->addFlash(
+                'notice',
+                'Каптча не пройдена!'
+            );
+        }
+        return $this->redirectToRoute('promo');
+    }
+
 }
