@@ -115,12 +115,12 @@ class PromoController extends Controller
         $i = 0;
         $p = 0;
         foreach($result as $r){
-            $x = false;
+            //$x = false;
             foreach ($r->getCardPrices() as $pr){
                 if ($pr->getPriceId() == 2) $p = $p + $pr->getValue();
-                if ($pr->getPriceId() == 1 and $pr->getValue()!='') $x = true;
+                //if ($pr->getPriceId() == 1 and $pr->getValue()!='') $x = true;
             }
-            if($i<11 and !$x) $for_slider[] = $r;
+            if($i<11) $for_slider[] = $r;
             $i++;
         }
 
