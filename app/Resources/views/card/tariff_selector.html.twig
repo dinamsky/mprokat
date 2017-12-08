@@ -25,7 +25,7 @@
             <div class="uk-margin-small-bottom">Они уже продвигаются на сайте:</div>
             <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-items="3" data-dots="0">
                 {% for card in promoted %}
-                    {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px'}) }}
+                    {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px', 'in_edit':true}) }}
                 {% endfor %}
             </div>
         </div>
@@ -54,7 +54,7 @@
             <div class="uk-margin-small-bottom">Они уже продвигаются на сайте:</div>
             <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-items="3" data-dots="0">
                 {% for card in promoted %}
-                    {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px'}) }}
+                    {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px', 'in_edit':true}) }}
                 {% endfor %}
             </div>
         </div>

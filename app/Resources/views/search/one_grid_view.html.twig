@@ -94,12 +94,14 @@
        or ( app.session.has('admin') and app.session.get('admin').role == 'superadmin' )
        or ( app.session.has('logged_user') and card.user.id == app.session.get('logged_user').id )
     ) %}
-        <form action="/card/update" method="POST" style="position: absolute;top:0;right:0;" onsubmit="return confirm('Вы уверены?');">
-            <input type="hidden" name="cardId" value="{{ card.id }}">
-            <input type="hidden" name="return" value="{{ app.request.requestUri }}">
-            <button class="uk-button-danger c_white" name="delete" uk-close></button>
-        </form>
-        <a class="uk-button-primary uk-position-top-left icon_button" href="/user/edit/card/{{ card.id }}" ><i class="fa fa-pencil"></i></a>
+        {% if in_edit is not defined %}
+            <form action="/card/update" method="POST" style="position: absolute;top:0;right:0;" onsubmit="return confirm('Вы уверены?');">
+                <input type="hidden" name="cardId" value="{{ card.id }}">
+                <input type="hidden" name="return" value="{{ app.request.requestUri }}">
+                <button class="uk-button-danger c_white" name="delete" uk-close></button>
+            </form>
+            <a class="uk-button-primary uk-position-top-left icon_button" href="/user/edit/card/{{ card.id }}" ><i class="fa fa-pencil"></i></a>
+        {% endif %}
     {% endif %}
 </div>
 
