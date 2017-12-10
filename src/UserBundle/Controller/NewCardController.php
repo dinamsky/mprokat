@@ -599,7 +599,7 @@ class NewCardController extends Controller
             $fu->uploadImages($card);
 
 
-            if($this->get('session')->has('admin') and isset($new_card)){
+            if($this->get('session')->has('admin') and isset($new_card) and $card->getCity()->getCountry() == 'RUS'){
 
 
                 $main_foto = $this->getDoctrine()
