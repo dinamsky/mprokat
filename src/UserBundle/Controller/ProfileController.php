@@ -242,22 +242,27 @@ class ProfileController extends Controller
 
         $post = $request->request;
 
+
+        if($post->has('card_id')) {
+            $card_id = $post->get('card_id');
+
+            $card = $this->getDoctrine()
+                ->getRepository(Card::class)
+                ->find($card_id);
+            $user = $card->getUser();
+        }
+
+        if($post->has('user_id')){
+            $user = $this->getDoctrine()
+                ->getRepository(User::class)
+                ->find($post->get('user_id'));
+            $card = false;
+        }
+
+
         if ($this->captchaVerify($post->get('g-recaptcha-response'))) {
 
-            if($post->has('card_id')) {
-                $card_id = $post->get('card_id');
 
-                $card = $this->getDoctrine()
-                    ->getRepository(Card::class)
-                    ->find($card_id);
-                $user = $card->getUser();
-            }
-            if($post->has('user_id')){
-                $user = $this->getDoctrine()
-                    ->getRepository(User::class)
-                    ->find($post->get('user_id'));
-                $card = false;
-            }
 
 
             $message = (new \Swift_Message($_t->trans('Сообщение от пользователя')))
@@ -292,8 +297,8 @@ class ProfileController extends Controller
             );
         }
 
-        if($card) return $this->redirect('/card/'.$card_id);
-        else return $this->redirect('/user/'.$user->getId());
+        if(isset($card)) return $this->redirect('/card/'.$card_id);
+        if(isset($user)) return $this->redirect('/user/'.$user->getId());
     }
 
      /**
