@@ -1,6 +1,14 @@
 {% extends 'base.html.twig' %}
 
 
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link href="{{ asset('assets/css/auto-complete.css') }}" rel="stylesheet" />
+
+{% endblock %}
+
+
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('assets/js/city_general_mark_selector.js') }}"></script>
@@ -163,7 +171,7 @@
                         </div>
                     </div>
 
-                    {% for info in user.information if info.uiKey == 'about' %}
+                    {% for info in user.information if info.uiKey == 'about' and info.uiValue != '' %}
                     <div class="uk-margin-bottom bordered padding20">
                         {{ info.uiValue }}
                     </div>

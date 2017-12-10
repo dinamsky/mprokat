@@ -12,10 +12,12 @@
                     </div>
                     <div class="uk-width-4-5">
                         <div class="padding20">
-                            <a href="/card/{{ card.id }}">{{ card.header }}</a>
-                            {% for price in card.cardPrices if price.priceId == 2 %}
-                                {{ price.value|number_format(0,'.','<span class="thousand_separator"></span>')|raw }} ₽ / день
-                            {% endfor %}
+                            {#<a href="/card/{{ card.id }}">{{ card.header }}</a>#}
+
+
+                            <div>
+                                {{ card.getMarkModel.getMark.header }} {{ card.getMarkModel.header }}
+                            </div>
                             <div>
                                 {% if card.address != '' %}
                                     <i class="fa fa-map-marker"></i> {{ card.address }}
@@ -24,7 +26,9 @@
                                 {% endif %}
                             </div>
                             <div>
-                                {{ card.getMarkModel.getMark.header }} {{ card.getMarkModel.header }}
+                                {% for price in card.cardPrices if price.priceId == 2 %}
+                                    {{ price.value|number_format(0,'.','<span class="thousand_separator"></span>')|raw }} ₽ / день
+                                {% endfor %}
                             </div>
                         </div>
                     </div>

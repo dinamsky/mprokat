@@ -7,6 +7,7 @@ use AppBundle\Entity\Comment;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use UserBundle\Entity\UserInfo;
 use UserBundle\Security\Password;
 use UserBundle\Entity\User;
@@ -305,4 +306,19 @@ class AdminController extends Controller
             return $this->redirectToRoute('adminEmails');
         }
     }
+
+
+    /**
+     * @Route("/admin_ajax_check_email", name="admin_ajax_check_email")
+     */
+    public function admin_ajax_check_emailAction(Request $request)
+    {
+        $user = $this->getDoctrine()
+                    ->getRepository(User::class)
+                    ->findOneBy(['email' => $request->request->get('email')]);
+        if ($user) $content = 'Пользователь существует: ID <a href="/user/'.$user->getId().'">'.$user->getId().'</a>';
+        else $content = 'Email свободен';
+        return new Response($content, 200);
+    }
+
 }

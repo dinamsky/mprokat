@@ -344,21 +344,25 @@
                                         <input type="hidden" name="return" value="{{ app.request.requestUri }}">
                                         <button class="uk-button uk-button-primary uk-margin-top">{% trans %}Отправить{% endtrans %}</button>
                                     </form>
-
-                                    <div class="uk-margin-top">
-                                        {% for comment in card.comments %}
-                                            <div class="uk-margin-bottom">
-                                                <i class="fa fa-calendar"></i> {{ comment.dateCreate|date('d.m.Y H:i') }}
-                                                <i class="fa fa-user"></i> {{ comment.user.header }}
-                                                <div><i class="fa fa-comment-o"></i> {{ comment.content }}</div>
-                                            </div>
-                                        {% endfor %}
-                                    </div>
                                 {% else %}
                                     <div>
                                         <a uk-toggle="target: #sign_in">{% trans %}Войдите{% endtrans %}</a> {% trans %}или{% endtrans %} <a uk-toggle="target: #sign_up">{% trans %}зарегистрируйтесь{% endtrans %}</a>, {% trans %}чтобы написать комментарий{% endtrans %}.
                                     </div>
                                 {% endif %}
+
+                                {% if card.comments is not empty %}
+                                    <hr>
+                                <div class="uk-margin-top">
+                                    {% for comment in card.comments %}
+                                        <div class="uk-margin-bottom">
+                                            <i class="fa fa-calendar"></i> {{ comment.dateCreate|date('d.m.Y H:i') }}
+                                            <i class="fa fa-user"></i> {{ comment.user.header }}
+                                            <div><i class="fa fa-comment-o"></i> {{ comment.content }}</div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+
                             </div>
                         </div>
                         <div class="uk-width-1-2@s">
@@ -380,6 +384,15 @@
                                         <input type="hidden" name="return" value="{{ app.request.requestUri }}">
                                         <button class="uk-button uk-button-primary uk-margin-top">{% trans %}Отправить{% endtrans %}</button>
                                     </form>
+
+                                {% else %}
+                                    <div>
+                                        <a uk-toggle="target: #sign_in">{% trans %}Войдите{% endtrans %}</a> {% trans %}или{% endtrans %} <a uk-toggle="target: #sign_up">{% trans %}зарегистрируйтесь{% endtrans %}</a>, {% trans %}чтобы оставить отзыв{% endtrans %}.
+                                    </div>
+                                {% endif %}
+
+                                {% if card.opinions is not empty %}
+                                    <hr>
                                     <div class="uk-margin-top">
                                         {% for opinion in card.opinions %}
                                             <div class="uk-margin-bottom">
@@ -390,12 +403,8 @@
                                             </div>
                                         {% endfor %}
                                     </div>
-
-                                {% else %}
-                                    <div>
-                                        <a uk-toggle="target: #sign_in">{% trans %}Войдите{% endtrans %}</a> {% trans %}или{% endtrans %} <a uk-toggle="target: #sign_up">{% trans %}зарегистрируйтесь{% endtrans %}</a>, {% trans %}чтобы оставить отзыв{% endtrans %}.
-                                    </div>
                                 {% endif %}
+
                             </div>
                         </div>
                     </div>
@@ -552,7 +561,7 @@
                     </div>
                 </div>
 
-                <div id="user_book_form" uk-modal="bg-close:false" data-res="{{ reserved ? card.dateRentFinish|date_modify("+1 day")|date('Y/m/d') : '' }}">
+                <div id="user_book_form" uk-modal="bg-close:false" data-res="{{ reserved ? card.dateRentFinish|date_modify("+1 day")|date('Y/m/d') : "now"|date("Y/m/d") }}">
                     <div class="uk-modal-dialog uk-modal-body">
                         <h2 class="uk-modal-title">{% trans %}Заявка{% endtrans %}</h2>
                         <button class="uk-modal-close-default" type="button" uk-close></button>
