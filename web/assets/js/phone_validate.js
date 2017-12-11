@@ -1,5 +1,5 @@
 $( document ).ready(function() {
 
-    $(".phone_validate").mask("\+7(999)9999999");
+    $(".phone_validate").mask("\+9(999)9999999");
 
 });
