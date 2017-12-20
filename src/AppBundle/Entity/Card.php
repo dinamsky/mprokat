@@ -33,6 +33,13 @@ class Card
     /**
      * @var string
      *
+     * @ORM\Column(name="currency", type="string", length=255, nullable=true)
+     */
+    private $currency;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="coords", type="string", length=255, nullable=true)
      */
     private $coords = null;
@@ -1404,5 +1411,29 @@ class Card
     public function getDateRentFinish()
     {
         return $this->dateRentFinish;
+    }
+
+    /**
+     * Set currency
+     *
+     * @param string $currency
+     *
+     * @return Card
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
+
+        return $this;
+    }
+
+    /**
+     * Get currency
+     *
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
     }
 }

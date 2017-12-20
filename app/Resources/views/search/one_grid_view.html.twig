@@ -6,6 +6,8 @@
 
     {% if main_foto  %}
         {% set bgrnd = 'url(/assets/images/cards/'~main_foto.folder~'/t/'~main_foto.id~'.jpg)' %}
+    {% elseif card.fotos[0] is defined %}
+        {% set bgrnd = 'url(/assets/images/cards/'~card.fotos[0].folder~'/t/'~card.fotos[0].id~'.jpg)' %}
     {% else %}
         {% set bgrnd = 'url(/assets/images/interface/no_image.jpg)' %}
     {% endif %}
@@ -17,6 +19,11 @@
     {% endif %}
 
 
+    {% set currency = {
+        'RUB': '<i class="fa fa-ruble"></i>',
+        'EUR': '<i class="fa fa-euro"></i>',
+        'USD': '<i class="fa fa-dollar"></i>'
+    } %}
 
 
     <a target="_blanc" id="card_img_{{ card.id }}" href="/card/{{ card.id }}" style="background: {{ bgrnd }} center center;
@@ -48,7 +55,7 @@
             {% endfor %}
 
             {% if c_price != '' %}
-            <b>{{ c_price|number_format(0,'.','<span class="thousand_separator"></span>')|raw }}</b> ₽<span class="">{{ c_ed }}</span>
+            <b>{{ c_price|number_format(0,'.','<span class="thousand_separator"></span>')|raw }}</b> {{ currency[card.currency]|raw }} <span class="">{{ c_ed }}</span>
             {% endif %}
 
         </div>
