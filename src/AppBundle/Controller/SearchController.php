@@ -341,7 +341,7 @@ class SearchController extends Controller
 
 
             }
-
+            dump($fids);
 
             if($fids) {
                 $result_keys = array_keys($fids);
@@ -381,16 +381,21 @@ class SearchController extends Controller
             $add_ids = $query->getScalarResult();
             foreach ($add_ids as $fid) $feat_ids[] = $fid['cardId'];
 
-            if(isset($fid_arr)) {
-                $res_arr = array_intersect($fid_arr, $feat_ids);
+            if(isset($feat_ids)) {
+                if (isset($fid_arr)) {
+                    $res_arr = array_intersect($fid_arr, $feat_ids);
+                } else {
+                    $res_arr = $feat_ids;
+                }
+
+                $res_arr = array_intersect($fr_ids, $res_arr);
+
+                $filter_cond = ' AND c.id IN (' . implode(",", $res_arr) . ') ';
+                $total_cards = count($res_arr);
             } else {
-                $res_arr = $feat_ids;
+                $filter_cond = ' AND c.id = 0 ';
+                $total_cards = 0;
             }
-
-            $res_arr = array_intersect($fr_ids, $res_arr);
-
-            $filter_cond = ' AND c.id IN (' . implode(",", $res_arr) . ') ';
-            $total_cards = count($res_arr);
         }
 
 
