@@ -198,8 +198,9 @@
             </div>
             <div class="uk-width-1-4 uk-visible@s">
 
-
-
+                {% if filter %}
+                    {{ include('search/right_filter.html.twig') }}
+                {% endif %}
 
                 <h3 class="pf_style_header"><span>{% trans %}Лучшие предложения{% endtrans %}</span></h3>
                 {% for card in t3_new.getTop3 %}

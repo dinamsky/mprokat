@@ -22,6 +22,13 @@ class CardField
     private $id;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=255)
+     */
+    private $description;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="field_id", type="bigint")
@@ -135,5 +142,29 @@ class CardField
     public function getSelects()
     {
         return $this->selects;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return CardField
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 }

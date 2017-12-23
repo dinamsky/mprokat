@@ -40,15 +40,31 @@ class SearchController extends Controller
 
         $mobileDetector = $this->get('mobile_detect.mobile_detector');
 
+        $get = $request->query->all();
+
+        $is_filter = false;
+
+        if(isset($get['filter'])){
+            foreach ($get['filter'] as $check_filter_id=>$check_value){
+                if(array_filter($get['filter'][$check_filter_id])) $is_filter = true;
+            }
+        }
+
+        $filter_ready = false;
+        if(!$mark and !$model and $city and $service and $general) $filter_ready = true;
+
         if (strtolower($city) == 'rus') $city = false;
         if ($service == 'all') $service = false;
         if ($general == 'alltypes') $general = false;
-        $get = $request->query->all();
+
         $view = 'grid_view';
         if (isset($get['view'])) $view = $get['view'];
 
 
         $_t = $this->get('translator');
+
+
+
 
         $is_body = false;
         $city_condition = '';
@@ -120,7 +136,7 @@ class SearchController extends Controller
             if($general) {
                 if ($general->getChildren()->isEmpty()) {
                     $gtId = $general->getId();
-                    $general_condition = 'AND c.generalTypeId = ' . $gtId;
+                    $general_condition = ' AND c.generalTypeId = ' . $gtId;
                     if (!$general->getParent()) $pgtId = $general->getId();
                     else $pgtId = $general->getParent()->getId();
                 } else {
@@ -227,10 +243,116 @@ class SearchController extends Controller
             if (!$models) $models = array();
         }
 
+
+
+
+
+
         $dql = 'SELECT count(c.id) FROM AppBundle:Card c WHERE c.isActive = 1 '.$city_condition.$service_condition.$general_condition.$mark_condition.$body_condition;
         $query = $em->createQuery($dql);
 
         $total_cards = $query->getSingleScalarResult();
+
+        //$filter = '';
+
+        $filter = false;
+
+        $filter_type = [];
+
+        if ($filter_ready) {
+            $dql = "SELECT cf FROM AppBundle:CardField cf WHERE cf.generalTypeId = ?1";
+            $query = $em->createQuery($dql);
+            $query->setParameter(1, $general->getId());
+            foreach ($query->getResult() as $cf) {
+                $dql = "SELECT ft FROM AppBundle:FieldType ft WHERE ft.id = ?1";
+                $query_ft = $em->createQuery($dql);
+                $query_ft->setParameter(1, $cf->getFieldId());
+                foreach ($query_ft->getResult() as $ft) {
+                    if ($ft->getFormElementType() == 'ajaxMenu'){
+                        $dql_sf = "SELECT sf FROM AppBundle:SubField sf WHERE sf.fieldId = ?1";
+                        $query_sf = $em->createQuery($dql_sf);
+                        $query_sf->setParameter(1, $ft->getId());
+
+                        $filter[] = [
+                            'id' => $ft->getId(),
+                            'label' => $ft->getHeader(),
+                            'type' => 'checkbox',
+                            'set' => $query_sf->getResult(),
+                        ];
+
+                        $filter_type[$ft->getId()] = 'checkbox';
+
+                    }
+                    if ($ft->getFormElementType() == 'numberInput'){
+                        $filter[] = [
+                            'id' => $ft->getId(),
+                            'label' => $ft->getHeader(),
+                            'type' => 'input',
+                        ];
+
+                        $filter_type[$ft->getId()] = 'range';
+                    }
+                }
+            }
+        }
+
+
+        // -------------------------- start of filter -----------------------
+
+        $filter_cond = '';
+
+
+        if ($is_filter){
+
+            $fids = false;
+            foreach($get['filter'] as $filter_id => $filter_array){
+
+                if ($filter_type[$filter_id] == 'checkbox'){
+                    $dql_add = "SELECT fi.cardId FROM AppBundle:FieldInteger fi WHERE fi.cardFieldId = " . $filter_id." AND fi.value IN (".implode(",",array_keys($filter_array)).")";
+                    $query = $em->createQuery($dql_add);
+                    $add_ids = $query->getScalarResult();
+                    foreach ($add_ids as $fid) $fids[$filter_id][] = $fid['cardId'];
+                }
+
+                if ($filter_type[$filter_id] == 'range'){
+                    $dql_add = "SELECT fi.cardId FROM AppBundle:FieldInteger fi WHERE fi.cardFieldId = " . $filter_id." AND fi.value >= ?1 AND fi.value <= ?2";
+                    $query = $em->createQuery($dql_add);
+                    $query->setParameter(1, $filter_array['from']);
+                    $query->setParameter(2, $filter_array['to']);
+                    $add_ids = $query->getScalarResult();
+                    foreach ($add_ids as $fid) $fids[$filter_id][] = $fid['cardId'];
+                }
+
+
+            }
+
+
+            if($fids) {
+                $result_keys = array_keys($fids);
+
+                if (count($result_keys) > 1) {
+                    $intersect = call_user_func_array('array_intersect', $fids);
+
+                    $fid_arr = array_unique($intersect);
+                } else $fid_arr = $fids[$result_keys[0]];
+
+
+                $filter_cond = ' AND c.id IN (' . implode(",", $fid_arr) . ') ';
+
+                $total_cards = count($fid_arr);
+
+            }
+
+            if($filter_cond == '') {
+                $filter_cond = ' AND c.id = 0 ';
+                $total_cards = 0;
+
+            }
+
+        }
+
+        // -------------------------- end of filter -----------------------
+
 
         if ($request->query->has('page')) $page = $get['page']; else $page = 1;
         if ($request->query->has('onpage')) $cards_per_page = $get['onpage']; else $cards_per_page = 12;
@@ -262,7 +384,7 @@ class SearchController extends Controller
         $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g ORDER BY g.total DESC');
         $generalTypes = $query->getResult();
 
-        $dql = 'SELECT c.id FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.cardPrices p WITH p.priceId = 2 WHERE c.isActive = 1 '.$city_condition.$service_condition.$general_condition.$mark_condition.$body_condition.$order;
+        $dql = 'SELECT c.id FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.cardPrices p WITH p.priceId = 2 WHERE c.isActive = 1 '.$city_condition.$service_condition.$general_condition.$mark_condition.$body_condition.$filter_cond.$order;
         $query = $em->createQuery($dql);
 
         $query->setMaxResults($cards_per_page);
@@ -272,12 +394,11 @@ class SearchController extends Controller
 
         $card_ids = $query->getResult();
         if($card_ids) {
-            foreach ($card_ids as $c_id) $ids[] = $c_id['id'];
-            $ids = implode(",", $ids);
+            foreach ($card_ids as $c_id) $sids[] = $c_id['id'];
+            $ids = implode(",", $sids);
         } else {
             $ids = 1;
         }
-
 
         $dql = 'SELECT c,p,f FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.cardPrices p WITH p.priceId > 0 LEFT JOIN c.fotos f WHERE c.id IN ('.$ids.')'.$order;
         $query = $em->createQuery($dql);
@@ -439,6 +560,7 @@ class SearchController extends Controller
 
 
 
+
         return $this->render('search/search_main.html.twig', [
 
             'cards' => $cards,
@@ -487,8 +609,10 @@ class SearchController extends Controller
 
             'page_type' => 'catalog',
             'lang' => $_SERVER['LANG'],
-            'similar' => $similar
-
+            'similar' => $similar,
+            'filter' => $filter,
+            'is_filter' => $is_filter,
+            'get_filter' => isset($get['filter']) ? $get['filter'] : []
 
         ]);
     }

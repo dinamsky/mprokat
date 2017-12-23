@@ -1,0 +1,44 @@
+<h3 class="pf_style_header"><span>Фильтр</span></h3>
+
+<form id="filter_form">
+    {% for f in filter %}
+
+        {% if f.type == 'input' %}
+            <div class="filter_container">
+                <div class="filter_label uk-clearfix">
+                    <div class="uk-float-left">{{ f.label }}</div>
+                    <div class="uk-float-right"><i class="fa fa-chevron-down"></i></div>
+                </div>
+                <div class="filter_content {{ get_filter[f.id] is defined and get_filter[f.id]['from'] != '' ? 'is_expanded' : 'is_collapsed' }}">
+                    от <input type="text" name="filter[{{ f.id }}][from]" value="{{ get_filter[f.id]['from'] is defined ? get_filter[f.id]['from'] }}" size="2">
+                    до <input type="text" name="filter[{{ f.id }}][to]" value="{{ get_filter[f.id]['to'] is defined ? get_filter[f.id]['to'] }}" size="2">
+                </div>
+            </div>
+        {% endif %}
+
+        {% if f.type == 'checkbox' %}
+            <div class="filter_container">
+                <div class="filter_label uk-clearfix">
+                    <div class="uk-float-left">{{ f.label }}</div>
+                    <div class="uk-float-right"><i class="fa fa-chevron-down"></i></div>
+                </div>
+                <div class="filter_content {{ get_filter[f.id] is defined ? 'is_expanded' : 'is_collapsed' }}">
+                    {% for ch in f.set %}
+                        <div>
+                            <label>
+                                <input type="checkbox" name="filter[{{ f.id }}][{{ ch.id }}]" {{ get_filter[f.id][ch.id] is defined and get_filter[f.id][ch.id] == 'on' ? 'checked' }}> {{ ch.header }}
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+    {% endfor %}
+    <button type="button" id="filter_search" class="uk-button uk-button-default uk-margin-top uk-width-1-1">Уточнить результат</button>
+
+    {% if is_filter %}
+        <button type="button" id="filter_search_reset" class="uk-button uk-button-danger uk-margin-top uk-width-1-1">Сбросить фильтры</button>
+    {% endif %}
+
+</form>

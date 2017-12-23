@@ -21,6 +21,8 @@ use Symfony\Component\HttpFoundation\Request;
 require __DIR__.'/../vendor/autoload.php';
 Debug::enable();
 
+
+
 $kernel = new AppKernel('test', true);
 
 if (PHP_VERSION_ID < 70000) {

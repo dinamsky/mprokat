@@ -35,4 +35,23 @@ $( document ).ready(function() {
         $('.body_type_all').removeAttr('hidden');
         UIkit.update(event = 'update');
     });
+
+    $('#filter_search').on('click', function () {
+        document.location.href = getSelectorUrl() + getQueryVars() + '&' + $("#filter_form").serialize();
+    });
+
+    $('#filter_search_reset').on('click', function () {
+        document.location.href = getSelectorUrl() + getQueryVars();
+    });
+
+    $('.filter_label').on('click', function () {
+        if($(this).hasClass('active')){
+            $(this).parent('.filter_container').find('.filter_content').removeClass('is_expanded').addClass('is_collapsed');
+            $(this).removeClass('active');
+        } else {
+            $(this).parent('.filter_container').find('.filter_content').removeClass('is_collapsed').addClass('is_expanded');
+            $(this).addClass('active');
+        }
+    });
+
 });
