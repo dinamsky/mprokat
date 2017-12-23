@@ -275,7 +275,7 @@ class SearchController extends Controller
                 $query_ft->setParameter(1, $cf->getFieldId());
                 foreach ($query_ft->getResult() as $ft) {
                     if ($ft->getFormElementType() == 'ajaxMenu'){
-                        $dql_sf = "SELECT sf FROM AppBundle:SubField sf WHERE sf.fieldId = ?1 AND sf.parentId IS NOT NULL";
+                        $dql_sf = "SELECT sf FROM AppBundle:SubField sf WHERE sf.fieldId = ?1";
                         $query_sf = $em->createQuery($dql_sf);
                         $query_sf->setParameter(1, $ft->getId());
 
