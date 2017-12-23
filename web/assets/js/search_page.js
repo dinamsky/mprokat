@@ -54,4 +54,38 @@ $( document ).ready(function() {
         }
     });
 
+    $('.ranger').each(function () {
+
+        var input0 = document.getElementById('r_from_'+$(this).data('id'));
+        var input1 = document.getElementById('r_to_'+$(this).data('id'));
+        var inputs = [input0, input1];
+
+        var slider = document.getElementById($(this).attr('id'));
+        var t = $(this);
+
+        noUiSlider.create(slider, {
+            start: [t.data('from'), t.data('to')],
+            connect: true,
+            range: {
+                'min': t.data('from'),
+                'max': t.data('to')
+            },
+            format: {
+              to: function ( value ) {
+                return Math.round(value);
+              },
+              from: function ( value ) {
+                return Math.round(value);
+              }
+            }
+        });
+
+        slider.noUiSlider.on('update', function( values, handle ) {
+            inputs[handle].value = values[handle];
+        });
+
+    });
+
 });
+
+
