@@ -316,7 +316,7 @@ class SearchController extends Controller
         // -------------------------- start of filter -----------------------
 
         $filter_cond = '';
-
+        $is_real_filter = false;
 
         if ($is_filter){
 
@@ -328,15 +328,17 @@ class SearchController extends Controller
                     $query = $em->createQuery($dql_add);
                     $add_ids = $query->getScalarResult();
                     foreach ($add_ids as $fid) $fids[$filter_id][] = $fid['cardId'];
+                    $is_real_filter = true;
                 }
 
-                if ($filter_type[$filter_id] == 'range'){
+                if ($filter_type[$filter_id] == 'range' and isset($get['filter'][$filter_id]['on'])){
                     $dql_add = "SELECT fi.cardId FROM AppBundle:FieldInteger fi WHERE fi.cardFieldId = " . $filter_id." AND fi.value >= ?1 AND fi.value <= ?2";
                     $query = $em->createQuery($dql_add);
                     $query->setParameter(1, $filter_array['from']);
                     $query->setParameter(2, $filter_array['to']);
                     $add_ids = $query->getScalarResult();
                     foreach ($add_ids as $fid) $fids[$filter_id][] = $fid['cardId'];
+                    $is_real_filter = true;
                 }
 
 
@@ -359,7 +361,7 @@ class SearchController extends Controller
 
             }
 
-            if($filter_cond == '') {
+            if($filter_cond == '' and $is_real_filter) {
                 $filter_cond = ' AND c.id = 0 ';
                 $total_cards = 0;
 

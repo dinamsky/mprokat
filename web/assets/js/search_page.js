@@ -68,7 +68,7 @@ $( document ).ready(function() {
         var t = $(this);
 
         noUiSlider.create(slider, {
-            start: [t.data('from'), t.data('to')],
+            start: [t.data('start'), t.data('finish')],
             connect: true,
             range: {
                 'min': t.data('from'),
