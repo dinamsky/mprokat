@@ -200,7 +200,7 @@
             </div>
             <div class="uk-width-1-4 uk-visible@s">
 
-                {% if filter %}
+                {% if filter or features %}
                     {{ include('search/right_filter.html.twig') }}
                 {% endif %}
 

@@ -1,6 +1,7 @@
+{% if filter %}
 <h3 class="pf_style_header"><span>Фильтр</span></h3>
 
-<form id="filter_form">
+<form id="filter_form" class="{{ is_filter ? 'filtered' }}">
     {% for f in filter %}
 
         {% if f.type == 'input' %}
@@ -36,10 +37,40 @@
         {% endif %}
 
     {% endfor %}
-    <button type="button" id="filter_search" class="uk-button uk-button-default uk-margin-top uk-width-1-1">Уточнить результат</button>
+    <button type="button" id="filter_search" class="uk-button uk-button-default uk-margin-top uk-width-1-1">Показать</button>
 
     {% if is_filter %}
         <button type="button" id="filter_search_reset" class="uk-button uk-button-danger uk-margin-top uk-width-1-1">Сбросить фильтры</button>
     {% endif %}
 
 </form>
+{% endif %}
+
+
+{% if features %}
+    <h3 class="pf_style_header"><span>Характеристики</span></h3>
+
+    <form id="feature_form" class="{{ is_feature ? 'featured' }}">
+        <div class="bordered padding10">
+        {% for f in features %}
+            <div>
+                <label class="uk-grid uk-grid-collapse" uk-grid>
+                    <div class="uk-width-auto">
+                        <input type="checkbox" name="feature[{{ f.id }}]" {{ get_feature[f.id] is defined and get_feature[f.id] == 'on' ? 'checked' }}>
+                    </div>
+                    <div class="uk-width-expand">
+                        <div class="feature_item">{{ f.header }}</div>
+                    </div>
+
+                </label>
+            </div>
+        {% endfor %}
+        </div>
+    </form>
+
+    <button type="button" id="feature_search" class="uk-button uk-button-default uk-margin-top uk-width-1-1">Показать</button>
+
+    {% if is_feature %}
+        <button type="button" id="feature_search_reset" class="uk-button uk-button-danger uk-margin-top uk-width-1-1">Сбросить характеристики</button>
+    {% endif %}
+{% endif %}

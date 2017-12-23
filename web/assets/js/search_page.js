@@ -37,11 +37,15 @@ $( document ).ready(function() {
     });
 
     $('#filter_search').on('click', function () {
-        document.location.href = getSelectorUrl() + getQueryVars() + '&' + $("#filter_form").serialize();
+        var feat = '';
+        if($('#feature_form').hasClass('featured')) feat = '&' + $("#feature_form").serialize();
+        document.location.href = getSelectorUrl() + getQueryVars() + '&' + $("#filter_form").serialize() + feat;
     });
 
     $('#filter_search_reset').on('click', function () {
-        document.location.href = getSelectorUrl() + getQueryVars();
+        var feat = '';
+        if($('#feature_form').hasClass('featured')) feat = '&' + $("#feature_form").serialize();
+        document.location.href = getSelectorUrl() + getQueryVars() + feat;
     });
 
     $('.filter_label').on('click', function () {
@@ -84,7 +88,28 @@ $( document ).ready(function() {
             inputs[handle].value = values[handle];
         });
 
+        input0.addEventListener('keyup', function(){
+            slider.noUiSlider.set([this.value, null]);
+        });
+
+        input1.addEventListener('keyup', function(){
+            slider.noUiSlider.set([null, this.value]);
+        });
+
     });
+
+    $('#feature_search').on('click', function () {
+        var filter = '';
+        if($('#filter_form').hasClass('filtered')) filter = '&' + $("#filter_form").serialize();
+        document.location.href = getSelectorUrl() + getQueryVars() + filter + '&' + $("#feature_form").serialize();
+    });
+
+    $('#feature_search_reset').on('click', function () {
+        var filter = '';
+        if($('#filter_form').hasClass('filtered')) filter = '&' + $("#filter_form").serialize();
+        document.location.href = getSelectorUrl() + getQueryVars() + filter;
+    });
+
 
 });
 

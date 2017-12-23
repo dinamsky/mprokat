@@ -51,6 +51,13 @@ class Feature
     private $headerEn;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="gts", type="string", length=255)
+     */
+    private $gts;
+
+    /**
      * One Category has Many Categories.
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Feature", mappedBy="parent")
      */
@@ -268,5 +275,29 @@ class Feature
     public function getHeaderEn()
     {
         return $this->headerEn;
+    }
+
+    /**
+     * Set gts
+     *
+     * @param string $gts
+     *
+     * @return Feature
+     */
+    public function setGts($gts)
+    {
+        $this->gts = $gts;
+
+        return $this;
+    }
+
+    /**
+     * Get gts
+     *
+     * @return string
+     */
+    public function getGts()
+    {
+        return $this->gts;
     }
 }

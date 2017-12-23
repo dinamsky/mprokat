@@ -43,12 +43,15 @@ class SearchController extends Controller
         $get = $request->query->all();
 
         $is_filter = false;
+        $is_feature = false;
 
         if(isset($get['filter'])){
             foreach ($get['filter'] as $check_filter_id=>$check_value){
                 if(array_filter($get['filter'][$check_filter_id])) $is_filter = true;
             }
         }
+
+        if (isset($get['feature'])) $is_feature = true;
 
         $filter_ready = false;
         if(!$mark and !$model and $city and $service and $general) $filter_ready = true;
@@ -248,10 +251,13 @@ class SearchController extends Controller
 
 
 
-        $dql = 'SELECT count(c.id) FROM AppBundle:Card c WHERE c.isActive = 1 '.$city_condition.$service_condition.$general_condition.$mark_condition.$body_condition;
+        $dql = 'SELECT c.id FROM AppBundle:Card c WHERE c.isActive = 1 '.$city_condition.$service_condition.$general_condition.$mark_condition.$body_condition;
         $query = $em->createQuery($dql);
+        $first_result = $query->getScalarResult();
 
-        $total_cards = $query->getSingleScalarResult();
+        foreach ($first_result as $fr_id) $fr_ids[] = $fr_id['id'];
+
+        $total_cards = count($first_result);
 
         //$filter = '';
 
@@ -269,7 +275,7 @@ class SearchController extends Controller
                 $query_ft->setParameter(1, $cf->getFieldId());
                 foreach ($query_ft->getResult() as $ft) {
                     if ($ft->getFormElementType() == 'ajaxMenu'){
-                        $dql_sf = "SELECT sf FROM AppBundle:SubField sf WHERE sf.fieldId = ?1";
+                        $dql_sf = "SELECT sf FROM AppBundle:SubField sf WHERE sf.fieldId = ?1 AND sf.parentId IS NOT NULL";
                         $query_sf = $em->createQuery($dql_sf);
                         $query_sf->setParameter(1, $ft->getId());
 
@@ -293,6 +299,16 @@ class SearchController extends Controller
                         $filter_type[$ft->getId()] = 'range';
                     }
                 }
+            }
+        }
+
+        $features = false;
+        $dql = "SELECT f FROM AppBundle:Feature f";
+        $query = $em->createQuery($dql);
+        foreach($query->getResult() as $f){
+            $fgts = explode(",", $f->getGts());
+            foreach ($fgts as $fgt) if ($fgt == $general->getId()) {
+                $features[] = $f;
             }
         }
 
@@ -352,6 +368,35 @@ class SearchController extends Controller
         }
 
         // -------------------------- end of filter -----------------------
+
+
+
+
+        // -------------------------- start of feature -----------------------
+
+
+        if ($is_feature){
+            $dql = "SELECT f.cardId FROM AppBundle:CardFeature f WHERE f.featureId IN (".implode(",",array_keys($get['feature'])).")";
+            $query = $em->createQuery($dql);
+            $add_ids = $query->getScalarResult();
+            foreach ($add_ids as $fid) $feat_ids[] = $fid['cardId'];
+
+            if(isset($fid_arr)) {
+                $res_arr = array_intersect($fid_arr, $feat_ids);
+            } else {
+                $res_arr = $feat_ids;
+            }
+
+            $res_arr = array_intersect($fr_ids, $res_arr);
+
+            $filter_cond = ' AND c.id IN (' . implode(",", $res_arr) . ') ';
+            $total_cards = count($res_arr);
+        }
+
+
+
+        // -------------------------- end of feature -----------------------
+
 
 
         if ($request->query->has('page')) $page = $get['page']; else $page = 1;
@@ -557,8 +602,7 @@ class SearchController extends Controller
 
         // ---------------------------- end of similar ----------------------------------
 
-
-
+dump($features);
 
 
         return $this->render('search/search_main.html.twig', [
@@ -612,7 +656,10 @@ class SearchController extends Controller
             'similar' => $similar,
             'filter' => $filter,
             'is_filter' => $is_filter,
-            'get_filter' => isset($get['filter']) ? $get['filter'] : []
+            'is_feature' => $is_feature,
+            'get_filter' => isset($get['filter']) ? $get['filter'] : [],
+            'get_feature' => isset($get['feature']) ? $get['feature'] : [],
+            'features' => $features
 
         ]);
     }
