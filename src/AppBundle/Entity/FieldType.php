@@ -32,6 +32,13 @@ class FieldType
     /**
      * @var string
      *
+     * @ORM\Column(name="description", type="string", length=255)
+     */
+    private $description;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="header_en", type="string", length=255)
      */
     private $headerEn;
@@ -210,5 +217,29 @@ class FieldType
     public function getHeaderEn()
     {
         return $this->headerEn;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return FieldType
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 }

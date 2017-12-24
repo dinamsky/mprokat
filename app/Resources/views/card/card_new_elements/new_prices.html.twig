@@ -5,6 +5,14 @@
     </div>
     <div class="uk-width-3-5">
 
+        <div class="uk-margin-bottom">
+            <select name="currency" class="uk-width-1-5 uk-select">
+                <option value="EUR">EUR</option>
+                <option value="USD" {{ city.country == 'USA' or city.country == 'CAN' ? 'selected' }}>USD</option>
+                <option value="RUB" {{ city.country == 'RUS' or city.country == 'RUS' ? 'selected' }}>RUB</option>
+            </select>
+        </div>
+
         <div class="non_plane">
             <div uk-grid>
                 <div class="uk-width-1-2">
@@ -12,7 +20,7 @@
                         <div class="">
                             {% for price in prices if price.id < 3 %}
                                 <div class="uk-margin-small-bottom">
-                                    <input type="number" name="price[{{ price.id }}]" class="uk-input uk-width-1-3 one_of"> ₽ / <span>{{ price.header|trans }}</span>
+                                    <input type="number" name="price[{{ price.id }}]" class="uk-input uk-width-1-3 one_of"> / <span>{{ price.header|trans }}</span>
                                 </div>
                             {% endfor %}
                         </div>
@@ -30,7 +38,7 @@
             <div class="expandable_block uk-margin-top" id="price_selector" hidden>
                 {% for price in prices if price.id > 2 and price.id != 6%}
                     <div>
-                        <input type="number" name="price[{{ price.id }}]" class="uk-input uk-width-1-3"> ₽ / <span>{{ price.header|trans }} </span>
+                        <input type="number" name="price[{{ price.id }}]" class="uk-input uk-width-1-3"> / <span>{{ price.header|trans }} </span>
                     </div>
                 {% endfor %}
             </div>

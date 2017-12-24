@@ -21,6 +21,7 @@
         {#<div class="uk-margin-top"><img src="{{ asset('assets/images/interface/premium.png') }}" alt=""></div>#}
         </div>
 
+        {% if promoted is defined %}
         <div class="uk-width-1-2@s uk-text-center">
             <div class="uk-margin-small-bottom">Они уже продвигаются на сайте:</div>
             <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-items="3" data-dots="0">
@@ -29,6 +30,8 @@
                 {% endfor %}
             </div>
         </div>
+        {% endif %}
+
     </div>
     </div>
     <button class="uk-button pay_tariff_button" name="change_tariff">Разместить и оплатить 99 руб.</button>
@@ -50,6 +53,7 @@
             {% trans %}Разместите ваше объявление в разделе «похожие объявления».<br>Ваше объявление в течении 7-ми дней будет размещено в карточках похожих объявлений выбранного региона.<br>Будьте лидером в своем регионе!{% endtrans %}
 
         </div>
+        {% if promoted is defined %}
         <div class="uk-width-1-2@s uk-text-center">
             <div class="uk-margin-small-bottom">Они уже продвигаются на сайте:</div>
             <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-items="3" data-dots="0">
@@ -58,6 +62,7 @@
                 {% endfor %}
             </div>
         </div>
+        {% endif %}
     </div>
     </div>
     <button class="uk-button pay_tariff_button" name="change_tariff">{% trans %}Разместить и оплатить{% endtrans %} 50 руб.</button>

@@ -223,6 +223,7 @@ class NewCardController extends Controller
             $card->setVideo($post->get('video'));
             $card->setStreetView($post->get('streetView'));
             $card->setDeliveryStatus($post->get('deliveryStatus'));
+            $card->setCurrency($post->get('currency'));
 
 
             if ($post->get('generalTypeId') == 0) $gt = $post->get('generalTypeTopLevelId');
