@@ -343,7 +343,7 @@ class SearchController extends Controller
 
 
             }
-            dump($fids);
+
 
             if($fids) {
                 $result_keys = array_keys($fids);
@@ -609,7 +609,7 @@ class SearchController extends Controller
 
         // ---------------------------- end of similar ----------------------------------
 
-dump($features);
+
 
 
         return $this->render('search/search_main.html.twig', [
