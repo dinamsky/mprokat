@@ -161,6 +161,7 @@ $( document ).ready(function() {
             type: 'POST',
             data: {markId:id, cityId:cityId},
             success: function(html){
+                $('#model_popular').remove();
                 $('#model_placement').html(html);
             }
         });

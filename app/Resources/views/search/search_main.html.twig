@@ -3,11 +3,13 @@
 {% block stylesheets %}
     {{ parent() }}
     <link href="{{ asset('assets/css/auto-complete.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/nouislider.css') }}" rel="stylesheet" />
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('assets/js/city_general_mark_selector.js') }}"></script>
+    <script src="{{ asset('assets/js/nouislider.min.js') }}"></script>
     <script src="{{ asset('assets/js/search_page.js') }}"></script>
     <script src="{{ asset('assets/js/auto-complete.min.js') }}"></script>
     <script src="{{ asset('assets/js/mark_autocomplete.js') }}"></script>
@@ -198,8 +200,9 @@
             </div>
             <div class="uk-width-1-4 uk-visible@s">
 
-
-
+                {% if filter or features %}
+                    {{ include('search/right_filter.html.twig') }}
+                {% endif %}
 
                 <h3 class="pf_style_header"><span>{% trans %}Лучшие предложения{% endtrans %}</span></h3>
                 {% for card in t3_new.getTop3 %}
