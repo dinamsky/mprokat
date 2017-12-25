@@ -54,7 +54,7 @@ class SearchController extends Controller
         if (isset($get['feature'])) $is_feature = true;
 
         $filter_ready = false;
-        if(!$mark and !$model and $city and $service and $general) $filter_ready = true;
+        if($city and $service and $general) $filter_ready = true;
 
         if (strtolower($city) == 'rus') $city = false;
         if ($service == 'all') $service = false;

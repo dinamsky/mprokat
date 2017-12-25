@@ -200,8 +200,10 @@
             </div>
             <div class="uk-width-1-4 uk-visible@s">
 
-                {% if filter or features %}
-                    {{ include('search/right_filter.html.twig') }}
+                {% if app.session.has('admin') %}
+                    {% if filter or features %}
+                        {{ include('search/right_filter.html.twig') }}
+                    {% endif %}
                 {% endif %}
 
                 <h3 class="pf_style_header"><span>{% trans %}Лучшие предложения{% endtrans %}</span></h3>
