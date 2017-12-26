@@ -156,7 +156,7 @@ class SearchController extends Controller
 
 
         if ($general and $general->getUrl() == 'cars') {
-            $query = $em->createQuery('SELECT s FROM AppBundle:SubField s WHERE s.fieldId = 3 AND s.parentId = 1');
+            $query = $em->createQuery('SELECT s FROM AppBundle:SubField s WHERE s.fieldId = 3');
             $bodyTypes = $query->getResult();
             foreach($bodyTypes as $bt){
                 $bodyTypeArray[] = $bt->getUrl();
