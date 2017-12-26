@@ -265,7 +265,7 @@ class SearchController extends Controller
 
         $filter_type = [];
 
-        if ($filter_ready and $general) {
+        if ($filter_ready and $general and $this->get('session')->has('admin')) {
             $dql = "SELECT cf FROM AppBundle:CardField cf WHERE cf.generalTypeId = ?1";
             $query = $em->createQuery($dql);
             $query->setParameter(1, $general->getId());
@@ -303,7 +303,7 @@ class SearchController extends Controller
         }
 
         $features = false;
-        if($general) {
+        if($general and $this->get('session')->has('admin')) {
             $dql = "SELECT f FROM AppBundle:Feature f";
             $query = $em->createQuery($dql);
             foreach ($query->getResult() as $f) {
