@@ -265,7 +265,7 @@ class SearchController extends Controller
 
         $filter_type = [];
 
-        if ($filter_ready) {
+        if ($filter_ready and $general) {
             $dql = "SELECT cf FROM AppBundle:CardField cf WHERE cf.generalTypeId = ?1";
             $query = $em->createQuery($dql);
             $query->setParameter(1, $general->getId());
@@ -303,15 +303,16 @@ class SearchController extends Controller
         }
 
         $features = false;
-        $dql = "SELECT f FROM AppBundle:Feature f";
-        $query = $em->createQuery($dql);
-        foreach($query->getResult() as $f){
-            $fgts = explode(",", $f->getGts());
-            foreach ($fgts as $fgt) if ($fgt == $general->getId()) {
-                $features[] = $f;
+        if($general) {
+            $dql = "SELECT f FROM AppBundle:Feature f";
+            $query = $em->createQuery($dql);
+            foreach ($query->getResult() as $f) {
+                $fgts = explode(",", $f->getGts());
+                foreach ($fgts as $fgt) if ($fgt == $general->getId()) {
+                    $features[] = $f;
+                }
             }
         }
-
 
         // -------------------------- start of filter -----------------------
 
