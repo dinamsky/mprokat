@@ -151,7 +151,20 @@
                     {% for price in card.getCardPrices %}
                         <div class="uk-text-center {{ price.priceId == 2 ? 'price_highlighted' : ''}}">
                             <span class="price_value">{{ price.value|number_format(0,'.','<span class="thousand_separator"></span>')|raw }}</span>
-                            <span class="price_descriptor uk-text-truncate"> ₽ / {{ price.getPrice.header|trans }}</span>
+
+
+                            {% if card.currency == 'RUB' %}
+                                {% set currency = 'ruble' %}
+                            {% endif %}
+                            {% if card.currency == 'EUR' %}
+                                {% set currency = 'euro' %}
+                            {% endif %}
+                            {% if card.currency == 'USD' %}
+                                {% set currency = 'dollar' %}
+                            {% endif %}
+
+
+                            <span class="price_descriptor uk-text-truncate"> <i class="fa fa-{{ currency }}"></i> / {{ price.getPrice.header|trans }}</span>
                         </div>
                     {% endfor %}
                 </div>
@@ -473,7 +486,18 @@
                     {% for price in card.getCardPrices %}
                         <div class="uk-text-right {{ price.priceId == 2 ? 'price_highlighted' : ''}}">
                             <span class="price_value">{{ price.value|number_format(0,'.','<span class="thousand_separator"></span>')|raw }}</span>
-                            <span class="price_descriptor uk-text-truncate"> ₽ / {{ price.getPrice.header|trans }}</span>
+
+                            {% if card.currency == 'RUB' %}
+                                {% set currency = 'ruble' %}
+                            {% endif %}
+                            {% if card.currency == 'EUR' %}
+                                {% set currency = 'euro' %}
+                            {% endif %}
+                            {% if card.currency == 'USD' %}
+                                {% set currency = 'dollar' %}
+                            {% endif %}
+
+                            <span class="price_descriptor uk-text-truncate"> <i class="fa fa-{{ currency }}"></i> / {{ price.getPrice.header|trans }}</span>
                         </div>
                     {% endfor %}
                 </div>
