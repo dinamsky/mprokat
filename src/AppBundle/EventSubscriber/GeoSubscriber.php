@@ -72,7 +72,7 @@ class GeoSubscriber implements EventSubscriberInterface
                             $ch = curl_init();
                             curl_setopt($ch, CURLOPT_URL, 'http://ip-api.com/json/' . $ip . '?lang=ru&fields=city');
                             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
-                            curl_setopt($ch, CURLOPT_TIMEOUT, 3);
+                            //curl_setopt($ch, CURLOPT_TIMEOUT, 3);
                             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                             $get = curl_exec($ch);
 
