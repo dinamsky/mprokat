@@ -264,6 +264,17 @@ class ShowCardController extends Controller
             }
         }
 
+        $is_admin_card = false;
+        foreach ($card->getUser()->getInformation() as $ui){
+            if($ui->getUiKey() == 'phone'){
+                $ph = substr(preg_replace('/[^0-9]/', '', $ui->getUiValue()),1);
+                $emz = explode("@",$card->getUser()->getEmail());
+
+
+                if ($ph == $emz[0]) $is_admin_card = true;
+            }
+        }
+
 
 
         return $this->render('card/card_show.html.twig', [
@@ -314,7 +325,8 @@ class ShowCardController extends Controller
             'bodyType' => $bodyType,
             'page_type' => 'card',
             'lang' => $_SERVER['LANG'],
-            'reserved' => $card->getDateRentFinish() > new \DateTime() ? true : false
+            'reserved' => $card->getDateRentFinish() > new \DateTime() ? true : false,
+            'is_admin_card' => $is_admin_card
 
         ]);
     }

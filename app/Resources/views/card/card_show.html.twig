@@ -170,7 +170,7 @@
                 </div>
                 {% endif %}
 
-                {% if is_mobile() %}
+                {% if is_mobile() and not is_admin_card%}
                 <div class="uk-margin-bottom card_blanc border_green">
                     <div class="cursor-pointer uk-text-center c_green" uk-toggle="target: #user_book_form"><i class="fa fa-pencil-square-o"></i> {% trans %}Отправить заявку{% endtrans %}</div>
                 </div>
@@ -317,9 +317,11 @@
                     </div>
                 </div>
 
+                {% if not is_admin_card %}
                 <div class="uk-margin-bottom card_blanc">
                     <div class="cursor-pointer uk-text-center" uk-toggle="target: #user_message_form"><i class="fa fa-commenting"></i> {% trans %}Написать сообщение{% endtrans %}</div>
                 </div>
+                {% endif %}
 
                 <div class="uk-margin-bottom card_blanc">
                     <div><i class="fa fa-eye c_green"></i> {{ card.views }} <span class="uk-text-small c_grey">{% trans %}просмотров{% endtrans %}</span></div>
@@ -475,7 +477,7 @@
                 </div>
                 {% endif %}
 
-                {% if not is_mobile() %}
+                {% if not is_mobile() and not is_admin_card %}
                 <div class="uk-margin-bottom card_blanc border_green">
                     <div class="cursor-pointer uk-text-center c_green" uk-toggle="target: #user_book_form"><i class="fa fa-pencil-square-o"></i> {% trans %}Отправить заявку{% endtrans %}</div>
                 </div>
@@ -541,11 +543,11 @@
                         {% endfor %}
                     </div>
                 </div>
-
+                {% if not is_admin_card %}
                 <div class="uk-margin-bottom card_blanc">
                     <div class="cursor-pointer uk-text-center" uk-toggle="target: #user_message_form"><i class="fa fa-commenting"></i> {% trans %}Написать сообщение{% endtrans %}</div>
                 </div>
-
+                {% endif %}
                 <div class="uk-margin-bottom card_blanc">
                     <div><i class="fa fa-eye c_green"></i> {{ card.views }} <span class="uk-text-small c_grey">{% trans %}просмотров{% endtrans %}</span></div>
                     <div><i class="fa fa-heart c_red"></i> <span id="card_likes">{{ card.likes }}</span> <span class="uk-text-small c_grey">{% trans %}лайков{% endtrans %}</span></div>
