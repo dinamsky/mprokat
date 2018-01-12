@@ -91,7 +91,7 @@ class ProfileController extends Controller
             $msgs = $query->getResult();
 
 
-
+            $res = [];
             foreach ($msgs as $m){
                 $m_users[$m->getFromUserId()] = 1;
                 $m_users[$m->getToUserId()] = 1;
