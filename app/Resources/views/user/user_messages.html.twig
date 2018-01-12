@@ -1,0 +1,70 @@
+{% extends 'user/user_base.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/chat.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+        <h1>{% trans %}Мои сообщения{% endtrans %}</h1>
+
+        <div>
+                {% for date,msgs in messages %}
+
+                    <div><i class="fa fa-calendar"></i> {{ date|date("d.m.Y") }}</div>
+                    {% for visitor_id,mss in msgs %}
+                        <div class="uk-margin-left">
+                            <div>
+                                С пользователем: <a href="/user/{{ visitor_id }}">{{ users[visitor_id].header }}</a>
+
+
+                            </div>
+                            {% for crd,ms in mss %}
+                                <div class="uk-margin-left">
+                                    <div >
+
+                                        <a href="/card/{{ crd }}">Объявление №{{ crd }}</a>
+
+                                        <button uk-toggle="target: #chat_{{ crd }}" type="button">Показать переписку</button>
+
+                                        <button class="open_chat cursor-pointer uk-text-center" data-user_id="{{ visitor_id }}" data-visitor_id="{{ app.session.get('logged_user').id }}" data-card_id="{{ crd }}"><i class="fa fa-comments"></i> {% trans %}Открыть чат{% endtrans %}</button>
+                                    </div>
+
+
+                                    <div id="chat_{{ crd }}" hidden>
+                                        {% for m in ms %}
+                                            <div>
+                                                <span class="uk-badge">{{ m.dateCreate|date("H:i:s") }}</span>
+
+                                                {% if m.fromUserId == app.session.get('logged_user').id %}
+                                                    Я
+                                                {% else %}
+                                                    {{ users[m.fromUserId].header }}
+                                                {% endif %}
+
+                                                <span uk-icon="icon: arrow-right"></span>
+
+                                                {% if m.toUserId == app.session.get('logged_user').id %}
+                                                    Мне
+                                                {% else %}
+                                                    {{ users[m.toUserId].header }}
+                                                {% endif %}
+
+
+                                                :
+                                                {{ m.message }}
+
+
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+        </div>
+
+        {{ include('user/chat_modal.html.twig') }}
+
+{% endblock %}

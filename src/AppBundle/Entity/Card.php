@@ -202,6 +202,13 @@ class Card
     private $isTop = 0;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_messages", type="boolean", nullable=true)
+     */
+    private $isMessages = 1;
+
+    /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="date_create", type="datetime", nullable=true)
@@ -1435,5 +1442,29 @@ class Card
     public function getCurrency()
     {
         return $this->currency;
+    }
+
+    /**
+     * Set isMessages
+     *
+     * @param boolean $isMessages
+     *
+     * @return Card
+     */
+    public function setIsMessages($isMessages)
+    {
+        $this->isMessages = $isMessages;
+
+        return $this;
+    }
+
+    /**
+     * Get isMessages
+     *
+     * @return boolean
+     */
+    public function getIsMessages()
+    {
+        return $this->isMessages;
     }
 }
