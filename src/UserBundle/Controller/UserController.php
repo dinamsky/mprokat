@@ -5,6 +5,7 @@ namespace UserBundle\Controller;
 use AppBundle\Menu\ServiceStat;
 use MarkBundle\Entity\CarModel;
 use MarkBundle\Entity\CarMark;
+use UserBundle\Entity\Message;
 use UserBundle\Entity\UserOrder;
 use AppBundle\Entity\CardFeature;
 use AppBundle\Entity\CardPrice;
@@ -37,6 +38,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Cookie;
+use UserBundle\UserBundle;
 
 class UserController extends Controller
 {
@@ -621,5 +623,108 @@ class UserController extends Controller
         $stat->setStat($stat_arr);
 
         return new Response();
+    }
+
+    /**
+     * @Route("/ajax/get_chat_messages")
+     */
+    public function getChatMsg(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $res = array();
+
+        $query = $em->createQuery('SELECT m FROM UserBundle:Message m WHERE m.cardId=?3 AND ((m.fromUserId = ?1 AND m.toUserId = ?2) OR (m.fromUserId = ?2 AND m.toUserId = ?1)) ORDER BY m.dateCreate ASC');
+        $query->setParameter(1, $request->request->get('user_id'));
+        $query->setParameter(2, $request->request->get('visitor_id'));
+        $query->setParameter(3, $request->request->get('card_id'));
+        $msgs = $query->getResult();
+
+        foreach($msgs as $m){
+            $msg[$m->getDateCreate()->format('d-m-Y')][] = $m;
+        }
+
+
+        if (isset($msg)) foreach($msg as $date=>$msgs){
+            $message[] = '<div class="messages_date_delimiter"><span>'.$date.'</span></div>';
+            foreach($msgs as $m) {
+                $css_class = 'user_message';
+                if ($m->getFromUserId() == $request->request->get('visitor_id')) $css_class = 'visitor_message';
+
+                $msg = '<div class="uk-clearfix"><div class="' . $css_class . '">';
+                if ($m->getIsAttachment()) $msg .= '<div><img src="/assets/images/chat/' . $m->getId() . '.jpg" class="message_image"></div>';
+                $msg .= $m->getMessage() . '<div class="message_time">' . $m->getDateCreate()->format('H:i') . '</div></div></div>';
+                $message[] = $msg;
+            }
+        } else $message = [];
+
+        $res['messages'] = implode("",$message);
+
+        return new Response(json_encode($res));
+    }
+
+    /**
+     * @Route("/ajax/send_chat_message")
+     */
+    public function sendChatMsg(Request $request, \Swift_Mailer $mailer)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $msg = new Message();
+        $msg->setFromUserId($request->request->get('visitor_id'));
+        $msg->setToUserId($request->request->get('user_id'));
+        $msg->setCardId($request->request->get('card_id'));
+        $msg->setMessage($request->request->get('message'));
+        $msg->setIsAttachment($request->request->get('is_file'));
+        $em->persist($msg);
+        $em->flush();
+
+        $card = $this->getDoctrine()
+        ->getRepository(Card::class)
+        ->find($request->request->get('card_id'));
+
+        $user = $this->getDoctrine()
+        ->getRepository(User::class)
+        ->find($request->request->get('user_id'));
+
+        $visitor = $this->getDoctrine()
+        ->getRepository(User::class)
+        ->find($request->request->get('visitor_id'));
+
+        $message = (new \Swift_Message('#'.$msg->getId().' Вам пришло новое сообщение'))
+                ->setFrom(['mail@multiprokat.com' => 'Робот Мультипрокат'])
+                ->setTo($user->getEmail())
+                ->setBody(
+                    $this->renderView(
+                     $_SERVER['LANG'] == 'ru' ? 'email/chat.html.twig' : 'email/chat_'.$_SERVER['LANG'].'.html.twig',
+                        array(
+                            'user' => $user,
+                            'message' => $request->request->get('message'),
+                            'card' => $card,
+                            'visitor' => $visitor,
+                        )
+                    ),
+                    'text/html'
+                );
+            $mailer->send($message);
+
+
+        return new Response($msg->getId());
+    }
+
+    /**
+     * @Route("/ajax_chat_upload")
+     */
+    public function uploadChatMsg(Request $request, FotoUtils $fu)
+    {
+        if($request->request->get('filename')!=''){
+            $fu->uploadImage(
+            'chat_foto',
+            $request->request->get('filename'),
+            $_SERVER['DOCUMENT_ROOT'].'/assets/images/chat',
+            '');
+        }
+
+
+        return new Response('<script>parent.refresh_chat();</script>');
     }
 }

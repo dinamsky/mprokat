@@ -68,7 +68,59 @@ class ProfileController extends Controller
         } else return new Response("",404);
     }
 
+    /**
+     * @Route("/user/messages", name="user_messages")
+     */
+    public function userMessagesAction(EntityManagerInterface $em, Request $request, ServiceStat $stat)
+    {
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($this->get('session')->get('logged_user')->getId());
 
+        if(!$user->getIsBanned()) {
+
+
+            $city = $this->get('session')->get('city');
+            $in_city = $city->getUrl();
+            $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.total DESC');
+            $generalTypes = $query->getResult();
+
+            $m_users = $users = [];
+            $query = $em->createQuery('SELECT m FROM UserBundle:Message m WHERE m.fromUserId = ?1 OR m.toUserId = ?1 ORDER BY m.dateCreate ASC');
+            $query->setParameter(1, $user->getId());
+            $msgs = $query->getResult();
+
+
+
+            foreach ($msgs as $m){
+                $m_users[$m->getFromUserId()] = 1;
+                $m_users[$m->getToUserId()] = 1;
+
+                if($m->getFromUserId() != $user->getId()) $chat_visitor_id = $m->getFromUserId();
+                else $chat_visitor_id = $m->getToUserId();
+
+                $res[$m->getDateCreate()->format('Y-m-d')][$chat_visitor_id][$m->getCardId()][] = $m;
+            }
+
+            foreach($m_users as $u=>$v){
+                $users[$u] = $this->getDoctrine()
+                    ->getRepository(User::class)
+                    ->find($u);
+            }
+
+            return $this->render('user/user_messages.html.twig', [
+                'city' => $city,
+                'in_city' => $in_city,
+                'cityId' => $city->getId(),
+                'generalTypes' => $generalTypes,
+                'lang' => $_SERVER['LANG'],
+
+
+                'messages' => $res,
+                'users' => $users,
+            ]);
+        } else return new Response("",404);
+    }
 
     /**
      * @Route("/user", name="user_main")
