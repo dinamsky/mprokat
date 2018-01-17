@@ -64,6 +64,13 @@ class Message
      */
     private $isAttachment;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_read", type="boolean")
+     */
+    private $isRead = false;
+
 
     /**
      * Get id
@@ -217,5 +224,29 @@ class Message
     public function getCardId()
     {
         return $this->cardId;
+    }
+
+    /**
+     * Set isRead
+     *
+     * @param boolean $isRead
+     *
+     * @return Message
+     */
+    public function setIsRead($isRead)
+    {
+        $this->isRead = $isRead;
+
+        return $this;
+    }
+
+    /**
+     * Get isRead
+     *
+     * @return boolean
+     */
+    public function getIsRead()
+    {
+        return $this->isRead;
     }
 }

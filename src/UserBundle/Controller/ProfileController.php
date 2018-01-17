@@ -5,6 +5,7 @@ namespace UserBundle\Controller;
 use AppBundle\Entity\Card;
 use AppBundle\Foto\FotoUtils;
 use AppBundle\Menu\ServiceStat;
+use UserBundle\Entity\Blocking;
 use UserBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface as em;
 use AppBundle\Menu\MenuCity;
@@ -44,6 +45,8 @@ class ProfileController extends Controller
 
 
 
+
+
             $stat_arr = [
                 'url' => $request->getPathInfo(),
                 'event_type' => 'visit',
@@ -63,7 +66,8 @@ class ProfileController extends Controller
                 'in_city' => $in_city,
                 'cityId' => $city->getId(),
                 'generalTypes' => $generalTypes,
-                'lang' => $_SERVER['LANG']
+                'lang' => $_SERVER['LANG'],
+
             ]);
         } else return new Response("",404);
     }
@@ -91,22 +95,51 @@ class ProfileController extends Controller
             $msgs = $query->getResult();
 
 
-            $res = [];
+            $res = [];$cards = [];$blockings = [];$blockme = [];
             foreach ($msgs as $m){
                 $m_users[$m->getFromUserId()] = 1;
                 $m_users[$m->getToUserId()] = 1;
 
                 if($m->getFromUserId() != $user->getId()) $chat_visitor_id = $m->getFromUserId();
                 else $chat_visitor_id = $m->getToUserId();
+                $res[$chat_visitor_id][$m->getCardId()][] = $m;
 
-                $res[$m->getDateCreate()->format('Y-m-d')][$chat_visitor_id][$m->getCardId()][] = $m;
+                $cards[$m->getCardId()] = $this->getDoctrine()
+                    ->getRepository(Card::class)
+                    ->find($m->getCardId());
+
             }
 
             foreach($m_users as $u=>$v){
-                $users[$u] = $this->getDoctrine()
+
+                $u_object = $this->getDoctrine()
                     ->getRepository(User::class)
                     ->find($u);
+
+                foreach ($u_object->getInformation() as $info) {
+                    if ($info->getUiKey() == 'foto' and $info->getUiValue() != '') $u_object->user_foto = '/assets/images/users/t/' . $info->getUiValue() . '.jpg';
+                }
+
+                $users[$u] = $u_object;
+
+                $blockings[$u] = $this->getDoctrine()
+                    ->getRepository(Blocking::class)
+                    ->findBy([
+                        'userId' => $this->get('session')->get('logged_user')->getId(),
+                        'visitorId' => $u
+                    ]);
+
+                $blockme[$u] = $this->getDoctrine()
+                    ->getRepository(Blocking::class)
+                    ->findBy([
+                        'userId' => $u,
+                        'visitorId' => $this->get('session')->get('logged_user')->getId()
+                    ]);
+
             }
+
+
+
 
             return $this->render('user/user_messages.html.twig', [
                 'city' => $city,
@@ -118,8 +151,49 @@ class ProfileController extends Controller
 
                 'messages' => $res,
                 'users' => $users,
+                'cards' => $cards,
+                'blockings' => $blockings,
+                'blockme' => $blockme
+
             ]);
         } else return new Response("",404);
+    }
+
+    /**
+     * @Route("/user/delete_blocking_user_messages", name="delete_blocking_user_messages")
+     */
+    public function duUserMessagesAction(EntityManagerInterface $em, Request $request)
+    {
+        $id = $request->request->get('id');
+        $action = $request->request->get('user_action');
+
+        if($action=='delete'){
+            $query = $em->createQuery('DELETE UserBundle:Message m WHERE (m.fromUserId = ?1 AND m.toUserId = ?2) OR (m.fromUserId = ?2 AND m.toUserId = ?1)');
+            $query->setParameter(1, $id);
+            $query->setParameter(2, $this->get('session')->get('logged_user')->getId());
+            $query->execute();
+        }
+
+        if($action=='block'){
+            $blocking = new Blocking();
+            $blocking->setUserId($this->get('session')->get('logged_user')->getId());
+            $blocking->setVisitorId($id);
+            $em->persist($blocking);
+            $em->flush();
+        }
+
+        if($action=='unblock'){
+            $blocking = $this->getDoctrine()
+            ->getRepository(Blocking::class)
+            ->findOneBy([
+                'userId' => $this->get('session')->get('logged_user')->getId(),
+                'visitorId' => $id,
+            ]);
+            $em->remove($blocking);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('user_messages');
     }
 
     /**
@@ -139,6 +213,9 @@ class ProfileController extends Controller
         $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.total DESC');
         $generalTypes = $query->getResult();
 
+
+
+
         if(!$user->getIsBanned()) return $this->render('user/profile_main.html.twig',[
             'user' => $user,
             'city' => $city,
@@ -146,7 +223,8 @@ class ProfileController extends Controller
             'in_city' => $in_city,
             'cityId' => $city->getId(),
             'generalTypes' => $generalTypes,
-            'lang' => $_SERVER['LANG']
+            'lang' => $_SERVER['LANG'],
+
         ]);
         else return new Response("",404);
     }
@@ -184,6 +262,9 @@ class ProfileController extends Controller
             $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.total DESC');
             $generalTypes = $query->getResult();
 
+
+
+
             return $this->render('user/user_profile.html.twig', [
                 'user' => $user,
                 'city' => $city,
@@ -191,7 +272,8 @@ class ProfileController extends Controller
                 'in_city' => $in_city,
                 'cityId' => $city->getId(),
                 'generalTypes' => $generalTypes,
-                'lang' => $_SERVER['LANG']
+                'lang' => $_SERVER['LANG'],
+
             ]);
         }
         else return new Response("",404);

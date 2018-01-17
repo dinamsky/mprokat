@@ -634,18 +634,37 @@ class UserController extends Controller
         $res = array();
 
         $query = $em->createQuery('SELECT m FROM UserBundle:Message m WHERE m.cardId=?3 AND ((m.fromUserId = ?1 AND m.toUserId = ?2) OR (m.fromUserId = ?2 AND m.toUserId = ?1)) ORDER BY m.dateCreate ASC');
+        if($request->request->has('last_id')){
+            $query = $em->createQuery('SELECT m FROM UserBundle:Message m WHERE m.id>'.$request->request->get('last_id').' AND m.cardId=?3 AND ((m.fromUserId = ?1 AND m.toUserId = ?2) OR (m.fromUserId = ?2 AND m.toUserId = ?1)) ORDER BY m.dateCreate ASC');
+        }
+
         $query->setParameter(1, $request->request->get('user_id'));
         $query->setParameter(2, $request->request->get('visitor_id'));
         $query->setParameter(3, $request->request->get('card_id'));
         $msgs = $query->getResult();
 
+
+
+
+        $query = $em->createQuery('UPDATE UserBundle:Message m SET m.isRead = 1 WHERE m.cardId=?3 AND ((m.fromUserId = ?1 AND m.toUserId = ?2) OR (m.fromUserId = ?2 AND m.toUserId = ?1))');
+        if($request->request->has('last_id')){
+            $query = $em->createQuery('UPDATE UserBundle:Message m SET m.isRead = 1 WHERE m.id>'.$request->request->get('last_id').' AND m.cardId=?3 AND ((m.fromUserId = ?1 AND m.toUserId = ?2) OR (m.fromUserId = ?2 AND m.toUserId = ?1))');
+        }
+        $query->setParameter(1, $request->request->get('user_id'));
+        $query->setParameter(2, $request->request->get('visitor_id'));
+        $query->setParameter(3, $request->request->get('card_id'));
+        $query->execute();
+
+
+        $last_id = $request->request->get('last_id');
         foreach($msgs as $m){
             $msg[$m->getDateCreate()->format('d-m-Y')][] = $m;
+            $last_id = $m->getId();
         }
 
 
         if (isset($msg)) foreach($msg as $date=>$msgs){
-            $message[] = '<div class="messages_date_delimiter"><span>'.$date.'</span></div>';
+            if(!$request->request->has('last_id')) $message[] = '<div class="messages_date_delimiter"><span>'.$date.'</span></div>';
             foreach($msgs as $m) {
                 $css_class = 'user_message';
                 if ($m->getFromUserId() == $request->request->get('visitor_id')) $css_class = 'visitor_message';
@@ -658,7 +677,7 @@ class UserController extends Controller
         } else $message = [];
 
         $res['messages'] = implode("",$message);
-
+        $res['last_id'] = $last_id;
         return new Response(json_encode($res));
     }
 

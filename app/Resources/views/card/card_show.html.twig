@@ -550,14 +550,14 @@
                     </div>
                 </div>
                 {% if not is_admin_card %}
-                <div class="uk-margin-bottom card_blanc">
-                    <div class="cursor-pointer uk-text-center" uk-toggle="target: #user_message_form"><i class="fa fa-commenting"></i> {% trans %}Email сообщение{% endtrans %}</div>
-                </div>
+                {#<div class="uk-margin-bottom card_blanc">#}
+                    {#<div class="cursor-pointer uk-text-center" uk-toggle="target: #user_message_form"><i class="fa fa-commenting"></i> {% trans %}Email сообщение{% endtrans %}</div>#}
+                {#</div>#}
                 {% endif %}
 
-                {% if app.session.has('logged_user') %}
+                {% if app.session.has('logged_user') and blockings[app.session.get('logged_user').id] is not defined%}
                     <div class="uk-margin-bottom card_blanc">
-                        <div class="open_chat cursor-pointer uk-text-center" data-user_id="{{ card.user.id }}" data-visitor_id="{{ app.session.get('logged_user').id }}" data-card_id="{{ card.id }}"><i class="fa fa-comments"></i> {% trans %}Чат{% endtrans %}</div>
+                        <div class="open_chat cursor-pointer uk-text-center" data-user_id="{{ card.user.id }}" data-visitor_id="{{ app.session.get('logged_user').id }}" data-card_id="{{ card.id }}"><i class="fa fa-comments"></i> {% trans %}Написать сообщение{% endtrans %}</div>
                     </div>
                     {{ include('user/chat_modal.html.twig') }}
                 {% endif %}
