@@ -116,6 +116,8 @@ class ProfileController extends Controller
                     ->getRepository(User::class)
                     ->find($u);
 
+                $u_object->user_foto = false;
+
                 foreach ($u_object->getInformation() as $info) {
                     if ($info->getUiKey() == 'foto' and $info->getUiValue() != '') $u_object->user_foto = '/assets/images/users/t/' . $info->getUiValue() . '.jpg';
                 }
