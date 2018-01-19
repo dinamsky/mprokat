@@ -30,7 +30,9 @@ $( document ).ready(function() {
     });
 
 
-
+    $('.city_helper_close').on('click',function(){
+        $(this).parents('.city_helper').remove();
+    });
     
 
 });
