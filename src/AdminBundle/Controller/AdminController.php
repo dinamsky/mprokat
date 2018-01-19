@@ -324,4 +324,47 @@ class AdminController extends Controller
         return new Response($content, 200);
     }
 
+    /**
+     * @Route("/adminMessages", name="adminMessages")
+     */
+    public function messagesAction()
+    {
+        if ($this->get('session')->get('admin') === null) return $this->render('AdminBundle::admin_enter_form.html.twig');
+        else {
+            $em = $this->getDoctrine()->getManager();
+            $m_users = $users = [];
+            $query = $em->createQuery('SELECT m FROM UserBundle:Message m ORDER BY m.dateCreate DESC');
+            $msgs = $query->getResult();
+
+
+            $res = [];$cards = [];
+            foreach ($msgs as $m){
+                $m_users[$m->getFromUserId()] = 1;
+                $m_users[$m->getToUserId()] = 1;
+
+                $res[$m->getDateCreate()->format('d-m-Y')][] = $m;
+                $cards[$m->getCardId()] = $this->getDoctrine()
+                    ->getRepository(Card::class)
+                    ->find($m->getCardId());
+
+            }
+
+            foreach($m_users as $u=>$v){
+                $u_object = $this->getDoctrine()
+                    ->getRepository(User::class)
+                    ->find($u);
+
+                $users[$u] = $u_object;
+            }
+
+            $city = $this->get('session')->get('city');
+
+            return $this->render('AdminBundle::admin_messages.html.twig', [
+                'messages' => $res,
+                'cards' => $cards,
+                'users' => $users,
+                'city' => $city,
+            ]);
+        }
+    }
 }
