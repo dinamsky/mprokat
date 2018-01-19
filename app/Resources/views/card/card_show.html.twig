@@ -20,6 +20,7 @@
     <script src="{{ asset('assets/js/recaptcha_settings.js') }}"></script>
     <script src="{{ asset('assets/js/recapthcha_validate.js') }}"></script>
     <script src="{{ asset('assets/js/datepicker.min.js') }}"></script>
+    <script src="{{ asset('assets/js/chat.js') }}"></script>
 {% endblock %}
 
 {% block socialScripts %}
@@ -454,6 +455,11 @@
 
 
             </div>
+
+
+{# -----------------------------------------------------------  This is right block !  ----------------------------------------------- #}
+
+
             <div class="uk-width-1-4@s">
 
                 {% if not reserved %}
@@ -544,10 +550,19 @@
                     </div>
                 </div>
                 {% if not is_admin_card %}
-                <div class="uk-margin-bottom card_blanc">
-                    <div class="cursor-pointer uk-text-center" uk-toggle="target: #user_message_form"><i class="fa fa-commenting"></i> {% trans %}Написать сообщение{% endtrans %}</div>
-                </div>
+                {#<div class="uk-margin-bottom card_blanc">#}
+                    {#<div class="cursor-pointer uk-text-center" uk-toggle="target: #user_message_form"><i class="fa fa-commenting"></i> {% trans %}Email сообщение{% endtrans %}</div>#}
+                {#</div>#}
                 {% endif %}
+
+                {% if app.session.has('logged_user') and blockings[app.session.get('logged_user').id] is not defined%}
+                    <div class="uk-margin-bottom card_blanc">
+                        <div class="open_chat cursor-pointer uk-text-center" data-user_id="{{ card.user.id }}" data-visitor_id="{{ app.session.get('logged_user').id }}" data-card_id="{{ card.id }}"><i class="fa fa-comments"></i> {% trans %}Написать сообщение{% endtrans %}</div>
+                    </div>
+                    {{ include('user/chat_modal.html.twig') }}
+                {% endif %}
+
+
                 <div class="uk-margin-bottom card_blanc">
                     <div><i class="fa fa-eye c_green"></i> {{ card.views }} <span class="uk-text-small c_grey">{% trans %}просмотров{% endtrans %}</span></div>
                     <div><i class="fa fa-heart c_red"></i> <span id="card_likes">{{ card.likes }}</span> <span class="uk-text-small c_grey">{% trans %}лайков{% endtrans %}</span></div>
@@ -763,8 +778,8 @@
         </div>
     </div>
 
-    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
-        async defer>
-    </script>
+    {#<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"#}
+        {#async defer>#}
+    {#</script>#}
 
 {% endblock %}

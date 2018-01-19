@@ -68,10 +68,19 @@
                 <div class="uk-width-expand">
 
                     <div class="uk-grid uk-grid-small uk-flex-right">
-                        <div class="c_grey">
+                        <div class="c_grey uk-position-relative">
                             {% if not is_mobile() %}
                             {{ include('selector/global_city_selector.html.twig') }}
                             {% endif %}
+
+                            {% if not app.session.has('not_first_time') %}
+                                <div class="city_helper">
+                                    Мы&nbsp;определили&nbsp;ваш&nbsp;город&nbsp;как&nbsp;{{ app.session.get('city').header }}.<br>
+                                    Вы всегда можете поменять его здесь.
+                                    <div class="city_helper_close"><span uk-icon="icon:close"></span></div>
+                                </div>
+                            {% endif %}
+
                         </div>
                         <div>{{ include('user/auth_button_modal.html.twig') }}</div>
 

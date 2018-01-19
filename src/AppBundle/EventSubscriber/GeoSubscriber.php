@@ -136,6 +136,12 @@ class GeoSubscriber implements EventSubscriberInterface
             }
         }
 
+        if($event->getRequest()->cookies->has('not_first_time')){
+            $event->getRequest()->getSession()->set('not_first_time', true);
+        } else {
+            $event->getRequest()->attributes->set('first_cookie', true);
+        }
+
     }
 
     public function onKernelResponse(FilterResponseEvent $event)
@@ -151,6 +157,11 @@ class GeoSubscriber implements EventSubscriberInterface
 
         if($request->attributes->has('remove_cookie')) {
             $response->headers->clearCookie('the_hash');
+        }
+
+        if($request->attributes->has('first_cookie')) {
+            $cookie = new Cookie('not_first_time', '1', strtotime('now +1 year'));
+            $response->headers->setCookie($cookie);
         }
     }
 

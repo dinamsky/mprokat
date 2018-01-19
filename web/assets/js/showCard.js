@@ -1,7 +1,7 @@
 $( document ).ready(function() {
     $('#cardTabs').on('shown', function (element) {
-        if(element.target.id === 'card_tab'){
-            var uluru = {lat: $('#map').data('lat')-0, lng: $('#map').data('lng')-0 };
+        if (element.target.id === 'card_tab') {
+            var uluru = {lat: $('#map').data('lat') - 0, lng: $('#map').data('lng') - 0};
             var map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 12,
                 center: uluru
@@ -22,10 +22,10 @@ $( document ).ready(function() {
         $.ajax({
             url: '/ajax/showPhone',
             type: 'POST',
-            data: {card_id:card_id, type:type},
-            success: function(html){
-                $('.phone_block').html('<span class="opened_phone bg_green c_white uk-text-center"><i class="fa fa-phone"></i> '+html+'</span>');
-                $('.modal_phone').html(html).attr('href','tel:'+html);
+            data: {card_id: card_id, type: type},
+            success: function (html) {
+                $('.phone_block').html('<span class="opened_phone bg_green c_white uk-text-center"><i class="fa fa-phone"></i> ' + html + '</span>');
+                $('.modal_phone').html(html).attr('href', 'tel:' + html);
                 UIkit.modal('#user_phone_form').show();
                 yaCounter43151009.reachGoal('PhoneClick', {phone: html, cardId: card_id});
             }
@@ -37,9 +37,9 @@ $( document ).ready(function() {
         $.ajax({
             url: '/ajax/goPro',
             type: 'POST',
-            data: {user_id:user_id},
-            success: function(html){
-                document.location.href = '/user/'+user_id;
+            data: {user_id: user_id},
+            success: function (html) {
+                document.location.href = '/user/' + user_id;
             }
         });
     });
@@ -66,10 +66,10 @@ $( document ).ready(function() {
         $.ajax({
             url: '/ajax/plusLike',
             type: 'POST',
-            data: {card_id:card_id},
-            success: function(html){
-                $(t).find('i').attr('class','fa fa-heart c_red');
-                if(html === 'ok') {
+            data: {card_id: card_id},
+            success: function (html) {
+                $(t).find('i').attr('class', 'fa fa-heart c_red');
+                if (html === 'ok') {
                     var l = $('#card_likes').html() - 0;
                     $('#card_likes').html(l + 1);
                 }
@@ -81,8 +81,8 @@ $( document ).ready(function() {
         $('.star').removeClass('hover');
         $(this).addClass('hover');
         var i = $(this).data('star');
-        for(var j = 1; j<i; j++){
-            $('.star[data-star="'+j+'"]').addClass('hover');
+        for (var j = 1; j < i; j++) {
+            $('.star[data-star="' + j + '"]').addClass('hover');
         }
     });
 
@@ -96,19 +96,18 @@ $( document ).ready(function() {
         $('input[name="stars"]').val(i);
         $('.star').removeClass('active');
         $(this).addClass('active');
-        for(var j = 1; j<i; j++){
-            $('.star[data-star="'+j+'"]').addClass('active');
+        for (var j = 1; j < i; j++) {
+            $('.star[data-star="' + j + '"]').addClass('active');
         }
     });
 
-    if($('.card_cover').hasClass('share')){
+    if ($('.card_cover').hasClass('share')) {
         UIkit.modal('#share_butons').show();
     }
 
 
-
     $('.show_full_content').on('click', function () {
-        $('#card_content').css('max-height','none').css('overflow','auto');
+        $('#card_content').css('max-height', 'none').css('overflow', 'auto');
     });
 
 
@@ -117,4 +116,5 @@ $( document ).ready(function() {
     $('.datepicker-reserve').datepicker({
         minDate: new Date(document.getElementById('user_book_form').getAttribute('data-res'))
     });
+
 });

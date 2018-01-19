@@ -23,6 +23,7 @@ use AppBundle\Entity\City;
 use AppBundle\Entity\GeneralType;
 use AppBundle\SubFields\SubFieldUtils;
 use Symfony\Component\HttpFoundation\Cookie;
+use UserBundle\Entity\Blocking;
 
 class ShowCardController extends Controller
 {
@@ -275,6 +276,15 @@ class ShowCardController extends Controller
             }
         }
 
+        $blk = [];
+        $blockings = $this->getDoctrine()
+                    ->getRepository(Blocking::class)
+                    ->findBy([
+                        'userId' => $card->getUser()->getId(),
+                    ]);
+        foreach ($blockings as $b){
+            $blk[$b->getVisitorId()] = 1;
+        }
 
 
         return $this->render('card/card_show.html.twig', [
@@ -326,7 +336,9 @@ class ShowCardController extends Controller
             'page_type' => 'card',
             'lang' => $_SERVER['LANG'],
             'reserved' => $card->getDateRentFinish() > new \DateTime() ? true : false,
-            'is_admin_card' => $is_admin_card
+            'is_admin_card' => $is_admin_card,
+
+            'blockings' => $blk
 
         ]);
     }
