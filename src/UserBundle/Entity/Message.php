@@ -71,6 +71,13 @@ class Message
      */
     private $isRead = false;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_read_visitor", type="boolean")
+     */
+    private $isReadVisitor = false;
+
 
     /**
      * Get id
@@ -248,5 +255,29 @@ class Message
     public function getIsRead()
     {
         return $this->isRead;
+    }
+
+    /**
+     * Set isReadVisitor
+     *
+     * @param boolean $isReadVisitor
+     *
+     * @return Message
+     */
+    public function setIsReadVisitor($isReadVisitor)
+    {
+        $this->isReadVisitor = $isReadVisitor;
+
+        return $this;
+    }
+
+    /**
+     * Get isReadVisitor
+     *
+     * @return boolean
+     */
+    public function getIsReadVisitor()
+    {
+        return $this->isReadVisitor;
     }
 }

@@ -646,14 +646,25 @@ class UserController extends Controller
 
 
 
-        $query = $em->createQuery('UPDATE UserBundle:Message m SET m.isRead = 1 WHERE m.cardId=?3 AND ((m.fromUserId = ?1 AND m.toUserId = ?2) OR (m.fromUserId = ?2 AND m.toUserId = ?1))');
+        $query = $em->createQuery('UPDATE UserBundle:Message m SET m.isReadVisitor = 1 WHERE m.cardId=?3 AND m.fromUserId = ?2 AND m.toUserId = ?1');
         if($request->request->has('last_id')){
-            $query = $em->createQuery('UPDATE UserBundle:Message m SET m.isRead = 1 WHERE m.id>'.$request->request->get('last_id').' AND m.cardId=?3 AND ((m.fromUserId = ?1 AND m.toUserId = ?2) OR (m.fromUserId = ?2 AND m.toUserId = ?1))');
+            $query = $em->createQuery('UPDATE UserBundle:Message m SET m.isReadVisitor = 1 WHERE m.id>'.$request->request->get('last_id').' AND m.cardId=?3 AND m.fromUserId = ?2 AND m.toUserId = ?1');
         }
         $query->setParameter(1, $request->request->get('user_id'));
         $query->setParameter(2, $request->request->get('visitor_id'));
         $query->setParameter(3, $request->request->get('card_id'));
         $query->execute();
+
+
+        $query = $em->createQuery('UPDATE UserBundle:Message m SET m.isRead = 1 WHERE m.cardId=?3 AND m.fromUserId = ?1 AND m.toUserId = ?2');
+        if($request->request->has('last_id')){
+            $query = $em->createQuery('UPDATE UserBundle:Message m SET m.isRead = 1 WHERE m.id>'.$request->request->get('last_id').' AND m.cardId=?3 AND m.fromUserId = ?1 AND m.toUserId = ?2');
+        }
+        $query->setParameter(1, $request->request->get('user_id'));
+        $query->setParameter(2, $request->request->get('visitor_id'));
+        $query->setParameter(3, $request->request->get('card_id'));
+        $query->execute();
+
 
 
         $last_id = $request->request->get('last_id');
