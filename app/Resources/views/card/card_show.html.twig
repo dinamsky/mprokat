@@ -35,6 +35,7 @@
 
 {% block openGraph %}
     {{ parent() }}
+    <meta property="og:type" content="website">
     <meta property="og:image" content="{{ app.request.getSchemeAndHttpHost() ~ mainFoto }}">
     <meta property="og:title" content="{{ include(':seo_templates:p_h1.html.twig') }}">
     <meta property="og:url" content="{{ app.request.schemeAndHttpHost ~ app.request.requestUri }}">
@@ -43,6 +44,10 @@
 {% block metaTags %}
     {{ parent() }}
     <meta name="description" content="{% include ':seo_templates:p_description.html.twig' %}">
+{% endblock %}
+
+{% block htmlblock %}
+ prefix="og: http://ogp.me/ns#"
 {% endblock %}
 
 {% block title %}{{ include(':seo_templates:p_title.html.twig') }}{% endblock %}
@@ -520,7 +525,7 @@
 
                             {% if price.priceId == 2%}
                                 <span itemprop="price" style="visibility: hidden;height: 0;width: 0;">{{ price.value }}</span>
-                                <span itemprop="priceCurrency">{{ currency }}</span>
+                                <span itemprop="priceCurrency">{{ card.currency }}</span>
                             {% endif %}
 
                             <span class="price_descriptor uk-text-truncate"> <i class="fa fa-{{ currency }}"></i> / {{ price.getPrice.header|trans }}</span>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html {% block htmlblock %}{% endblock %}>
     <head>
         {% if app.session.has('city') and app.session.get('city').country != 'RUS' %}
         <meta name="robots" content="noindex">
