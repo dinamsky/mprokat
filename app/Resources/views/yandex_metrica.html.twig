@@ -1,4 +1,20 @@
-    {% if app.environment == 'prod' and app.session.get('city').country == 'RUS' %}
+{% set page_ok = false %}
+
+{% if card is defined and card.city.country == 'RUS' %}
+    {% set page_ok = true %}
+{% endif %}
+
+{% if card is defined and card.city.country != 'RUS' %}
+    {% set page_ok = false %}
+{% endif %}
+
+{% if card is not defined %}
+    {% set page_ok = true %}
+{% endif %}
+
+
+
+{% if app.environment == 'prod' and app.session.get('city').country == 'RUS' and page_ok %}
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript" >
         (function (d, w, c) {
