@@ -39,7 +39,7 @@
                         {% if page_type is defined and general is defined and general is not iterable%}
                             <a href="/card/new/{{ general.url }}" class="c_grey">Сдать в {{ general.url == 'special-machines' or general.url == 'airplanes' ? 'аренду' : 'прокат/аренду' }} {{ general.headerSingular|lower }} в {{ city.gde }}</a>
                         {% else %}
-                            <a href="/article/kak-sdavat-avto" class="c_grey">{% trans %}Сдать свой автомобиль{% endtrans %}</a>
+                            <a href="/promo" class="c_grey">{% trans %}Сдать свой автомобиль{% endtrans %}</a>
                         {% endif %}
 
                         <hr>
@@ -88,7 +88,7 @@
                 <div class="uk-width-2-5@s">
                     <a rel="nofollow" href="/article/term-conditions" class="c_grey">{% trans %}Условия и положения{% endtrans %}</a> /
                     <a rel="nofollow" href="/article/politika-konfidentsialnosti" class="c_grey">{% trans %}Конфиденциальность{% endtrans %}</a>
-                    <a rel="nofollow" href="/promo" class="c_grey uk-margin-left">Промо</a>
+                    {#<a rel="nofollow" href="/promo" class="c_grey uk-margin-left">Промо</a>#}
                 </div>
 
             </div>
