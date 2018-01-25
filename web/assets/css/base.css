@@ -1437,3 +1437,24 @@ top: 80%;
     color: white;
     top: 7px;
 }
+
+.add_card_button.just_plus{
+    font-size: 28px;
+    line-height: 35px;
+    display: block;
+    width: auto;
+    color: #1976d2;
+}
+
+.add_card_button.just_plus:hover{
+    font-size: 28px;
+    line-height: 35px;
+    display: block;
+    width: auto;
+    background: transparent;
+    color: #b92727;
+}
+
+.top_sticky.uk-active .add_card_button.just_plus {
+    width: auto;
+}
