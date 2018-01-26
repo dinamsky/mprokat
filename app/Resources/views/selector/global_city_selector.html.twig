@@ -14,11 +14,11 @@
         <button class="uk-modal-close-default" type="button" uk-close></button>
         <h2 class="uk-modal-title">{% trans %}Выберите город{% endtrans %}</h2>
         <div>
-            {% trans %}или начните вводить наименование города{% endtrans %}: <input name="input_city" class="uk-input uk-width-1-5">
+            {% trans %}или начните вводить наименование города{% endtrans %}: <input name="input_city" class="uk-input uk-width-1-5@s">
         </div>
         <hr>
         <div class="uk-column-1-1 uk-column-1-5@s">
-            <div class="city_block uk-margin-bottom" data-id="0" data-url="rus" data-header="Россия">Россия</div>
+            {#<div class="city_block uk-margin-bottom" data-id="0" data-url="rus" data-header="Россия">Россия</div>#}
             {% for city in t3_new.popularCities if city.total >= 10 %}
                 <div class="city_block" data-id="{{ city.id }}" data-url="{{ city.url }}" data-header="{{ city.header }}">{{ city.header }}</div>
             {% endfor %}
