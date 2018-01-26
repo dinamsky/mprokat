@@ -136,14 +136,15 @@
                             title="{{ card.serviceTypeId == 1 ? 'Прокат' : 'Аренда' }} {% if card.generalType.chegoSingular is defined %}{{ card.generalType.chegoSingular }}{% else %}{% endif %} {{ card.markModel.Mark.header }} {{ card.markModel.header }} в {{ card.city.gde }}"
                             {% endif %}
                             >
+                                {% if k == 0 %}
+                                <img src="https://multiprokat.com/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg" alt="" style="visibility: hidden; height: 0;width: 0;" itemprop="image">
+                                {% endif %}
                                 {#<img src="/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg" alt="" style="max-height: auto">#}
                             </a>
                             </div>
 
 
-                            {% if k == 0 %}
-                                <img src="https://multiprokat.com/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg" alt="" style="visibility: hidden; height: 0;width: 0;" itemprop="image">
-                            {% endif %}
+
 
                         {% endfor %}
                     </div>
