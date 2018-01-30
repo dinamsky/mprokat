@@ -60,11 +60,14 @@ button{
 }
 
 .top_sticky{
-    padding: 10px 0;
+    padding: 27px 0;
     background: white;
     box-shadow: 0 1px 1px grey;
 }
 
+.logo{
+    width: 200px;
+}
 .top_sticky .logo{
     width: 200px;
 }
@@ -79,6 +82,10 @@ button{
 .top_line_right{
     border-right:1px solid white;
 
+}
+
+.header_inner{
+    height: 42px;
 }
 
 .top_user_actions a, .top_user_actions_button{
@@ -1190,7 +1197,7 @@ top: 80%;
 }
 
 .search_popup_trigger{
-    border: 1px solid lightgray;
+
     padding: 5px;
     color: lightgray;
 }
