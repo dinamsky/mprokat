@@ -273,6 +273,9 @@ class ShowCardController extends Controller
 
 
                 if ($ph == $emz[0]) $is_admin_card = true;
+
+                if (preg_match('/^\d+$/', $emz[0])) $is_admin_card = true;
+
             }
         }
 
