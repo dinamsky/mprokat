@@ -44,7 +44,11 @@
 
                 <div class="uk-visible@s uk-width-1-5@s" ></div>
                 <div class="uk-width-4-5@s">
-                    <div class="">{% trans %}Собственник{% endtrans %}</div>
+                    <div class="">
+                        {% if user.cards is not empty %}
+                            {% trans %}Собственник{% endtrans %}
+                        {% endif %}
+                    </div>
                     <h1 class=" uk-margin-remove">
                         {{ user.header }}
                         {% if user.accountTypeId == 0 and app.session.has('admin') %}
