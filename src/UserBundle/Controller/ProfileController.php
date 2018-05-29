@@ -628,12 +628,27 @@ class ProfileController extends Controller
             $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.total DESC');
             $generalTypes = $query->getResult();
 
+            $is_admin_card = false;
+            foreach ($user->getInformation() as $ui){
+                if($ui->getUiKey() == 'phone'){
+                    $ph = substr(preg_replace('/[^0-9]/', '', $ui->getUiValue()),1);
+                    $emz = explode("@",$user->getEmail());
+
+
+                    if ($ph == $emz[0]) $is_admin_card = true;
+
+                    if (preg_match('/^\d+$/', $emz[0])) $is_admin_card = true;
+
+                }
+            }
+
 
             $stat_arr = [
                 'url' => $request->getPathInfo(),
                 'event_type' => 'visit',
                 'page_type' => 'profile',
                 'user_id' => $user->getId(),
+                'is_admin_card' => $is_admin_card
             ];
             $stat->setStat($stat_arr);
 
