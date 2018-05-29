@@ -136,11 +136,15 @@
                                 {% endif %}
                             </div>
                             <div class="uk-width-1-6">
+                                {% if not is_admin_card %}
                                 <div class="bg_green user_form_button" uk-toggle="target: #user_message_form"><i class="fa fa-commenting"></i></div>
+                                {% endif %}
                             </div>
                         </div>
+
                     </div>
 
+                    {% if not is_admin_card %}
                     <div id="user_message_form" class="uk-modal" uk-modal>
                         <div class="uk-modal-dialog uk-modal-body">
                             <h2 class="uk-modal-title">{% trans %}Сообщение пользователю{% endtrans %}</h2>
@@ -162,6 +166,7 @@
                             </form>
                         </div>
                     </div>
+                    {% endif %}
 
                     <div id="user_phone_form" class="uk-modal" uk-modal>
                         <div class="uk-modal-dialog uk-modal-body">
