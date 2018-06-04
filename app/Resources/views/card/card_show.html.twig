@@ -499,7 +499,7 @@
                 </div>
                 {% endif %}
 
-                {% if not is_mobile() and not is_admin_card and card.user.email != 'alex@mail.ru'%}
+                {% if not is_mobile() and not is_admin_card and card.user.id != 1971%}
                 <div class="uk-margin-bottom card_blanc border_green">
                     <div class="cursor-pointer uk-text-center c_green" uk-toggle="target: #user_book_form"><i class="fa fa-pencil-square-o"></i> {% trans %}Отправить заявку{% endtrans %}</div>
                 </div>
