@@ -1,0 +1,32 @@
+{% extends 'user/user_base.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/image_upload_preview.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.maskedinput.js') }}"></script>
+    <script src="{{ asset('assets/js/phone_validate.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+    <h1>Мои заявки</h1>
+    <div class="">
+        {% for o in orders %}
+            <div>
+                <span class="uk-text-small c_grey">{{ o.dateCreate|date('d.m.Y') }}</span> {{ o.transport }} (с {{ o.dateIn|date('d.m.Y') }} по {{ o.dateOut|date('d.m.Y') }})
+                <span class="bordered cursor-pointer" uk-toggle="target: #ord_desc_{{ o.id }}">подробнее</span>
+                <div id="ord_desc_{{ o.id }}" class="uk-margin-top uk-margin-bottom bordered padding10" hidden>
+                    забрать: {{ o.cityIn }}<br>
+                    вернуть: {{ o.cityOut }}<br>
+                    <br>
+                    email: {{ o.email }}<br>
+                    телефон: {{ o.phone }}<br>
+                    <br>
+                    {{ o.content }}
+                    <br><br>
+                    <a href="/card/{{ o.cardId }}">страница транспорта</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
