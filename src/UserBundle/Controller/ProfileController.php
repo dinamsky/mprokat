@@ -7,6 +7,7 @@ use AppBundle\Foto\FotoUtils;
 use AppBundle\Menu\ServiceStat;
 use UserBundle\Entity\Blocking;
 use UserBundle\Entity\User;
+use UserBundle\Entity\FormOrder;
 use Doctrine\ORM\EntityManagerInterface as em;
 use AppBundle\Menu\MenuCity;
 use AppBundle\Menu\MenuGeneralType;
@@ -379,48 +380,69 @@ class ProfileController extends Controller
         $post = $request->request;
 
 
-        if($post->has('card_id')) {
-            $card_id = $post->get('card_id');
-
-            $card = $this->getDoctrine()
-                ->getRepository(Card::class)
-                ->find($card_id);
-            $user = $card->getUser();
-        }
+//        if($post->has('card_id')) {
+//            $card_id = $post->get('card_id');
+//
+//            $card = $this->getDoctrine()
+//                ->getRepository(Card::class)
+//                ->find($card_id);
+//            $user = $card->getUser();
+//        }
 
         if($post->has('user_id')){
             $user = $this->getDoctrine()
                 ->getRepository(User::class)
                 ->find($post->get('user_id'));
             $card = false;
+            $card_id = false;
         }
 
 
-        if ($this->captchaVerify($post->get('g-recaptcha-response'))) {
+        //if ($this->captchaVerify($post->get('g-recaptcha-response'))) {
+        if (1==1) {
 
 
 
 
-            $message = (new \Swift_Message($_t->trans('Сообщение от пользователя')))
-                ->setFrom(['mail@multiprokat.com' => 'Робот Мультипрокат'])
-                ->setTo($user->getEmail())
-                ->setCc('mail@multiprokat.com')
-                ->setBody(
-                    $this->renderView(
-                        $_SERVER['LANG'] == 'ru' ? 'email/request.html.twig' : 'email/request_'.$_SERVER['LANG'].'.html.twig',
-                        array(
-                            'header' => $user->getHeader(),
-                            'message' => $post->get('message'),
-                            'email' => $post->get('email'),
-                            'name' => $post->get('name'),
-                            'phone' => $post->get('phone'),
-                            'card' => $card,
-                            'user' => $user
-                        )
-                    ),
-                    'text/html'
-                );
-            $mailer->send($message);
+//            $message = (new \Swift_Message($_t->trans('Сообщение от пользователя')))
+//                ->setFrom(['mail@multiprokat.com' => 'Робот Мультипрокат'])
+//                ->setTo($user->getEmail())
+//                ->setCc('mail@multiprokat.com')
+//                ->setBody(
+//                    $this->renderView(
+//                        $_SERVER['LANG'] == 'ru' ? 'email/request.html.twig' : 'email/request_'.$_SERVER['LANG'].'.html.twig',
+//                        array(
+//                            'header' => $user->getHeader(),
+//                            'message' => $post->get('message'),
+//                            'email' => $post->get('email'),
+//                            'name' => $post->get('name'),
+//                            'phone' => $post->get('phone'),
+//                            'card' => $card,
+//                            'user' => $user
+//                        )
+//                    ),
+//                    'text/html'
+//                );
+//            $mailer->send($message);
+
+            $form_order = new FormOrder();
+//            if ($card) $form_order->setCardId($card->getId());
+            $form_order->setUserId($user->getId());
+
+            $form_order->setContent($post->get('message'));
+            $form_order->setTransport('');
+            $form_order->setCityIn('');
+            $form_order->setCityOut('');
+
+            $form_order->setEmail($post->get('email'));
+            $form_order->setPhone($post->get('phone'));
+            $form_order->setName($post->get('name'));
+            $form_order->setFormType('user_page_message');
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($form_order);
+            $em->flush();
+
 
             $this->addFlash(
                 'notice',
@@ -433,7 +455,7 @@ class ProfileController extends Controller
             );
         }
 
-        if(isset($card)) return $this->redirect('/card/'.$card_id);
+        //if(isset($card)) return $this->redirect('/card/'.$card_id);
         if(isset($user)) return $this->redirect('/user/'.$user->getId());
     }
 
@@ -446,7 +468,8 @@ class ProfileController extends Controller
 
         $post = $request->request;
 
-        if ($this->captchaVerify($post->get('g-recaptcha-response'))) {
+        //if ($this->captchaVerify($post->get('g-recaptcha-response'))) {
+        if (1==1) {
 
 
             $card_id = $post->get('card_id');
@@ -459,30 +482,49 @@ class ProfileController extends Controller
 
 
 
-            $message = (new \Swift_Message($_t->trans('Запрос на бронирование')))
-                ->setFrom(['mail@multiprokat.com' => 'Робот Мультипрокат'])
-                ->setTo($user->getEmail())
-                ->setBcc('mail@multiprokat.com')
-                ->setBody(
-                    $this->renderView(
-                        $_SERVER['LANG'] == 'ru' ? 'email/book.html.twig' : 'email/book_'.$_SERVER['LANG'].'.html.twig',
-                        array(
-                            'header' => $post->get('header'),
-                            'date_in' => $post->get('date_in'),
-                            'date_out' => $post->get('date_out'),
-                            'city_in' => $post->get('city_in'),
-                            'city_out' => $post->get('city_out'),
-                            'alternative' => $post->get('alternative'),
-                            'email' => $post->get('email'),
-                            'full_name' => $post->get('full_name'),
-                            'phone' => $post->get('phone'),
-                            'card' => $card,
-                            'user' => $user
-                        )
-                    ),
-                    'text/html'
-                );
-            $mailer->send($message);
+//            $message = (new \Swift_Message($_t->trans('Запрос на бронирование')))
+//                ->setFrom(['mail@multiprokat.com' => 'Робот Мультипрокат'])
+//                ->setTo($user->getEmail())
+//                ->setBcc('mail@multiprokat.com')
+//                ->setBody(
+//                    $this->renderView(
+//                        $_SERVER['LANG'] == 'ru' ? 'email/book.html.twig' : 'email/book_'.$_SERVER['LANG'].'.html.twig',
+//                        array(
+//                            'header' => $post->get('header'),
+//                            'date_in' => $post->get('date_in'),
+//                            'date_out' => $post->get('date_out'),
+//                            'city_in' => $post->get('city_in'),
+//                            'city_out' => $post->get('city_out'),
+//                            'alternative' => $post->get('alternative'), // this is comment
+//                            'email' => $post->get('email'),
+//                            'full_name' => $post->get('full_name'),
+//                            'phone' => $post->get('phone'),
+//                            'card' => $card,
+//                            'user' => $user
+//                        )
+//                    ),
+//                    'text/html'
+//                );
+            //$mailer->send($message);
+
+            $form_order = new FormOrder();
+            $form_order->setCardId($card->getId());
+            $form_order->setUserId($user->getId());
+            $form_order->setCityIn($post->get('city_in'));
+            $form_order->setCityOut($post->get('city_out'));
+            $form_order->setDateIn(\DateTime::createFromFormat('d.m.Y', $post->get('date_in')));
+            $form_order->setDateOut(\DateTime::createFromFormat('d.m.Y', $post->get('date_out')));
+            $form_order->setContent($post->get('alternative'));
+            $form_order->setTransport($post->get('header'));
+            $form_order->setEmail($post->get('email'));
+            $form_order->setPhone($post->get('phone'));
+            $form_order->setName($post->get('full_name'));
+            $form_order->setFormType('transport_order');
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($form_order);
+            $em->flush();
+
 
             $this->addFlash(
                 'notice',
@@ -602,6 +644,55 @@ class ProfileController extends Controller
     }
 
     /**
+     * @Route("/user/transport_orders", name="user_transport_orders")
+     */
+    public function userTorderAction(EntityManagerInterface $em, Request $request, ServiceStat $stat)
+    {
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($this->get('session')->get('logged_user')->getId());
+
+        if(!$user->getIsBanned()) {
+            $query = $em->createQuery('SELECT o FROM UserBundle:FormOrder o WHERE o.userId = ?1 ORDER BY o.dateCreate DESC');
+            $query->setParameter(1, $this->get('session')->get('logged_user')->getId());
+            $orders = $query->getResult();
+
+
+            $city = $this->get('session')->get('city');
+            $in_city = $city->getUrl();
+
+
+
+
+
+            $stat_arr = [
+                'url' => $request->getPathInfo(),
+                'event_type' => 'orders_page',
+                'page_type' => 'orders_list',
+                'user_id' => $user->getId(),
+            ];
+            $stat->setStat($stat_arr);
+
+            $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.total DESC');
+            $generalTypes = $query->getResult();
+
+            return $this->render('user/user_orders_list.html.twig', [
+                'share' => true,
+                'orders' => $orders,
+                'city' => $city,
+
+                'in_city' => $in_city,
+                'cityId' => $city->getId(),
+                'generalTypes' => $generalTypes,
+                'lang' => $_SERVER['LANG'],
+
+            ]);
+        } else return new Response("",404);
+    }
+
+
+
+    /**
      * @Route("/user/{id}", name="user_page")
      */
     public function userPageAction($id, MenuMarkModel $mm, EntityManagerInterface $em, Request $request, ServiceStat $stat)
@@ -648,7 +739,7 @@ class ProfileController extends Controller
                 'event_type' => 'visit',
                 'page_type' => 'profile',
                 'user_id' => $user->getId(),
-                'is_admin_card' => $is_admin_card
+                'is_admin_card' => $is_admin_card,
             ];
             $stat->setStat($stat_arr);
 
@@ -656,7 +747,7 @@ class ProfileController extends Controller
                 'user' => $user,
                 'user_foto' => $user_foto,
                 'city' => $city,
-
+                'is_admin_card' => $is_admin_card,
                 'mark_arr_sorted' => $mark_arr_sorted,
                 'models_in_mark' => $models_in_mark,
                 'in_city' => $in_city,
