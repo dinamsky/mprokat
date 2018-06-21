@@ -63,6 +63,7 @@
                             </div>
 
                             {% for crd,ms in mss %}
+                                {% if cards[crd] is not null %}
                                 <div class="bordered padding10">
 
                                     <div class="uk-grid" uk-grid>
@@ -92,6 +93,7 @@
                                     </div>
 
                                 </div>
+                                {% endif %}
                             {% endfor %}
 
                         </div>
