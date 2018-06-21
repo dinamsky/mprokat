@@ -742,19 +742,34 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/ajax_chat_upload")
-     */
+ * @Route("/ajax_chat_upload")
+ */
     public function uploadChatMsg(Request $request, FotoUtils $fu)
     {
         if($request->request->get('filename')!=''){
             $fu->uploadImage(
-            'chat_foto',
-            $request->request->get('filename'),
-            $_SERVER['DOCUMENT_ROOT'].'/assets/images/chat',
-            '');
+                'chat_foto',
+                $request->request->get('filename'),
+                $_SERVER['DOCUMENT_ROOT'].'/assets/images/chat',
+                '');
         }
 
 
         return new Response('<script>parent.refresh_chat();</script>');
+    }
+
+    /**
+     * @Route("/test_sms")
+     */
+    public function testSMS()
+    {
+
+
+        $message = urlencode('Тестирование имени отправителя');
+        $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=9174100960&message='.$message;
+        $result = file_get_contents($url);
+        var_dump($result);
+
+        return new Response('');
     }
 }

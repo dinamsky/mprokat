@@ -76,9 +76,11 @@ class ServiceT3new extends Controller
     public function getUnread()
     {
         $query = $this->em->createQuery('SELECT COUNT(m) as total FROM UserBundle:Message m WHERE m.toUserId = ?1 AND m.isRead = 0');
-        $query->setParameter(1, $this->sess->get('logged_user')->getId());
-        $unread = $query->getResult();
-        return $unread[0]['total'];
+        if($this->sess->get('logged_user') != NULL) {
+            $query->setParameter(1, $this->sess->get('logged_user')->getId());
+            $unread = $query->getResult();
+            return $unread[0]['total'];
+        } else return 0;
     }
 
 }
