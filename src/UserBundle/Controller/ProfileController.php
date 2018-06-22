@@ -626,30 +626,32 @@ class ProfileController extends Controller
             $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients='.$number.'&message='.$message;
             $sms_result = file_get_contents($url);
 
-            $message = (new \Swift_Message($_t->trans('Запрос на бронирование')))
-                ->setFrom(['mail@multiprokat.com' => 'Робот Мультипрокат'])
-                ->setTo($user->getEmail())
-                ->setBcc('mail@multiprokat.com')
-                ->setBody(
-                    $this->renderView(
-                        $_SERVER['LANG'] == 'ru' ? 'email/book.html.twig' : 'email/book_'.$_SERVER['LANG'].'.html.twig',
-                        array(
-                            'header' => $post->get('header'),
-                            'date_in' => $post->get('date_in'),
-                            'date_out' => $post->get('date_out'),
-                            'city_in' => $post->get('city_in'),
-                            'city_out' => $post->get('city_out'),
-                            'alternative' => $post->get('alternative'), // this is comment
-                            'email' => $post->get('email'),
-                            'full_name' => $post->get('full_name'),
-                            'phone' => $post->get('phone'),
-                            'card' => $card,
-                            'user' => $user
-                        )
-                    ),
-                    'text/html'
-                );
-            $mailer->send($message);
+            if(!$is_admin_reged) {
+                $message = (new \Swift_Message($_t->trans('Запрос на бронирование')))
+                    ->setFrom(['mail@multiprokat.com' => 'Робот Мультипрокат'])
+                    ->setTo($user->getEmail())
+                    ->setBcc('mail@multiprokat.com')
+                    ->setBody(
+                        $this->renderView(
+                            $_SERVER['LANG'] == 'ru' ? 'email/book.html.twig' : 'email/book_' . $_SERVER['LANG'] . '.html.twig',
+                            array(
+                                'header' => $post->get('header'),
+                                'date_in' => $post->get('date_in'),
+                                'date_out' => $post->get('date_out'),
+                                'city_in' => $post->get('city_in'),
+                                'city_out' => $post->get('city_out'),
+                                'alternative' => $post->get('alternative'), // this is comment
+                                'email' => $post->get('email'),
+                                'full_name' => $post->get('full_name'),
+                                'phone' => $post->get('phone'),
+                                'card' => $card,
+                                'user' => $user
+                            )
+                        ),
+                        'text/html'
+                    );
+                $mailer->send($message);
+            }
 
             $form_order = new FormOrder();
             $form_order->setCardId($card->getId());
