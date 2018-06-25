@@ -612,6 +612,7 @@ class ProfileController extends Controller
 
                     $ph = substr(preg_replace('/[^0-9]/', '', $info->getUiValue()),1);
                     $emz = explode("@",$user->getEmail());
+                    if(strlen($emz[0])==11) $emz[0] = substr($emz[0], 1);
                     if ($ph == $emz[0]) $is_admin_reged = true;
 
                 }
