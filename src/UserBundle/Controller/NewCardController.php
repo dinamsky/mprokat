@@ -723,7 +723,7 @@ class NewCardController extends Controller
             if (!$this->get('session')->has('admin')) {
                 $this->addFlash(
                     'notice',
-                    'Не забудьте поделиться вашим объявлением в социальных сетях!'
+                    'Не забудьте поделиться вашим объявлением в социальных сетях!<br><br>Мы будем информировать Вас о каждой новой заявке через email и SMS!'
                 );
             }
 
