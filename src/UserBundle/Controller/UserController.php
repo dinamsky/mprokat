@@ -290,7 +290,7 @@ class UserController extends Controller
             ));
 
         if($user){
-            $message = $_t->trans('Ваш аккаунт успешно активирован!');
+            $message = 'Ваш аккаунт успешно активирован!';
             if ($user->getTempPassword() != '') {
                 $user->setPassword($user->getTempPassword());
                 $message = $_t->trans('Ваш новый пароль успешно активирован!');
