@@ -18,6 +18,11 @@
 
     <div class="standard_wide">
         <h1 class="pf_style_header"><span>Контакты</span></h1>
+
+        <div class="uk-margin">
+            Если у вас есть вопросы по работе платформы Мультипрокат, заполните пожалуйста поля:
+        </div>
+
         <div>
             <form action="/user/contactsMessage" uk-grid class="uk-grid-medium" method="POST">
                 <div class="uk-width-1-3"><input type="text" name="name" class="uk-input" placeholder="Имя"></div>
@@ -31,6 +36,28 @@
                 </div>
             </form>
         </div>
+
+        <hr>
+
+        <div class="uk-margin">
+            Для рекламы и сотрудничества пишите пожалуйста на <a href="mailto:mail@multiprokat.com">mail@multiprokat.com</a>
+        </div>
+
+        <hr>
+
+        <div class="uk-margin">
+            Выбрать транспорт и арендовать:
+        </div>
+
+        <div  uk-grid class="uk-flex uk-margin-top uk-grid-medium">
+            {% for gt in generalTypes if gt.carTypeIds %}
+                <div class="uk-width-1-2 uk-width-auto@s">
+                    <a href="/rent/{{ in_city }}/all/{{ gt.url }}" class=""><i class="fa fa-{{ gt.icon }}"></i> {{ lang == 'ru' ? gt.header : gt.url }}</a>
+                </div>
+            {% endfor %}
+        </div>
+
+
     </div>
 
 {% endblock %}

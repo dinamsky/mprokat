@@ -706,7 +706,7 @@ class ProfileController extends Controller
 //
 //        $user = $card->getUser();
 
-        $message = (new \Swift_Message($_t->trans('Сообщение от пользователя')))
+        $message = (new \Swift_Message('#'.rand(10000,99999).' Сообщение со страницы: Контакты'))
             ->setFrom(['mail@multiprokat.com' => 'Робот Мультипрокат'])
             ->setTo('mail@multiprokat.com')
             ->setBody(
@@ -726,7 +726,7 @@ class ProfileController extends Controller
 
         $this->addFlash(
             'notice',
-            $_t->trans('Ваше сообщение успешно отправлено!')
+            $_t->trans('Ваше сообщение в Администрацию успешно отправлено!')
         );
 
         return $this->redirect('/');

@@ -192,7 +192,7 @@
     </div>
 
     <div class="standard_wide uk-margin-large">
-        <h2 class="pf_style_header"><span>{% trans %}Объявления пользователя{% endtrans %}: {{ user.cards|length }}</span></h2>
+        <h2 class="pf_style_header"><span>Транспорт пользователя: {{ user.cards|length }}</span></h2>
         <div uk-grid class="uk-grid-small uk-grid-match uk-margin-large-bottom">
             {% for card in user.cards %}
                 <div class="uk-width-1-4@s">
