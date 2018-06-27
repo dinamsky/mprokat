@@ -37,9 +37,17 @@ class NewsController extends Controller
     {
         $city = $this->get('session')->get('city');
 
-        $news = $this->getDoctrine()
-            ->getRepository(News::class)
-            ->findBy([],['dateCreate' => 'DESC']);
+//        $news = $this->getDoctrine()
+//            ->getRepository(News::class)
+//            ->findBy(['country!=','USA'],['dateCreate' => 'DESC']);
+
+        $em = $this->getDoctrine()->getManager();
+
+        $news = $em->getRepository("InfoBundle:News")->createQueryBuilder('n')
+            ->where("n.country != 'USA'")
+            ->getQuery()
+            ->getResult();
+
 
         return $this->render('InfoBundle:news:all_news.html.twig', [
             'all_news' => $news,
