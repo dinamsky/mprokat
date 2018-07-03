@@ -256,7 +256,16 @@
     </div>
 </div>
 
+    
 <div class="promo_block block_8 block_padding bg_white">
+    <div class="promo_wide">
+        <div class="padding0-10 uk-text-center">
+            <a href="/card/new" class="uk-button uk-button-large uk-button-success uk-width-1-3">Сдать авто</a>
+        </div>
+    </div>
+</div>
+    
+<div class="promo_block block_8 block_padding bg_white uk-hidden">
     <div class="promo_wide">
         <div class="padding0-10">
 Если вы не хотите лично заниматься арендой вашего автомобиля, можете обратиться к нам, и мы сами будем искать клиентов на ваш автомобиль, заниматься его страховкой и проходить ТО. Автомобиль в данном случае мы заберем во временное использование по договору.<br>
@@ -264,56 +273,56 @@
 Интересно? Напишите нам какой у вас авто, и мы всё сделаем сами.<br>
         </div>
 
-        <form class="uk-grid uk-margin-large-top uk-grid-small uk-flex uk-flex-center padding0-10" uk-grid action="/promo_request" method="POST" onsubmit="return promo_mark_model_names();">
-            <div class="uk-width-1-2@s">
-                <div>Выберите марку автомобиля</div>
-                <select name="promo_mark_sel" id="b8_mark" class="uk-select sel_combo">
-                    {{ include( 'common/ajax_edit_options.html.twig', { 'options': marks, 'id': 0 }) }}
-                </select>
-            </div>
-            <div class="uk-width-1-2@s uk-hidden">
-                <div class="">Выберите модель авто</div>
-                <select name="promo_model_sel" id="b8_model" class="uk-select sel_combo" required></select>
-            </div>
-            <div class="uk-width-1-2@s uk-hidden">
-                <div class="">Укажите год выпуска авто</div>
-                <select name="prod_year" class="uk-select" required>
-                    {% for year in 'now'|date('Y')..1950 %}
-                        <option value="{{ year }}">{{ year }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="uk-width-1-2@s uk-hidden">
-                <div class="">Укажите город нахождения авто</div>
-                <input type="text" name="promo_city" class="uk-input" required>
-            </div>
-            <div class="uk-width-1-3@s uk-hidden">
-                <div class="">Укажите ваш email</div>
-                <input type="text" name="promo_email" class="uk-input" required>
-            </div>
-            <div class="uk-width-1-3@s uk-hidden">
-                <div class="">Укажите ваш телефон</div>
-                <input type="text" name="promo_phone" class="uk-input" required>
-            </div>
-            <div class="uk-width-1-3@s uk-hidden">
-                <div class="">Укажите ваше имя</div>
-                <input type="text" name="promo_name" class="uk-input" required>
-            </div>
-            <div class="uk-width-1-2@s uk-hidden">
-                <div id="recap1"></div>
-                <input type="hidden" name="g-recaptcha-response">
-            </div>
-            <div class="uk-width-1-2@s uk-hidden">
-                <div>&nbsp;</div>
-                <button class="uk-button uk-button-success uk-width-1-1">Отправить заявку</button>
-            </div>
+        {#<form class="uk-grid uk-margin-large-top uk-grid-small uk-flex uk-flex-center padding0-10" uk-grid action="/promo_request" method="POST" onsubmit="return promo_mark_model_names();">#}
+            {#<div class="uk-width-1-2@s">#}
+                {#<div>Выберите марку автомобиля</div>#}
+                {#<select name="promo_mark_sel" id="b8_mark" class="uk-select sel_combo">#}
+                    {#{{ include( 'common/ajax_edit_options.html.twig', { 'options': marks, 'id': 0 }) }}#}
+                {#</select>#}
+            {#</div>#}
+            {#<div class="uk-width-1-2@s uk-hidden">#}
+                {#<div class="">Выберите модель авто</div>#}
+                {#<select name="promo_model_sel" id="b8_model" class="uk-select sel_combo" required></select>#}
+            {#</div>#}
+            {#<div class="uk-width-1-2@s uk-hidden">#}
+                {#<div class="">Укажите год выпуска авто</div>#}
+                {#<select name="prod_year" class="uk-select" required>#}
+                    {#{% for year in 'now'|date('Y')..1950 %}#}
+                        {#<option value="{{ year }}">{{ year }}</option>#}
+                    {#{% endfor %}#}
+                {#</select>#}
+            {#</div>#}
+            {#<div class="uk-width-1-2@s uk-hidden">#}
+                {#<div class="">Укажите город нахождения авто</div>#}
+                {#<input type="text" name="promo_city" class="uk-input" required>#}
+            {#</div>#}
+            {#<div class="uk-width-1-3@s uk-hidden">#}
+                {#<div class="">Укажите ваш email</div>#}
+                {#<input type="text" name="promo_email" class="uk-input" required>#}
+            {#</div>#}
+            {#<div class="uk-width-1-3@s uk-hidden">#}
+                {#<div class="">Укажите ваш телефон</div>#}
+                {#<input type="text" name="promo_phone" class="uk-input" required>#}
+            {#</div>#}
+            {#<div class="uk-width-1-3@s uk-hidden">#}
+                {#<div class="">Укажите ваше имя</div>#}
+                {#<input type="text" name="promo_name" class="uk-input" required>#}
+            {#</div>#}
+            {#<div class="uk-width-1-2@s uk-hidden">#}
+                {#<div id="recap1"></div>#}
+                {#<input type="hidden" name="g-recaptcha-response">#}
+            {#</div>#}
+            {#<div class="uk-width-1-2@s uk-hidden">#}
+                {#<div>&nbsp;</div>#}
+                {#<button class="uk-button uk-button-success uk-width-1-1">Отправить заявку</button>#}
+            {#</div>#}
 
 
 
 
-            <input type="hidden" name="promo_mark">
-            <input type="hidden" name="promo_model">
-        </form>
+            {#<input type="hidden" name="promo_mark">#}
+            {#<input type="hidden" name="promo_model">#}
+        {#</form>#}
 
 
 
