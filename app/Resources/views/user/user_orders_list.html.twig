@@ -15,6 +15,7 @@
                 <span class="uk-text-small c_grey">{{ o.dateCreate|date('d.m.Y') }}</span> {{ o.transport }} (с {{ o.dateIn|date('d.m.Y') }} по {{ o.dateOut|date('d.m.Y') }})
                 <span class="bordered cursor-pointer" uk-toggle="target: #ord_desc_{{ o.id }}">подробнее</span>
                 <div id="ord_desc_{{ o.id }}" class="uk-margin-top uk-margin-bottom bordered padding10" hidden>
+                    даты: с {{ o.dateIn|date('d.m.Y') }} по {{ o.dateOut|date('d.m.Y') }} <br>
                     забрать: {{ o.cityIn }}<br>
                     вернуть: {{ o.cityOut }}<br>
                     <br>
