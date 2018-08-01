@@ -5,6 +5,7 @@
     <script src="{{ asset('assets/js/image_upload_preview.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.maskedinput.js') }}"></script>
     <script src="{{ asset('assets/js/phone_validate.js') }}"></script>
+    <script src="{{ asset('assets/js/order.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -13,8 +14,76 @@
         {% for o in orders %}
             <div>
                 <span class="uk-text-small c_grey">{{ o.dateCreate|date('d.m.Y') }}</span> {{ o.transport }} (с {{ o.dateIn|date('d.m.Y') }} по {{ o.dateOut|date('d.m.Y') }})
+
+                <span style="color:red;font-weight:bold">
+
+                    {% if o.ownerStatus == 'wait_for_accept' and app.session.get('logged_user').id == o.renterId %}
+                        ожидает одобрения владельцем
+                    {% endif %}
+
+                    {% if o.ownerStatus == 'wait_for_accept' and app.session.get('logged_user').id == o.userId %}
+                        ожидает вашего одобрения
+                    {% endif %}
+
+                     {#---- after accept#}
+
+                    {% if o.renterStatus == 'wait_for_pay' and app.session.get('logged_user').id == o.renterId %}
+                        Одобрено владельцем. Ожидает вашей оплаты
+                    {% endif %}
+
+                    {% if o.ownerStatus == 'accepted' and app.session.get('logged_user').id == o.userId %}
+                        Ожидается оплата арендатором
+                    {% endif %}
+
+                     {#---- after payment#}
+
+                    {% if o.renterStatus == 'wait_for_finish' and app.session.get('logged_user').id == o.renterId %}
+                        Ожидается активация пинкода владельцем
+                    {% endif %}
+
+                    {% if o.ownerStatus == 'wait_for_pincode' and app.session.get('logged_user').id == o.userId %}
+                        Ожидается активация пинкода
+                    {% endif %}
+
+                    {#---- after pincode#}
+
+                    {% if o.renterStatus == 'rent_in_process' and app.session.get('logged_user').id == o.renterId %}
+                        Заявка в процессе аренды
+                    {% endif %}
+
+                    {% if o.ownerStatus == 'rent_in_process' and app.session.get('logged_user').id == o.userId %}
+                        Заявка в процессе аренды
+                    {% endif %}
+                </span>
+
                 <span class="bordered cursor-pointer" uk-toggle="target: #ord_desc_{{ o.id }}">подробнее</span>
+
+                {% if o.ownerStatus == 'wait_for_accept' and app.session.get('logged_user').id == o.userId %}
+                    <button type="button" id="owner_accept" value="{{ o.id }}">Одобрить</button>
+                {% endif %}
+
+                {% if o.renterStatus == 'wait_for_pay' and app.session.get('logged_user').id == o.renterId %}
+                    <a href="/pay_for_order/{{ o.id }}">Оплатить</a>
+                {% endif %}
+
+                {% if o.ownerStatus == 'wait_for_pincode' and app.session.get('logged_user').id == o.userId %}
+                    <br>
+                    <input type="text" name="owner_pincode" placeholder="введите пинкод">
+                    <button type="button" id="owner_pincode" value="{{ o.id }}">Отправить</button>
+                {% endif %}
+
+
+
+                {% if o.renterStatus == 'rent_in_process' and app.session.get('logged_user').id == o.renterId %}
+                    <button type="button" uk-toggle="target: #renter_modal_{{ o.id }}">Завершить</button>
+                {% endif %}
+
+                {% if o.ownerStatus == 'rent_in_process' and app.session.get('logged_user').id == o.userId %}
+                    <button type="button" uk-toggle="target: #owner_modal_{{ o.id }}">Завершить</button>
+                {% endif %}
+
                 <div id="ord_desc_{{ o.id }}" class="uk-margin-top uk-margin-bottom bordered padding10" hidden>
+                    имя: {{ o.fioRenter }} <br>
                     даты: с {{ o.dateIn|date('d.m.Y') }} по {{ o.dateOut|date('d.m.Y') }} <br>
                     забрать: {{ o.cityIn }}<br>
                     вернуть: {{ o.cityOut }}<br>
@@ -27,7 +96,15 @@
                     <a href="/card/{{ o.cardId }}">страница транспорта</a>
                 </div>
             </div>
+
+            {{ include('card/order_forms/owner_anketa.html.twig') }}
+            {{ include('card/order_forms/renter_anketa.html.twig') }}
+
         {% endfor %}
     </div>
+
+
+
+
 {% endblock %}
 

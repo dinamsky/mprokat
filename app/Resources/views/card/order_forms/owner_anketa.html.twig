@@ -1,0 +1,24 @@
+<div id="owner_modal_{{ o.id }}" uk-modal="bg-close:false">
+    <div class="uk-modal-dialog uk-modal-body">
+        <h2 class="uk-modal-title">Анкета для владельца</h2>
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+
+        <div class="uk-margin">
+            Оцените арендатора по пятибальной шкале в общем,<br>
+            а так же укажите основные детали:
+        </div>
+
+        <form action="/user_owner_finish" method="POST" >
+            <div>Рейтинг: <input type="text" name="rating" value="5"> баллов</div>
+            <div class="uk-margin">
+                <div><label><input type="checkbox" name="details[]" value="чистота/аккуратность" checked> чистота/аккуратность</label></div>
+                <div><label><input type="checkbox" name="details[]" value="пунктуальность" checked> пунктуальность</label></div>
+                <div><label><input type="checkbox" name="details[]" value="дружелюбность" checked> дружелюбность</label></div>
+                <div><label><input type="checkbox" name="details[]" value="общительность" checked> общительность</label></div>
+                <div><label><input type="checkbox" name="details[]" value="порядочность" checked> порядочность</label></div>
+            </div>
+            <button  id="owner_finish">Завершить</button>
+            <input type="hidden" name="id" value="{{ o.id }}">
+        </form>
+    </div>
+</div>

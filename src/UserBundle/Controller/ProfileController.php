@@ -624,8 +624,13 @@ class ProfileController extends Controller
                 $message = urlencode('Добрый день! Поступила новая заявка на аренду вашего транспорта на сайте: https://multiprokat.com. Увидеть заявку вы можете в личном кабинете вашего аккаунта, а так же на почте '.$user->getEmail().'. Если у вас нет доступа к аккаунту - вы легко можете восстановить его по адресу: https://multiprokat.com/account_recovery');
             }
 
-            $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients='.$number.'&message='.$message;
+            //dump($this->container->get('kernel')->getEnvironment());
+
+            $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
             $sms_result = file_get_contents($url);
+
+
+            $renter = $this->get('session')->get('logged_user');
 
             if(!$is_admin_reged) {
                 $message = (new \Swift_Message($_t->trans('Запрос на бронирование')))
@@ -646,7 +651,10 @@ class ProfileController extends Controller
                                 'full_name' => $post->get('full_name'),
                                 'phone' => $post->get('phone'),
                                 'card' => $card,
-                                'user' => $user
+                                'user' => $user,
+                                //'fio_renter' => $renter->getHeader(),
+                                //'passport4' => $post->get('passport4'),
+                                //'driving_license4' => $post->get('driving_license4'),
                             )
                         ),
                         'text/html'
@@ -661,22 +669,33 @@ class ProfileController extends Controller
             $form_order->setCityOut($post->get('city_out'));
             $form_order->setDateIn(\DateTime::createFromFormat('d.m.Y', $post->get('date_in')));
             $form_order->setDateOut(\DateTime::createFromFormat('d.m.Y', $post->get('date_out')));
-            $form_order->setContent($post->get('alternative'));
+            $form_order->setContent('');
             $form_order->setTransport($post->get('header'));
-            $form_order->setEmail($post->get('email'));
-            $form_order->setPhone($post->get('phone'));
-            $form_order->setName($post->get('full_name'));
-            $form_order->setFormType('transport_order');
+            $form_order->setEmail('');
+            $form_order->setPhone('');
+            $form_order->setName('');
+            $form_order->setFormType('new_transport_order');
+
+//            $form_order->setRenterId($renter->getId());
+//            $form_order->setFioRenter($renter->getHeader());
+//            $form_order->setPassport4($post->get('passport4'));
+//            $form_order->setDrivingLicense4($post->get('driving_license4'));
+//            $form_order->setOwnerStatus('wait_for_accept');
+//            $form_order->setRenterStatus('wait_for_accept');
+//            $form_order->setIsNew(1);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($form_order);
             $em->flush();
 
-
             $this->addFlash(
                 'notice',
-                $_t->trans('Ваше сообщение успешно отправлено!')
+                'Ваша заявка успешно отправлена! Ожидайте ответа в личном кабинете, на email, по СМС'
             );
+
+            // send SMS
+
+
         } else {
             $this->addFlash(
                 'notice',
@@ -800,7 +819,7 @@ class ProfileController extends Controller
             ->find($this->get('session')->get('logged_user')->getId());
 
         if(!$user->getIsBanned()) {
-            $query = $em->createQuery('SELECT o FROM UserBundle:FormOrder o WHERE o.userId = ?1 ORDER BY o.dateCreate DESC');
+            $query = $em->createQuery('SELECT o FROM UserBundle:FormOrder o WHERE o.userId = ?1 OR o.renterId = ?1 ORDER BY o.dateCreate DESC');
             $query->setParameter(1, $this->get('session')->get('logged_user')->getId());
             $orders = $query->getResult();
 
@@ -837,7 +856,151 @@ class ProfileController extends Controller
         } else return new Response("",404);
     }
 
+    /**
+     * @Route("/ajax_owner_accept", name="ajax_owner_accept")
+     */
+    public function ownerAcceptAction(EntityManagerInterface $em, Request $request, ServiceStat $stat)
+    {
+        $id = $request->request->get('id');
+        $order = $this->getDoctrine()
+            ->getRepository(FormOrder::class)
+            ->find($id);
 
+        $order->setOwnerStatus('accepted');
+        $order->setRenterStatus('wait_for_pay');
+        $em->persist($order);
+        $em->flush();
+        return new Response("");
+    }
+
+    /**
+     * @Route("/pay_for_order/{id}", name="pay_for_order")
+     */
+    public function payForOrderAction($id, EntityManagerInterface $em, Request $request, ServiceStat $stat)
+    {
+
+        $order = $this->getDoctrine()
+            ->getRepository(FormOrder::class)
+            ->find($id);
+
+        $city = $this->get('session')->get('city');
+        $in_city = $city->getUrl();
+        $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.total DESC');
+        $generalTypes = $query->getResult();
+
+        return $this->render('user/user_order_pay.html.twig', [
+
+            'order' => $order,
+            'city' => $city,
+
+            'in_city' => $in_city,
+            'cityId' => $city->getId(),
+            'generalTypes' => $generalTypes,
+            'lang' => $_SERVER['LANG'],
+
+        ]);
+    }
+
+    /**
+     * @Route("/user_order_pay_success", name="user_order_pay_success")
+     */
+    public function userOrderPaySuccessAction(EntityManagerInterface $em, Request $request, ServiceStat $stat)
+    {
+        $id = $request->request->get('id');
+        $order = $this->getDoctrine()
+            ->getRepository(FormOrder::class)
+            ->find($id);
+        $pincode = rand(1111,9999);
+        $order->setOwnerStatus('wait_for_pincode');
+        $order->setRenterStatus('wait_for_finish');
+        $order->setPincodeForOwner($pincode);
+        $em->persist($order);
+        $em->flush();
+        return $this->redirectToRoute('user_transport_orders');
+    }
+
+    /**
+     * @Route("/ajax_owner_pincode", name="ajax_owner_pincode")
+     */
+    public function ajaxOwnerPincodeAction(EntityManagerInterface $em, Request $request, ServiceStat $stat)
+    {
+        $id = $request->request->get('id');
+        $pincode = $request->request->get('pincode');
+
+        $order = $this->getDoctrine()
+            ->getRepository(FormOrder::class)
+            ->find($id);
+        if($order->getPincodeForOwner() == $pincode) {
+            $order->setOwnerStatus('rent_in_process');
+            $order->setRenterStatus('rent_in_process');
+            $order->setDatePincodeStart(new \DateTime('now'));
+            $em->persist($order);
+            $em->flush();
+            $this->addFlash(
+                'notice',
+                'Отлично! Пинкод введен верно. Заявка аренды #'.$order->getId().' активирована'
+            );
+
+        } else {
+            $this->addFlash(
+                'notice',
+                'Пинкод введен неверно! Попробуйте еще раз!'
+            );
+
+        }
+        return new Response("");
+    }
+
+    /**
+     * @Route("/user_owner_finish", name="user_owner_finish")
+     */
+    public function ajaxOwnerFinishAction(EntityManagerInterface $em, Request $request, ServiceStat $stat)
+    {
+        $id = $request->request->get('id');
+        $order = $this->getDoctrine()
+            ->getRepository(FormOrder::class)
+            ->find($id);
+        $order->setOwnerStatus('order_finished');
+        $order->setRenterRating($request->request->get('rating'));
+        $order->setRenterResultDetails(implode(",",$request->request->get('details')));
+        $order->setDateOwnerButtonFinish(new \DateTime('now'));
+        $em->persist($order);
+        $em->flush();
+        $this->addFlash(
+            'notice',
+            'Великолепно! Заявка аренды #'.$order->getId().' завершена. Ваши средства будут переведены вам в соответствии с договором.<br>Спасибо что выбрали Multiprokat.com для решения ваших задач!'
+        );
+        return $this->redirectToRoute('user_transport_orders');
+    }
+
+    /**
+     * @Route("/user_renter_finish", name="user_renter_finish")
+     */
+    public function ajaxRenterFinishAction(EntityManagerInterface $em, Request $request, ServiceStat $stat)
+    {
+        $id = $request->request->get('id');
+        $order = $this->getDoctrine()
+            ->getRepository(FormOrder::class)
+            ->find($id);
+        $order->setRenterStatus('order_finished');
+        $order->setOwnerRating($request->request->get('rating'));
+        $order->setOwnerResultDetails(implode(",",$request->request->get('details')));
+        $order->setDateOwnerButtonFinish(new \DateTime('now'));
+        $em->persist($order);
+        $em->flush();
+
+        if($order->getDeposit()>0){
+            $message = 'Великолепно! Заявка аренды #'.$order->getId().' завершена.<br>Ваш залог будет возвращен вам в соответствии с договором.<br>Спасибо что выбрали Multiprokat.com для решения ваших задач!';
+        } else {
+            $message = 'Великолепно! Заявка аренды #'.$order->getId().' завершена.<br>Спасибо что выбрали Multiprokat.com для решения ваших задач!';
+        }
+
+        $this->addFlash(
+            'notice',
+            $message
+        );
+        return $this->redirectToRoute('user_transport_orders');
+    }
 
     /**
      * @Route("/user/{id}", name="user_page")
@@ -848,6 +1011,7 @@ class ProfileController extends Controller
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->find((int)$id);
+
         if(!$user->getIsBanned()) {
             $user_foto = false;
             foreach ($user->getInformation() as $info) {
@@ -857,8 +1021,6 @@ class ProfileController extends Controller
             $city = $this->get('session')->get('city');
             $in_city = $city->getUrl();
 
-
-
             $mark_arr = $mm->getExistMarks('',1);
             $mark_arr_sorted = $mark_arr['sorted_marks'];
             $models_in_mark = $mark_arr['models_in_mark'];
@@ -867,19 +1029,17 @@ class ProfileController extends Controller
             $generalTypes = $query->getResult();
 
             $is_admin_card = false;
+
             foreach ($user->getInformation() as $ui){
                 if($ui->getUiKey() == 'phone'){
                     $ph = substr(preg_replace('/[^0-9]/', '', $ui->getUiValue()),1);
                     $emz = explode("@",$user->getEmail());
 
-
                     if ($ph == $emz[0]) $is_admin_card = true;
 
                     if (preg_match('/^\d+$/', $emz[0])) $is_admin_card = true;
-
                 }
             }
-
 
             $stat_arr = [
                 'url' => $request->getPathInfo(),
