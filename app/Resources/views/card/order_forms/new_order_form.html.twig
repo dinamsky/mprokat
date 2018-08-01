@@ -1,0 +1,64 @@
+<div id="user_book_form" uk-modal="bg-close:false" data-res="{{ reserved ? card.dateRentFinish|date_modify("+1 day")|date('Y/m/d') : "now"|date("Y/m/d") }}">
+                    <div class="uk-modal-dialog uk-modal-body">
+                        <h2 class="uk-modal-title">{% trans %}Заявка{% endtrans %}</h2>
+                        <button class="uk-modal-close-default" type="button" uk-close></button>
+                        <form action="/user/bookMessage" uk-grid class="uk-grid-small" method="POST" >
+
+                            <div class="uk-width-1-1">
+                                <span class="uk-text-small">{% trans %}Транспортное средство{% endtrans %}</span>
+                                <input type="text" name="header" class="uk-input" value="{{ card.markModel.mark.header }} {{ card.markModel.header }}">
+                            </div>
+
+                            <div class="uk-width-1-2">
+                                <span class="uk-text-small">{% trans %}Дата приема{% endtrans %} <span class="c_red">{{ reserved ? 'с '~card.dateRentFinish|date_modify("+1 day")|date('d.m.Y') }}</span></span>
+                                <input type="text" name="date_in" class="uk-input uk-width-1-1 datepicker-reserve" autocomplete="off">
+                            </div>
+
+                            <div class="uk-width-1-2">
+                                <span class="uk-text-small">{% trans %}Дата возврата{% endtrans %} <span class="c_red">{{ reserved ? 'с '~card.dateRentFinish|date_modify("+1 day")|date('d.m.Y') }}</span></span>
+                                <input type="text" name="date_out" class="uk-input uk-width-1-1 datepicker-reserve" autocomplete="off">
+                            </div>
+
+                            <div class="uk-width-1-2">
+                                <span class="uk-text-small">Место приема</span>
+                                <input type="text" name="city_in" class="uk-input uk-width-1-1" value="{{ card.city.header }}" autocomplete="off">
+                            </div>
+
+                            <div class="uk-width-1-2">
+                                <span class="uk-text-small">Место возврата</span>
+                                <input type="text" name="city_out" class="uk-input uk-width-1-1" value="{{ card.city.header }}" autocomplete="off">
+                            </div>
+
+                            <div class="uk-width-1-2">
+                                <span class="uk-text-small">последние 4 цифры номера вашего<br>паспорта РФ</span>
+                                <input type="text" name="passport4" class="uk-input uk-width-1-1" value="" autocomplete="off">
+                            </div>
+
+                            <div class="uk-width-1-2">
+                                <span class="uk-text-small">последние 4 цифры номера вашего<br>водительского удостоверения РФ</span>
+                                <input type="text" name="driving_license4" class="uk-input uk-width-1-1" value="" autocomplete="off">
+                            </div>
+                            
+                            <div class="uk-width-1-1">
+                                Будут использованы  контактные данные из вашего <a href="/profile">профиля</a><br>
+                                Обратите внимание - владелец транспорта запросит ваше удостоверение личности, для сравнения с данными заявки!<br>
+                                Просим вас максимально точно заполнить ваш профиль.
+                            </div>
+
+                            <input type="hidden" name="card_id" value="{{ card.id }}">
+
+                            <div class="uk-width-1-1">
+                                Ожидайте ответ владельца транспорта:<br>
+                                в личном кабинете + на ваш email + СМС на ваш номер телефона
+                            </div>
+
+                            <input type="hidden" name="g-recaptcha-response">
+                            <div id="recap3"></div>
+
+                            <div class="uk-width-1-1">
+                                <button class="uk-button uk-button-default uk-width-1-1">{% trans %}Отправить{% endtrans %}</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>

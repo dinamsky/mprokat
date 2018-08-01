@@ -128,7 +128,7 @@ class EditCardController extends Controller
         $popular_city = $query->getResult();
 
 
-        $query = $em->createQuery('SELECT c.id FROM AppBundle:Card c ORDER BY c.views DESC');
+        $query = $em->createQuery('SELECT c.id FROM AppBundle:Card c WHERE c.cityId<1251 ORDER BY c.views DESC');
         $query->setMaxResults(9);
         foreach ($query->getScalarResult() as $cars_id) $cars_ids[] = $cars_id['id'];
         $dql = 'SELECT c,f,p FROM AppBundle:Card c LEFT JOIN c.fotos f LEFT JOIN c.cardPrices p WHERE c.id IN ('.implode(",",$cars_ids).') ORDER BY c.views DESC';

@@ -626,69 +626,15 @@
                     </div>
                 </div>
 
-                <div id="user_book_form" uk-modal="bg-close:false" data-res="{{ reserved ? card.dateRentFinish|date_modify("+1 day")|date('Y/m/d') : "now"|date("Y/m/d") }}">
-                    <div class="uk-modal-dialog uk-modal-body">
-                        <h2 class="uk-modal-title">{% trans %}Заявка{% endtrans %}</h2>
-                        <button class="uk-modal-close-default" type="button" uk-close></button>
-                        <form action="/user/bookMessage" uk-grid class="uk-grid-small" method="POST" >
 
-                            <div class="uk-width-1-1">
-                                <span class="uk-text-small">{% trans %}Транспортное средство{% endtrans %}</span>
-                                <input type="text" name="header" class="uk-input" value="{{ card.markModel.mark.header }} {{ card.markModel.header }}">
-                            </div>
-
-                            <div class="uk-width-1-2">
-                                <span class="uk-text-small">{% trans %}Дата приема{% endtrans %} <span class="c_red">{{ reserved ? 'с '~card.dateRentFinish|date_modify("+1 day")|date('d.m.Y') }}</span></span>
-                                <input type="text" name="date_in" class="uk-input uk-width-1-1 datepicker-reserve" >
-                            </div>
-
-                            <div class="uk-width-1-2">
-                                <span class="uk-text-small">{% trans %}Дата возврата{% endtrans %} <span class="c_red">{{ reserved ? 'с '~card.dateRentFinish|date_modify("+1 day")|date('d.m.Y') }}</span></span>
-                                <input type="text" name="date_out" class="uk-input uk-width-1-1 datepicker-reserve">
-                            </div>
-
-                            <div class="uk-width-1-2">
-                                <span class="uk-text-small">{% trans %}Город приема{% endtrans %}</span>
-                                <input type="text" name="city_in" class="uk-input uk-width-1-1" value="{{ card.city.header }}">
-                            </div>
-
-                            <div class="uk-width-1-2">
-                                <span class="uk-text-small">{% trans %}Город возврата{% endtrans %}</span>
-                                <input type="text" name="city_out" class="uk-input uk-width-1-1" value="{{ card.city.header }}">
-                            </div>
-
-                            <div class="uk-width-1-1">
-                                <span class="uk-text-small">{% trans %}Имя и фамилия{% endtrans %}</span>
-                                <input type="text" name="full_name" class="uk-input uk-width-1-1" value="{{ app.session.get('logged_user') ? app.session.get('logged_user').header }}">
-                            </div>
-
-                            <div class="uk-width-1-2">
-                                <span class="uk-text-small">Email</span>
-                                <input type="text" name="email" class="uk-input uk-width-1-1" value="{{ app.session.get('logged_user') ? app.session.get('logged_user').email }}">
-                            </div>
-
-                            <div class="uk-width-1-2">
-                                <span class="uk-text-small">{% trans %}Телефон{% endtrans %}</span>
-                                <input type="text" name="phone" class="uk-input uk-width-1-1" value="{% if app.session.has('logged_user') %}{% for info in app.session.get('logged_user').information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}{% endif %}">
-                            </div>
+                {% if card.user.isNew == 1 %}
+                    {{ include('card/order_forms/new_order_form.html.twig') }}
+                {% else %}
+                    {{ include('card/order_forms/old_order_form.html.twig') }}
+                {% endif %}
 
 
-                            <div class="uk-width-1-1">
-                                <span class="uk-text-small">{% trans %}Ваш коментарий к заявке{% endtrans %}</span>
-                                <textarea name="alternative" class="uk-width-1-1 short_textarea"></textarea>
-                            </div>
 
-                            <input type="hidden" name="card_id" value="{{ card.id }}">
-
-                            <div class="uk-width-1-1">
-                                <button class="uk-button uk-button-default uk-width-1-1">{% trans %}Отправить{% endtrans %}</button>
-                            </div>
-
-                            <input type="hidden" name="g-recaptcha-response">
-                            <div id="recap3"></div>
-                        </form>
-                    </div>
-                </div>
 
                 <div id="user_phone_form" uk-modal>
                     <div class="uk-modal-dialog uk-modal-body">
