@@ -321,6 +321,13 @@ class Card
      */
     private $opinions;
 
+//    /**
+//     * @var int
+//     *
+//     * @ORM\Column(name="deposit", type="decimal", precision=10, scale=2)
+//     */
+//    private $deposit = 0;
+
     public function __construct() {
         $this->fieldIntegers = new ArrayCollection();
         $this->cardFeatures = new ArrayCollection();

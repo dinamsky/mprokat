@@ -79,4 +79,6 @@ services:
             resource: '../../src/AppBundle/Twig/Extension'
             public: true
             tags: ['twig.extension']
+            arguments: ["@doctrine.orm.entity_manager"]
+
 

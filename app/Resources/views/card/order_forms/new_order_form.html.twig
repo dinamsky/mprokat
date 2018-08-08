@@ -29,20 +29,9 @@
                                 <input type="text" name="city_out" class="uk-input uk-width-1-1" value="{{ card.city.header }}" autocomplete="off">
                             </div>
 
-                            <div class="uk-width-1-2">
-                                <span class="uk-text-small">последние 4 цифры номера вашего<br>паспорта РФ</span>
-                                <input type="text" name="passport4" class="uk-input uk-width-1-1" value="" autocomplete="off">
-                            </div>
-
-                            <div class="uk-width-1-2">
-                                <span class="uk-text-small">последние 4 цифры номера вашего<br>водительского удостоверения РФ</span>
-                                <input type="text" name="driving_license4" class="uk-input uk-width-1-1" value="" autocomplete="off">
-                            </div>
-                            
                             <div class="uk-width-1-1">
-                                Будут использованы  контактные данные из вашего <a href="/profile">профиля</a><br>
-                                Обратите внимание - владелец транспорта запросит ваше удостоверение личности, для сравнения с данными заявки!<br>
-                                Просим вас максимально точно заполнить ваш профиль.
+                                <span class="uk-text-small">Текст сообщения</span>
+                                <textarea name="content" class="uk-width-1-1 short_textarea"></textarea>
                             </div>
 
                             <input type="hidden" name="card_id" value="{{ card.id }}">

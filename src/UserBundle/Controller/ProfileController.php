@@ -596,13 +596,22 @@ class ProfileController extends Controller
         if ($this->captchaVerify($post->get('g-recaptcha-response'))) {
         //if (1==1) {
 
-
             $card_id = $post->get('card_id');
 
             $card = $this->getDoctrine()
                 ->getRepository(Card::class)
                 ->find($card_id);
             $user = $card->getUser();
+
+            $price = $deposit = 0;
+            foreach ($card->getCardPrices() as $cp){
+                if($cp->getpriceId() == 2) $price = $cp->getValue();
+                if($cp->getpriceId() == 10) $deposit = $cp->getValue();
+            }
+
+            $period = (strtotime(str_replace(".","-",$post->get('date_out'))) - strtotime(str_replace(".","-",$post->get('date_in'))))/60/60/24;
+
+            $price = $period*$price;
 
             $is_admin_reged = false;
             foreach( $user->getInformation() as $info){
@@ -626,8 +635,8 @@ class ProfileController extends Controller
 
             //dump($this->container->get('kernel')->getEnvironment());
 
-            $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
-            $sms_result = file_get_contents($url);
+            //$url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
+            //$sms_result = file_get_contents($url);
 
 
             $renter = $this->get('session')->get('logged_user');
@@ -652,14 +661,14 @@ class ProfileController extends Controller
                                 'phone' => $post->get('phone'),
                                 'card' => $card,
                                 'user' => $user,
-                                //'fio_renter' => $renter->getHeader(),
-                                //'passport4' => $post->get('passport4'),
-                                //'driving_license4' => $post->get('driving_license4'),
+                                'fio_renter' => $renter->getHeader(),
+                                'passport4' => $post->get('passport4'),
+                                'driving_license4' => $post->get('driving_license4'),
                             )
                         ),
                         'text/html'
                     );
-                $mailer->send($message);
+                //$mailer->send($message);
             }
 
             $form_order = new FormOrder();
@@ -676,13 +685,19 @@ class ProfileController extends Controller
             $form_order->setName('');
             $form_order->setFormType('new_transport_order');
 
-//            $form_order->setRenterId($renter->getId());
-//            $form_order->setFioRenter($renter->getHeader());
-//            $form_order->setPassport4($post->get('passport4'));
-//            $form_order->setDrivingLicense4($post->get('driving_license4'));
-//            $form_order->setOwnerStatus('wait_for_accept');
-//            $form_order->setRenterStatus('wait_for_accept');
-//            $form_order->setIsNew(1);
+            $form_order->setMessages('');
+            $form_order->setRenterId($renter->getId());
+            $form_order->setFioRenter($renter->getHeader());
+            $form_order->setPassport4('');
+            $form_order->setDrivingLicense4('');
+            $form_order->setOwnerStatus('wait_for_accept');
+            $form_order->setRenterStatus('wait_for_accept');
+            $form_order->setIsNew(1);
+
+
+            $form_order->setPrice($price);
+            $form_order->setDeposit($deposit);
+
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($form_order);
@@ -870,7 +885,125 @@ class ProfileController extends Controller
         $order->setRenterStatus('wait_for_pay');
         $em->persist($order);
         $em->flush();
+
+        $this->addFlash(
+                'notice',
+                'Вы только что одобрили заявку #'.$id.'!<br> Мы уведомили арендатора - ожидайте оплаты.<br><a href="#">Скачайте</a> и распечатайте договор аренды.'
+            );
+
         return new Response("");
+    }
+
+    /**
+     * @Route("/ajax_owner_reject", name="ajax_owner_reject")
+     */
+    public function ownerRejectAction(EntityManagerInterface $em, Request $request, ServiceStat $stat)
+    {
+        $id = $request->request->get('id');
+        $order = $this->getDoctrine()
+            ->getRepository(FormOrder::class)
+            ->find($id);
+
+        $order->setOwnerStatus('rejected');
+        $order->setRenterStatus('rejected');
+        $em->persist($order);
+        $em->flush();
+
+        $this->addFlash(
+                'notice',
+                'Вы только что отклонили заявку #'.$id.'!<br> Мы уведомили арендатора'
+            );
+
+        return new Response("");
+    }
+
+    /**
+     * @Route("/ajax_owner_answer", name="ajax_owner_answer")
+     */
+    public function ownerAnswerAction(EntityManagerInterface $em, Request $request, ServiceStat $stat)
+    {
+        $id = $request->request->get('id');
+        $order = $this->getDoctrine()
+            ->getRepository(FormOrder::class)
+            ->find($id);
+
+        $messages = json_decode($order->getMessages(),true);
+        $messages[] = [
+            'date' => date('d-m-Y'),
+            'time' => date('H:i'),
+            'from' => 'owner',
+            'message' => $request->request->get('answer'),
+            'status' => 'send'
+        ];
+
+        $order->setMessages(json_encode($messages));
+        $order->setOwnerStatus('answered');
+        $order->setRenterStatus('wait_for_answer');
+        $em->persist($order);
+        $em->flush();
+
+        $this->addFlash(
+                'notice',
+                'Вы только что ответили на заявку #'.$id.'!<br> Мы уведомили арендатора'
+            );
+
+        return new Response("");
+    }
+
+    /**
+     * @Route("/ajax_renter_answer", name="ajax_renter_answer")
+     */
+    public function renterAnswerAction(EntityManagerInterface $em, Request $request, ServiceStat $stat)
+    {
+        $id = $request->request->get('id');
+        $order = $this->getDoctrine()
+            ->getRepository(FormOrder::class)
+            ->find($id);
+
+        $messages = json_decode($order->getMessages(),true);
+        $messages[] = [
+            'date' => date('d-m-Y'),
+            'time' => date('H:i'),
+            'from' => 'renter',
+            'message' => $request->request->get('answer'),
+            'status' => 'send'
+        ];
+
+        $order->setMessages(json_encode($messages));
+        $order->setOwnerStatus('wait_for_answer');
+        $order->setRenterStatus('answered');
+        $em->persist($order);
+        $em->flush();
+
+        $this->addFlash(
+                'notice',
+                'Вы только что ответили на заявку #'.$id.'!<br> Мы уведомили владельца'
+            );
+
+        return new Response("");
+    }
+
+    private function gen_payment($orderid, $price)
+    { //generate  array payment
+        $array["payment"] = array("orderId" => $orderid,
+            "action" => "pay",
+            "price" => $price);
+        return $array;
+    }
+
+    private function to_array_costumerinfo($costumerinfo)
+    {
+        $array["customerInfo"] = array("email" => $costumerinfo->email,
+            "phone" => $costumerinfo->phone);
+        return ($array);
+    }
+
+
+    private function get_secret(){
+        return [
+            'id' => "1110",
+            'secret' => 'hpljOY3gop'
+        ];
     }
 
     /**
@@ -878,27 +1011,101 @@ class ProfileController extends Controller
      */
     public function payForOrderAction($id, EntityManagerInterface $em, Request $request, ServiceStat $stat)
     {
-
         $order = $this->getDoctrine()
             ->getRepository(FormOrder::class)
             ->find($id);
 
-        $city = $this->get('session')->get('city');
-        $in_city = $city->getUrl();
-        $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.total DESC');
-        $generalTypes = $query->getResult();
+//        $card = $this->getDoctrine()
+//            ->getRepository(FormOrder::class)
+//            ->find($order->getCardId());
 
-        return $this->render('user/user_order_pay.html.twig', [
 
-            'order' => $order,
-            'city' => $city,
+        $s = $this->get_secret();
 
-            'in_city' => $in_city,
-            'cityId' => $city->getId(),
-            'generalTypes' => $generalTypes,
-            'lang' => $_SERVER['LANG'],
+        $renter = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($order->getRenterId());
 
-        ]);
+        $phone = '+79870000000';
+        foreach ($renter->getInformation() as $i){
+            if ($i->getUiKey() == 'phone') $phone = $i->getUiValue();
+        }
+
+        $merchantId = $s['id'];
+        $secret = $s['secret'];
+
+        $url = "https://secure.mandarinpay.com/api/transactions";
+
+        //$reqid = time() ."_". microtime(true) ."_". rand();
+        //$hash = hash("sha256", $merchantId ."-". $reqid ."-". $secret);
+        //$xauth =  $merchantId ."-".$hash ."-". $reqid;
+
+        $array_content = [
+            "payment" => [
+                "orderId" => $id,
+                "action" => "pay",
+                "price" => $order->getPrice().'.00',
+            ],
+            "customerInfo" => [
+                "email" => $renter->getEmail(),
+                "phone" => $phone
+            ]
+        ];
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => "https://secure.mandarinpay.com/api/transactions",
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => "",
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 30,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => "POST",
+          CURLOPT_POSTFIELDS => json_encode($array_content),
+          CURLOPT_HTTPHEADER => array(
+            "authorization: Basic ".base64_encode($merchantId.':'.$secret),
+            "cache-control: no-cache",
+            "content-type: application/json",
+          ),
+        ));
+
+        $response = json_decode(curl_exec($curl),true);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+            $this->addFlash(
+                'notice',
+                'Проблемы на платежном сервисе. Приносим свои извинения'
+            );
+            return $this->redirectToRoute('user_transport_orders');
+        } else {
+
+            return $this->redirect($response['userWebLink']);
+
+        }
+
+    }
+
+    function check_sign($req)
+    {
+
+        $s = $this->get_secret();
+        $secret = $s['secret'];
+
+        $sign = $req['sign'];
+        unset($req['sign']);
+        $to_hash = '';
+        if (!is_null($req) && is_array($req)) {
+                ksort($req);
+                $to_hash = implode('-', $req);
+        }
+
+        $to_hash = $to_hash .'-'. $secret;
+        $calculated_sign = hash('sha256', $to_hash);
+        return $calculated_sign == $sign;
     }
 
     /**
@@ -906,17 +1113,41 @@ class ProfileController extends Controller
      */
     public function userOrderPaySuccessAction(EntityManagerInterface $em, Request $request, ServiceStat $stat)
     {
-        $id = $request->request->get('id');
-        $order = $this->getDoctrine()
-            ->getRepository(FormOrder::class)
-            ->find($id);
-        $pincode = rand(1111,9999);
-        $order->setOwnerStatus('wait_for_pincode');
-        $order->setRenterStatus('wait_for_finish');
-        $order->setPincodeForOwner($pincode);
-        $em->persist($order);
-        $em->flush();
-        return $this->redirectToRoute('user_transport_orders');
+        $cb = (array)$request->request->all();
+
+        $check = $this->check_sign($cb);
+
+        if($check) {
+            $order = $this->getDoctrine()
+                ->getRepository(FormOrder::class)
+                ->find($cb['orderId']);
+
+            $id = $order->getId();
+
+            //$pincode = rand(1111,9999);
+
+            if($cb['status'] == 'success') {
+                $order->setOwnerStatus('wait_for_rent');
+                $order->setRenterStatus('wait_for_finish');
+
+                //$order->setPincodeForOwner($pincode);
+                $em->persist($order);
+                $em->flush();
+
+                $this->addFlash(
+                    'notice',
+                    'Заявка #' . $id . ' успешно оплачена!<br> Владелец свяжется с вами для обсуждения нюансов.<br><a href="#">Скачайте</a> и распечатайте договор аренды.'
+                );
+
+                return new Response('OK', 200);
+            } else {
+                return new Response('BAD', 400);
+            }
+
+
+        } else {
+            return new Response('BAD', 400);
+        }
     }
 
     /**
