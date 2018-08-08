@@ -53,6 +53,13 @@ class FormOrder
     /**
      * @var string
      *
+     * @ORM\Column(name="messages", type="text")
+     */
+    private $messages='';
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="transport", type="string", length=255)
      */
     private $transport;
@@ -994,5 +1001,29 @@ class FormOrder
     public function getRenterResultDetails()
     {
         return $this->renterResultDetails;
+    }
+
+    /**
+     * Set messages
+     *
+     * @param string $messages
+     *
+     * @return FormOrder
+     */
+    public function setMessages($messages)
+    {
+        $this->messages = $messages;
+
+        return $this;
+    }
+
+    /**
+     * Get messages
+     *
+     * @return string
+     */
+    public function getMessages()
+    {
+        return $this->messages;
     }
 }

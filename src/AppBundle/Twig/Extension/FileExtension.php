@@ -3,8 +3,17 @@
 namespace AppBundle\Twig\Extension;
 
 
+use UserBundle\Entity\User;
+
 class FileExtension extends \Twig_Extension
 {
+
+    protected $em;
+
+    public function __construct($em)
+    {
+        $this->em = $em;
+    }
 
     /**
      * Return the functions registered as twig extensions
@@ -15,6 +24,14 @@ class FileExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFunction('file_exists', 'file_exists'),
+            new \Twig_SimpleFunction('jsond', function ($json){
+                return json_decode($json, true);
+            }),
+            new \Twig_SimpleFunction('getuser', function ($id){
+                return $this->em
+                ->getRepository(User::class)
+                ->find($id);
+            }),
             new \Twig_SimpleFunction('main_foto', function($fotos){
                 return $fotos->filter(function($foto) {
                     return $foto->getIsMain() === TRUE;
@@ -27,5 +44,8 @@ class FileExtension extends \Twig_Extension
     {
         return 'app_file';
     }
+
+
+
 }
 ?>
