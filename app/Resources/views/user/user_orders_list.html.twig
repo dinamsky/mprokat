@@ -9,98 +9,282 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Мои заявки</h1>
+    <h1>Входящие</h1>
+
+
+    <div class="uk-grid">
+        <div class="uk-width-1-4">
+            {% for o in orders %}
+                <div class="uk-margin-bottom ord_toggler" data-id="{{ o.id }}">
+                    <div class="uk-text-small c_grey"><b class="c_black">#{{ o.id }}</b> {{ o.dateCreate|date('d.m.Y') }}</div>
+                    <div>{{ o.transport }}</div>
+                    <div>{{ o.dateIn|date('d.m.Y') }} - {{ o.dateOut|date('d.m.Y') }}</div>
+                    <div style="color:red;font-weight:bold">
+
+                        {% if o.ownerStatus == 'wait_for_accept' and app.session.get('logged_user').id == o.renterId %}
+                            ожидает одобрения владельцем
+                        {% endif %}
+
+                        {% if o.ownerStatus == 'wait_for_accept' and app.session.get('logged_user').id == o.userId %}
+                            ожидает вашего одобрения
+                        {% endif %}
+
+                         {#---- after accept#}
+
+                        {% if o.renterStatus == 'wait_for_pay' and app.session.get('logged_user').id == o.renterId %}
+                            Одобрено владельцем. Ожидает вашей оплаты
+                        {% endif %}
+
+                        {% if o.ownerStatus == 'accepted' and app.session.get('logged_user').id == o.userId %}
+                            Ожидается оплата арендатором
+                        {% endif %}
+
+                         {#---- after payment#}
+
+                        {% if o.renterStatus == 'wait_for_finish' and app.session.get('logged_user').id == o.renterId %}
+                            Заявка оплачена
+                        {% endif %}
+
+                        {% if o.ownerStatus == 'wait_for_rent' and app.session.get('logged_user').id == o.userId %}
+                            Заявка оплачена
+                        {% endif %}
+
+                        {#---- after pincode#}
+
+                        {% if o.renterStatus == 'rent_in_process' and app.session.get('logged_user').id == o.renterId %}
+                            Заявка в процессе аренды
+                        {% endif %}
+
+                        {% if o.ownerStatus == 'rent_in_process' and app.session.get('logged_user').id == o.userId %}
+                            Заявка в процессе аренды
+                        {% endif %}
+
+                        {#----- messages#}
+                        {% if o.renterStatus == 'wait_for_answer' and app.session.get('logged_user').id == o.renterId %}
+                            Есть ответ владельца
+                        {% endif %}
+
+                        {% if o.ownerStatus == 'wait_for_answer' and app.session.get('logged_user').id == o.userId %}
+                            Есть ответ арендатора
+                        {% endif %}
+
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="uk-width-3-4">
+            {% for o in orders %}
+                <div id="ord_desc_{{ o.id }}" class=" bordered padding10 ord_content uk-hidden">
+
+                    <div class="uk-grid">
+                        <div class="uk-width-1-2">
+                            Транспорт: <a href="/card/{{ o.cardId }}">{{ o.transport }}</a><br>
+                            Арендатор: {{ o.fioRenter }} <br>
+                            Даты: с {{ o.dateIn|date('d.m.Y') }} по {{ o.dateOut|date('d.m.Y') }} <br>
+                            Забрать: {{ o.cityIn }}<br>
+                            Вернуть: {{ o.cityOut }}<br>
+                            {% if o.email != '' %}
+                            Email: {{ o.email }}<br>
+                            {% endif %}
+                            {% if o.phone != '' %}
+                            Телефон: {{ o.phone }}<br>
+                            {% endif %}
+
+                            {% if o.content != '' %}
+                                Сообщение: {{ o.content }}<br>
+                            {% endif %}
+                        </div>
+
+                        <div class="uk-width-1-2">
+                            {% if o.renterStatus == 'wait_for_pay' and app.session.get('logged_user').id == o.renterId %}
+                                <a href="/pay_for_order/{{ o.id }}" class="ok_btn uk-margin-top uk-text-center uk-display-block">Оплатить</a>
+                            {% endif %}
+
+                            {% if o.renterStatus == 'wait_for_finish' and app.session.get('logged_user').id == o.renterId %}
+                                <button type="button" uk-toggle="target: #renter_modal_{{ o.id }}" class="ok_btn uk-margin-top uk-text-center uk-display-block uk-width-1-1">Завершить</button>
+                            {% endif %}
+
+                            {% if o.ownerStatus == 'wait_for_rent' and app.session.get('logged_user').id == o.userId %}
+                                <button type="button" uk-toggle="target: #owner_modal_{{ o.id }}" class="ok_btn uk-margin-top uk-text-center uk-display-block uk-width-1-1">Завершить</button>
+                            {% endif %}
+
+                        </div>
+                    </div>
+
+
+
+                    {% if o.messages != '' %}
+                        <hr>
+                        <div class="ord_messages uk-margin-top uk-clearfix">
+                        {% for m in jsond(o.messages) %}
+                            <div class="{{ m.from }}_message">
+                                {{ m.from == 'owner' ? 'Владелец' : 'Арендатор' }}: {{ m.message }}
+                            </div>
+                            <div class="uk-width-1-1" style="height: 10px;clear:both;"></div>
+                        {% endfor %}
+                        </div>
+                        <hr>
+                    {% endif %}
+
+                    {% if o.ownerStatus in ['wait_for_accept','answered','wait_for_answer'] and app.session.get('logged_user').id == o.userId %}
+                        <br><br>
+                        <button type="button" id="owner_accept" class="ok_btn" value="{{ o.id }}">Одобрить</button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="button" id="owner_reject" class="no_btn" value="{{ o.id }}">Отклонить</button>
+                        <br><br>
+                        или
+                        <br><br>
+                        <textarea name="answer" class="uk-width-1-1" style="min-height: 100px" placeholder="Отправить арендатору сообщение:"></textarea>
+                        <br>
+                        <div uk-toggle="target: #show_pat_{{ o.id }}" style="border-bottom: 1px dotted blue;display: inline-block;cursor: pointer">Выбрать шаблон</div><br>
+                        <div id="show_pat_{{ o.id }}" hidden>
+                            <div class="ord_pat">Запрос документов: фото водительского удостоверения и фото арендатора с удостоверением в руках на электронную почту:</div>
+                            <div class="ord_pat">Запрос документов: фото паспотра и фото арендатора с паспортом в руках на электронную почту:</div>
+                            <div class="ord_pat">Транспорт не доступен в выбранные даты, можем предложить:</div>
+                            <div class="ord_pat">Данный транспорт, к сожалению, не доступен. Предлагаем замену: </div>
+                            <div class="ord_pat">Данный транспорт можно забрать и вернуть только в городе:</div>
+                        </div>
+                        <br>
+                        <button type="button" id="owner_answer" class="nt_btn" value="{{ o.id }}">Отправить</button>
+                    {% endif %}
+
+                    {% if o.renterStatus in ['wait_for_pay','wait_for_accept','wait_for_answer','answered'] and app.session.get('logged_user').id == o.renterId %}
+                        <br><br>
+                        <textarea name="answer" class="uk-width-1-1" style="min-height: 100px" placeholder="Отправить владельцу сообщение:"></textarea>
+                        <br><br>
+                        <button type="button" id="renter_answer" class="nt_btn" value="{{ o.id }}">Отправить</button>
+                    {% endif %}
+
+
+
+
+
+                    {% if o.renterStatus == 'wait_for_finish' and app.session.get('logged_user').id == o.renterId %}
+                        {% set owner = getuser(o.userId) %}
+                        {% set userinfo = owner.getInformation %}
+                        Владелец : {{ owner.header }}<br>
+                        {% for info in userinfo if info.uiKey == 'phone' and info.uiValue != '' %}
+                        Телефон: {{ info.uiValue }}<br>
+                        {% endfor %}
+                        Email: {{ owner.email }}<br><br>
+                        <a href="#">Скачать договор аренды транспорта</a>
+                    {% endif %}
+
+                    {% if o.ownerStatus == 'wait_for_rent' and app.session.get('logged_user').id == o.userId %}
+                        {% set owner = getuser(o.renterId) %}
+                        {% set userinfo = owner.getInformation %}
+                        Владелец : {{ owner.header }}<br>
+                        {% for info in userinfo if info.uiKey == 'phone' and info.uiValue != '' %}
+                        Телефон: {{ info.uiValue }}<br>
+                        {% endfor %}
+                        Email: {{ owner.email }}<br><br>
+                        <a href="#">Скачать договор аренды транспорта</a>
+                    {% endif %}
+
+
+                </div>
+                {{ include('card/order_forms/owner_anketa.html.twig') }}
+                {{ include('card/order_forms/renter_anketa.html.twig') }}
+            {% endfor %}
+        </div>
+    </div>
+
+
+
     <div class="">
-        {% for o in orders %}
-            <div>
-                <span class="uk-text-small c_grey">{{ o.dateCreate|date('d.m.Y') }}</span> {{ o.transport }} (с {{ o.dateIn|date('d.m.Y') }} по {{ o.dateOut|date('d.m.Y') }})
+        {#{% for o in orders %}#}
+            {#<div>#}
+                {#<span class="uk-text-small c_grey">{{ o.dateCreate|date('d.m.Y') }}</span> {{ o.transport }} (с {{ o.dateIn|date('d.m.Y') }} по {{ o.dateOut|date('d.m.Y') }})#}
 
-                <span style="color:red;font-weight:bold">
+                {#<span style="color:red;font-weight:bold">#}
 
-                    {% if o.ownerStatus == 'wait_for_accept' and app.session.get('logged_user').id == o.renterId %}
-                        ожидает одобрения владельцем
-                    {% endif %}
+                    {#{% if o.ownerStatus == 'wait_for_accept' and app.session.get('logged_user').id == o.renterId %}#}
+                        {#ожидает одобрения владельцем#}
+                    {#{% endif %}#}
 
-                    {% if o.ownerStatus == 'wait_for_accept' and app.session.get('logged_user').id == o.userId %}
-                        ожидает вашего одобрения
-                    {% endif %}
+                    {#{% if o.ownerStatus == 'wait_for_accept' and app.session.get('logged_user').id == o.userId %}#}
+                        {#ожидает вашего одобрения#}
+                    {#{% endif %}#}
 
                      {#---- after accept#}
 
-                    {% if o.renterStatus == 'wait_for_pay' and app.session.get('logged_user').id == o.renterId %}
-                        Одобрено владельцем. Ожидает вашей оплаты
-                    {% endif %}
+                    {#{% if o.renterStatus == 'wait_for_pay' and app.session.get('logged_user').id == o.renterId %}#}
+                        {#Одобрено владельцем. Ожидает вашей оплаты#}
+                    {#{% endif %}#}
 
-                    {% if o.ownerStatus == 'accepted' and app.session.get('logged_user').id == o.userId %}
-                        Ожидается оплата арендатором
-                    {% endif %}
+                    {#{% if o.ownerStatus == 'accepted' and app.session.get('logged_user').id == o.userId %}#}
+                        {#Ожидается оплата арендатором#}
+                    {#{% endif %}#}
 
                      {#---- after payment#}
 
-                    {% if o.renterStatus == 'wait_for_finish' and app.session.get('logged_user').id == o.renterId %}
-                        Ожидается активация пинкода владельцем
-                    {% endif %}
+                    {#{% if o.renterStatus == 'wait_for_finish' and app.session.get('logged_user').id == o.renterId %}#}
+                        {#Ожидается активация пинкода владельцем#}
+                    {#{% endif %}#}
 
-                    {% if o.ownerStatus == 'wait_for_pincode' and app.session.get('logged_user').id == o.userId %}
-                        Ожидается активация пинкода
-                    {% endif %}
+                    {#{% if o.ownerStatus == 'wait_for_pincode' and app.session.get('logged_user').id == o.userId %}#}
+                        {#Ожидается активация пинкода#}
+                    {#{% endif %}#}
 
                     {#---- after pincode#}
 
-                    {% if o.renterStatus == 'rent_in_process' and app.session.get('logged_user').id == o.renterId %}
-                        Заявка в процессе аренды
-                    {% endif %}
+                    {#{% if o.renterStatus == 'rent_in_process' and app.session.get('logged_user').id == o.renterId %}#}
+                        {#Заявка в процессе аренды#}
+                    {#{% endif %}#}
 
-                    {% if o.ownerStatus == 'rent_in_process' and app.session.get('logged_user').id == o.userId %}
-                        Заявка в процессе аренды
-                    {% endif %}
-                </span>
+                    {#{% if o.ownerStatus == 'rent_in_process' and app.session.get('logged_user').id == o.userId %}#}
+                        {#Заявка в процессе аренды#}
+                    {#{% endif %}#}
+                {#</span>#}
 
-                <span class="bordered cursor-pointer" uk-toggle="target: #ord_desc_{{ o.id }}">подробнее</span>
+                {#<span class="bordered cursor-pointer" uk-toggle="target: #ord_desc_{{ o.id }}">подробнее</span>#}
 
-                {% if o.ownerStatus == 'wait_for_accept' and app.session.get('logged_user').id == o.userId %}
-                    <button type="button" id="owner_accept" value="{{ o.id }}">Одобрить</button>
-                {% endif %}
+                {#{% if o.ownerStatus == 'wait_for_accept' and app.session.get('logged_user').id == o.userId %}#}
+                    {#<button type="button" id="owner_accept" value="{{ o.id }}">Одобрить</button>#}
+                {#{% endif %}#}
 
-                {% if o.renterStatus == 'wait_for_pay' and app.session.get('logged_user').id == o.renterId %}
-                    <a href="/pay_for_order/{{ o.id }}">Оплатить</a>
-                {% endif %}
+                {#{% if o.renterStatus == 'wait_for_pay' and app.session.get('logged_user').id == o.renterId %}#}
+                    {#<a href="/pay_for_order/{{ o.id }}">Оплатить</a>#}
+                {#{% endif %}#}
 
-                {% if o.ownerStatus == 'wait_for_pincode' and app.session.get('logged_user').id == o.userId %}
-                    <br>
-                    <input type="text" name="owner_pincode" placeholder="введите пинкод">
-                    <button type="button" id="owner_pincode" value="{{ o.id }}">Отправить</button>
-                {% endif %}
+                {#{% if o.ownerStatus == 'wait_for_pincode' and app.session.get('logged_user').id == o.userId %}#}
+                    {#<br>#}
+                    {#<input type="text" name="owner_pincode" placeholder="введите пинкод">#}
+                    {#<button type="button" id="owner_pincode" value="{{ o.id }}">Отправить</button>#}
+                {#{% endif %}#}
 
 
 
-                {% if o.renterStatus == 'rent_in_process' and app.session.get('logged_user').id == o.renterId %}
-                    <button type="button" uk-toggle="target: #renter_modal_{{ o.id }}">Завершить</button>
-                {% endif %}
+                {#{% if o.renterStatus == 'rent_in_process' and app.session.get('logged_user').id == o.renterId %}#}
+                    {#<button type="button" uk-toggle="target: #renter_modal_{{ o.id }}">Завершить</button>#}
+                {#{% endif %}#}
 
-                {% if o.ownerStatus == 'rent_in_process' and app.session.get('logged_user').id == o.userId %}
-                    <button type="button" uk-toggle="target: #owner_modal_{{ o.id }}">Завершить</button>
-                {% endif %}
+                {#{% if o.ownerStatus == 'rent_in_process' and app.session.get('logged_user').id == o.userId %}#}
+                    {#<button type="button" uk-toggle="target: #owner_modal_{{ o.id }}">Завершить</button>#}
+                {#{% endif %}#}
 
-                <div id="ord_desc_{{ o.id }}" class="uk-margin-top uk-margin-bottom bordered padding10" hidden>
-                    имя: {{ o.fioRenter }} <br>
-                    даты: с {{ o.dateIn|date('d.m.Y') }} по {{ o.dateOut|date('d.m.Y') }} <br>
-                    забрать: {{ o.cityIn }}<br>
-                    вернуть: {{ o.cityOut }}<br>
-                    <br>
-                    email: {{ o.email }}<br>
-                    телефон: {{ o.phone }}<br>
-                    <br>
-                    {{ o.content }}
-                    <br><br>
-                    <a href="/card/{{ o.cardId }}">страница транспорта</a>
-                </div>
-            </div>
+                {#<div id="ord_desc_{{ o.id }}" class="uk-margin-top uk-margin-bottom bordered padding10" hidden>#}
+                    {#имя: {{ o.fioRenter }} <br>#}
+                    {#даты: с {{ o.dateIn|date('d.m.Y') }} по {{ o.dateOut|date('d.m.Y') }} <br>#}
+                    {#забрать: {{ o.cityIn }}<br>#}
+                    {#вернуть: {{ o.cityOut }}<br>#}
+                    {#<br>#}
+                    {#email: {{ o.email }}<br>#}
+                    {#телефон: {{ o.phone }}<br>#}
+                    {#{% if o.renterStatus == 'wait_for_finish' and app.session.get('logged_user').id == o.renterId %}#}
+                        {#пинкод: {{ o.pincodeForOwner }}<br>#}
+                    {#{% endif %}#}
+                    {#<br>#}
+                    {#{{ o.content }}#}
+                    {#<br><br>#}
+                    {#<a href="/card/{{ o.cardId }}">страница транспорта</a>#}
+                {#</div>#}
+            {#</div>#}
 
-            {{ include('card/order_forms/owner_anketa.html.twig') }}
-            {{ include('card/order_forms/renter_anketa.html.twig') }}
+            {#{{ include('card/order_forms/owner_anketa.html.twig') }}#}
+            {#{{ include('card/order_forms/renter_anketa.html.twig') }}#}
 
-        {% endfor %}
+        {#{% endfor %}#}
     </div>
 
 

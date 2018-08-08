@@ -1465,3 +1465,80 @@ top: 80%;
 .top_sticky.uk-active .add_card_button.just_plus {
     width: auto;
 }
+
+.ord_toggler{
+    background: white;
+    padding: 10px;
+    box-shadow: 1px 1px 1px #bfbfbf;
+    position: relative;
+    cursor: pointer;
+}
+
+.ord_toggler.active::after{
+    content: "►";
+    font-family: Arial, sans-serif;
+    font-size: 27px;
+    position: absolute;
+    right: -23px;
+    top: 50%;
+    color: white;
+    text-shadow: 2px 0 1px #bbbbbb;
+    z-index: 0;
+    height: 40px;
+    margin-top: -20px;
+}
+
+.ok_btn{
+    background: #25b45b;
+    color: white;
+    padding: 10px 25px;
+}
+
+.ok_btn:hover{
+    background: green;
+    color: white;
+    text-decoration: none;
+}
+
+.no_btn{
+    background: red;
+    color: white;
+    padding: 10px 25px;
+}
+
+.nt_btn{
+    background: lightgrey;
+    color: black;
+    padding: 10px 25px;
+}
+
+.nt_btn:hover{
+    background: grey;
+    color: white;
+    text-decoration: none;
+}
+
+.owner_message{
+    background: lightblue;
+    display: inline-block;
+    padding: 5px 10px;
+    max-width: 80%;
+    border-radius: 10px;
+    float: left;
+}
+
+.renter_message{
+    background: lightgreen;
+    display: inline-block;
+    padding: 5px 10px;
+    max-width: 80%;
+    border-radius: 10px;
+    float: right;
+}
+
+.ord_pat{
+    cursor: pointer;
+    background: #f3f3f3;
+    padding: 5px;
+    margin-top: 5px;
+}
