@@ -301,7 +301,7 @@ class ShowCardController extends Controller
                 $phone = $inf->getUiValue();
                 break;
             }
-            if(isset($phone) and $phone != '') $phone = true;
+            //if(isset($phone) and $phone != '') $phone = true;
         }
 
         return $this->render('card/card_show.html.twig', [
