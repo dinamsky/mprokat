@@ -1069,7 +1069,7 @@ class ProfileController extends Controller
 
         $phone = '+79870000000';
         foreach ($renter->getInformation() as $i){
-            if ($i->getUiKey() == 'phone') $phone = str_replace(array("(",")","+"," "),"",trim($i->getUiValue()));
+            if ($i->getUiKey() == 'phone') $phone = '+'.str_replace(array("(",")","+"," "),"",trim($i->getUiValue()));
         }
 
         $merchantId = $s['id'];
