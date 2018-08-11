@@ -2,37 +2,46 @@
                     <div class="uk-modal-dialog uk-modal-body">
                         <h2 class="uk-modal-title">{% trans %}Заявка{% endtrans %}</h2>
                         <button class="uk-modal-close-default" type="button" uk-close></button>
-                        <form action="/user/bookMessage" uk-grid class="uk-grid-small" method="POST" >
+                        <form action="/user/bookMessage" uk-grid class="uk-grid-small" method="POST" onsubmit="return new_book_validate();">
 
                             <div class="uk-width-1-1">
                                 <span class="uk-text-small">{% trans %}Транспортное средство{% endtrans %}</span>
-                                <input type="text" name="header" class="uk-input" value="{{ card.markModel.mark.header }} {{ card.markModel.header }}">
+                                <input type="text" name="header" class="uk-input" value="{{ card.markModel.mark.header }} {{ card.markModel.header }}" required>
                             </div>
 
                             <div class="uk-width-1-2">
                                 <span class="uk-text-small">{% trans %}Дата приема{% endtrans %} <span class="c_red">{{ reserved ? 'с '~card.dateRentFinish|date_modify("+1 day")|date('d.m.Y') }}</span></span>
-                                <input type="text" name="date_in" class="uk-input uk-width-1-1 datepicker-reserve" autocomplete="off">
+                                <input type="text" name="date_in" class="uk-input uk-width-1-1 datepicker-reserve" autocomplete="off" required>
                             </div>
 
                             <div class="uk-width-1-2">
                                 <span class="uk-text-small">{% trans %}Дата возврата{% endtrans %} <span class="c_red">{{ reserved ? 'с '~card.dateRentFinish|date_modify("+1 day")|date('d.m.Y') }}</span></span>
-                                <input type="text" name="date_out" class="uk-input uk-width-1-1 datepicker-reserve" autocomplete="off">
+                                <input type="text" name="date_out" class="uk-input uk-width-1-1 datepicker-reserve" autocomplete="off" required>
                             </div>
 
                             <div class="uk-width-1-2">
                                 <span class="uk-text-small">Место приема</span>
-                                <input type="text" name="city_in" class="uk-input uk-width-1-1" value="{{ card.city.header }}" autocomplete="off">
+                                <input type="text" name="city_in" class="uk-input uk-width-1-1" value="{{ card.city.header }}" autocomplete="off" required>
                             </div>
 
                             <div class="uk-width-1-2">
                                 <span class="uk-text-small">Место возврата</span>
-                                <input type="text" name="city_out" class="uk-input uk-width-1-1" value="{{ card.city.header }}" autocomplete="off">
+                                <input type="text" name="city_out" class="uk-input uk-width-1-1" value="{{ card.city.header }}" autocomplete="off" required>
                             </div>
 
                             <div class="uk-width-1-1">
                                 <span class="uk-text-small">Текст сообщения</span>
                                 <textarea name="content" class="uk-width-1-1 short_textarea"></textarea>
                             </div>
+
+                            {% if not phone %}
+                                <div class="uk-width-1-1">
+                                    <div class="uk-margin-bottom uk-position-relative">
+                                        <input type="text" name="phone" id="phone" placeholder="{% trans %}Заполните номер телефона{% endtrans %}" class="uk-input phone_validate">
+                                        <div class="uk-position-absolute uk-position-top-left" style="left:5px;"><span class="red_star">*</span></div>
+                                    </div>
+                                </div>
+                            {% endif %}
 
                             <input type="hidden" name="card_id" value="{{ card.id }}">
 

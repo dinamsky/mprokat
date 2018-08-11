@@ -21,6 +21,8 @@
     <script src="{{ asset('assets/js/recapthcha_validate.js') }}"></script>
     <script src="{{ asset('assets/js/datepicker.min.js') }}"></script>
     <script src="{{ asset('assets/js/chat.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.maskedinput.js') }}"></script>
+    <script src="{{ asset('assets/js/phone_validate.js') }}"></script>
 {% endblock %}
 
 {% block socialScripts %}
@@ -374,7 +376,7 @@
                                         <input type="hidden" name="user_id" value="{{ app.session.get('logged_user').id }}">
                                         <input type="hidden" name="card_id" value="{{ card.id }}">
                                         <input type="hidden" name="return" value="{{ app.request.requestUri }}">
-                                        <button class="uk-button uk-button-primary uk-margin-top">{% trans %}Отправить{% endtrans %}</button>
+                                        <button class="uk-button uk-button-default uk-margin-top">{% trans %}Отправить{% endtrans %}</button>
                                     </form>
                                 {% else %}
                                     <div>
@@ -414,7 +416,7 @@
                                         <input type="hidden" name="user_id" value="{{ app.session.get('logged_user').id }}">
                                         <input type="hidden" name="card_id" value="{{ card.id }}">
                                         <input type="hidden" name="return" value="{{ app.request.requestUri }}">
-                                        <button class="uk-button uk-button-primary uk-margin-top">{% trans %}Отправить{% endtrans %}</button>
+                                        <button class="uk-button uk-button-default uk-margin-top">{% trans %}Отправить{% endtrans %}</button>
                                     </form>
 
                                 {% else %}
@@ -478,7 +480,7 @@
 
             <div class="uk-width-1-4@s">
 
-                {% if not reserved %}
+                {% if not reserved and card.user.isNew != 1%}
                 <div class="uk-margin-bottom card_page_phone" {{ is_mobile() ? '' : 'uk-sticky="offset: 64"' }}>
                     <div uk-grid class="uk-grid-collapse uk-grid-match b_shadowed">
                         <div class="phone_block uk-width-1-1">
@@ -500,8 +502,8 @@
                 {% endif %}
 
                 {% if not is_mobile() and card.user.id != 1971%}
-                <div class="uk-margin-bottom card_blanc border_green">
-                    <div class="cursor-pointer uk-text-center c_green" uk-toggle="target: #user_book_form"><i class="fa fa-pencil-square-o"></i> {% trans %}Отправить заявку{% endtrans %}</div>
+                <div class="uk-margin-bottom card_blanc border_green {{ card.user.isNew == 1 ? 'newbook' : '' }}" {{ card.user.isNew == 1 ? 'uk-sticky="offset: 94"': '' }}>
+                    <div class="nbinner cursor-pointer uk-text-center c_green" uk-toggle="target: #user_book_form"><i class="fa fa-pencil-square-o"></i> {% trans %}Отправить заявку{% endtrans %}</div>
                 </div>
                 {% endif %}
 

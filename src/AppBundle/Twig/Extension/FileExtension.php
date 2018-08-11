@@ -3,6 +3,7 @@
 namespace AppBundle\Twig\Extension;
 
 
+use AppBundle\Entity\Card;
 use UserBundle\Entity\User;
 
 class FileExtension extends \Twig_Extension
@@ -30,6 +31,11 @@ class FileExtension extends \Twig_Extension
             new \Twig_SimpleFunction('getuser', function ($id){
                 return $this->em
                 ->getRepository(User::class)
+                ->find($id);
+            }),
+            new \Twig_SimpleFunction('getcard', function ($id){
+                return $this->em
+                ->getRepository(Card::class)
                 ->find($id);
             }),
             new \Twig_SimpleFunction('main_foto', function($fotos){

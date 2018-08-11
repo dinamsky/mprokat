@@ -413,6 +413,8 @@ class NewCardController extends Controller
                             $user->setLogin('');
                             $user->setPassword($pass->HashPassword($request->request->get('r_password')));
                             $user->setHeader($request->request->get('r_header'));
+                            $user->setIsSubscriber(true);
+                            $user->setIsNew(true);
                             $user->setActivateString($code);
                             $user->setTempPassword('');
 

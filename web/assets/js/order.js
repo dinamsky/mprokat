@@ -82,16 +82,56 @@ $( document ).ready(function() {
 
     $('.ord_toggler').on('click', function () {
         var id = $(this).data('id');
+        var user_id = $(this).data('user_id');
         $('.ord_toggler').removeClass('active');
         $(this).addClass('active');
         $('.ord_content').addClass('uk-hidden');
         $('#ord_desc_'+id).removeClass('uk-hidden');
+        $('.ord_sum').addClass('uk-hidden');
+        $('#ord_sum_'+id).removeClass('uk-hidden');
+        $.ajax({
+            url: '/ajax_set_ord_active',
+            type: 'POST',
+            data: {id:id,user_id:user_id},
+            dataType: 'html',
+            success: function () {
+                //document.location.href = window.location.href;
+            }
+        });
     });
 
     $('.ord_pat').on('click', function () {
         var c = $(this).html();
-        $(this).parent('div').siblings('textarea[name="answer"]').val(c);
+        $(this).parents('.msgb').find('textarea[name="answer"]').val(c).focus();
     });
+
+    // var timer = '';
+    //
+    // if(!$('textarea[name="answer"]').is(":focus")){
+    //
+    //     console.log('start');
+    // }
+
+    var timer = setInterval(function(){
+        var t = $('textarea[name="answer"]');
+        if(!t.is(":focus") && t.val() === '') {
+            //console.log('not in focus');
+            window.location.reload(true);
+        } else {
+            //console.log('in focus');
+        }
+
+        }, 10000);
+
+
+
+
+    // $('textarea[name="answer"]').on('focus', function () {
+    //     clearTimeout(timer);
+    //     console.log('stop');
+    // });
+
+
 
     // $('#owner_finish').on('click', function () {
     //     var id = $(this).val();
