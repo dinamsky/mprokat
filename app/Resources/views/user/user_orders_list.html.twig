@@ -332,7 +332,7 @@
                                 Телефон: {{ info.uiValue }}<br>
                                 {% endfor %}
                                 Email: {{ owner.email }}<br><br>
-                                <a href="#">Скачать договор аренды транспорта</a>
+                                <a href="/assets/rent_contract.docx">Скачать договор аренды транспорта</a>
                             {% endif %}
 
                             {% if o.ownerStatus == 'wait_for_rent' and app.session.get('logged_user').id == o.userId %}
@@ -343,7 +343,7 @@
                                 Телефон: {{ info.uiValue }}<br>
                                 {% endfor %}
                                 Email: {{ owner.email }}<br><br>
-                                <a href="#">Скачать договор аренды транспорта</a>
+                                <a href="/assets/rent_contract.docx">Скачать договор аренды транспорта</a>
                             {% endif %}
                         </div>
 
