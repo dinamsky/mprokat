@@ -929,7 +929,7 @@ class ProfileController extends Controller
 
         $this->addFlash(
                 'notice',
-                'Вы только что одобрили заявку #'.$id.'!<br> Мы уведомили арендатора - ожидайте оплаты.<br><a href="#">Скачайте</a> и распечатайте договор аренды.'
+                'Вы только что одобрили заявку #'.$id.'!<br> Мы уведомили арендатора - ожидайте оплаты.<br><a href="/assets/rent_contract.docx">Скачайте</a> и распечатайте договор аренды.'
             );
 
         return new Response("");
