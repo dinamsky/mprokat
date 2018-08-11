@@ -1128,7 +1128,14 @@ class ProfileController extends Controller
             return $this->redirectToRoute('user_transport_orders');
         } else {
 
-            return $this->redirect($response['userWebLink']);
+
+            if(!isset($response['userWebLink']) or $response['userWebLink'] == ''){
+                var_dump($response);
+                return new Response();
+            } else {
+                return $this->redirect($response['userWebLink']);
+            }
+
 
         }
 
@@ -1360,4 +1367,11 @@ class ProfileController extends Controller
     }
 
 
+    /**
+     * @Route("/test_test", name="test_test")
+     */
+    public function ttAction(EntityManagerInterface $em, Request $request, ServiceStat $stat)
+    {
+        var_dump(str_replace(array("(",")","+"," "),"",trim('+7(917)4100960')));
+    }
 }
