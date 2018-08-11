@@ -41,6 +41,8 @@
                                         <div class="uk-position-absolute uk-position-top-left" style="left:5px;"><span class="red_star">*</span></div>
                                     </div>
                                 </div>
+                            {% else %}
+                                <input type="hidden" name="phone" id="phone" value="{{ phone }}">
                             {% endif %}
 
                             <input type="hidden" name="card_id" value="{{ card.id }}">
