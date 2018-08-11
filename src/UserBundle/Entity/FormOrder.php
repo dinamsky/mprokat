@@ -177,6 +177,20 @@ class FormOrder
     private $deposit = 0;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="service", type="integer")
+     */
+    private $service = 0;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="total", type="integer")
+     */
+    private $total = 0;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="fio_renter", type="string", length=255)
@@ -246,8 +260,20 @@ class FormOrder
      */
     private $isNew = 0;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_active_owner", type="boolean")
+     */
+    private $isActiveOwner = 0;
 
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_active_renter", type="boolean")
+     */
+    private $isActiveRenter = 0;
 
     /**
      * Get id
@@ -1025,5 +1051,125 @@ class FormOrder
     public function getMessages()
     {
         return $this->messages;
+    }
+
+    /**
+     * Set isActiveNow
+     *
+     * @param boolean $isActiveNow
+     *
+     * @return FormOrder
+     */
+    public function setIsActiveNow($isActiveNow)
+    {
+        $this->isActiveNow = $isActiveNow;
+
+        return $this;
+    }
+
+    /**
+     * Get isActiveNow
+     *
+     * @return boolean
+     */
+    public function getIsActiveNow()
+    {
+        return $this->isActiveNow;
+    }
+
+    /**
+     * Set isActiveOwner
+     *
+     * @param boolean $isActiveOwner
+     *
+     * @return FormOrder
+     */
+    public function setIsActiveOwner($isActiveOwner)
+    {
+        $this->isActiveOwner = $isActiveOwner;
+
+        return $this;
+    }
+
+    /**
+     * Get isActiveOwner
+     *
+     * @return boolean
+     */
+    public function getIsActiveOwner()
+    {
+        return $this->isActiveOwner;
+    }
+
+    /**
+     * Set isActiveRenter
+     *
+     * @param boolean $isActiveRenter
+     *
+     * @return FormOrder
+     */
+    public function setIsActiveRenter($isActiveRenter)
+    {
+        $this->isActiveRenter = $isActiveRenter;
+
+        return $this;
+    }
+
+    /**
+     * Get isActiveRenter
+     *
+     * @return boolean
+     */
+    public function getIsActiveRenter()
+    {
+        return $this->isActiveRenter;
+    }
+
+    /**
+     * Set service
+     *
+     * @param integer $service
+     *
+     * @return FormOrder
+     */
+    public function setService($service)
+    {
+        $this->service = $service;
+
+        return $this;
+    }
+
+    /**
+     * Get service
+     *
+     * @return integer
+     */
+    public function getService()
+    {
+        return $this->service;
+    }
+
+    /**
+     * Set total
+     *
+     * @param integer $total
+     *
+     * @return FormOrder
+     */
+    public function setTotal($total)
+    {
+        $this->total = $total;
+
+        return $this;
+    }
+
+    /**
+     * Get total
+     *
+     * @return integer
+     */
+    public function getTotal()
+    {
+        return $this->total;
     }
 }

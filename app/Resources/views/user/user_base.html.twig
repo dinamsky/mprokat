@@ -27,10 +27,18 @@
                     </div>
                 {% endfor %}
             {% endfor %}
-            <div uk-grid>
-                <div class=" uk-width-1-5@s">{% block left_block %}{{ include('user/user_left.html.twig') }}{% endblock %}</div>
-                <div class=" uk-width-4-5@s">{% block content %}{% endblock %}</div>
-            </div>
+
+                {% if full is not defined %}
+                    <div uk-grid>
+                    <div class=" uk-width-1-5@s">{% block left_block %}{{ include('user/user_left.html.twig') }}{% endblock %}</div>
+                    <div class=" uk-width-4-5@s">
+                {% endif %}
+                {% block content %}{% endblock %}
+                {% if full is not defined %}
+                    </div>
+                    </div>
+                {% endif %}
+
         </div>
         {{ include('footer.html.twig') }}
         {% block javascripts %}

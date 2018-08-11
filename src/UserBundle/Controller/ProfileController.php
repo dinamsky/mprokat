@@ -603,7 +603,7 @@ class ProfileController extends Controller
                 ->find($card_id);
             $user = $card->getUser();
 
-            $price = $deposit = 0;
+            $price = $deposit = $service = 0;
             foreach ($card->getCardPrices() as $cp){
                 if($cp->getpriceId() == 2) $price = $cp->getValue();
                 if($cp->getpriceId() == 10) $deposit = $cp->getValue();
@@ -612,6 +612,12 @@ class ProfileController extends Controller
             $period = (strtotime(str_replace(".","-",$post->get('date_out'))) - strtotime(str_replace(".","-",$post->get('date_in'))))/60/60/24;
 
             $price = $period*$price;
+
+            $service = ceil($price/100*15);
+
+            if($service == 0) $service = 500;
+
+            $total = $price + $deposit + $service;
 
             $is_admin_reged = false;
             foreach( $user->getInformation() as $info){
@@ -697,6 +703,8 @@ class ProfileController extends Controller
 
             $form_order->setPrice($price);
             $form_order->setDeposit($deposit);
+            $form_order->setService($service);
+            $form_order->setTotal($total);
 
 
             $em = $this->getDoctrine()->getManager();
@@ -861,7 +869,7 @@ class ProfileController extends Controller
                 'share' => true,
                 'orders' => $orders,
                 'city' => $city,
-
+                'full' => true,
                 'in_city' => $in_city,
                 'cityId' => $city->getId(),
                 'generalTypes' => $generalTypes,
@@ -869,6 +877,39 @@ class ProfileController extends Controller
 
             ]);
         } else return new Response("",404);
+    }
+
+    /**
+     * @Route("/ajax_set_ord_active", name="ajax_set_ord_active")
+     */
+    public function ajaxSetOrderActiveAction(EntityManagerInterface $em, Request $request, ServiceStat $stat)
+    {
+        $id = $request->request->get('id');
+        $order = $this->getDoctrine()
+            ->getRepository(FormOrder::class)
+            ->find($id);
+
+        $user = 'renter';
+        if($order->getUserId() == $request->request->get('user_id')) $user = 'owner';
+        else $order->setIsActiveRenter(true);
+
+        if ($user == 'owner') {
+            $order->setIsActiveOwner(true);
+            $query = $em->createQuery('UPDATE UserBundle:FormOrder f SET f.isActiveOwner = 0 WHERE f.userId = ?1');
+            $query->setParameter(1, $request->request->get('user_id'));
+            $query->execute();
+        }
+        else {
+            $order->setIsActiveRenter(true);
+            $query = $em->createQuery('UPDATE UserBundle:FormOrder f SET f.isActiveRenter = 0 WHERE f.renterId = ?1');
+            $query->setParameter(1, $request->request->get('user_id'));
+            $query->execute();
+        }
+
+        $em->persist($order);
+        $em->flush();
+
+        return new Response("");
     }
 
     /**
@@ -1028,7 +1069,7 @@ class ProfileController extends Controller
 
         $phone = '+79870000000';
         foreach ($renter->getInformation() as $i){
-            if ($i->getUiKey() == 'phone') $phone = $i->getUiValue();
+            if ($i->getUiKey() == 'phone') $phone = str_replace(array("(",")","+"," "),"",trim($i->getUiValue()));
         }
 
         $merchantId = $s['id'];
@@ -1040,14 +1081,18 @@ class ProfileController extends Controller
         //$hash = hash("sha256", $merchantId ."-". $reqid ."-". $secret);
         //$xauth =  $merchantId ."-".$hash ."-". $reqid;
 
+
+        $eml = $renter->getEmail();
+        if($eml == '') $eml = "noemail@nodomain.za";
+
         $array_content = [
             "payment" => [
                 "orderId" => $id,
                 "action" => "pay",
-                "price" => $order->getPrice().'.00',
+                "price" => $order->getTotal().'.00',
             ],
             "customerInfo" => [
-                "email" => $renter->getEmail(),
+                "email" => $eml,
                 "phone" => $phone
             ]
         ];
@@ -1136,7 +1181,7 @@ class ProfileController extends Controller
 
                 $this->addFlash(
                     'notice',
-                    'Заявка #' . $id . ' успешно оплачена!<br> Владелец свяжется с вами для обсуждения нюансов.<br><a href="#">Скачайте</a> и распечатайте договор аренды.'
+                    'Заявка #' . $id . ' успешно оплачена!<br> Владелец свяжется с вами для обсуждения нюансов.<br><a href="/assets/rent_contract.docx">Скачайте</a> и распечатайте договор аренды.'
                 );
 
                 return new Response('OK', 200);
