@@ -248,6 +248,7 @@ class UserController extends Controller
         $user->setActivateString($code);
         $user->setTempPassword('');
         $user->setIsSubscriber(true);
+        $user->setIsNew(true);
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
         $em->flush();

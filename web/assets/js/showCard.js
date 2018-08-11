@@ -118,3 +118,16 @@ $( document ).ready(function() {
     });
 
 });
+
+function new_book_validate(){
+
+    var message = [];
+
+    var phone = $('#phone').val();
+    if (!phone) message.push('<br>Заполните номер телефона!');
+
+    if (message.length > 0){
+        UIkit.notification('Заполните номер телефона!',{status:'danger',timeout:100000});
+        return false;
+    }
+}

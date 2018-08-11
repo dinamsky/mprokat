@@ -290,6 +290,20 @@ class ShowCardController extends Controller
         }
 
 
+        $visitor = $this->get('session')->get('logged_user');
+
+        $phone = true;
+
+        if($visitor){
+            $phone = false;
+            foreach ($visitor->getInformation() as $inf)
+                if($inf->getUiKey() == 'phone') {
+                $phone = $inf->getUiValue();
+                break;
+            }
+            if(isset($phone) and $phone != '') $phone = true;
+        }
+
         return $this->render('card/card_show.html.twig', [
 
             'card' => $card,
@@ -306,12 +320,14 @@ class ShowCardController extends Controller
 //            'regionId' => $city->getParentId(),
 //            'regions' => $mc->getRegion($city->getCountry()),
 //            'cities' => $mc->getCities($city->getParentId()),
+
             'cityId' => $card->getCityId(),
 
 //            'generalTopLevel' => $mgt->getTopLevel(),
 //            'generalSecondLevel' => $mgt->getSecondLevel($card->getGeneralType()->getParentId()),
 //            'pgtid' => $pgtid,
 //            'gtid' => $card->getGeneralTypeId(),
+
             'similar' => $similar,
 
             'mark_groups' => $mm->getGroups(),
@@ -325,7 +341,7 @@ class ShowCardController extends Controller
             'mainFoto' => $mainFoto,
             'seo' => $seo,
 
-
+            'phone' => $phone,
 
             'mark_arr_sorted' => $mark_arr_sorted,
             'models_in_mark' => $models_in_mark,
