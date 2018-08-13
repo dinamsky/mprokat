@@ -904,23 +904,32 @@ class ProfileController extends Controller
 
         $user = 'renter';
         if($order->getUserId() == $request->request->get('user_id')) $user = 'owner';
-        else $order->setIsActiveRenter(true);
+//        else $order->setIsActiveRenter(true);
 
         if ($user == 'owner') {
-            $order->setIsActiveOwner(true);
+//            $order->setIsActiveOwner(true);
             $query = $em->createQuery('UPDATE UserBundle:FormOrder f SET f.isActiveOwner = 0 WHERE f.userId = ?1');
             $query->setParameter(1, $request->request->get('user_id'));
             $query->execute();
+
+            $query = $em->createQuery('UPDATE UserBundle:FormOrder f SET f.isActiveOwner = 1 WHERE f.id = ?1');
+            $query->setParameter(1, $request->request->get('id'));
+            $query->execute();
+
         }
         else {
-            $order->setIsActiveRenter(true);
+//            $order->setIsActiveRenter(true);
             $query = $em->createQuery('UPDATE UserBundle:FormOrder f SET f.isActiveRenter = 0 WHERE f.renterId = ?1');
             $query->setParameter(1, $request->request->get('user_id'));
             $query->execute();
+
+            $query = $em->createQuery('UPDATE UserBundle:FormOrder f SET f.isActiveRenter = 1 WHERE f.id = ?1');
+            $query->setParameter(1, $request->request->get('id'));
+            $query->execute();
         }
 
-        $em->persist($order);
-        $em->flush();
+//        $em->persist($order);
+//        $em->flush();
 
         return new Response("");
     }
