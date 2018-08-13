@@ -502,9 +502,14 @@
                 {% endif %}
 
                 {% if not is_mobile() and card.user.id != 1971%}
-                <div class="uk-margin-bottom card_blanc border_green {{ card.user.isNew == 1 ? 'newbook' : '' }}" {{ card.user.isNew == 1 ? 'uk-sticky="offset: 94"': '' }}>
+                    <div class="uk-margin-bottom" {{ card.user.isNew == 1 ? 'uk-sticky="offset: 94"': '' }}>
+                <div class="card_blanc border_green {{ card.user.isNew == 1 ? 'newbook' : '' }}" >
                     <div class="nbinner cursor-pointer uk-text-center c_green" uk-toggle="target: #user_book_form"><i class="fa fa-pencil-square-o"></i> {% trans %}Отправить заявку{% endtrans %}</div>
                 </div>
+                        {% if card.user.isNew == 1 %}
+                            <div style="background: #f9f9f9;text-align: center">Пока вы ни за что не платите</div>
+                        {% endif %}
+                    </div>
                 {% endif %}
 
                 {% if not is_mobile() %}

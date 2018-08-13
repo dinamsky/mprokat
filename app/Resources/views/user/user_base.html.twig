@@ -14,7 +14,7 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('assets/favicon.ico') }}" />
         <title>{% block title %}Мультипрокат{% endblock %}</title>
     </head>
-    <body>
+    <body class="{{ is_mobile() ? 'mobile' : 'desktop' }} {% block bodyClass %}{% endblock %}">
         {{ include('header.html.twig') }}
         <div id="content" class="standard_wide uk-margin-top">
             {% for label, messages in app.flashes %}
