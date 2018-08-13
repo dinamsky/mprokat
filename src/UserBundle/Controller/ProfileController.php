@@ -691,7 +691,22 @@ class ProfileController extends Controller
             $form_order->setName('');
             $form_order->setFormType('new_transport_order');
 
-            $form_order->setMessages('');
+            if($post->get('content') != ''){
+                $msg = $post->get('content');
+            } else {
+                $msg = 'Добрый день! Отправляю вам заявку';
+            }
+
+            $messages[] = [
+                'date' => date('d-m-Y'),
+                'time' => date('H:i'),
+                'from' => 'renter',
+                'message' => $msg,
+                'status' => 'send'
+            ];
+
+
+            $form_order->setMessages(json_encode($messages));
             $form_order->setRenterId($renter->getId());
             $form_order->setFioRenter($renter->getHeader());
             $form_order->setPassport4('');
@@ -700,12 +715,10 @@ class ProfileController extends Controller
             $form_order->setRenterStatus('wait_for_accept');
             $form_order->setIsNew(1);
 
-
             $form_order->setPrice($price);
             $form_order->setDeposit($deposit);
             $form_order->setService($service);
             $form_order->setTotal($total);
-
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($form_order);
@@ -983,10 +996,10 @@ class ProfileController extends Controller
         $em->persist($order);
         $em->flush();
 
-        $this->addFlash(
-                'notice',
-                'Вы только что ответили на заявку #'.$id.'!<br> Мы уведомили арендатора'
-            );
+//        $this->addFlash(
+//                'notice',
+//                'Вы только что ответили на заявку #'.$id.'!<br> Мы уведомили арендатора'
+//            );
 
         return new Response("");
     }
@@ -1016,10 +1029,10 @@ class ProfileController extends Controller
         $em->persist($order);
         $em->flush();
 
-        $this->addFlash(
-                'notice',
-                'Вы только что ответили на заявку #'.$id.'!<br> Мы уведомили владельца'
-            );
+//        $this->addFlash(
+//                'notice',
+//                'Вы только что ответили на заявку #'.$id.'!<br> Мы уведомили владельца'
+//            );
 
         return new Response("");
     }

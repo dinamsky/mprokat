@@ -34,7 +34,7 @@ $( document ).ready(function() {
 
     $('#owner_answer').on('click', function () {
         var id = $(this).val();
-        var answer = $(this).siblings('textarea[name="answer"]').val();
+        var answer = $(this).parents('.ord_content').find('textarea[name="answer"]').val();
 
         $.ajax({
             url: '/ajax_owner_answer',
@@ -50,7 +50,7 @@ $( document ).ready(function() {
 
     $('#renter_answer').on('click', function () {
         var id = $(this).val();
-        var answer = $(this).siblings('textarea[name="answer"]').val();
+        var answer = $(this).parents('.ord_content').find('textarea[name="answer"]').val();
 
         $.ajax({
             url: '/ajax_renter_answer',
@@ -83,8 +83,11 @@ $( document ).ready(function() {
     $('.ord_toggler').on('click', function () {
         var id = $(this).data('id');
         var user_id = $(this).data('user_id');
+
+        $('.active_white').remove();
+
         $('.ord_toggler').removeClass('active');
-        $(this).addClass('active');
+        $(this).addClass('active').append('<div class="active_white"></div>');
         $('.ord_content').addClass('uk-hidden');
         $('#ord_desc_'+id).removeClass('uk-hidden');
         $('.ord_sum').addClass('uk-hidden');
@@ -116,7 +119,7 @@ $( document ).ready(function() {
         var t = $('textarea[name="answer"]');
         if(!t.is(":focus") && t.val() === '') {
             //console.log('not in focus');
-            window.location.reload(true);
+            //window.location.reload(true);
         } else {
             //console.log('in focus');
         }

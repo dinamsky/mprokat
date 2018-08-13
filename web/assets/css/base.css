@@ -1475,9 +1475,26 @@ top: 80%;
 }
 
 .ord_toggler.active{
-    background: white;
+        background: white;
+    border-left: 1px solid grey;
+    border-top: 1px solid grey;
+    border-bottom: 1px solid grey;
+    position: relative;
 }
 
+.ord_central{
+    background: white;
+    border-left: 1px solid grey;
+    border-top: 1px solid grey;
+    border-bottom: 1px solid grey;
+}
+
+.ord_righter{
+    background: white;
+    border-right: 1px solid grey;
+    border-top: 1px solid grey;
+    border-bottom: 1px solid grey;
+}
 /*.ord_toggler.active::after{*/
     /*content: "►";*/
     /*font-family: Arial, sans-serif;*/
@@ -1581,3 +1598,32 @@ top: 80%;
     background:darkblue;
 }
 
+.rating_star{
+    color: grey;
+}
+
+.rating_star.filled{
+    color: #6f729b;
+}
+
+.rating_star.filled svg polygon{
+    fill: #6f729b;
+}
+
+.ok_big{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.big_order_list{
+    background: #d8d8d8;
+}
+
+.active_white{
+    position: absolute;
+    right: -1px;
+    top: 0;
+    background: white;
+    width: 1px;
+    height: 100%;
+}
