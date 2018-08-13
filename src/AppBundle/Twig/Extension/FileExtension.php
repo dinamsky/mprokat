@@ -29,10 +29,13 @@ class FileExtension extends \Twig_Extension
                 return json_decode($json, true);
             }),
             new \Twig_SimpleFunction('getuser', function ($id){
-                return $this->em
-                ->getRepository(User::class)
-                ->find($id);
+                if($id) {
+                    return $this->em
+                        ->getRepository(User::class)
+                        ->find($id);
+                } else return var_dump($id);
             }),
+
             new \Twig_SimpleFunction('getcard', function ($id){
                 return $this->em
                 ->getRepository(Card::class)
