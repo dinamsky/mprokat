@@ -912,6 +912,10 @@ class ProfileController extends Controller
             $query->setParameter(1, $request->request->get('user_id'));
             $query->execute();
 
+            $query = $em->createQuery('UPDATE UserBundle:FormOrder f SET f.isActiveRenter = 0 WHERE f.renterId = ?1');
+            $query->setParameter(1, $request->request->get('user_id'));
+            $query->execute();
+
             $query = $em->createQuery('UPDATE UserBundle:FormOrder f SET f.isActiveOwner = 1 WHERE f.id = ?1');
             $query->setParameter(1, $request->request->get('id'));
             $query->execute();
@@ -920,6 +924,10 @@ class ProfileController extends Controller
         else {
 //            $order->setIsActiveRenter(true);
             $query = $em->createQuery('UPDATE UserBundle:FormOrder f SET f.isActiveRenter = 0 WHERE f.renterId = ?1');
+            $query->setParameter(1, $request->request->get('user_id'));
+            $query->execute();
+
+             $query = $em->createQuery('UPDATE UserBundle:FormOrder f SET f.isActiveOwner = 0 WHERE f.userId = ?1');
             $query->setParameter(1, $request->request->get('user_id'));
             $query->execute();
 
