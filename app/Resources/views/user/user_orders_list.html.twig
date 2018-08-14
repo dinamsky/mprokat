@@ -151,7 +151,7 @@
 
 
 
-                            <div class="uk-grid uk-grid-small">
+                            <div class="uk-grid uk-grid-small" style="margin-right: 10px">
                                 {% if dir == 'left' %}
                                 <div style="width: 60px;">
                                     <a target="_blanc"
@@ -194,32 +194,32 @@
                     {% endif %}
 
 
-                    <hr>
 
-                    <div class="uk-grid uk-grid-small">
+                    <div style="border: 1px solid grey;margin-top: 40px">
+                        <div class="uk-grid uk-grid-small">
 
-                        <div class="uk-width-expand msgb">
-                            <textarea name="answer" class="uk-width-1-1" style="min-height: 50px;border-radius:10px;padding: 5px;font-size: 16px" placeholder="Ответить"></textarea>
-                            <div class="uk-hidden">
-                                <div uk-toggle="target: #show_pat_{{ o.id }}" style="border-bottom: 1px dotted blue;display: inline-block;cursor: pointer">Выбрать шаблон</div><br>
-                                <div id="show_pat_{{ o.id }}" hidden>
-                                    <div class="ord_pat">Запрос документов: фото водительского удостоверения и фото арендатора с удостоверением в руках на электронную почту:</div>
-                                    <div class="ord_pat">Запрос документов: фото паспотра и фото арендатора с паспортом в руках на электронную почту:</div>
-                                    <div class="ord_pat">Транспорт не доступен в выбранные даты, можем предложить:</div>
-                                    <div class="ord_pat">Данный транспорт, к сожалению, не доступен. Предлагаем замену: </div>
-                                    <div class="ord_pat">Данный транспорт можно забрать и вернуть только в городе:</div>
-                                </div>
+                            <div class="uk-width-expand msgb">
+                                <textarea name="answer" class="uk-width-1-1" style="height: 30px;padding: 5px;font-size: 16px;overflow:hidden;resize: none;border: 0" placeholder="Написать сообщение"></textarea>
+
                             </div>
-                        </div>
-                        <div class="uk-width-auto">
-                            <button type="button" id="owner_answer" class="nt_btn" value="{{ o.id }}"><i class="fa fa-send"></i></button>
+                            <div class="uk-width-auto">
+                                <button type="button" id="{{ app.session.get('logged_user').id == o.userId ? 'owner' : 'renter' }}_answer" class="snd_btn" value="{{ o.id }}" disabled><i class="fa fa-send"></i> Отправить</button>
+                            </div>
                         </div>
                     </div>
 
 
 
-
-
+                            {#<div class="uk-hidden">#}
+                                {#<div uk-toggle="target: #show_pat_{{ o.id }}" style="border-bottom: 1px dotted blue;display: inline-block;cursor: pointer">Выбрать шаблон</div><br>#}
+                                {#<div id="show_pat_{{ o.id }}" hidden>#}
+                                    {#<div class="ord_pat">Запрос документов: фото водительского удостоверения и фото арендатора с удостоверением в руках на электронную почту:</div>#}
+                                    {#<div class="ord_pat">Запрос документов: фото паспотра и фото арендатора с паспортом в руках на электронную почту:</div>#}
+                                    {#<div class="ord_pat">Транспорт не доступен в выбранные даты, можем предложить:</div>#}
+                                    {#<div class="ord_pat">Данный транспорт, к сожалению, не доступен. Предлагаем замену: </div>#}
+                                    {#<div class="ord_pat">Данный транспорт можно забрать и вернуть только в городе:</div>#}
+                                {#</div>#}
+                            {#</div>#}
 
 
 
@@ -259,7 +259,7 @@
 
 
 
-                    <div class="uk-margin-large-bottom uk-text-center">
+                    <div class="uk-margin-medium-bottom uk-text-center">
                         <a target="_blanc"
                                        href="/user/{{  app.session.get('logged_user').id == o.renterId ? o.userId : o.renterId }}"
                                        uk-tooltip="title:Перейти на страницу пользователя"

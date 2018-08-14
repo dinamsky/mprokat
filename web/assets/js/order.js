@@ -88,8 +88,8 @@ $( document ).ready(function() {
 
         $('.ord_toggler').removeClass('active');
         $(this).addClass('active').append('<div class="active_white"></div>');
-        $('.ord_content').addClass('uk-hidden');
-        $('#ord_desc_'+id).removeClass('uk-hidden');
+        $('.ord_content').addClass('uk-hidden').removeClass('active');
+        $('#ord_desc_'+id).removeClass('uk-hidden').addClass('active');
         $('.ord_sum').addClass('uk-hidden');
         $('#ord_sum_'+id).removeClass('uk-hidden');
         $.ajax({
@@ -119,15 +119,52 @@ $( document ).ready(function() {
         var t = $('textarea[name="answer"]');
         if(!t.is(":focus") && t.val() === '') {
             //console.log('not in focus');
-            window.location.reload(true);
+            //window.location.reload(true);
         } else {
             //console.log('in focus');
         }
 
         }, 10000);
 
+    $('.ord_messages').css('height',$(window).height() - 300 + 'px');
 
 
+    $('.ord_content textarea').on('keyup',function () {
+        var c = $(this).val();
+        if (c!=='')  $(this).parents('.ord_content').find('.snd_btn').removeAttr('disabled');
+        else $(this).parents('.ord_content').find('.snd_btn').attr('disabled',true);
+    });
+
+
+    $('.rs_selector').on('mouseenter', function () {
+        var s = $(this).data('star')-0;
+        var t = $(this);
+        $(this).parent('div').find('.rs_selector').removeClass('filled');
+        for (var i = 1; i <= s; i++) {
+           t.parent('div').find('.star_'+i).addClass('filled');
+        }
+
+    });
+
+    $('.rs_selector').on('mouseleave', function () {
+        var t = $(this);
+        var s = t.parent('div').find('.rs_selector.stopped').data('star')-0;
+        $(this).parent('div').find('.rs_selector').removeClass('filled');
+        for (var i = 1; i <= s; i++) {
+           t.parent('div').find('.star_'+i).addClass('filled');
+        }
+    });
+
+    $('.rs_selector').on('click', function () {
+        var t = $(this);
+        var s = $(this).data('star')-0;
+
+        t.parents('form').find('input[name="rating"]').val(s);
+        t.parent('div').find('.rs_selector').removeClass('stopped');
+        t.addClass('stopped');
+    });
+
+    //console.log($(window).height());
 
     // $('textarea[name="answer"]').on('focus', function () {
     //     clearTimeout(timer);

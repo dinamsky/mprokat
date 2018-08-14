@@ -9,7 +9,12 @@
         </div>
 
         <form action="/user_renter_finish" method="POST" >
-            <div>Рейтинг: <input type="text" name="rating" value="5"> баллов</div>
+            <div>Рейтинг:
+                {% for s in [1,2,3,4,5] %}
+                    <span uk-icon="star" class="rating_star filled rs_selector star_{{ s }} {{ s == 5 ? 'stopped' }}" data-star="{{ s }}"></span>
+                {% endfor %}
+            </div>
+            <input type="hidden" name="rating" value="5">
             <div class="uk-margin">
                 <div><label><input type="checkbox" name="details[]" value="чистота/аккуратность" checked> чистота/аккуратность</label></div>
                 <div><label><input type="checkbox" name="details[]" value="пунктуальность" checked> пунктуальность</label></div>
@@ -17,7 +22,7 @@
                 <div><label><input type="checkbox" name="details[]" value="общительность" checked> общительность</label></div>
                 <div><label><input type="checkbox" name="details[]" value="порядочность" checked> порядочность</label></div>
             </div>
-            <button id="renter_finish">Завершить</button>
+            <button id="renter_finish" class="ok_btn">Завершить</button>
             <input type="hidden" name="id" value="{{ o.id }}">
         </form>
     </div>
