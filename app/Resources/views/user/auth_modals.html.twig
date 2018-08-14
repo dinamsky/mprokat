@@ -28,7 +28,8 @@
                 <input type="text" name="header" placeholder="{% trans %}Введите название компании или ваше имя{% endtrans %}" class="uk-input uk-margin-bottom">
                 <input type="text" name="email" placeholder="Email" required class="uk-input uk-margin-bottom">
                 <input type="password" name="password" placeholder="{% trans %}Пароль{% endtrans %}" required class="uk-input uk-margin-bottom">
-                <button class="uk-button uk-button-primary">{% trans %}Зарегистрироваться{% endtrans %}</button>
+                <div class="uk-margin-bottom"><label><input type="checkbox" name="oferta"> Я ознакомлен и согласен с условиями <a target="_blanc" class="underline" uk-tooltip="title:откроется в новом окне" href="/assets/docs/oferta.pdf">оферты</a></label></div>
+                <button class="uk-button uk-button-primary" disabled>{% trans %}Зарегистрироваться{% endtrans %}</button>
             </form>
         </div>
     </div>

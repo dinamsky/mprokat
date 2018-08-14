@@ -23,6 +23,9 @@
 !web/assets/images/interface/*
 !web/assets/images/chat/.gitkeep
 
+/web/assets/docs/*
+!web/assets/docs/.gitkeep
+
 /app/Resources/views/email/*
 !app/Resources/views/email/.gitkeep
 /bin/symfony_requirements

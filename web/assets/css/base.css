@@ -1627,3 +1627,36 @@ top: 80%;
     width: 1px;
     height: 100%;
 }
+
+#signUpForm button[disabled]{
+    background: lightgrey !important;
+}
+
+#new_password button[disabled]{
+    background: lightgrey !important;
+}
+
+
+.underline{
+    text-decoration: underline;
+}
+
+.ord_messages{
+    overflow-y: auto;
+}
+
+.snd_btn[disabled]{
+    background: transparent;
+    padding: 10px 10px;
+    color: grey;
+}
+
+.snd_btn{
+    background: transparent;
+    padding: 10px 10px;
+    color: #07d;
+}
+
+.ord_content textarea{
+    outline: none;
+}
