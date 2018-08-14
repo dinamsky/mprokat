@@ -1561,6 +1561,13 @@ top: 80%;
     margin-top: 32px;
 }
 
+.system_message{
+    background: lightgrey;
+    padding: 10px;
+    text-align: center;
+    color: #3a3a3a;
+}
+
 .ord_pat{
     cursor: pointer;
     background: #f3f3f3;

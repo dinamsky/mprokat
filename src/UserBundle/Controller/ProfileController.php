@@ -952,6 +952,17 @@ class ProfileController extends Controller
             ->getRepository(FormOrder::class)
             ->find($id);
 
+
+        $messages = json_decode($order->getMessages(),true);
+        $messages[] = [
+            'date' => date('d-m-Y'),
+            'time' => date('H:i'),
+            'from' => 'system',
+            'message' => 'Ваша заявка одобрена. Ожидается оплата',
+            'status' => 'send'
+        ];
+
+        $order->setMessages(json_encode($messages));
         $order->setOwnerStatus('accepted');
         $order->setRenterStatus('wait_for_pay');
         $em->persist($order);
@@ -974,6 +985,17 @@ class ProfileController extends Controller
         $order = $this->getDoctrine()
             ->getRepository(FormOrder::class)
             ->find($id);
+
+        $messages = json_decode($order->getMessages(),true);
+        $messages[] = [
+            'date' => date('d-m-Y'),
+            'time' => date('H:i'),
+            'from' => 'system',
+            'message' => 'Ваша заявка отклонена',
+            'status' => 'send'
+        ];
+
+        $order->setMessages(json_encode($messages));
 
         $order->setOwnerStatus('rejected');
         $order->setRenterStatus('rejected');
