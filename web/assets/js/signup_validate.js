@@ -1,3 +1,23 @@
+$( document ).ready(function() {
+    $('input[name="oferta"]').on('change', function () {
+        var ok = $(this).prop('checked');
+        if(ok) {
+            $('#signUpForm').find('button').removeAttr('disabled');
+        } else {
+            $('#signUpForm').find('button').attr('disabled',true);
+        }
+    });
+
+    $('input[name="oferta2"]').on('change', function () {
+        var ok = $(this).prop('checked');
+        if(ok) {
+            $('#new_password').find('button').removeAttr('disabled');
+        } else {
+            $('#new_password').find('button').attr('disabled',true);
+        }
+    });
+});
+
 function signup_validate(){
     var email = $('#signUpForm').find('input[name="email"]').val();
     var password = $('#signUpForm').find('input[name="password"]').val();
