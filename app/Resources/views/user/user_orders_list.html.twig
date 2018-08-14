@@ -147,17 +147,29 @@
                             {% if app.session.get('logged_user').id == o.renterId and m.from == 'owner' %}
                                 {% set dir = 'left' %}
                             {% endif %}
-
+                            {% if m.from == 'system' %}
+                                {% set dir = 'system' %}
+                            {% endif %}
 
 
 
                             <div class="uk-grid uk-grid-small" style="margin-right: 10px">
                                 {% if dir == 'left' %}
+
+                                    {% set url = '/assets/images/users/t/user_'~o.renterId~'.jpg' %}
+                                    {% if(m.from == 'owner') %}
+                                        {% set url = '/assets/images/users/t/user_'~o.userId~'.jpg' %}
+                                    {% endif %}
+                                    {% if not file_exists('.'~url) %}
+                                        {% set url = '/assets/images/interface/default-user.png' %}
+                                    {% endif %}
+
+
                                 <div style="width: 60px;">
                                     <a target="_blanc"
                                        href="/user/{{  m.from == 'owner' ? o.userId : o.renterId }}"
                                        uk-tooltip="title:Перейти на страницу пользователя"
-                                       style="background: url('/assets/images/users/t/user_{{  m.from == 'owner' ? o.userId : o.renterId }}.jpg') center center;
+                                       style="background: url({{ url }}) center center;
                                         background-size: cover;
                                         height: 60px;
                                         display: block;
@@ -172,11 +184,21 @@
                                     </div>
                                 </div>
                                 {% if dir == 'right' %}
+
+                                    {% set url = '/assets/images/users/t/user_'~o.renterId~'.jpg' %}
+                                    {% if(m.from == 'owner') %}
+                                        {% set url = '/assets/images/users/t/user_'~o.userId~'.jpg' %}
+                                    {% endif %}
+                                    {% if not file_exists('.'~url) %}
+                                        {% set url = '/assets/images/interface/default-user.png' %}
+                                    {% endif %}
+
+                                    {#{{ dump(file_exists('.'~url)) }}#}
                                 <div style="width: 60px;">
                                     <a target="_blanc"
                                        href="/user/{{  m.from == 'owner' ? o.userId : o.renterId }}"
                                        uk-tooltip="title:Перейти на страницу пользователя"
-                                       style="background: url('/assets/images/users/t/user_{{  m.from == 'owner' ? o.userId : o.renterId }}.jpg') center center;
+                                       style="background: url({{ url }}) center center;
                                         background-size: cover;
                                         height: 60px;
                                         display: block;
@@ -260,10 +282,19 @@
 
 
                     <div class="uk-margin-medium-bottom uk-text-center">
+
+                        {% set url = '/assets/images/users/t/user_'~o.renterId~'.jpg' %}
+                        {% if( app.session.get('logged_user').id == o.userId) %}
+                            {% set url = '/assets/images/users/t/user_'~o.userId~'.jpg' %}
+                        {% endif %}
+                        {% if not file_exists('.'~url) %}
+                            {% set url = '/assets/images/interface/default-user.png' %}
+                        {% endif %}
+
                         <a target="_blanc"
                                        href="/user/{{  app.session.get('logged_user').id == o.renterId ? o.userId : o.renterId }}"
                                        uk-tooltip="title:Перейти на страницу пользователя"
-                                       style="background: url('/assets/images/users/t/user_{{  app.session.get('logged_user').id == o.renterId ? o.userId : o.renterId }}.jpg') center center;
+                                       style="background: url({{ url }}) center center;
                                         background-size: cover;
                                         height: 60px;
                                                width: 60px;
