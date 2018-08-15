@@ -127,6 +127,7 @@ $( document ).ready(function() {
         }, 10000);
 
     $('.ord_messages').css('height',$(window).height() - 300 + 'px');
+    $('.lft_blk').css('height',$(window).height() - 300 + 'px');
 
 
     $('.ord_content textarea').on('keyup',function () {
