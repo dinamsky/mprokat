@@ -92,6 +92,11 @@ $( document ).ready(function() {
         $('#ord_desc_'+id).removeClass('uk-hidden').addClass('active');
         $('.ord_sum').addClass('uk-hidden');
         $('#ord_sum_'+id).removeClass('uk-hidden');
+
+        if($('body').hasClass('mobile')){
+            UIkit.offcanvas('#ofc_left').hide();
+        }
+
         $.ajax({
             url: '/ajax_set_ord_active',
             type: 'POST',
@@ -126,9 +131,11 @@ $( document ).ready(function() {
 
         }, 10000);
 
-    $('.ord_messages').css('height',$(window).height() - 300 + 'px');
-    $('.lft_blk').css('height',$('.ord_central').height() - 50 + 'px');
+    if(!$('body').hasClass('mobile')) {
 
+        $('.ord_messages').css('height', $(window).height() - 300 + 'px');
+        $('.lft_blk').css('height', $('.ord_central').height() - 50 + 'px');
+    }
 
     $('.ord_content textarea').on('keyup',function () {
         var c = $(this).val();
