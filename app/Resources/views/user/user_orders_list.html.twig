@@ -22,7 +22,7 @@
     <div class="uk-grid" id="ord_messaging">
 
         <div class="uk-width-1-4">
-            <div style="background: #d8d8d8;">
+            <div style="background: #e8e8e8;" class="lft_blk">
                 {% for o in orders %}
                     <div class="uk-margin-bottom ord_toggler
                                 {{ app.session.get('logged_user').id == o.userId and o.isActiveOwner == 1 ? 'active' : '' }}
@@ -284,7 +284,7 @@
                     <div class="uk-margin-medium-bottom uk-text-center">
 
                         {% set url = '/assets/images/users/t/user_'~o.renterId~'.jpg' %}
-                        {% if( app.session.get('logged_user').id == o.userId) %}
+                        {% if( app.session.get('logged_user').id == o.renterId) %}
                             {% set url = '/assets/images/users/t/user_'~o.userId~'.jpg' %}
                         {% endif %}
                         {% if not file_exists('.'~url) %}

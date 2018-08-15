@@ -1548,6 +1548,7 @@ top: 80%;
     border-radius: 0 20px 20px 20px;
     float: left;
     margin-top: 32px;
+    word-break: break-all;
 }
 
 .right_message{
@@ -1559,6 +1560,7 @@ top: 80%;
     border-radius: 20px 0 20px 20px;
     float: right;
     margin-top: 32px;
+    word-break: break-all;
 }
 
 .system_message{
@@ -1623,7 +1625,7 @@ top: 80%;
 }
 
 .big_order_list{
-    background: #d8d8d8;
+    background: #e8e8e8;
 }
 
 .active_white{
@@ -1666,4 +1668,9 @@ top: 80%;
 
 .ord_content textarea{
     outline: none;
+}
+
+.lft_blk{
+    overflow-y: auto;
+    overflow-x: hidden;
 }
