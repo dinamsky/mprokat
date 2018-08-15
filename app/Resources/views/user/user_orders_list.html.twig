@@ -19,10 +19,13 @@
     <h1 style="font-size: 18px">Входящие</h1>
 
 
-    <div class="uk-grid" id="ord_messaging">
+    <div class="{{ is_mobile() ? '' : 'uk-grid' }}" id="ord_messaging">
 
-        <div class="uk-width-1-4">
-            <div style="background: #e8e8e8;" class="lft_blk">
+        <div class="uk-width-1-4@s" {{ is_mobile() ? 'uk-offcanvas' }} id="ofc_left">
+
+            {{ is_mobile() ? '<div class="uk-offcanvas-bar"><button class="uk-offcanvas-close" type="button" uk-close></button>' }}
+
+            <div {{ is_mobile() ? '' : 'style="background: #e8e8e8;"' }} class="lft_blk">
                 {% for o in orders %}
                     <div class="uk-margin-bottom ord_toggler
                                 {{ app.session.get('logged_user').id == o.userId and o.isActiveOwner == 1 ? 'active' : '' }}
@@ -120,8 +123,9 @@
                     </div>
                 {% endfor %}
             </div>
+            {{ is_mobile() ? '</div>' }}
         </div>
-        <div class="uk-width-1-2 ord_central">
+        <div class="uk-width-1-2@s ord_central">
             {% for o in orders %}
                 <div id="ord_desc_{{ o.id }}" class=" ord_content
                                 {{ (app.session.get('logged_user').id == o.userId and o.isActiveOwner == 1) or (app.session.get('logged_user').id == o.renterId and o.isActiveRenter == 1) ? '' : 'uk-hidden' }}">
@@ -266,7 +270,8 @@
             {% endfor %}
         </div>
 
-        <div class="uk-width-1-4 ord_righter" >
+        <div class="uk-width-1-4@s ord_righter" {{ is_mobile() ? 'uk-offcanvas="flip: true"' }} id="ofc_right">
+            {{ is_mobile() ? '<div class="uk-offcanvas-bar"><button class="uk-offcanvas-close" type="button" uk-close></button>' }}
             {% for o in orders %}
                 <div id="ord_sum_{{ o.id }}" class=" padding10 ord_sum
                                 {{ (app.session.get('logged_user').id == o.userId and o.isActiveOwner == 1) or (app.session.get('logged_user').id == o.renterId and o.isActiveRenter == 1) ? '' : 'uk-hidden' }}">
@@ -445,6 +450,7 @@
                 </div>
 
             {% endfor %}
+            {{ is_mobile() ? '</div>' }}
         </div>
 
 
@@ -456,6 +462,11 @@
 
 </div>
 
+
+    <div style="position: fixed;bottom: 0;left: 0;width: 100%;height: auto;z-index: 2000" class="uk-clearfix">
+        <button uk-toggle="target: #ofc_left" type="button" class="ordbtn_left">Заявки</button>
+        <button uk-toggle="target: #ofc_right" type="button" class="ordbtn_right">О заявке</button>
+    </div>
 
 {% endblock %}
 

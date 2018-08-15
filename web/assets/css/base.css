@@ -1674,3 +1674,20 @@ top: 80%;
     overflow-y: auto;
     overflow-x: hidden;
 }
+
+.ordbtn_left{
+float: left;
+    padding: 10px 30px;
+    width: 40%;
+ }
+
+.ordbtn_right{
+    float: right;
+    padding: 10px 30px;
+    width: 40%;
+
+}
+
+body.mobile .ord_toggler.active{
+    background: #ffffff7a !important;
+}
