@@ -42,9 +42,13 @@ class FileExtension extends \Twig_Extension
                 ->find($id);
             }),
             new \Twig_SimpleFunction('main_foto', function($fotos){
-                return $fotos->filter(function($foto) {
-                    return $foto->getIsMain() === TRUE;
-                })->first();
+                if($fotos){
+                    return $fotos->filter(function($foto) {
+                        return $foto->getIsMain() === TRUE;
+                    })->first();
+                } else {
+                    return 0;
+                }
             }),
         );
     }
