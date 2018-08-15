@@ -13,9 +13,7 @@
             </select>
         </div>
 
-        <div class="uk-margin-bottom">
-            <input type="number" name="price[10]" class="uk-input uk-width-1-3 one_of" value="0"> ₽ - <span> Залог (укажите, если необходимо) </span>
-        </div>
+
 
 
         <div class="non_plane">
@@ -30,6 +28,7 @@
                             {% endfor %}
                         </div>
                         <div class="uk-text-small"><span class="red_star">*</span> {% trans %}Одна из расценок: в час/в день обязательна!{% endtrans %}</div>
+                        <div class="uk-text-small"><span class="red_star">*</span> Указывая стоимость, учитывайте сервисный сбор системы - 15% <span uk-icon="info" uk-toggle="target: #price_info" ></span></div>
                     </div>
                 </div>
                 <div class="uk-width-1-2">
@@ -47,6 +46,11 @@
                     </div>
                 {% endfor %}
             </div>
+
+            <div class="uk-margin-top">
+                Залог <input type="number" name="price[10]" class="uk-input uk-width-1-3 one_of" value="0"> ₽ - <span> (укажите, если необходимо) </span>
+            </div>
+
         </div>
         <div class="plane" style="display: none">
             <input type="number" name="price[6]" class="uk-input uk-width-1-3 one_of"> ₽ - <span>{% trans %}Ориентировочная{% endtrans %}</span>
@@ -56,5 +60,25 @@
     </div>
     <div class="uk-width-1-5">
 
+    </div>
+</div>
+
+<div id="price_info" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+        <h2 class="uk-modal-title">Сервисный сбор</h2>
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div>
+            На что идет сервисный сбор?<br>
+<br>
+Реклама вашего транспорта в интернете.<br>
+Мы привлекаем дополнительный рекламный трафик из внешних источников именно на ваш транспорт  <br>
+Вы зарабатываете больше денег.<br>
+<br>
+Владельцы, чей транспорт бронируется через нашу платформу, автоматически получают аккаунт PRO<br>
+<br>
+В сервисный сбор также входят: расходы на банковские переводы и обслуживание платежей.<br>
+Также вы как владелец транспорта сможете проверить арендатора по нашей базе «безопасных арендаторов» и запросить
+дополнительную информацию о безопасности сделки.
+        </div>
     </div>
 </div>
