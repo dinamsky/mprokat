@@ -284,6 +284,10 @@
     .block_1 h1{
         font-size: 31px !important;
     }
+
+    .ord_central{
+        border: 0;
+    }
 }
 
 @media (min-width: 600px) and (max-width: 1024px){
