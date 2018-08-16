@@ -1691,3 +1691,7 @@ float: left;
 body.mobile .ord_toggler.active{
     background: #ffffff7a !important;
 }
+
+body.mobile {
+    background: white !important;
+}

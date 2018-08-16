@@ -970,7 +970,7 @@ class ProfileController extends Controller
 
         $this->addFlash(
                 'notice',
-                'Вы только что одобрили заявку #'.$id.'!<br> Мы уведомили арендатора - ожидайте оплаты.<br><a href="/assets/rent_contract.docx">Скачайте</a> и распечатайте договор аренды.'
+                'Вы только что одобрили заявку #'.$id.'!<br> Мы уведомили арендатора - ожидайте оплаты.<br><a href="/assets/docs/rent_contract.docx">Скачайте</a> и распечатайте договор аренды.'
             );
 
         return new Response("");
@@ -1240,7 +1240,7 @@ class ProfileController extends Controller
 
                 $this->addFlash(
                     'notice',
-                    'Заявка #' . $id . ' успешно оплачена!<br> Владелец свяжется с вами для обсуждения нюансов.<br><a href="/assets/rent_contract.docx">Скачайте</a> и распечатайте договор аренды.'
+                    'Заявка #' . $id . ' успешно оплачена!<br> Владелец свяжется с вами для обсуждения нюансов.<br><a href="/assets/docs/rent_contract.docx">Скачайте</a> и распечатайте договор аренды.'
                 );
 
                 return new Response('OK', 200);

@@ -135,6 +135,9 @@ $( document ).ready(function() {
 
         $('.ord_messages').css('height', $(window).height() - 300 + 'px');
         $('.lft_blk').css('height', $('.ord_central').height() - 50 + 'px');
+
+    } else {
+        $('#content').css('min-height', $(window).height() - 58 + 'px');
     }
 
     $('.ord_content textarea').on('keyup',function () {
