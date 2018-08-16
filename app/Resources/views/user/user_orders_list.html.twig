@@ -123,6 +123,7 @@
                     </div>
                 {% endfor %}
             </div>
+            {{ is_mobile() ? '<div class="uk-margin-large-bottom"></div>' }}
             {{ is_mobile() ? '</div>' }}
         </div>
         <div class="uk-width-1-2@s ord_central">
@@ -157,7 +158,7 @@
 
 
 
-                            <div class="uk-grid uk-grid-small" style="margin-right: 10px">
+                            <div class="uk-grid uk-grid-small" {{ is_mobile() ? '' : 'style="margin-right: 10px"' }}>
                                 {% if dir == 'left' %}
 
                                     {% set url = '/assets/images/users/t/user_'~o.renterId~'.jpg' %}
@@ -221,7 +222,7 @@
 
 
 
-                    <div style="border: 1px solid grey;margin-top: 40px">
+                    <div style="border: 1px solid grey;margin-top: 40px;margin-bottom: 40px;">
                         <div class="uk-grid uk-grid-small">
 
                             <div class="uk-width-expand msgb">
@@ -420,7 +421,7 @@
                                 Телефон: {{ info.uiValue }}<br>
                                 {% endfor %}
                                 Email: {{ owner.email }}<br><br>
-                                <a href="/assets/rent_contract.docx">Скачать договор аренды транспорта</a>
+                                <a href="/assets/docs/rent_contract.docx">Скачать договор аренды транспорта</a>
                             {% endif %}
 
                             {% if o.ownerStatus == 'wait_for_rent' and app.session.get('logged_user').id == o.userId %}
@@ -431,7 +432,7 @@
                                 Телефон: {{ info.uiValue }}<br>
                                 {% endfor %}
                                 Email: {{ owner.email }}<br><br>
-                                <a href="/assets/rent_contract.docx">Скачать договор аренды транспорта</a>
+                                <a href="/assets/docs/rent_contract.docx">Скачать договор аренды транспорта</a>
                             {% endif %}
                         </div>
 
@@ -450,6 +451,7 @@
                 </div>
 
             {% endfor %}
+            {{ is_mobile() ? '<div class="uk-margin-large-bottom"></div>' }}
             {{ is_mobile() ? '</div>' }}
         </div>
 
