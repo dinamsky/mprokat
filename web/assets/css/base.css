@@ -731,11 +731,11 @@ footer a:hover{
 
 .card_grid_price{
     position: absolute;
-    background: rgb(37, 180, 91);
+    background: transparent;
     color: white;
     padding: 3px 5px;
-    right: 7px;
-    bottom: -13px;
+    left: 15px;
+    bottom: -30px;
     font-size: 14px;
     z-index: 1;
 }
