@@ -104,7 +104,7 @@ class UserController extends Controller
     /**
      * @Route("/userSignIn")
      */
-    public function signInAction(Request $request, Password $password)
+    public function signInAction(Request $request, Password $password, ServiceStat $stat)
     {
         $_t = $this->get('translator');
 
@@ -133,6 +133,14 @@ class UserController extends Controller
                 foreach($user->getInformation() as $info){
                     if($info->getUiKey() == 'foto') $this->get('session')->set('user_pic', $info->getUiValue());
                 }
+
+                $stat->setStat([
+                    'url' => $request->getPathInfo(),
+                    'event_type' => 'login',
+                    'page_type' => 'profile',
+                    'card_id' => 0,
+                    'user_id' => $user->getId(),
+                ]);
 
                 return $this->redirect($request->request->get('return'));
                 break;
