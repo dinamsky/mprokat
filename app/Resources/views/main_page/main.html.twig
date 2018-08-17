@@ -217,15 +217,15 @@
                 </div>
             </div>
             <div class="uk-width-1-4@s">
-                <a href="/rent/{{ in_city }}/all/snowride" class="cat_main_header padding20 c_grey bordered b_shadowed uk-display-block uk-text-center uk-margin-bottom">{% trans %}Снегоходы{% endtrans %}</a>
+                <a href="/rent/{{ in_city }}/all/snowride" class="cat_main_header padding20 c_grey bordered b_shadowed uk-display-block uk-text-center uk-margin-bottom">Мотоциклы</a>
                 {#<div>#}
                     {#{{ include('search/one_grid_view.html.twig', {'card':bicycles, 'height':'150px'}) }}#}
                 {#</div>#}
                 <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-items="1" data-dots="0">
-                    {% for card in snow %}
+                    {% for card in moto %}
                         {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px'}) }}
                     {% endfor %}
-                    {{ include('search/all_more.html.twig', {'title':'Все снегоходы', 'url':'/rent/'~in_city~'/all/bikes'}) }}
+                    {{ include('search/all_more.html.twig', {'title':'Все мотоциклы', 'url':'/rent/'~in_city~'/all/bikes'}) }}
                 </div>
             </div>
         </div>
