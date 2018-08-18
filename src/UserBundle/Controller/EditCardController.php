@@ -218,7 +218,7 @@ class EditCardController extends Controller
         $card->setHeader(strip_tags($post->get('header')));
         $card->setContent(strip_tags($post->get('content')));
         $card->setAddress(strip_tags($post->get('address')));
-        $card->setCoords($post->get('coords'));
+        $card->setCoords(strip_tags($post->get('coords')));
         $card->setVideo($post->get('video'));
         $card->setStreetView($post->get('streetView'));
         $card->setDeliveryStatus($post->get('deliveryStatus'));
@@ -305,7 +305,9 @@ class EditCardController extends Controller
                     $storage->setCard($card);
                     $storage->setCardFieldId($fieldId);
                 }
-
+                if($subfield->getStorageType() == 'FieldInteger'){
+                    $value = (int)$value;
+                }
                 $storage->setValue($value);
                 $em->persist($storage);
             }
@@ -337,7 +339,7 @@ class EditCardController extends Controller
                 $cardPrice = new cardPrice();
                 $cardPrice->setCard($card);
                 $cardPrice->setPrice($price);
-                $cardPrice->setValue($priceValue);
+                $cardPrice->setValue((int)$priceValue);
                 $em->persist($cardPrice);
             }
         };
