@@ -2,8 +2,8 @@
 <h3 id="tariff_section">Возможности продвижения объявления</h3>
 
 <div uk-grid class="tariff_selector uk-grid-small">
-    <div class="uk-width-1-3" ><div class="selector_item t_3 {{ tariffId == 3 or tariffId == 0 ? 'active' : '' }}" data-id="3">{% trans %}Премиум размещение{% endtrans %} 99 руб.</div></div>
-    <div class="uk-width-1-3" ><div class="selector_item t_2 {{ tariffId == 2 ? 'active' : '' }}" data-id="2">{% trans %}Экспресс продвижение{% endtrans %} 50 руб.</div></div>
+    <div class="uk-width-1-3" ><div class="selector_item t_3 {{ tariffId == 3 or tariffId == 0 ? 'active' : '' }}" data-id="3">{% trans %}Премиум размещение{% endtrans %} 890 руб.</div></div>
+    <div class="uk-width-1-3" ><div class="selector_item t_2 {{ tariffId == 2 ? 'active' : '' }}" data-id="2">{% trans %}Экспресс продвижение{% endtrans %} 350 руб.</div></div>
     <div class="uk-width-1-3" ><div class="selector_item t_1 {{ tariffId == 1 ? 'active' : '' }}" data-id="1">{% trans %}Обычная публикация{% endtrans %} &nbsp;&nbsp;&nbsp;</div></div>
 </div>
 
@@ -34,10 +34,10 @@
 
     </div>
     </div>
-    <button class="uk-button pay_tariff_button" name="change_tariff">Разместить и оплатить 99 руб.</button>
+    <button class="uk-button pay_tariff_button" name="change_tariff">Разместить и оплатить 890 руб.</button>
 </div>
 {% if edit is not defined %}
-<button class="uk-button pay_tariff_button temp_button" name="change_tariff">{% trans %}Разместить и оплатить{% endtrans %} 50 руб.</button>
+<button class="uk-button pay_tariff_button temp_button" name="change_tariff">{% trans %}Разместить и оплатить{% endtrans %} 350 руб.</button>
 {% endif %}
 
 
