@@ -571,6 +571,9 @@ class NewCardController extends Controller
                 $storage = new $storageTypeName();
                 $storage->setCard($card);
                 $storage->setCardFieldId($fieldId);
+                if($subfield->getStorageType() == 'FieldInteger'){
+                    $value = (int)$value;
+                }
                 $storage->setValue($value);
 
                 $em->persist($storage);
@@ -593,7 +596,7 @@ class NewCardController extends Controller
                 $cardPrice = new CardPrice();
                 $cardPrice->setCard($card);
                 $cardPrice->setPrice($price);
-                $cardPrice->setValue($priceValue);
+                $cardPrice->setValue((int)$priceValue);
                 $em->persist($cardPrice);
             }
 
