@@ -201,7 +201,7 @@
                     {% for card in wedding %}
                         {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px'}) }}
                     {% endfor %}
-                    {{ include('search/all_more.html.twig', {'title':'Все свадебные авто', 'url':'/rent/'~in_city~'/all/bikes'}) }}
+                    {{ include('search/all_more.html.twig', {'title':'Все свадебные авто', 'url':'/rent/'~in_city~'/all/wedding'}) }}
                 </div>
             </div>
             <div class="uk-width-1-4@s">
@@ -213,11 +213,11 @@
                     {% for card in heli %}
                         {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px'}) }}
                     {% endfor %}
-                    {{ include('search/all_more.html.twig', {'title':'Все вертолеты', 'url':'/rent/'~in_city~'/all/trucks'}) }}
+                    {{ include('search/all_more.html.twig', {'title':'Все вертолеты', 'url':'/rent/'~in_city~'/all/helicopters'}) }}
                 </div>
             </div>
             <div class="uk-width-1-4@s">
-                <a href="/rent/{{ in_city }}/all/snowride" class="cat_main_header padding20 c_grey bordered b_shadowed uk-display-block uk-text-center uk-margin-bottom">Мотоциклы</a>
+                <a href="/rent/{{ in_city }}/all/bikes" class="cat_main_header padding20 c_grey bordered b_shadowed uk-display-block uk-text-center uk-margin-bottom">Мотоциклы</a>
                 {#<div>#}
                     {#{{ include('search/one_grid_view.html.twig', {'card':bicycles, 'height':'150px'}) }}#}
                 {#</div>#}
