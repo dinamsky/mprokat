@@ -482,35 +482,14 @@
 
             <div class="uk-width-1-4@s">
 
-                {% if not reserved and card.user.isNew != 1%}
-                <div class="uk-margin-bottom card_page_phone" {{ is_mobile() ? '' : 'uk-sticky="offset: 64"' }}>
-                    <div uk-grid class="uk-grid-collapse uk-grid-match b_shadowed">
-                        <div class="phone_block uk-width-1-1">
-                            {% if app.session.get('phone')[card.user.id] is not defined %}
-                                <div class="hidden_phone bg_blue show_phone uk-text-center c_white" data-card_id="{{ card.id }}" data-profile="0">
-                                    <div class="uk-text-center">{% trans %}Показать телефон{% endtrans %}</div>
-                                    <i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue|slice(0,5) }} XXX-XX-XX{% endfor %}
-                                </div>
 
-                            {% else %}
-                                <a class="opened_phone bg_green c_white uk-text-center" href="tel:{% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}">
-                                    <i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}
-                                </a>
-                            {% endif %}
-                        </div>
-
-                    </div>
-                </div>
-                {% endif %}
 
                 {% if not is_mobile() and card.user.id != 1971%}
-                    <div class="uk-margin-bottom" {{ card.user.isNew == 1 ? 'uk-sticky="offset: 94"': '' }}>
-                <div class="card_blanc border_green {{ card.user.isNew == 1 ? 'newbook' : '' }}" >
-                    <div class="nbinner cursor-pointer uk-text-center c_green" uk-toggle="target: #user_book_form"><i class="fa fa-pencil-square-o"></i> {% trans %}Отправить заявку{% endtrans %}</div>
-                </div>
-                        {% if card.user.isNew == 1 %}
-                            <div style="background: #f9f9f9;text-align: center">Пока вы ни за что не платите</div>
-                        {% endif %}
+                    <div class="uk-margin-bottom" uk-sticky="offset: 94" style="z-index: 100">
+                        <div class="card_blanc border_green newbook" >
+                            <div class="nbinner cursor-pointer uk-text-center c_green" uk-toggle="target: #user_book_form"><i class="fa fa-pencil-square-o"></i> {% trans %}Отправить заявку{% endtrans %}</div>
+                        </div>
+                        <div style="background: #f9f9f9;text-align: center">Пока вы ни за что не платите</div>
                     </div>
                 {% endif %}
 
@@ -545,68 +524,89 @@
                 {% endif %}
 
                 {% if not is_mobile() %}
-                <div class="user_block uk-text-center uk-margin-bottom">
+                    <div class="user_block uk-text-center uk-margin-bottom">
 
-                    <div uk-grid class="uk-grid-small">
-                        {% if user_foto %}
-                            <div class="uk-width-auto">
-                                <a href="/user/{{ card.user.id }}" style="background: url('{{ user_foto }}') center center no-repeat;
-                                        background-size: contain;
-                                        width: 50px;
-                                        height: 50px;
-                                        display: inline-block;
-                                        ">
-                                </a>
+                        <div uk-grid class="uk-grid-small">
+                            {% if user_foto %}
+                                <div class="uk-width-auto">
+                                    <a href="/user/{{ card.user.id }}" style="background: url('{{ user_foto }}') center center no-repeat;
+                                            background-size: contain;
+                                            width: 50px;
+                                            height: 50px;
+                                            display: inline-block;
+                                            ">
+                                    </a>
+                                </div>
+                            {% else %}
+                            {% endif %}
+
+                            <div class="uk-width-expand">
+                                <div class="uk-text-small">{% trans %}Собственник{% endtrans %}</div>
+                                <h3 class="uk-margin-remove uk-text-truncate" style="line-height: 31px;"><a href="/user/{{ card.user.id }}" class="uk-text-truncate">{{ card.user.header }}</a></h3>
                             </div>
-                        {% else %}
-                        {% endif %}
+                        </div>
 
-                        <div class="uk-width-expand">
-                            <div class="uk-text-small">{% trans %}Собственник{% endtrans %}</div>
-                            <h3 class="uk-margin-remove uk-text-truncate" style="line-height: 31px;"><a href="/user/{{ card.user.id }}" class="uk-text-truncate">{{ card.user.header }}</a></h3>
+
+
+
+                        <div class="">
+                            {% for info in card.user.information %}
+                                {% if info.uiKey == 'vk' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_vk"><i class="fa fa-vk"></i></a>{% endif %}
+                                {% if info.uiKey == 'fb' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_fb"><i class="fa fa-facebook"></i></a>{% endif %}
+                                {% if info.uiKey == 'ok' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_ok"><i class="fa fa-odnoklassniki"></i></a>{% endif %}
+                                {% if info.uiKey == 'tw' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_tw"><i class="fa fa-twitter"></i></a>{% endif %}
+                                {% if info.uiKey == 'gp' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_gp"><i class="fa fa-google-plus"></i></a>{% endif %}
+                                {% if info.uiKey == 'ig' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_ig"><i class="fa fa-instagram"></i></a>{% endif %}
+                                {% if info.uiKey == 'yt' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_yt"><i class="fa fa-youtube"></i></a>{% endif %}
+                            {% endfor %}
                         </div>
                     </div>
+                    {% if not is_admin_card %}
+                    {#<div class="uk-margin-bottom card_blanc">#}
+                        {#<div class="cursor-pointer uk-text-center" uk-toggle="target: #user_message_form"><i class="fa fa-commenting"></i> {% trans %}Email сообщение{% endtrans %}</div>#}
+                    {#</div>#}
+                    {% endif %}
+
+                    {% if app.session.has('logged_user') and blockings[app.session.get('logged_user').id] is not defined%}
+                        <div class="uk-margin-bottom card_blanc">
+                            <div class="open_chat cursor-pointer uk-text-center" data-user_id="{{ card.user.id }}" data-visitor_id="{{ app.session.get('logged_user').id }}" data-card_id="{{ card.id }}"><i class="fa fa-comments"></i> {% trans %}Написать сообщение{% endtrans %}</div>
+                        </div>
+                        {{ include('user/chat_modal.html.twig') }}
+                    {% endif %}
 
 
-
-
-                    <div class="">
-                        {% for info in card.user.information %}
-                            {% if info.uiKey == 'vk' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_vk"><i class="fa fa-vk"></i></a>{% endif %}
-                            {% if info.uiKey == 'fb' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_fb"><i class="fa fa-facebook"></i></a>{% endif %}
-                            {% if info.uiKey == 'ok' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_ok"><i class="fa fa-odnoklassniki"></i></a>{% endif %}
-                            {% if info.uiKey == 'tw' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_tw"><i class="fa fa-twitter"></i></a>{% endif %}
-                            {% if info.uiKey == 'gp' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_gp"><i class="fa fa-google-plus"></i></a>{% endif %}
-                            {% if info.uiKey == 'ig' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_ig"><i class="fa fa-instagram"></i></a>{% endif %}
-                            {% if info.uiKey == 'yt' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_yt"><i class="fa fa-youtube"></i></a>{% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
-                {% if not is_admin_card %}
-                {#<div class="uk-margin-bottom card_blanc">#}
-                    {#<div class="cursor-pointer uk-text-center" uk-toggle="target: #user_message_form"><i class="fa fa-commenting"></i> {% trans %}Email сообщение{% endtrans %}</div>#}
-                {#</div>#}
-                {% endif %}
-
-                {% if app.session.has('logged_user') and blockings[app.session.get('logged_user').id] is not defined%}
                     <div class="uk-margin-bottom card_blanc">
-                        <div class="open_chat cursor-pointer uk-text-center" data-user_id="{{ card.user.id }}" data-visitor_id="{{ app.session.get('logged_user').id }}" data-card_id="{{ card.id }}"><i class="fa fa-comments"></i> {% trans %}Написать сообщение{% endtrans %}</div>
+                        <div><i class="fa fa-eye c_green"></i> {{ card.views }} <span class="uk-text-small c_grey">{% trans %}просмотров{% endtrans %}</span></div>
+                        <div><i class="fa fa-heart c_red"></i> <span id="card_likes">{{ card.likes }}</span> <span class="uk-text-small c_grey">{% trans %}лайков{% endtrans %}</span></div>
+                        <div>
+                            <i class="fa fa-star c_gold"></i> {{ opinions }}/5 <span class="uk-text-small c_grey">{% trans %}звезд из{% endtrans %}</span> {{ total_opinions }}
+                            <span class="uk-text-small c_grey">{% trans %}отзывов{% endtrans %}</span>
+                        </div>
+                        <hr>
+                        <div class="uk-text-center"><a href="/user/{{ card.user.id }}">{% trans %}Все объявления{% endtrans %}<br>{% trans %}пользователя{% endtrans %} ({{ card.user.cards|length }})</a></div>
+
                     </div>
-                    {{ include('user/chat_modal.html.twig') }}
-                {% endif %}
 
+                    {% if not reserved and card.user.isNew != 1%}
+                        <div class="uk-margin-bottom card_page_phone">
+                            <div uk-grid class="uk-grid-collapse uk-grid-match b_shadowed">
+                                <div class="phone_block uk-width-1-1">
+                                    {% if app.session.get('phone')[card.user.id] is not defined %}
+                                        <div class="hidden_phone show_phone uk-text-center c_white" data-card_id="{{ card.id }}" data-profile="0" style="background: lightgrey">
+                                            <div class="uk-text-center">{% trans %}Показать телефон{% endtrans %}</div>
+                                            <i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue|slice(0,5) }} XXX-XX-XX{% endfor %}
+                                        </div>
 
-                <div class="uk-margin-bottom card_blanc">
-                    <div><i class="fa fa-eye c_green"></i> {{ card.views }} <span class="uk-text-small c_grey">{% trans %}просмотров{% endtrans %}</span></div>
-                    <div><i class="fa fa-heart c_red"></i> <span id="card_likes">{{ card.likes }}</span> <span class="uk-text-small c_grey">{% trans %}лайков{% endtrans %}</span></div>
-                    <div>
-                        <i class="fa fa-star c_gold"></i> {{ opinions }}/5 <span class="uk-text-small c_grey">{% trans %}звезд из{% endtrans %}</span> {{ total_opinions }}
-                        <span class="uk-text-small c_grey">{% trans %}отзывов{% endtrans %}</span>
-                    </div>
-                    <hr>
-                    <div class="uk-text-center"><a href="/user/{{ card.user.id }}">{% trans %}Все объявления{% endtrans %}<br>{% trans %}пользователя{% endtrans %} ({{ card.user.cards|length }})</a></div>
+                                    {% else %}
+                                        <a class="opened_phone c_white uk-text-center" href="tel:{% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}">
+                                            <i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}
+                                        </a>
+                                    {% endif %}
+                                </div>
 
-                </div>
+                            </div>
+                        </div>
+                    {% endif %}
                 {% endif %}
 
 
