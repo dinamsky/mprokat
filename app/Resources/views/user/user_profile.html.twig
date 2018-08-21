@@ -5,10 +5,24 @@
     <script src="{{ asset('assets/js/image_upload_preview.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.maskedinput.js') }}"></script>
     <script src="{{ asset('assets/js/phone_validate.js') }}"></script>
+    <script src="{{ asset('assets/js/common.js') }}"></script>
 {% endblock %}
 
 {% block content %}
     <h1>{% trans %}Мой профиль{% endtrans %}</h1>
+
+    {% if user.isNew == 0 %}
+        <form action="/user_go_new" method="POST" class="uk-margin-large-bottom padding20 bg_white">
+            <div class="uk-margin-bottom">Мультипрокат предлагает вам перейти на новую систему обработки ваших заказов,<br>
+                а также получить бесплатно PRO аккаунт</div>
+
+            <div class="uk-margin-bottom"><label><input type="checkbox" name="oferta_check"> Я ознакомлен и согласен с условиями <a target="_blanc" class="underline" uk-tooltip="title:откроется в новом окне" href="/assets/docs/oferta.pdf">оферты</a></label></div>
+            <input type="hidden" name="id" value="{{ user.id }}">
+            <button class="uk-button" disabled>Перейти</button>
+        </form>
+    {% endif %}
+
+
     <div class="">
         <div uk-grid>
             <div class="uk-width-2-3@s">
