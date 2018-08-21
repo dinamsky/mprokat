@@ -80,6 +80,16 @@
         {% if card.dateRentFinish > date() %}
             <div class="reserved">бронь до {{ card.dateRentFinish|date("d.m.Y") }}</div>
         {% endif %}
+
+        {% if card.user.accountTypeId == 1 %}
+            <div
+                    uk-tooltip="title:Пользователь с аккаунтом PRO"
+            style="position: absolute;
+            top: 7px;
+            right: 7px;">
+                <img src="/assets/images/interface/pro.png" alt="" style="width: 15px">
+            </div>
+        {% endif %}
     </div>
 
 

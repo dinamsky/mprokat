@@ -184,6 +184,9 @@ class ProfileController extends Controller
             $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.total DESC');
             $generalTypes = $query->getResult();
 
+
+            $totalSum = $this->countSum($user->getId());
+
             return $this->render('user/user_cards.html.twig', [
                 'share' => true,
                 'cards' => $cards,
@@ -193,6 +196,7 @@ class ProfileController extends Controller
                 'cityId' => $city->getId(),
                 'generalTypes' => $generalTypes,
                 'lang' => $_SERVER['LANG'],
+                'totalSum' => $totalSum
 
             ]);
         } else return new Response("",404);
@@ -390,7 +394,7 @@ class ProfileController extends Controller
             $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.total DESC');
             $generalTypes = $query->getResult();
 
-
+            $totalSum = $this->countSum($user->getId());
 
 
             return $this->render('user/user_profile.html.twig', [
@@ -401,6 +405,7 @@ class ProfileController extends Controller
                 'cityId' => $city->getId(),
                 'generalTypes' => $generalTypes,
                 'lang' => $_SERVER['LANG'],
+                'totalSum' => $totalSum
 
             ]);
         }
@@ -641,8 +646,8 @@ class ProfileController extends Controller
 
             //dump($this->container->get('kernel')->getEnvironment());
 
-            //$url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
-            //$sms_result = file_get_contents($url);
+            $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
+            $sms_result = file_get_contents($url);
 
 
             $renter = $this->get('session')->get('logged_user');
@@ -878,6 +883,8 @@ class ProfileController extends Controller
             $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.total DESC');
             $generalTypes = $query->getResult();
 
+            $totalSum = $this->countSum($user->getId());
+
             return $this->render('user/user_orders_list.html.twig', [
                 'share' => true,
                 'orders' => $orders,
@@ -887,7 +894,7 @@ class ProfileController extends Controller
                 'cityId' => $city->getId(),
                 'generalTypes' => $generalTypes,
                 'lang' => $_SERVER['LANG'],
-
+                'totalSum' => $totalSum
             ]);
         } else return new Response("",404);
     }
@@ -945,7 +952,7 @@ class ProfileController extends Controller
     /**
      * @Route("/ajax_owner_accept", name="ajax_owner_accept")
      */
-    public function ownerAcceptAction(EntityManagerInterface $em, Request $request, ServiceStat $stat)
+    public function ownerAcceptAction(EntityManagerInterface $em, Request $request, ServiceStat $stat, \Swift_Mailer $mailer)
     {
         $id = $request->request->get('id');
         $order = $this->getDoctrine()
@@ -973,13 +980,39 @@ class ProfileController extends Controller
                 'Вы только что одобрили заявку #'.$id.'!<br> Мы уведомили арендатора - ожидайте оплаты.<br><a href="/assets/docs/rent_contract.docx">Скачайте</a> и распечатайте договор аренды.'
             );
 
+        // ------- send SMS -------
+
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($order->getRenterId());
+        foreach( $user->getInformation() as $info){
+            if($info->getUiKey() == 'phone'){
+                $number = preg_replace('~[^0-9]+~','',$info->getUiValue());
+                if(strlen($number)==11) $number = substr($number, 1);
+            }
+        }
+
+        $message = urlencode('Владелец одобрил вашу заявку №'.$id.'. Можно оплачивать');
+        $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
+        $sms_result = file_get_contents($url);
+
+        // ---------------------------
+
+
+        $msg = (new \Swift_Message('Владелец одобрил вашу заявку №'.$id.'. Можно оплачивать'))
+                ->setFrom('mail@multiprokat.com')
+                ->setTo($user->getEmail())
+                ->setBody('Владелец одобрил вашу заявку №'.$id.'. Можно оплачивать','text/html');
+        $this->mailer->send($msg);
+
+
         return new Response("");
     }
 
     /**
      * @Route("/ajax_owner_reject", name="ajax_owner_reject")
      */
-    public function ownerRejectAction(EntityManagerInterface $em, Request $request, ServiceStat $stat)
+    public function ownerRejectAction(EntityManagerInterface $em, Request $request, ServiceStat $stat, \Swift_Mailer $mailer)
     {
         $id = $request->request->get('id');
         $order = $this->getDoctrine()
@@ -1007,13 +1040,38 @@ class ProfileController extends Controller
                 'Вы только что отклонили заявку #'.$id.'!<br> Мы уведомили арендатора'
             );
 
+
+        // ------- send SMS -------
+
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($order->getRenterId());
+        foreach( $user->getInformation() as $info){
+            if($info->getUiKey() == 'phone'){
+                $number = preg_replace('~[^0-9]+~','',$info->getUiValue());
+                if(strlen($number)==11) $number = substr($number, 1);
+            }
+        }
+
+        $message = urlencode('Владелец отклонил вашу заявку №'.$id);
+        $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
+        $sms_result = file_get_contents($url);
+
+        // ---------------------------
+
+        $msg = (new \Swift_Message('Владелец отклонил вашу заявку №'.$id))
+                ->setFrom('mail@multiprokat.com')
+                ->setTo($user->getEmail())
+                ->setBody('Владелец отклонил вашу заявку №'.$id,'text/html');
+        $this->mailer->send($msg);
+
         return new Response("");
     }
 
     /**
      * @Route("/ajax_owner_answer", name="ajax_owner_answer")
      */
-    public function ownerAnswerAction(EntityManagerInterface $em, Request $request, ServiceStat $stat)
+    public function ownerAnswerAction(EntityManagerInterface $em, Request $request, ServiceStat $stat, \Swift_Mailer $mailer)
     {
         $id = $request->request->get('id');
         $order = $this->getDoctrine()
@@ -1030,15 +1088,34 @@ class ProfileController extends Controller
         ];
 
         $order->setMessages(json_encode($messages));
-        $order->setOwnerStatus('answered');
-        $order->setRenterStatus('wait_for_answer');
+        //$order->setOwnerStatus('answered');
+        //$order->setRenterStatus('wait_for_answer');
         $em->persist($order);
         $em->flush();
 
-//        $this->addFlash(
-//                'notice',
-//                'Вы только что ответили на заявку #'.$id.'!<br> Мы уведомили арендатора'
-//            );
+        // ------- send SMS -------
+
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($order->getRenterId());
+        foreach( $user->getInformation() as $info){
+            if($info->getUiKey() == 'phone'){
+                $number = preg_replace('~[^0-9]+~','',$info->getUiValue());
+                if(strlen($number)==11) $number = substr($number, 1);
+            }
+        }
+
+        $message = urlencode('Владелец ответил на ваше сообщение в заявке №'.$id);
+        $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
+        $sms_result = file_get_contents($url);
+
+        // ---------------------------
+
+        $msg = (new \Swift_Message('Владелец ответил на ваше сообщение в заявке №'.$id))
+                ->setFrom('mail@multiprokat.com')
+                ->setTo($user->getEmail())
+                ->setBody('Владелец ответил на ваше сообщение в заявке №'.$id,'text/html');
+        $this->mailer->send($msg);
 
         return new Response("");
     }
@@ -1046,7 +1123,7 @@ class ProfileController extends Controller
     /**
      * @Route("/ajax_renter_answer", name="ajax_renter_answer")
      */
-    public function renterAnswerAction(EntityManagerInterface $em, Request $request, ServiceStat $stat)
+    public function renterAnswerAction(EntityManagerInterface $em, Request $request, ServiceStat $stat, \Swift_Mailer $mailer)
     {
         $id = $request->request->get('id');
         $order = $this->getDoctrine()
@@ -1063,15 +1140,34 @@ class ProfileController extends Controller
         ];
 
         $order->setMessages(json_encode($messages));
-        $order->setOwnerStatus('wait_for_answer');
-        $order->setRenterStatus('answered');
+        //$order->setOwnerStatus('wait_for_answer');
+        //$order->setRenterStatus('answered');
         $em->persist($order);
         $em->flush();
 
-//        $this->addFlash(
-//                'notice',
-//                'Вы только что ответили на заявку #'.$id.'!<br> Мы уведомили владельца'
-//            );
+        // ------- send SMS -------
+
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($order->getUserId());
+        foreach( $user->getInformation() as $info){
+            if($info->getUiKey() == 'phone'){
+                $number = preg_replace('~[^0-9]+~','',$info->getUiValue());
+                if(strlen($number)==11) $number = substr($number, 1);
+            }
+        }
+
+        $message = urlencode('Арендатор ответил на ваше сообщение в заявке №'.$id);
+        $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
+        $sms_result = file_get_contents($url);
+
+        // ---------------------------
+
+        $msg = (new \Swift_Message('Арендатор ответил на ваше сообщение в заявке №'.$id))
+                ->setFrom('mail@multiprokat.com')
+                ->setTo($user->getEmail())
+                ->setBody('Арендатор ответил на ваше сообщение в заявке №'.$id,'text/html');
+        $this->mailer->send($msg);
 
         return new Response("");
     }
@@ -1215,7 +1311,7 @@ class ProfileController extends Controller
     /**
      * @Route("/user_order_pay_success", name="user_order_pay_success")
      */
-    public function userOrderPaySuccessAction(EntityManagerInterface $em, Request $request, ServiceStat $stat)
+    public function userOrderPaySuccessAction(EntityManagerInterface $em, Request $request, ServiceStat $stat, \Swift_Mailer $mailer)
     {
         $cb = (array)$request->request->all();
 
@@ -1234,6 +1330,18 @@ class ProfileController extends Controller
                 $order->setOwnerStatus('wait_for_rent');
                 $order->setRenterStatus('wait_for_finish');
 
+
+                $messages = json_decode($order->getMessages(),true);
+                $messages[] = [
+                    'date' => date('d-m-Y'),
+                    'time' => date('H:i'),
+                    'from' => 'system_ok',
+                    'message' => 'Заявка оплачена. Деньги за заявку №'.$id.' получены',
+                    'status' => 'send'
+                ];
+
+                $order->setMessages(json_encode($messages));
+
                 //$order->setPincodeForOwner($pincode);
                 $em->persist($order);
                 $em->flush();
@@ -1242,6 +1350,32 @@ class ProfileController extends Controller
                     'notice',
                     'Заявка #' . $id . ' успешно оплачена!<br> Владелец свяжется с вами для обсуждения нюансов.<br><a href="/assets/docs/rent_contract.docx">Скачайте</a> и распечатайте договор аренды.'
                 );
+
+
+                // ------- send SMS -------
+
+                $user = $this->getDoctrine()
+                    ->getRepository(User::class)
+                    ->find($order->getUserId());
+                foreach( $user->getInformation() as $info){
+                    if($info->getUiKey() == 'phone'){
+                        $number = preg_replace('~[^0-9]+~','',$info->getUiValue());
+                        if(strlen($number)==11) $number = substr($number, 1);
+                    }
+                }
+
+                $message = urlencode('Арендатор оплатил заявку №'.$id);
+                $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
+                $sms_result = file_get_contents($url);
+
+                // ---------------------------
+
+                $msg = (new \Swift_Message('Арендатор оплатил заявку №'.$id))
+                ->setFrom('mail@multiprokat.com')
+                ->setTo($user->getEmail())
+                ->setBody('Арендатор оплатил заявку №'.$id,'text/html');
+                $this->mailer->send($msg);
+
 
                 return new Response('OK', 200);
             } else {
@@ -1338,6 +1472,43 @@ class ProfileController extends Controller
     }
 
     /**
+     * @Route("/user_go_new", name="user_go_new")
+     */
+    public function userGoNewAction(EntityManagerInterface $em, Request $request, ServiceStat $stat, \Swift_Mailer $mailer)
+    {
+        $id = $request->request->get('id');
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($id);
+
+        $user->setAccountTypeId(1);
+        $user->setIsNew(true);
+        $em->persist($user);
+        $em->flush();
+
+        $stat->setStat([
+            'url' => $request->getPathInfo(),
+            'event_type' => 'go_new',
+            'page_type' => 'profile',
+            'card_id' => 0,
+            'user_id' => $user->getId(),
+        ]);
+
+        $msg = (new \Swift_Message('Пользователь перешел на новую систему'))
+                ->setFrom('mail@multiprokat.com')
+                ->setTo('mail@multiprokat.com')
+                ->setBody('Только что перешел <a href="https://multiprokat.com/user/'.$user->getId().'">пользователь</a>','text/html');
+        $this->mailer->send($msg);
+
+        $this->addFlash(
+            'notice',
+            'Поздравляем! Вы успешно переведены на новую систему обработки заказов и получили статус PRO!'
+        );
+
+        return $this->redirectToRoute('user_profile');
+    }
+
+    /**
      * @Route("/user/{id}", name="user_page")
      */
     public function userPageAction($id, MenuMarkModel $mm, EntityManagerInterface $em, Request $request, ServiceStat $stat)
@@ -1418,6 +1589,26 @@ class ProfileController extends Controller
         return $data->success;
     }
 
+
+    private function countSum($user_id)
+    {
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find((int)$user_id);
+
+        $em = $this->getDoctrine()->getManager();
+
+        $query = $em->createQuery('SELECT o FROM UserBundle:FormOrder o WHERE o.userId = ?1 AND o.ownerStatus = ?2');
+        $query->setParameter(1, $user_id);
+        $query->setParameter(2, 'wait_for_rent');
+        $orders = $query->getResult();
+
+        $total = 0;
+        foreach ($orders as $o){
+            $total = $total + $o->getPrice();
+        }
+        return $total;
+    }
 
     /**
      * @Route("/test_test", name="test_test")

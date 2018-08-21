@@ -16,7 +16,17 @@
 
 
 
-    <h1 style="font-size: 18px">Входящие</h1>
+    <h1 style="font-size: 18px">
+        <div class="uk-grid">
+            <div class="uk-width-1-4@s">Входящие</div>
+            <div class="uk-width-3-4@s uk-text-right">+7(916) 455-98-08 - круглосуточная поддержка платежей платформы "Мультипрокат"</div>
+        </div>
+
+    </h1>
+
+    {% if orders is empty %}
+        <div class="uk-margin-large-bottom">Здесь будут находиться все ваши заявки</div>
+    {% endif %}
 
 
     <div class="{{ is_mobile() ? '' : 'uk-grid' }}" id="ord_messaging">
@@ -155,7 +165,9 @@
                             {% if m.from == 'system' %}
                                 {% set dir = 'system' %}
                             {% endif %}
-
+                            {% if m.from == 'system_ok' %}
+                                {% set dir = 'system_ok' %}
+                            {% endif %}
 
 
                             <div class="uk-grid uk-grid-small" {{ is_mobile() ? '' : 'style="margin-right: 10px"' }}>
@@ -327,6 +339,7 @@
 
                     <div class="uk-margin-top">
                         <div class="">
+                            <div><b>Заявка №{{ o.id }}</b></div>
                             <a href="/card/{{ o.cardId }}" uk-tooltip="title:Перейти на страницу транспорта">{{ o.transport }}</a><br>
                             {#Арендатор: {{ o.fioRenter }} <br>#}
                             <i class="fa fa-calendar"></i> {{ o.dateIn|date('d.m.Y') }} - <i class="fa fa-calendar"></i> {{ o.dateOut|date('d.m.Y') }}
@@ -399,6 +412,14 @@
                         <div class="uk-margin-top">
                             {% if o.renterStatus == 'wait_for_pay' and app.session.get('logged_user').id == o.renterId %}
                                 <a href="/pay_for_order/{{ o.id }}" class="ok_btn uk-margin-top uk-text-center uk-display-block">Оплатить</a>
+
+                                <div class="uk-margin-top">
+                                    Оплата производится через партнера: <a href="http://mandarinpay.com/" target="_blank">Mandarin Pay</a><br>
+                                </div>
+                                
+                                <div class="uk-margin-top">
+                                    <a href="/article/pravila-oplaty" target="_blank">Правила</a> оплаты заявок
+                                </div>
                             {% endif %}
                         </div>
 
@@ -464,11 +485,12 @@
 
 </div>
 
-
+    {% if is_mobile() %}
     <div style="position: fixed;bottom: 0;left: 0;width: 100%;height: auto;z-index: 2000" class="uk-clearfix">
         <button uk-toggle="target: #ofc_left" type="button" class="ordbtn_left">Заявки</button>
         <button uk-toggle="target: #ofc_right" type="button" class="ordbtn_right">О заявке</button>
     </div>
+    {% endif %}
 
 {% endblock %}
 

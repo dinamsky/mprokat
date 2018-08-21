@@ -8,7 +8,7 @@
         <div uk-drop="offset: 0" class="user_top_drop bg_blue" style="height: 40px">
             <a href="/profile">{% trans %}Профиль{% endtrans %}</a><br>
             <a href="/user/cards">{% trans %}Объявления{% endtrans %}</a>
-            <a href="/user/messages">{% trans %}Сообщения{% endtrans %}  {% if t3_new.getUnread>0 %}<span class="uk-badge red_badge">{{ t3_new.getUnread }}</span>{% endif %}</a>
+
             <a href="/user/transport_orders">Входящие</a><br>
             <a href="/userLogout" style="color:red !important">Выход</a>
         </div>
@@ -21,3 +21,7 @@
         {#<div  uk-toggle="target: #sign_up" class="top_user_actions_button"><span uk-icon="icon:lock"></span>Регистрация</div>#}
     {% endif %}
 </div>
+
+
+
+{#<a href="/user/messages">{% trans %}Сообщения{% endtrans %}  {% if t3_new.getUnread>0 %}<span class="uk-badge red_badge">{{ t3_new.getUnread }}</span>{% endif %}</a>#}

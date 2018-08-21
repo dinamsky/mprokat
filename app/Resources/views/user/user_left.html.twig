@@ -1,8 +1,17 @@
 <div class="">
+
+    {% if totalSum !=0 %}
+        <div class="uk-text-center padding20 c_white bg_red">
+            {{ totalSum }} руб.<br>
+
+        </div>
+        <div class="uk-margin-bottom uk-text-small">Сумма всех оплаченных заказов</div>
+    {% endif %}
+
     <a href="/profile">{% trans %}Мой профиль{% endtrans %}</a><br>
     <a href="/user/cards">{% trans %}Мои объявления{% endtrans %}</a><br>
-    <a href="/user/messages">{% trans %}Мои сообщения{% endtrans %}</a>
-    {% if t3_new.getUnread>0 %}<span class="uk-badge">{{ t3_new.getUnread }}</span>{% endif %}
+    {#<a href="/user/messages">{% trans %}Мои сообщения{% endtrans %}</a>#}
+    {#{% if t3_new.getUnread>0 %}<span class="uk-badge">{{ t3_new.getUnread }}</span>{% endif %}#}
     <br><br>
     <a href="/user/transport_orders" style="border: 1px solid #07d;padding: 2px 5px;width: 100%;display: block;text-align: center">Входящие</a><br>
 
