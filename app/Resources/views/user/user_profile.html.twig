@@ -12,11 +12,17 @@
     <h1>{% trans %}Мой профиль{% endtrans %}</h1>
 
     {% if user.isNew == 0 %}
-        <form action="/user_go_new" method="POST" class="uk-margin-large-bottom padding20 bg_white">
-            <div class="uk-margin-bottom">Мультипрокат предлагает вам перейти на новую систему обработки ваших заказов,<br>
-                а также получить бесплатно PRO аккаунт</div>
+        <form action="/user_go_new" method="POST" class="uk-margin-large-bottom padding20 bg_white bordered">
+            <div class="uk-margin-bottom">
+                Мультипрокат предлагает вам перейти на новую систему заказов,<br>
+                а также получить  PRO аккаунт - Бесплатно!<br>
+                PRO аккаунт подтверждает вашу деятельность и дает больше клиентов.<br><br>
 
-            <div class="uk-margin-bottom"><label><input type="checkbox" name="oferta_check"> Я ознакомлен и согласен с условиями <a target="_blanc" class="underline" uk-tooltip="title:откроется в новом окне" href="/assets/docs/oferta.pdf">оферты</a></label></div>
+                PRO аккаунт действует бессрочно и дает больше возможностей, в том числе: размещать больше объявлений и получать больше звонков от клиентов
+            </div>
+
+            <div class="uk-margin-bottom"><label>Я ознакомлен и согласен с условиями <a target="_blanc" class="underline" uk-tooltip="title:откроется в новом окне" href="/assets/docs/oferta.pdf">оферты</a> <input type="checkbox" name="oferta_check"> </label></div>
+            <div class="uk-margin-bottom"><label>Активировать бесплатно PRO аккаунт <input type="checkbox" name="pro_check"> </label></div>
             <input type="hidden" name="id" value="{{ user.id }}">
             <button class="uk-button" disabled>Перейти</button>
         </form>
