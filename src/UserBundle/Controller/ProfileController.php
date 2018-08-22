@@ -1117,6 +1117,12 @@ class ProfileController extends Controller
                 ->setBody('Владелец ответил на ваше сообщение в заявке №'.$id,'text/html');
         $this->mailer->send($msg);
 
+        $msg = (new \Swift_Message('Мультипрокат. Владелец ответил на сообщение в заявке №'.$id))
+                ->setFrom('mail@multiprokat.com')
+                ->setTo('mail@multiprokat.com')
+                ->setBody($request->request->get('answer'),'text/html');
+        $this->mailer->send($msg);
+
         return new Response("");
     }
 
@@ -1167,6 +1173,12 @@ class ProfileController extends Controller
                 ->setFrom('mail@multiprokat.com')
                 ->setTo($user->getEmail())
                 ->setBody('Арендатор ответил на ваше сообщение в заявке №'.$id,'text/html');
+        $this->mailer->send($msg);
+
+        $msg = (new \Swift_Message('Мультипрокат. Арендатор ответил на сообщение в заявке №'.$id))
+                ->setFrom('mail@multiprokat.com')
+                ->setTo('mail@multiprokat.com')
+                ->setBody($request->request->get('answer'),'text/html');
         $this->mailer->send($msg);
 
         return new Response("");
