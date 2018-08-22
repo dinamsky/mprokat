@@ -377,7 +377,7 @@ class AdminController extends Controller
         else {
             $em = $this->getDoctrine()->getManager();
 
-            $query = $em->createQuery('SELECT o FROM UserBundle:FormOrder o ORDER BY o.dateCreate DESC');
+            $query = $em->createQuery('SELECT o FROM UserBundle:FormOrder o WHERE o.isNew =1 ORDER BY o.dateCreate DESC');
 
             $orders = $query->getResult();
 
