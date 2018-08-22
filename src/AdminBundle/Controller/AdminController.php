@@ -367,4 +367,27 @@ class AdminController extends Controller
             ]);
         }
     }
+
+    /**
+     * @Route("/adminOrders", name="adminOrders")
+     */
+    public function adminOrdersAction()
+    {
+        if ($this->get('session')->get('admin') === null) return $this->render('AdminBundle::admin_enter_form.html.twig');
+        else {
+            $em = $this->getDoctrine()->getManager();
+
+            $query = $em->createQuery('SELECT o FROM UserBundle:FormOrder o ORDER BY o.dateCreate DESC');
+
+            $orders = $query->getResult();
+
+            $city = $this->get('session')->get('city');
+
+            return $this->render('AdminBundle::admin_orders.html.twig', [
+                'orders' => $orders,
+                'city' => $city,
+            ]);
+        }
+    }
+
 }

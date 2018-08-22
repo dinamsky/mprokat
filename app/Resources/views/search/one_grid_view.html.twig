@@ -81,15 +81,19 @@
             <div class="reserved">бронь до {{ card.dateRentFinish|date("d.m.Y") }}</div>
         {% endif %}
 
-        {% if card.user.accountTypeId == 1 %}
+        {#<div id="zzz">{{ dump(card.user.__isInitialized__) }}</div>#}
+
+
+            {% if card.user.accountTypeId == 1 %}
             <div
                     uk-tooltip="title:Пользователь с аккаунтом PRO"
             style="position: absolute;
             top: 7px;
             right: 7px;">
-                <img src="/assets/images/interface/pro_ok.png" alt="" style="width: 16px">
+                <img src="/assets/images/interface/fb3.svg" alt="" style="width: 16px">
             </div>
-        {% endif %}
+            {% endif %}
+
     </div>
 
 

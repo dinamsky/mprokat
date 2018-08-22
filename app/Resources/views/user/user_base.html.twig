@@ -13,6 +13,7 @@
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('assets/favicon.ico') }}" />
         <title>{% block title %}Мультипрокат{% endblock %}</title>
+        <meta name="yandex-verification" content="a2d59e156f2bd014" />
     </head>
     <body class="{{ is_mobile() ? 'mobile' : 'desktop' }} {% block bodyClass %}{% endblock %}">
         {{ include('header.html.twig') }}
