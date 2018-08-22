@@ -32,6 +32,14 @@ $( document ).ready(function() {
         });
     });
 
+    $('.newbook .nbinner').on('click', function () {
+        yaCounter43151009.reachGoal('BlueClick', {cardId: $(this).data('card_id')});
+    });
+
+    $('#bookMessageButton').on('click', function () {
+        yaCounter43151009.reachGoal('BookMessage', {cardId: $(this).data('card_id')});
+    });
+
     $('.go_pro').on('click', function () {
         var user_id = $(this).data('id');
         $.ajax({

@@ -77,16 +77,18 @@
                     <div>Website: <input name="info[website]" value="{{ website }}" class="uk-input"></div>
                     <div>{% trans %}Кратко о себе/компании{% endtrans %}: <textarea name="info[about]" class="uk-textarea">{{ about }}</textarea></div>
 
-                    <h2>{% trans %}Ссылки на соцсети{% endtrans %}</h2>
 
-                    <div>Вконтакте: <input name="info[vk]" value="{{ vk }}" class="uk-input"></div>
-                    <div>Facebook: <input name="info[fb]" value="{{ fb }}" class="uk-input"></div>
-                    <div>Instagram: <input name="info[ig]" value="{{ ig }}" class="uk-input"></div>
-                    <div>Одноклассники: <input name="info[ok]" value="{{ ok }}" class="uk-input"></div>
-                    <div>Twitter: <input name="info[tw]" value="{{ tw }}" class="uk-input"></div>
-                    <div>Google+: <input name="info[gp]" value="{{ gp }}" class="uk-input"></div>
-                    <div>Youtube: <input name="info[yt]" value="{{ yt }}" class="uk-input"></div>
+                    <div class="uk-hidden">
+                        <h2>{% trans %}Ссылки на соцсети{% endtrans %}</h2>
 
+                        <div>Вконтакте: <input name="info[vk]" value="{{ vk }}" class="uk-input"></div>
+                        <div>Facebook: <input name="info[fb]" value="{{ fb }}" class="uk-input"></div>
+                        <div>Instagram: <input name="info[ig]" value="{{ ig }}" class="uk-input"></div>
+                        <div>Одноклассники: <input name="info[ok]" value="{{ ok }}" class="uk-input"></div>
+                        <div>Twitter: <input name="info[tw]" value="{{ tw }}" class="uk-input"></div>
+                        <div>Google+: <input name="info[gp]" value="{{ gp }}" class="uk-input"></div>
+                        <div>Youtube: <input name="info[yt]" value="{{ yt }}" class="uk-input"></div>
+                    </div>
 
                     <button class="uk-button uk-button-primary uk-margin-top">{% trans %}Сохранить{% endtrans %}</button>
                 </form>
