@@ -1003,7 +1003,7 @@ class ProfileController extends Controller
                 ->setFrom('mail@multiprokat.com')
                 ->setTo($user->getEmail())
                 ->setBody('Владелец одобрил вашу заявку №'.$id.'. Можно оплачивать','text/html');
-        $this->mailer->send($msg);
+        $mailer->send($msg);
 
 
         return new Response("");
@@ -1063,9 +1063,19 @@ class ProfileController extends Controller
                 ->setFrom('mail@multiprokat.com')
                 ->setTo($user->getEmail())
                 ->setBody('Владелец отклонил вашу заявку №'.$id,'text/html');
-        $this->mailer->send($msg);
+        $mailer->send($msg);
 
         return new Response("");
+    }
+
+
+    private function cut_num($s)
+    {
+        $s = preg_replace('/\+?\([0-9]+\)[0-9]+/', '*', $s);
+        $s = preg_replace('/[0-9]{7}/', '*', $s);
+        $s = preg_replace('/[0-9]{2}\-[0-9]{2}\-[0-9]{3}/', '*', $s);
+        $s = preg_replace('/[0-9]{3}\-[0-9]{2}\-[0-9]{2}/', '*', $s);
+        return $s;
     }
 
     /**
@@ -1083,9 +1093,19 @@ class ProfileController extends Controller
             'date' => date('d-m-Y'),
             'time' => date('H:i'),
             'from' => 'owner',
-            'message' => $request->request->get('answer'),
+            'message' => $this->cut_num($request->request->get('answer')),
             'status' => 'send'
         ];
+
+        if($request->request->get('answer') != $this->cut_num($request->request->get('answer'))){
+            $messages[] = [
+                'date' => date('d-m-Y'),
+                'time' => date('H:i'),
+                'from' => 'system',
+                'message' => '@multiprokat_bot: Номера телефонов будут доступны после успешной оплаты заказа',
+                'status' => 'send'
+            ];
+        }
 
         $order->setMessages(json_encode($messages));
         //$order->setOwnerStatus('answered');
@@ -1106,8 +1126,10 @@ class ProfileController extends Controller
         }
 
         $message = urlencode('Владелец ответил на ваше сообщение в заявке №'.$id);
-        $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
-        $sms_result = file_get_contents($url);
+        if(isset($number)) {
+            $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
+            $sms_result = file_get_contents($url);
+        }
 
         // ---------------------------
 
@@ -1115,13 +1137,13 @@ class ProfileController extends Controller
                 ->setFrom('mail@multiprokat.com')
                 ->setTo($user->getEmail())
                 ->setBody('Владелец ответил на ваше сообщение в заявке №'.$id,'text/html');
-        $this->mailer->send($msg);
+        $mailer->send($msg);
 
         $msg = (new \Swift_Message('Мультипрокат. Владелец ответил на сообщение в заявке №'.$id))
                 ->setFrom('mail@multiprokat.com')
                 ->setTo('mail@multiprokat.com')
                 ->setBody($request->request->get('answer'),'text/html');
-        $this->mailer->send($msg);
+        $mailer->send($msg);
 
         return new Response("");
     }
@@ -1141,9 +1163,19 @@ class ProfileController extends Controller
             'date' => date('d-m-Y'),
             'time' => date('H:i'),
             'from' => 'renter',
-            'message' => $request->request->get('answer'),
+            'message' => $this->cut_num($request->request->get('answer')),
             'status' => 'send'
         ];
+
+        if($request->request->get('answer') != $this->cut_num($request->request->get('answer'))){
+            $messages[] = [
+                'date' => date('d-m-Y'),
+                'time' => date('H:i'),
+                'from' => 'system',
+                'message' => '@multiprokat_bot: Номера телефонов будут доступны после успешной оплаты заказа',
+                'status' => 'send'
+            ];
+        }
 
         $order->setMessages(json_encode($messages));
         //$order->setOwnerStatus('wait_for_answer');
@@ -1164,8 +1196,10 @@ class ProfileController extends Controller
         }
 
         $message = urlencode('Арендатор ответил на ваше сообщение в заявке №'.$id);
-        $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
-        $sms_result = file_get_contents($url);
+        if(isset($number)) {
+            $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
+            $sms_result = file_get_contents($url);
+        }
 
         // ---------------------------
 
@@ -1173,13 +1207,13 @@ class ProfileController extends Controller
                 ->setFrom('mail@multiprokat.com')
                 ->setTo($user->getEmail())
                 ->setBody('Арендатор ответил на ваше сообщение в заявке №'.$id,'text/html');
-        $this->mailer->send($msg);
+        $mailer->send($msg);
 
         $msg = (new \Swift_Message('Мультипрокат. Арендатор ответил на сообщение в заявке №'.$id))
                 ->setFrom('mail@multiprokat.com')
                 ->setTo('mail@multiprokat.com')
                 ->setBody($request->request->get('answer'),'text/html');
-        $this->mailer->send($msg);
+        $mailer->send($msg);
 
         return new Response("");
     }
@@ -1386,8 +1420,13 @@ class ProfileController extends Controller
                 ->setFrom('mail@multiprokat.com')
                 ->setTo($user->getEmail())
                 ->setBody('Арендатор оплатил заявку №'.$id,'text/html');
-                $this->mailer->send($msg);
+                $mailer->send($msg);
 
+                $msg = (new \Swift_Message('Арендатор оплатил заявку №'.$id))
+                ->setFrom('mail@multiprokat.com')
+                ->setTo('mail@multiprokat.com')
+                ->setBody('Арендатор оплатил заявку №'.$id,'text/html');
+                $mailer->send($msg);
 
                 return new Response('OK', 200);
             } else {
@@ -1510,7 +1549,7 @@ class ProfileController extends Controller
                 ->setFrom('mail@multiprokat.com')
                 ->setTo('mail@multiprokat.com')
                 ->setBody('Только что перешел <a href="https://multiprokat.com/user/'.$user->getId().'">пользователь</a>','text/html');
-        $this->mailer->send($msg);
+        $mailer->send($msg);
 
         $this->addFlash(
             'notice',
@@ -1625,8 +1664,93 @@ class ProfileController extends Controller
     /**
      * @Route("/test_test", name="test_test")
      */
-    public function ttAction(EntityManagerInterface $em, Request $request, ServiceStat $stat)
+    public function ttAction(EntityManagerInterface $em, Request $request, ServiceStat $stat, \Swift_Mailer $mailer)
     {
-        var_dump(str_replace(array("(",")","+"," "),"",trim('+7(917)4100960')));
+
+        $s = 'мой номер: 89174100960 телефона +7(917)4100960 а так же +7(917)41-00-960 и еще 8(917)4100960';
+        echo $s.'<br>';
+        echo preg_replace('/\+?\([0-9]+\)[0-9]+/', '*', $s);
+        echo '<br>';
+        echo preg_replace('/[0-9]{7}/', '*', $s);
+        echo '<br>';
+        echo preg_replace('/[0-9]{2}\-[0-9]{2}\-[0-9]{3}/', '*', $s);
+        echo preg_replace('/[0-9]{3}\-[0-9]{2}\-[0-9]{2}/', '*', $s);
+
+
+
+        return new Response();
     }
+
+    /**
+     * @Route("/edit_message", name="edit_message")
+     */
+    public function editMessageAction(EntityManagerInterface $em, Request $request)
+    {
+
+        $i = $request->request->get('i');
+        $m = $request->request->get('message');
+        $id = $request->request->get('id');
+
+        $order = $this->getDoctrine()
+            ->getRepository(FormOrder::class)
+            ->find($id);
+
+        $messages = json_decode($order->getMessages(),true);
+        foreach ($messages as $k=>$ms){
+            if($k == $i){
+                $messages[$k]['message'] = $m;
+            }
+        }
+        $order->setMessages(json_encode($messages));
+
+        $em->persist($order);
+        $em->flush();
+
+        $this->get('session')->set('active_message',$id);
+
+
+        return $this->redirectToRoute('adminOrders');
+    }
+
+    /**
+     * @Route("/new_system_message", name="new_system_message")
+     */
+    public function newSystemMessageAction(EntityManagerInterface $em, Request $request)
+    {
+
+        $m = $request->request->get('message');
+        $id = $request->request->get('id');
+
+        $order = $this->getDoctrine()
+            ->getRepository(FormOrder::class)
+            ->find($id);
+
+        $messages = json_decode($order->getMessages(),true);
+        $messages[] = [
+                    'date' => date('d-m-Y'),
+                    'time' => date('H:i'),
+                    'from' => 'system',
+                    'message' => '@multiprokat_bot: '.$m,
+                    'status' => 'send'
+                ];
+        $order->setMessages(json_encode($messages));
+
+        $em->persist($order);
+        $em->flush();
+
+        $this->get('session')->set('active_message',$id);
+
+        return $this->redirectToRoute('adminOrders');
+    }
+
+    /**
+     * @Route("/ajax_admin_message_select", name="ajax_admin_message_select")
+     */
+    public function ajaxAdminMessageSelectAction(Request $request)
+    {
+        $id = $request->request->get('id');
+        $this->get('session')->set('active_message',$id);
+        return new Response();
+    }
+
 }

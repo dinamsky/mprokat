@@ -44,6 +44,7 @@ twig:
     strict_variables: '%kernel.debug%'
     globals:
           t3_new: '@AppBundle\Menu\ServiceT3new'
+    exception_controller: AppBundle\Controller\ErrorController::doMailShow
 # Doctrine Configuration
 doctrine:
     dbal:
