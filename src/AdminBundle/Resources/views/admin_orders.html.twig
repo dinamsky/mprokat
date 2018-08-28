@@ -8,7 +8,9 @@
         <div class="uk-width-1-4@s"  id="ofc_left">
             <div style="background: #e8e8e8;" class="lft_blk">
                 {% for o in orders %}
-                    <div class="uk-margin-bottom ord_toggler" data-id="{{ o.id }}">
+                    <div class="uk-margin-bottom ord_toggler
+{{ app.session.get('active_message') == o.id ? 'active' : '' }}
+                        " data-id="{{ o.id }}" >
                         <div class="uk-grid uk-grid-small">
                             <div style="width: 60px;">
                                 {% set card = getcard(o.cardId) %}
@@ -68,10 +70,13 @@
         </div>
         <div class="uk-width-1-2@s ord_central">
             {% for o in orders %}
-                <div id="ord_desc_{{ o.id }}" class=" ord_content {{ (o.isActiveOwner == 1) or (o.isActiveRenter == 1) ? '' : 'uk-hidden' }}">
+                {#<div id="ord_desc_{{ o.id }}" class=" ord_content {{ (o.isActiveOwner == 1) or (o.isActiveRenter == 1) ? '' : 'uk-hidden' }}">#}
+                <div id="ord_desc_{{ o.id }}" class=" ord_content
+{{ app.session.get('active_message') == o.id ? '' : 'uk-hidden' }}
+">
                     {% if o.messages != '' %}
                         <div class="ord_messages uk-margin-top uk-clearfix">
-                        {% for m in jsond(o.messages) %}
+                        {% for i, m in jsond(o.messages) %}
                             {% set dir = 'left' %}
                             {% if m.from == 'owner' %}
                                 {% set dir = 'right' %}
@@ -105,10 +110,11 @@
                                         border-radius: 30px;
                                         position: relative;"
                                     ></a>
+                                    <div style="font-size: 10px;text-align: center">арендатор</div>
                                 </div>
                                 {% endif %}
                                 <div class="uk-width-expand">
-                                    <div class="{{ dir }}_message">
+                                    <div class="{{ dir }}_message dbl_edit" data-i="{{ i }}" data-id="{{ o.id }}">
                                         {{ m.message }}
                                     </div>
                                 </div>
@@ -131,6 +137,7 @@
                                         border-radius: 30px;
                                         position: relative;"
                                     ></a>
+                                    <div style="font-size: 10px;text-align: center">владелец</div>
                                 </div>
                                 {% endif %}
                             </div>
@@ -138,6 +145,14 @@
                         {% endfor %}
                         </div>
                     {% endif %}
+
+                    <form action="/new_system_message" method="POST">
+                        <textarea name="message" class="uk-textarea" style="min-height: 100px" placeholder="Новое сообщение от системы"></textarea>
+                        <br>
+                        <button class="uk-button uk-button-primary">Записать</button>
+                        <input type="hidden" name="id" value="{{ o.id }}">
+                    </form>
+
                 </div>
             {% endfor %}
         </div>
@@ -155,7 +170,7 @@
                         {#{% set rating = o.renterRating %}#}
                     {#{% endif %}#}
 
-                    <div class="uk-margin-medium-bottom uk-text-center">
+                    <div class="uk-margin-medium-bottom uk-text-center uk-hidden">
 
                         {% set url = '/assets/images/users/t/user_'~o.renterId~'.jpg' %}
                         {#{% if( app.session.get('logged_user').id == o.renterId) %}#}
@@ -257,6 +272,8 @@
                             </div>
                         </div>
 
+                        <hr>
+
                         <div>
                             {% set owner = getuser(o.userId) %}
                             {% set userinfo = owner.getInformation %}
@@ -264,8 +281,8 @@
                             {% for info in userinfo if info.uiKey == 'phone' and info.uiValue != '' %}
                             Телефон: {{ info.uiValue }}<br>
                             {% endfor %}
-                            Email: {{ owner.email }}<br><br>
-
+                            Email: {{ owner.email }}
+                            <hr>
                             {% set owner = getuser(o.renterId) %}
                             {% set userinfo = owner.getInformation %}
                             Арендатор : {{ owner.header }}<br>
@@ -279,4 +296,20 @@
             {% endfor %}
         </div>
 </div>
+
+<div id="ord_edit" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+        <h2 class="uk-modal-title">Редактирование сообщения</h2>
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <form action="/edit_message" method="POST">
+            <textarea name="message" class="uk-textarea" style="min-height: 100px"></textarea>
+            <br>
+            <button class="uk-button uk-button-primary">Записать</button>
+            <input type="hidden" name="i">
+            <input type="hidden" name="id">
+        </form>
+    </div>
+</div>
+
+
 {% endblock %}

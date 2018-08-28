@@ -2,12 +2,6 @@ $( document ).ready(function() {
 
 
 
-
-
-
-
-
-
     $('.ord_toggler').on('click', function () {
         var id = $(this).data('id');
         var user_id = $(this).data('user_id');
@@ -21,8 +15,16 @@ $( document ).ready(function() {
         $('.ord_sum').addClass('uk-hidden');
         $('#ord_sum_'+id).removeClass('uk-hidden');
 
-
-
+        $.ajax({
+            url: '/ajax_admin_message_select',
+            type: 'POST',
+            data: {id:id},
+            dataType: 'html',
+            success: function (html) {
+                //console.log(html);
+                //document.location.href = window.location.href;
+            }
+        });
 
     });
 
@@ -31,55 +33,19 @@ $( document ).ready(function() {
         $(this).parents('.msgb').find('textarea[name="answer"]').val(c).focus();
     });
 
-    // var timer = '';
-    //
-    // if(!$('textarea[name="answer"]').is(":focus")){
-    //
-    //     console.log('start');
-    // }
+
+    $('.dbl_edit').on('dblclick', function () {
+        var i = $(this).data('i');
+        var id = $(this).data('id');
+        var m = $(this).html().trim();
+        $('#ord_edit').find('textarea').val(m);
+        $('#ord_edit').find('input[name="id"]').val(id);
+        $('#ord_edit').find('input[name="i"]').val(i);
+        $('#ord_edit').find('textarea').val(m);
+        UIkit.modal('#ord_edit').show();
+    });
 
 
 
-
-
-
-
-
-    //console.log($(window).height());
-
-    // $('textarea[name="answer"]').on('focus', function () {
-    //     clearTimeout(timer);
-    //     console.log('stop');
-    // });
-
-
-
-    // $('#owner_finish').on('click', function () {
-    //     var id = $(this).val();
-    //     $.ajax({
-    //         url: '/ajax_owner_finish',
-    //         type: 'POST',
-    //         data: {id:id},
-    //         dataType: 'html',
-    //         success: function (html) {
-    //             //console.log(html);
-    //             document.location.href = window.location.href;
-    //         }
-    //     });
-    // });
-    //
-    // $('#renter_finish').on('click', function () {
-    //     var id = $(this).val();
-    //     $.ajax({
-    //         url: '/ajax_renter_finish',
-    //         type: 'POST',
-    //         data: {id:id},
-    //         dataType: 'html',
-    //         success: function (html) {
-    //             console.log(html);
-    //             //document.location.href = window.location.href;
-    //         }
-    //     });
-    // });
 });
 
