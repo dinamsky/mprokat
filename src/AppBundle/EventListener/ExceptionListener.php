@@ -61,15 +61,23 @@ class ExceptionListener
                     'lang' => 'ru'
                 )));
 
-                //$event->setResponse($response);
             }
 
             if ($exception->getStatusCode() == 500){
+
                 $msg = (new \Swift_Message('Ошибка 500 в системе'))
                     ->setFrom('mail@multiprokat.com')
                     ->setTo('wqs-info@mail.ru')
                     ->setBody($message,'text/html');
                 $this->mailer->send($msg);
+
+                $templating = $this->container->get('templating');
+
+                $city = $event->getRequest()->getSession()->get('city');
+                $response = new Response($templating->render('TwigBundle:Exception:error500.html.twig', array(
+                    'city' => $city,
+                    'lang' => 'ru'
+                )));
             }
 
         } else {
