@@ -21,10 +21,10 @@
                 PRO аккаунт действует бессрочно и дает больше возможностей, в том числе: размещать больше объявлений и получать больше звонков от клиентов
             </div>
 
-            <div class="uk-margin-bottom"><label>Я ознакомлен и согласен с условиями <a target="_blanc" class="underline" uk-tooltip="title:откроется в новом окне" href="/assets/docs/oferta.pdf">оферты</a> <input type="checkbox" name="oferta_check"> </label></div>
-            <div class="uk-margin-bottom"><label>Активировать бесплатно PRO аккаунт <input type="checkbox" name="pro_check"> </label></div>
+            <div class="uk-margin-bottom"><label>Я ознакомлен и согласен с условиями <a target="_blanc" class="underline" uk-tooltip="title:откроется в новом окне" href="/assets/docs/oferta.pdf">оферты</a> <input type="checkbox" name="oferta_check" checked> </label></div>
+            <div class="uk-margin-bottom"><label>Активировать бесплатно PRO аккаунт <input type="checkbox" name="pro_check" checked> </label></div>
             <input type="hidden" name="id" value="{{ user.id }}">
-            <button class="uk-button" disabled>Перейти</button>
+            <button class="uk-button uk-button-primary" >Перейти</button>
         </form>
     {% endif %}
 
