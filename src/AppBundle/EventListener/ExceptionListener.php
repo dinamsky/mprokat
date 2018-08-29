@@ -64,14 +64,17 @@ class ExceptionListener
                 //$event->setResponse($response);
             }
 
-
-        } else {
-            $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
-            $msg = (new \Swift_Message('Ошибка 500 в системе'))
+            if ($exception->getStatusCode() == 500){
+                $msg = (new \Swift_Message('Ошибка 500 в системе'))
                     ->setFrom('mail@multiprokat.com')
                     ->setTo('wqs-info@mail.ru')
                     ->setBody($message,'text/html');
-            $this->mailer->send($msg);
+                $this->mailer->send($msg);
+            }
+
+        } else {
+            $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+
         }
 
         // sends the modified response object to the event
