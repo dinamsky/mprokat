@@ -120,16 +120,16 @@ $( document ).ready(function() {
     //     console.log('start');
     // }
 
-    var timer = setInterval(function(){
-        var t = $('textarea[name="answer"]');
-        if(!t.is(":focus") && t.val() === '') {
-            //console.log('not in focus');
-            window.location.reload(true);
-        } else {
-            //console.log('in focus');
-        }
-
-        }, 10000);
+    // var timer = setInterval(function(){
+    //     var t = $('textarea[name="answer"]');
+    //     if(!t.is(":focus") && t.val() === '') {
+    //         //console.log('not in focus');
+    //         window.location.reload(true);
+    //     } else {
+    //         //console.log('in focus');
+    //     }
+    //
+    //     }, 10000);
 
     if(!$('body').hasClass('mobile')) {
 
