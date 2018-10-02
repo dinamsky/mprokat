@@ -2,6 +2,13 @@
                     <div class="uk-modal-dialog uk-modal-body">
                         <h2 class="uk-modal-title">{% trans %}Заявка{% endtrans %}</h2>
                         <button class="uk-modal-close-default" type="button" uk-close></button>
+
+                        <button uk-toggle="target: #howtopay" type="button" style="color: #07d;
+                                background: transparent;
+                                text-decoration: underline;
+                                padding: 0;
+                                margin-bottom: 10px;">Как это работает?</button>
+
                         <form action="/user/bookMessage" uk-grid class="uk-grid-small" method="POST" onsubmit="return new_book_validate();">
 
                             <div class="uk-width-1-1">
