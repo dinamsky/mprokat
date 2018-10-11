@@ -1706,3 +1706,31 @@ body.mobile .ord_toggler.active{
 body.mobile {
     background: white !important;
 }
+
+.ht_cr{
+    font-size: 23px;
+    text-align: center;
+    width: 50px;
+    padding: 8px 0;
+    border-radius: 27px;
+    border: 2px solid #898989;
+    margin: 0 13px;
+}
+
+.ht_dl{
+    width: 2px;
+    height: 100px;
+    margin: 0 39px;
+    background: #898989;
+}
+
+#howtopay.ver1 b{
+    font-size: 22px;
+    color:black;
+}
+
+#howtopay.ver1 h2{
+    font-size: 38px;
+    color:black;
+    font-weight: bold;
+}
