@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {#<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWdm1zrblFjsdUfi1-6fsPvj30ACCiCxk"></script>#}
+    {#<script src="{{ asset('assets/js/show_map.js') }}"></script>#}
+    <script src="{{ asset('assets/js/city_general_mark_selector.js') }}"></script>
+    <script src="{{ asset('assets/js/mark_autocomplete.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+
+    {#<div id="map" data-lat="55.754110" data-lng="37.620800" class="uk-margin-bottom"></div>#}
+
+
+
+    <div class="standard_wide">
+
+        <div id="top_selector_block" class="">
+        <div class="standard_wide top_selector_all" >
+
+
+                <h1 class="uk-text-center main_h1">{% trans %}Большой выбор транспорта в аренду{% endtrans %}</h1>
+
+
+            {% if is_mobile() %}
+            <button class="uk-button uk-width-1-1" id="button_main_search">Поиск</button>
+            {% endif %}
+
+            <div id="the_main_selector" class="main_search" {% if is_mobile() %}hidden{% endif %} >
+
+
+                <div class="uk-margin-auto uk-width-3-4@s uk-margin-bottom">
+                    <form uk-grid id="main_search_form" class="uk-flex uk-flex-center uk-grid-small" >
+                        {#<div class="uk-width-1-1 uk-width-auto@s uk-position-relative">#}
+                            {#<div class="uk-hidden@s uk-text-small c_white">Город</div>#}
+                            {#<div class="top_selector_box">{{ include('selector/adress_block.html.twig') }}</div>#}
+                        {#</div>#}
+
+                        <input type="hidden" name="gtURL" id="gtURL" value="cars">
+
+                        <div class="uk-width-1-1 uk-width-auto@s uk-position-relative" >
+                            <div class="uk-hidden@s uk-text-small c_white">Марка</div>
+                            <div class="top_selector_box" id="mark_placement">{{ include('selector/mark_block.html.twig', {'mark_arr':mark_arr_sorted, 'type':'1'}) }}</div>
+                        </div>
+
+                        <div class="uk-width-1-1 uk-width-auto@s uk-position-relative" >
+                            <div class="uk-hidden@s uk-text-small c_white">Модель</div>
+                            <div class="top_selector_box" id="model_placement">{{ include('selector/model_block.html.twig', {'model_arr':models_in_mark, 'mark_id':mark.id}) }}</div>
+                        </div>
+
+                        <div class="uk-width-1-2 uk-width-auto@s">
+                            <button id="main_search_button" type="button" class="uk-button uk-button-primary uk-width-1-1">{% trans %}Найти{% endtrans %}</button>
+                        </div>
+                    </form>
+                </div>
+
+                <hr>
+                <div class="uk-margin-top main_gt_block">
+                    <div uk-grid class="uk-flex uk-flex-center uk-grid-small">
+                        {% for gt in generalTypes|slice(0,4) if gt.carTypeIds%}
+                            <div class="gt_selector" data-url="{{ gt.url }}" data-header="{{ gt.header }}">
+                                <a href="/rent/{{ in_city }}/all/{{ gt.url }}" class="inner c_white"><i class="fa fa-{{ gt.icon }}"></i> {{ lang == 'ru' ? gt.header : gt.url }}</a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="uk-text-center uk-margin-top cursor-pointer c_white" uk-toggle="target: #more_gt">{% trans %}еще категории{% endtrans %} <i uk-icon="icon:chevron-down"></i></div>
+                    <div id="more_gt" uk-grid class="uk-flex uk-flex-center uk-margin-top uk-grid-medium" hidden>
+                        {% for gt in generalTypes|slice(4) if gt.carTypeIds %}
+                            <div class="gt_selector uk-width-1-2 uk-width-auto@s" data-url="{{ gt.url }}" data-header="{{ gt.header }}">
+                                <a href="/rent/{{ in_city }}/all/{{ gt.url }}" class="inner c_white"><i class="fa fa-{{ gt.icon }}"></i> {{ lang == 'ru' ? gt.header : gt.url }}</a>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    {#{{ include('selector/gt_adress_block.html.twig') }}#}
+
+                </div>
+            </div>
+        </div>
+        {#g#}
+    </div>
+
+
+
+
+
+    </div>
+
+{% endblock %}
