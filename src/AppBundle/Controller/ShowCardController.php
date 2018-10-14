@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Comment;
 use AppBundle\Entity\Deleted;
 use AppBundle\Entity\Mark;
+use AppBundle\Entity\Rates;
 use AppBundle\Entity\SubField;
 use AppBundle\Menu\MenuGeneralType;
 use AppBundle\Menu\MenuCity;
@@ -372,4 +373,26 @@ class ShowCardController extends Controller
         return $this->redirect('/card/'.$id);
     }
 
+    /**
+     * @Route("/rate_handler", name="rate_handler")
+     */
+    public function rateHandlerAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $rate = new Rates();
+        $rate->setCardId($request->request->get('card_id'));
+        $rate->setRate($request->request->get('r_rate'));
+        $rate->setComment($request->request->get('r_text'));
+
+        $em->persist($rate);
+        $em->flush();
+
+        $this->addFlash(
+            'notice',
+            'Ваш рейтинг успешно отправлен!<br>'
+        );
+
+        return $this->redirect('/card/'.$request->request->get('card_id'));
+    }
 }

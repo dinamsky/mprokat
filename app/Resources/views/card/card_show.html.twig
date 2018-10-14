@@ -199,6 +199,28 @@
                 </div>
                 {% endif %}
 
+                {% if not reserved and is_mobile() and card.user.isNew != 1%}
+                        <div class="uk-margin-bottom card_page_phone">
+                            <div uk-grid class="uk-grid-collapse uk-grid-match b_shadowed">
+                                <div class="phone_block uk-width-1-1">
+                                    {% if app.session.get('phone')[card.user.id] is not defined %}
+                                        <div class="hidden_phone show_phone uk-text-center c_white" data-card_id="{{ card.id }}" data-profile="0" style="background: lightgrey">
+                                            <div class="uk-text-center">{% trans %}Показать телефон{% endtrans %}</div>
+                                            <i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue|slice(0,5) }} XXX-XX-XX{% endfor %}
+                                        </div>
+
+                                    {% else %}
+                                        <a class="opened_phone c_white uk-text-center" href="tel:{% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}">
+                                            <i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}
+                                        </a>
+                                    {% endif %}
+                                </div>
+
+                            </div>
+                        </div>
+                    {% endif %}
+
+
                 <ul id="tt" uk-tab>
                     <li><a href="#">{% trans %}Информация{% endtrans %}</a></li>
                     {% if card.coords != NULL and card.coords != ''%}
@@ -659,8 +681,60 @@
                     <div class="uk-modal-dialog uk-modal-body">
                         <button class="uk-modal-close-default" type="button" uk-close></button>
                         <div class="modal_name"><i class="fa fa-user"></i> {{ card.user.header }}</div>
-                        <a class="modal_phone" href=""></a>
+
+                        <a class="modal_phone uk-text-center uk-display-block" href=""></a>
+
                         <hr>
+
+                        <div class="uk-margin">
+                            <div class="uk-margin-bottom" style="font-weight: bold; color: #2162a2;">
+                                Важно !!!<br>
+                                Оцените разговор с владельцем<br> 
+                                и актуальность информации в этом объявлении.<br>
+                                С вами мы становимся лучше!
+                            </div>
+                            <form action="/rate_handler" method="POST">
+                                <div class="uk-grid uk-grid-collapse">
+                                    <div class="uk-width-1-4 uk-text-center">
+                                        <label>
+                                            <input type="radio" name="r_rate" value="0" class="uk-hidden">
+                                            <img src="/assets/images/interface/r_bad.png" alt="" style="width: 50px">
+                                        </label>
+                                        <div {{ is_mobile() ? 'style="font-size:10px"'}}>Ужас</div>
+                                    </div>
+                                    <div class="uk-width-1-4 uk-text-center">
+                                        <label>
+                                            <input type="radio" name="r_rate" value="1" class="uk-hidden">
+                                            <img src="/assets/images/interface/r_mid.png" alt="" style="width: 50px">
+                                        </label>
+                                        <div {{ is_mobile() ? 'style="font-size:10px"'}}>Не отвечает</div>
+                                    </div>
+                                    <div class="uk-width-1-4 uk-text-center">
+                                        <label class="active">
+                                            <input type="radio" name="r_rate" value="2" class="uk-hidden" checked>
+                                            <img src="/assets/images/interface/r_norm.png" alt="" style="width: 50px">
+                                        </label>
+                                        <div {{ is_mobile() ? 'style="font-size:10px"'}}>Хорошо</div>
+                                    </div>
+                                    <div class="uk-width-1-4 uk-text-center">
+                                        <label>
+                                            <input type="radio" name="r_rate" value="3" class="uk-hidden">
+                                            <img src="/assets/images/interface/r_good.png" alt="" style="width: 50px">
+                                        </label>
+                                        <div {{ is_mobile() ? 'style="font-size:10px"'}}>Супер</div>
+                                    </div>
+                                </div>
+                                <div class="uk-margin-top uk-margin-bottom">
+                                    <textarea name="r_text" class="uk-textarea" style="min-height: 80px" placeholder="Ваш комментарий звонка (попадет в поддержку сайта)"></textarea>
+                                </div>
+                                <input type="hidden" name="card_id" value="{{ card.id }}">
+                                <div class="uk-text-center"><button class="uk-button uk-button-primary">Отправить</button></div>
+
+                            </form>
+                        </div>
+
+
+
                         <div class="modal_text tx_19">
                             {% trans %}Не забудьте сообщить владельцу, что звоните с сайта Мультипрокат и спросить скидку!{% endtrans %}
                         </div>
