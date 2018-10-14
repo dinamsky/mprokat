@@ -109,6 +109,11 @@ $( document ).ready(function() {
         }
     });
 
+    $('#user_phone_form label').on('click', function () {
+        $('#user_phone_form label').removeClass('active');
+        $(this).addClass('active');
+    });
+
     if ($('.card_cover').hasClass('share')) {
         UIkit.modal('#share_butons').show();
     }
