@@ -112,6 +112,7 @@ $( document ).ready(function() {
     $('#user_phone_form label').on('click', function () {
         $('#user_phone_form label').removeClass('active');
         $(this).addClass('active');
+        $('#rate_form').trigger('submit');
     });
 
     if ($('.card_cover').hasClass('share')) {
