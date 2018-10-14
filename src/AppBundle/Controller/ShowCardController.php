@@ -390,7 +390,7 @@ class ShowCardController extends Controller
 
         $this->addFlash(
             'notice',
-            'Ваш рейтинг успешно отправлен!<br>'
+            'Спасибо за вашу оценку!<br>'
         );
 
         return $this->redirect('/card/'.$request->request->get('card_id'));

@@ -682,18 +682,22 @@
                         <button class="uk-modal-close-default" type="button" uk-close></button>
                         <div class="modal_name"><i class="fa fa-user"></i> {{ card.user.header }}</div>
 
-                        <a class="modal_phone uk-text-center uk-display-block" href=""></a>
+                        <a class="modal_phone uk-display-block" href=""></a>
+
+                        <div class="modal_text">
+                            {% trans %}Не забудьте сообщить владельцу, что звоните с сайта Мультипрокат и спросить скидку!{% endtrans %}
+                        </div>
 
                         <hr>
 
                         <div class="uk-margin">
-                            <div class="uk-margin-bottom" style="font-weight: bold; color: #2162a2;">
+                            <div class="uk-margin-bottom" style="font-weight: bold; color: #1e87f0;">
                                 Важно !!!<br>
                                 Оцените разговор с владельцем<br> 
                                 и актуальность информации в этом объявлении.<br>
                                 С вами мы становимся лучше!
                             </div>
-                            <form action="/rate_handler" method="POST">
+                            <form id="rate_form" action="/rate_handler" method="POST">
                                 <div class="uk-grid uk-grid-collapse">
                                     <div class="uk-width-1-4 uk-text-center">
                                         <label>
@@ -710,8 +714,8 @@
                                         <div {{ is_mobile() ? 'style="font-size:10px"'}}>Не отвечает</div>
                                     </div>
                                     <div class="uk-width-1-4 uk-text-center">
-                                        <label class="active">
-                                            <input type="radio" name="r_rate" value="2" class="uk-hidden" checked>
+                                        <label class="">
+                                            <input type="radio" name="r_rate" value="2" class="uk-hidden">
                                             <img src="/assets/images/interface/r_norm.png" alt="" style="width: 50px">
                                         </label>
                                         <div {{ is_mobile() ? 'style="font-size:10px"'}}>Хорошо</div>
@@ -724,20 +728,18 @@
                                         <div {{ is_mobile() ? 'style="font-size:10px"'}}>Супер</div>
                                     </div>
                                 </div>
-                                <div class="uk-margin-top uk-margin-bottom">
+                                <div class="uk-margin-top uk-margin-bottom uk-hidden">
                                     <textarea name="r_text" class="uk-textarea" style="min-height: 80px" placeholder="Ваш комментарий звонка (попадет в поддержку сайта)"></textarea>
                                 </div>
                                 <input type="hidden" name="card_id" value="{{ card.id }}">
-                                <div class="uk-text-center"><button class="uk-button uk-button-primary">Отправить</button></div>
+                                <div class="uk-text-center uk-hidden"><button class="uk-button uk-button-primary">Отправить</button></div>
 
                             </form>
                         </div>
 
 
 
-                        <div class="modal_text tx_19">
-                            {% trans %}Не забудьте сообщить владельцу, что звоните с сайта Мультипрокат и спросить скидку!{% endtrans %}
-                        </div>
+
                     </div>
                 </div>
 
