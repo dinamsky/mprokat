@@ -680,10 +680,10 @@
                 <div id="user_phone_form" uk-modal>
                     <div class="uk-modal-dialog uk-modal-body">
                         <button class="uk-modal-close-default" type="button" uk-close></button>
-                        <div class="modal_name"><i class="fa fa-user"></i> {{ card.user.header }}</div>
-
-                        <a class="modal_phone uk-display-block" href=""></a>
-
+                        <div class="modal_name">
+                            Владелец:<br>
+                            <i class="fa fa-user"></i> {{ card.user.header }}, <a class="modal_phone uk-display-block" href=""></a>
+                        </div>
                         <div class="modal_text">
                             {% trans %}Не забудьте сообщить владельцу, что звоните с сайта Мультипрокат и спросить скидку!{% endtrans %}
                         </div>
@@ -691,11 +691,8 @@
                         <hr>
 
                         <div class="uk-margin">
-                            <div class="uk-margin-bottom" style="font-weight: bold; color: #1e87f0;">
-                                Важно !!!<br>
-                                Оцените разговор с владельцем<br> 
-                                и актуальность информации в этом объявлении.<br>
-                                С вами мы становимся лучше!
+                            <div class="uk-margin-bottom uk-text-center" style="font-weight: bold; color: black;">
+                                Оценить:
                             </div>
                             <form id="rate_form" action="/rate_handler" method="POST">
                                 <div class="uk-grid uk-grid-collapse">
@@ -735,6 +732,9 @@
                                 <div class="uk-text-center uk-hidden"><button class="uk-button uk-button-primary">Отправить</button></div>
 
                             </form>
+                            <div class="uk-margin-top">
+                                Пожалуйста, оцените отзывчивость этого владельца и актуальность его объявления
+                            </div>
                         </div>
 
 
