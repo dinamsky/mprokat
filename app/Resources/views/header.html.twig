@@ -67,10 +67,32 @@
                 </div>
                 <div class="uk-width-expand">
 
-                    <div class="uk-grid uk-grid-small uk-flex-right">
+                    <div class="uk-grid uk-grid-small uk-flex-right uk-flex-middle">
 
                         <div>
-                            <a href="/promo" class="uk-button uk-button-default">Сдать авто</a>
+                            <button uk-toggle="target: #howtopay" type="button" style="color: grey;
+                                background: transparent;
+                                text-decoration: underline;
+                                padding: 0;
+                                ">Как это работает?</button>
+                        </div>
+
+                        {#<div>#}
+                            {#<a href="/promo" class="uk-button uk-button-default">Сдать авто</a>#}
+                        {#</div>#}
+
+                        <div>
+                            {#{% if app.session.has('logged_user') %}#}
+                                {#<a href="/card/new" class="uk-button uk-button-success add_card_button">Сдать</a>#}
+                            {#{% elseif app.session.has('admin') %}#}
+                                {#<a href="/card/new" class="uk-button uk-button-success add_card_button">Сдать</a>#}
+                            {#{% else %}#}
+                                {#<a uk-toggle="target: #sign_in" class="uk-button uk-button-success add_card_button">Сдать</a>#}
+                            {#{% endif %}#}
+                            <a href="/card/new" style="border: 1px solid green;
+    color: grey;
+    font-size: 13px;
+    padding: 5px 10px;" >Хочу сдавать</a>
                         </div>
 
                         <div class="c_grey uk-position-relative">
@@ -89,16 +111,7 @@
                         </div>
                         <div>{{ include('user/auth_button_modal.html.twig') }}</div>
 
-                        <div>
-                            {#{% if app.session.has('logged_user') %}#}
-                                {#<a href="/card/new" class="uk-button uk-button-success add_card_button">Сдать</a>#}
-                            {#{% elseif app.session.has('admin') %}#}
-                                {#<a href="/card/new" class="uk-button uk-button-success add_card_button">Сдать</a>#}
-                            {#{% else %}#}
-                                {#<a uk-toggle="target: #sign_in" class="uk-button uk-button-success add_card_button">Сдать</a>#}
-                            {#{% endif %}#}
-                            <a href="/card/new" class="add_card_button just_plus" title="Добавить транспорт"><i class="fa fa-plus-circle"></i></a>
-                        </div>
+
                     </div>
                 </div>
             </div>
