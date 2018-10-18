@@ -1,0 +1,45 @@
+<div id="nonreged_user_book_form" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+            <div id="nrf">
+
+                <div class="rb_1">
+                    <h2 class="uk-modal-title">Быстрая регистрация</h2>
+                    Подача заявок доступна только зарегистрированным пользователям<br><br>
+                    <div>
+                        <input type="text" name="email" class="uk-input" placeholder="email" required>
+                    </div>
+                    <div class="uk-margin-top">
+                        <input type="password" name="password" class="uk-input" placeholder="пароль" required>
+                    </div>
+                    <div class="uk-margin-top">
+                        <input type="text" name="phone" class="uk-input phone_validate" placeholder="номер мобильного телефона" required>
+                    </div>
+                    <div class="uk-margin-top">
+                        <button class="uk-button uk-button-primary" id="qreg_1">Отправить СМС с кодом</button>
+                    </div>
+                </div>
+
+                <div class="rb_2 uk-hidden">
+                    <h2 class="uk-modal-title">Подтверждение</h2>
+                    <br><br>
+                    <div>
+                        <input type="text" name="regcode" class="uk-input" placeholder="код из СМС">
+                    </div>
+                    <div class="uk-margin-top">
+                        <button class="uk-button uk-button-primary" id="qreg_2">Проверить</button>
+                    </div>
+                </div>
+
+                <div class="rb_3 uk-hidden">
+                    <h2 class="uk-modal-title">{% trans %}Заявка{% endtrans %}</h2>
+                    {{ include('card/order_forms/new_order_form_content.html.twig') }}
+                </div>
+
+            </div>
+
+
+
+        </div>
+    </div>

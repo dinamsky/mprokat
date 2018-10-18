@@ -131,6 +131,48 @@ $( document ).ready(function() {
         minDate: new Date(document.getElementById('user_book_form').getAttribute('data-res'))
     });
 
+
+    $('#qreg_1').on('click', function () {
+        var email = $('#nrf input[name="email"]').val().trim();
+        var password = $('#nrf input[name="password"]').val().trim();
+        var phone = $('#nrf input[name="phone"]').val().trim();
+        var t = $(this);
+        if(email!==''&&password!==''&&phone!=='') {
+            $.ajax({
+                url: '/qreg_ajax_1',
+                type: 'POST',
+                data: {email: email, password: password, phone: phone},
+                success: function (html) {
+                    if(html ==='ok') {
+                        $('.rb_1').remove();
+                        $('.rb_2').removeClass('uk-hidden');
+                    } else {
+                        UIkit.notification('Такой пользователь уже есть в базе!',{status:'danger',timeout:100000});
+                    }
+                }
+            });
+        } else {
+            UIkit.notification('Все поля обязательны!',{status:'danger',timeout:100000});
+        }
+    });
+
+    $('#qreg_2').on('click', function () {
+        var regcode = $('#nrf input[name="regcode"]').val();
+        var t = $(this);
+        $.ajax({
+            url: '/qreg_ajax_2',
+            type: 'POST',
+            data: {regcode: regcode},
+            success: function (html) {
+                if(html==='ok') {
+                    $('.rb_2').remove();
+                    $('.rb_3').removeClass('uk-hidden');
+                } else {
+                    UIkit.notification('Код не совпал!',{status:'danger',timeout:100000});
+                }
+            }
+        });
+    });
 });
 
 function new_book_validate(){
