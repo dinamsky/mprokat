@@ -278,9 +278,104 @@ class UserController extends Controller
 
         $this->addFlash(
             'notice',
-            $_t->trans('На вашу почту было отправлено письмо для активации аккаунта!')
+            $_t->trans('На вашу почту было отправлено письмо для активации аккаунта!<br><br>Не забудьте проверить папку спам!!!')
         );
         return $this->redirectToRoute('homepage');
+    }
+
+    /**
+     * @Route("/qreg_ajax_1")
+     */
+    public function qreg_ajax_1_Action(Request $request, Password $password, \Swift_Mailer $mailer)
+    {
+        $ok = true;
+
+        $r = '';
+
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findOneBy(array(
+                'email' => $request->request->get('email')
+            ));
+
+        if ($user) {
+            $this->addFlash(
+                'notice',
+                'Пользователь уже зарегистрирован!'
+            );
+            $ok = false;
+        }
+
+        $xn = explode("@",$request->request->get('email'));
+
+        $code = rand(111111,999999);
+        $user = new User();
+        $user->setEmail($request->request->get('email'));
+        $user->setLogin('');
+        $user->setPassword($password->HashPassword($request->request->get('password')));
+        $user->setHeader($xn[0]);
+        $user->setActivateString($code);
+        $user->setTempPassword('');
+        $user->setIsSubscriber(true);
+        $user->setIsNew(true);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+
+        $message = (new \Swift_Message('Регистрация на сайте multiprokat.com'))
+            ->setFrom('mail@multiprokat.com')
+            ->setTo($request->request->get('email'))
+            ->setBody(
+                'Вы зарегистрированы на сайте multiprokat.com с email:'.$request->request->get('email').' и паролем:'.$request->request->get('password'),
+                'text/html'
+            );
+        $mailer->send($message);
+
+        if($ok) {
+            $number = preg_replace('~[^0-9]+~','',$request->request->get('phone'));
+            //if(strlen($number)==11) $number = substr($number, 1);
+            $message = urlencode('Ваш код регистрации: '.$code);
+            $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
+            $sms_result = file_get_contents($url);
+            $r = 'ok';
+        }
+
+        return new Response($r);
+    }
+
+    /**
+     * @Route("/qreg_ajax_2")
+     */
+    public function qreg_ajax_2_Action(Request $request, Password $password, \Swift_Mailer $mailer)
+    {
+        $code = $request->request->get('regcode');
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findOneBy(array(
+                'activateString' => $code
+            ));
+
+
+
+
+
+        if($user) {
+
+            $user->setTempPassword('');
+            $user->setIsActivated(true);
+            $user->setActivateString('');
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+            $this->get('session')->set('logged_user', $user);
+            $this->setAuthCookie($user);
+
+            $r = 'ok';
+        } else {
+            $r = 'bad';
+        }
+
+        return new Response($r);
     }
 
     /**

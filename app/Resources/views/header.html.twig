@@ -109,10 +109,15 @@
                             {% endif %}
 
                         </div>
+                        {% if app.session.has('logged_user') %}
+                        {% else %}
                         <div>
                             <button  uk-toggle="target: #sign_up" style="background: transparent;
     color: grey;"><span uk-icon="icon:lock"></span>{% trans %}Регистрация{% endtrans %}</button>
                         </div>
+                        {% endif %}
+
+
                         <div>{{ include('user/auth_button_modal.html.twig') }}</div>
 
 

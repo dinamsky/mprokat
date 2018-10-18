@@ -847,16 +847,10 @@
         async defer>
     </script>
 
-    <div id="nonreged_user_book_form" uk-modal>
-        <div class="uk-modal-dialog uk-modal-body">
-            <h2 class="uk-modal-title"></h2>
-            <button class="uk-modal-close-default" type="button" uk-close></button>
-            <div>
-                Подача заявок доступна только зарегистрированным пользователям<br><br>
-                <button uk-toggle="target: #sign_up" class="uk-button uk-button-success "><span uk-icon="icon:lock" class="uk-icon"></span>Регистрация</button>
-            </div>
-        </div>
-    </div>
+
+    {{ include('card/order_forms/nonreged_form.html.twig') }}
+
+
 
 
 
