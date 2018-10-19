@@ -315,27 +315,13 @@ class UserController extends Controller
         $user->setEmail('');
         $user->setLogin('');
         $user->setPassword($password->HashPassword($code));
-        $user->setHeader('');
+        $user->setHeader($request->request->get('phone'));
         $user->setActivateString($code);
         $user->setTempPassword('');
         $user->setIsSubscriber(true);
         $user->setIsNew(true);
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
-        $em->flush();
-
-
-        $user = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->findOneBy(array(
-                'activateString' => $code
-            ));
-
-        $user_info = new UserInfo();
-        $user_info->setUser($user);
-        $user_info->setUiKey('phone');
-        $user_info->setUiValue($request->request->get('phone'));
-        $em->persist($user_info);
         $em->flush();
 
         if($ok) {
@@ -364,12 +350,23 @@ class UserController extends Controller
 
         if($user) {
 
+            $phone = $user->getHeader();
+
             $user->setTempPassword('');
+            $user->setHeader('');
             $user->setIsActivated(true);
             $user->setActivateString('');
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
+
+            $user_info = new UserInfo();
+            $user_info->setUser($user);
+            $user_info->setUiKey('phone');
+            $user_info->setUiValue($phone);
+            $em->persist($user_info);
+            $em->flush();
+
             $this->get('session')->set('logged_user', $user);
             $this->setAuthCookie($user);
 
