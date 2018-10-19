@@ -424,6 +424,7 @@ class ProfileController extends Controller
             ->find($this->get('session')->get('logged_user')->getId());
 
         $user->setHeader(trim(strip_tags($post->get('header'))));
+        $user->setEmail(trim(strip_tags($post->get('email'))));
 
         /**
          * @var $info UserInfo
@@ -598,7 +599,12 @@ class ProfileController extends Controller
 
         $post = $request->request;
 
-        if ($this->captchaVerify($post->get('g-recaptcha-response'))) {
+        //var_dump($post);
+
+        //var_dump($post->has('is_nonreged'));
+
+
+        if ($this->captchaVerify($post->get('g-recaptcha-response')) or $post->has('is_nonreged')) {
         //if (1==1) {
 
             $card_id = $post->get('card_id');
@@ -646,8 +652,8 @@ class ProfileController extends Controller
 
             //dump($this->container->get('kernel')->getEnvironment());
 
-            $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
-            $sms_result = file_get_contents($url);
+            //$url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
+            //$sms_result = file_get_contents($url);
 
 
             $renter = $this->get('session')->get('logged_user');
@@ -744,7 +750,11 @@ class ProfileController extends Controller
             );
         }
 
-        return $this->redirect('/card/'.$card->getId());
+        if($post->has('is_nonreged')) {
+            return $this->redirect('/profile');
+        } else {
+            return $this->redirect('/card/'.$card->getId());
+        }
 
     }
 

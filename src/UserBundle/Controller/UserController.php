@@ -6,6 +6,7 @@ use AppBundle\Menu\ServiceStat;
 use MarkBundle\Entity\CarModel;
 use MarkBundle\Entity\CarMark;
 use UserBundle\Entity\Message;
+use UserBundle\Entity\UserInfo;
 use UserBundle\Entity\UserOrder;
 use AppBundle\Entity\CardFeature;
 use AppBundle\Entity\CardPrice;
@@ -292,16 +293,17 @@ class UserController extends Controller
 
         $r = '';
 
-        $user = $this->getDoctrine()
-            ->getRepository(User::class)
+        $user_info = $this->getDoctrine()
+            ->getRepository(UserInfo::class)
             ->findOneBy(array(
-                'email' => $request->request->get('email')
+                'uiKey' => 'phone',
+                'uiValue' => $request->request->get('phone')
             ));
 
-        if ($user) {
+        if ($user_info) {
             $this->addFlash(
                 'notice',
-                'Пользователь уже зарегистрирован!'
+                'Пользователь уже зарегистрирован! Выполните вход'
             );
             $ok = false;
         }
@@ -310,10 +312,10 @@ class UserController extends Controller
 
         $code = rand(111111,999999);
         $user = new User();
-        $user->setEmail($request->request->get('email'));
+        $user->setEmail('');
         $user->setLogin('');
-        $user->setPassword($password->HashPassword($request->request->get('password')));
-        $user->setHeader($xn[0]);
+        $user->setPassword($password->HashPassword($code));
+        $user->setHeader('');
         $user->setActivateString($code);
         $user->setTempPassword('');
         $user->setIsSubscriber(true);
@@ -322,14 +324,19 @@ class UserController extends Controller
         $em->persist($user);
         $em->flush();
 
-        $message = (new \Swift_Message('Регистрация на сайте multiprokat.com'))
-            ->setFrom('mail@multiprokat.com')
-            ->setTo($request->request->get('email'))
-            ->setBody(
-                'Вы зарегистрированы на сайте multiprokat.com с email:'.$request->request->get('email').' и паролем:'.$request->request->get('password'),
-                'text/html'
-            );
-        $mailer->send($message);
+
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findOneBy(array(
+                'activateString' => $code
+            ));
+
+        $user_info = new UserInfo();
+        $user_info->setUser($user);
+        $user_info->setUiKey('phone');
+        $user_info->setUiValue($request->request->get('phone'));
+        $em->persist($user_info);
+        $em->flush();
 
         if($ok) {
             $number = preg_replace('~[^0-9]+~','',$request->request->get('phone'));
@@ -354,10 +361,6 @@ class UserController extends Controller
             ->findOneBy(array(
                 'activateString' => $code
             ));
-
-
-
-
 
         if($user) {
 

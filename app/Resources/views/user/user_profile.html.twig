@@ -32,7 +32,11 @@
     <div class="">
         <div uk-grid>
             <div class="uk-width-2-3@s">
-                <div class="uk-margin-bottom">email: {{ user.email }}</div>
+                <div style="background: white;padding: 20px;margin-bottom: 30px">
+                    <span style="color:red;font-weight: bold">Пожалуйста</span> заполните свой профиль, чтобы иметь возможность оформлять заявки и участвовать в переписке.<br>
+                    <b>Email</b> обязателен для повторного входа в личный кабинет.<br>
+                    <b>Мобильный (!!!) телефон</b> - чтобы получать СМС от владельца/арендатора транспорта по заявке.
+                </div>
                 <form id="save_profile" action="/profile/save" method="POST">
                     <div>{% trans %}Имя{% endtrans %}: <input name="header" value="{{ user.header }}" class="uk-input"></div>
 
@@ -73,6 +77,7 @@
 
                     {% endfor %}
 
+                    <div>Email: <input name="email" value="{{ user.email }}" class="uk-input"></div>
                     <div>{% trans %}Телефон{% endtrans %}: <input name="info[phone]" value="{{ phone }}" class="uk-input phone_validate"></div>
                     <div>Website: <input name="info[website]" value="{{ website }}" class="uk-input"></div>
                     <div>{% trans %}Кратко о себе/компании{% endtrans %}: <textarea name="info[about]" class="uk-textarea">{{ about }}</textarea></div>
