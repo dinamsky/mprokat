@@ -4,7 +4,7 @@
                                 padding: 0;
                                 margin-bottom: 10px;">Как это работает?</button>
 
-                        <form action="/user/bookMessage" uk-grid class="uk-grid-small" method="POST" onsubmit="return new_book_validate();">
+                        <form id="nbf_form" action="/user/bookMessage" uk-grid class="uk-grid-small" method="POST" onsubmit="return new_book_validate();">
 
                             <div class="uk-width-1-1">
                                 <span class="uk-text-small">{% trans %}Транспортное средство{% endtrans %}</span>
@@ -60,5 +60,7 @@
                             <div class="uk-width-1-1">
                                 <button id="bookMessageButton" class="uk-button uk-button-default uk-width-1-1">{% trans %}Отправить{% endtrans %}</button>
                             </div>
-
+                            {% if nonreged is defined %}
+                            <input type="hidden" name="is_nonreged" value="1">
+                            {% endif %}
                         </form>

@@ -133,15 +133,18 @@ $( document ).ready(function() {
 
 
     $('#qreg_1').on('click', function () {
-        var email = $('#nrf input[name="email"]').val().trim();
-        var password = $('#nrf input[name="password"]').val().trim();
+        //var email = $('#nrf input[name="email"]').val().trim();
+        //var password = $('#nrf input[name="password"]').val().trim();
         var phone = $('#nrf input[name="phone"]').val().trim();
         var t = $(this);
-        if(email!==''&&password!==''&&phone!=='') {
+
+        $(this).remove();
+
+        if(phone!=='') {
             $.ajax({
                 url: '/qreg_ajax_1',
                 type: 'POST',
-                data: {email: email, password: password, phone: phone},
+                data: {phone: phone},
                 success: function (html) {
                     if(html ==='ok') {
                         $('.rb_1').remove();
@@ -159,6 +162,9 @@ $( document ).ready(function() {
     $('#qreg_2').on('click', function () {
         var regcode = $('#nrf input[name="regcode"]').val();
         var t = $(this);
+
+        $(this).remove();
+
         $.ajax({
             url: '/qreg_ajax_2',
             type: 'POST',
