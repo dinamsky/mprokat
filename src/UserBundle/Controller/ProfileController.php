@@ -425,6 +425,8 @@ class ProfileController extends Controller
 
         $user->setHeader(trim(strip_tags($post->get('header'))));
         $user->setEmail(trim(strip_tags($post->get('email'))));
+        $user->setWhois('standard_renter');
+        $user->setTempPassword('');
 
         /**
          * @var $info UserInfo
@@ -454,7 +456,8 @@ class ProfileController extends Controller
 
         $this->get('session')->set('logged_user', $user);
 
-        return $this->redirectToRoute('user_profile');
+        if($post->has('back_url') and $post->get('back_url') != '' ) return $this->redirect($post->get('back_url'));
+        else return $this->redirectToRoute('user_profile');
     }
 
     /**
@@ -622,13 +625,16 @@ class ProfileController extends Controller
 
             $period = (strtotime(str_replace(".","-",$post->get('date_out'))) - strtotime(str_replace(".","-",$post->get('date_in'))))/60/60/24;
 
+            if ($period < 1 ) $period = 1;
+
             $price = $period*$price;
 
             $service = ceil($price/100*15);
 
             if($service == 0) $service = 500;
 
-            $total = $price + $deposit + $service;
+            //$total = $price + $deposit + $service;
+            $total = $price + $service;
 
             $is_admin_reged = false;
             foreach( $user->getInformation() as $info){
