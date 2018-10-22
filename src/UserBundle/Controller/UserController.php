@@ -125,10 +125,10 @@ class UserController extends Controller
 
                 $this->setAuthCookie($user);
 
-                $this->addFlash(
-                    'notice',
-                    $_t->trans('Вы успешно вошли в аккаунт!')
-                );
+//                $this->addFlash(
+//                    'notice',
+//                    $_t->trans('Вы успешно вошли в аккаунт!')
+//                );
 
                 $this->get('session')->set('user_pic', false);
                 foreach($user->getInformation() as $info){
@@ -308,7 +308,10 @@ class UserController extends Controller
             $ok = false;
         }
 
-        $xn = explode("@",$request->request->get('email'));
+        //$xn = explode("@",$request->request->get('email'));
+
+
+        $bu = $request->request->get('back_url');
 
         $code = rand(111111,999999);
         $user = new User();
@@ -317,9 +320,10 @@ class UserController extends Controller
         $user->setPassword($password->HashPassword($code));
         $user->setHeader($request->request->get('phone'));
         $user->setActivateString($code);
-        $user->setTempPassword('');
+        $user->setTempPassword($bu);
         $user->setIsSubscriber(true);
         $user->setIsNew(true);
+        $user->setWhois('new_renter');
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
         $em->flush();
@@ -352,7 +356,7 @@ class UserController extends Controller
 
             $phone = $user->getHeader();
 
-            $user->setTempPassword('');
+            //$user->setTempPassword('');
             $user->setHeader('');
             $user->setIsActivated(true);
             $user->setActivateString('');

@@ -136,6 +136,7 @@ $( document ).ready(function() {
         //var email = $('#nrf input[name="email"]').val().trim();
         //var password = $('#nrf input[name="password"]').val().trim();
         var phone = $('#nrf input[name="phone"]').val().trim();
+        var back_url = $('#nrf input[name="back_url"]').val();
         var t = $(this);
 
         $(this).remove();
@@ -144,7 +145,7 @@ $( document ).ready(function() {
             $.ajax({
                 url: '/qreg_ajax_1',
                 type: 'POST',
-                data: {phone: phone},
+                data: {phone: phone,back_url:back_url},
                 success: function (html) {
                     if(html ==='ok') {
                         $('.rb_1').remove();

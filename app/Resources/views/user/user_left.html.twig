@@ -1,4 +1,4 @@
-<div class="">
+<div class="{{ app.session.get('logged_user').whois == 'new_renter' ? 'uk-hidden' }}">
 
     {% if totalSum !=0 %}
         <div class="uk-text-center padding20 c_white bg_red">
@@ -41,3 +41,5 @@
     {% endif %}
     </div>
 </div>
+
+
