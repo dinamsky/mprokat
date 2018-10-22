@@ -134,12 +134,12 @@
                 {% endfor %}
 
             </div>
-            <div style="    font-size: 13px;
-    border: 1px solid grey;
-    padding: 10px;">
-                    круглосуточная поддержка платежей платформы "Мультипрокат"<br>
-                    +7(916) 455-98-08
-                </div>
+            {#<div style="    font-size: 13px;#}
+    {#border: 1px solid grey;#}
+    {#padding: 10px;">#}
+                    {#круглосуточная поддержка платежей платформы "Мультипрокат"<br>#}
+                    {#+7(916) 455-98-08#}
+                {#</div>#}
             {{ is_mobile() ? '<div class="uk-margin-large-bottom"></div>' }}
             {{ is_mobile() ? '</div>' }}
         </div>
@@ -351,7 +351,7 @@
                             {#Арендатор: {{ o.fioRenter }} <br>#}
                             <i class="fa fa-calendar"></i> {{ o.dateIn|date('d.m.Y') }} - <i class="fa fa-calendar"></i> {{ o.dateOut|date('d.m.Y') }}
                             <br>
-                            Дней аренды: {{ date(o.dateOut).diff(date(o.dateIn)).days }}
+                            Дней аренды: {{ date(o.dateOut).diff(date(o.dateIn)).days == 0 ? 1 : date(o.dateOut).diff(date(o.dateIn)).days }}
                             <hr>
                             <div class="uk-grid uk-grid-small">
                                 <div class="uk-width-2-3">
@@ -402,10 +402,10 @@
                                 <div class="uk-width-expand">Аренда:</div>
                                 <div class="uk-width-auto">{{ o.price }} <i class="fa fa-ruble"></i></div>
                             </div>
-                            <div class="uk-grid uk-margin-remove-top">
-                                <div class="uk-width-expand">Залог:</div>
-                                <div class="uk-width-auto">{{ o.deposit }} <i class="fa fa-ruble"></i></div>
-                            </div>
+                            {#<div class="uk-grid uk-margin-remove-top">#}
+                                {#<div class="uk-width-expand">Залог:</div>#}
+                                {#<div class="uk-width-auto">{{ o.deposit }} <i class="fa fa-ruble"></i></div>#}
+                            {#</div>#}
                             <div class="uk-grid uk-margin-remove-top">
                                 <div class="uk-width-expand">Сервисный сбор:</div>
                                 <div class="uk-width-auto">{{ o.service }} <i class="fa fa-ruble"></i></div>
@@ -414,6 +414,11 @@
                                 <div class="uk-width-expand"><b>Итого:</b></div>
                                 <div class="uk-width-auto"><b>{{ o.total }}</b> <i class="fa fa-ruble"></i></div>
                             </div>
+                            <hr>
+                            <div class="uk-text-small">
+                                Иногда владелец может попросить залог
+                            </div>
+                            <hr>
                         </div>
 
                         <div class="uk-margin-top">
