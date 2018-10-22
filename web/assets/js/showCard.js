@@ -160,6 +160,8 @@ $( document ).ready(function() {
         }
     });
 
+
+
     $('#qreg_2').on('click', function () {
         var regcode = $('#nrf input[name="regcode"]').val();
         var t = $(this);
@@ -180,6 +182,12 @@ $( document ).ready(function() {
             }
         });
     });
+
+    $('#bookMessageButton').on('click', function () {
+        $(this).remove();
+    });
+
+
 });
 
 function new_book_validate(){
