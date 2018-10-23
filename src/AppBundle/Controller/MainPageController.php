@@ -8,6 +8,8 @@ use AppBundle\Menu\MenuCity;
 use AppBundle\Menu\MenuMarkModel;
 use AppBundle\Menu\ServiceStat;
 use Doctrine\ORM\EntityManagerInterface;
+use MarkBundle\Entity\CarMark;
+use MarkBundle\Entity\CarModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\Card;
@@ -76,6 +78,14 @@ class MainPageController extends Controller
             ->findOneBy(['url' => 'main']);
 
 
+        $main_mark = $this->getDoctrine()
+            ->getRepository(CarMark::class)
+            ->findOneBy(['id' => 79]);
+
+
+        $main_model = $this->getDoctrine()
+            ->getRepository(CarModel::class)
+            ->findOneBy(['carMarkId' => 79,'header' => 'Solaris']);
 
         $mark_arr = $mm->getExistMarks('',1);
         $mark_arr_sorted = $mark_arr['sorted_marks'];
@@ -114,8 +124,10 @@ class MainPageController extends Controller
 
             'marks' => [],
             'models' => [],
-            'mark' => $mark_arr_sorted[1][0]['mark'],
-            'model' => $mark_arr_sorted[1][0]['models'][0],
+            //'mark' => $mark_arr_sorted[1][0]['mark'],
+            'mark' => $main_mark,
+            //'model' => $mark_arr_sorted[1][0]['models'][0],
+            'model' => $main_model,
 
             'generalTypes' => $generalTypes,
 
