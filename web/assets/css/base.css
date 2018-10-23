@@ -1749,3 +1749,10 @@ body.mobile {
 #user_phone_form label:hover{
     border: 2px solid lightgrey;
 }
+
+.ord_page_header{
+    background: white;
+    border-bottom: 1px solid lightgrey;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}

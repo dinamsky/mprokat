@@ -884,10 +884,6 @@ class ProfileController extends Controller
             $city = $this->get('session')->get('city');
             $in_city = $city->getUrl();
 
-
-
-
-
             $stat_arr = [
                 'url' => $request->getPathInfo(),
                 'event_type' => 'orders_page',
@@ -901,17 +897,137 @@ class ProfileController extends Controller
 
             $totalSum = $this->countSum($user->getId());
 
-            return $this->render('user/user_orders_list.html.twig', [
+
+            $mobileDetector = $this->get('mobile_detect.mobile_detector');
+
+            if ($mobileDetector->isMobile()) {
+                return $this->render('user/mobile_user_orders_list.html.twig', [
+                    'share' => true,
+                    'orders' => $orders,
+                    'city' => $city,
+                    'full' => true,
+                    'in_city' => $in_city,
+                    'cityId' => $city->getId(),
+                    'generalTypes' => $generalTypes,
+                    'lang' => $_SERVER['LANG'],
+                    'totalSum' => $totalSum
+                ]);
+            } else {
+                return $this->render('user/user_orders_list.html.twig', [
+                    'share' => true,
+                    'orders' => $orders,
+                    'city' => $city,
+                    'full' => true,
+                    'in_city' => $in_city,
+                    'cityId' => $city->getId(),
+                    'generalTypes' => $generalTypes,
+                    'lang' => $_SERVER['LANG'],
+                    'totalSum' => $totalSum
+                ]);
+            }
+
+
+        } else return new Response("",404);
+    }
+
+
+    /**
+     * @Route("/user/order_page/{id}", name="user_order_page")
+     */
+    public function user_order_pageAction($id, EntityManagerInterface $em, Request $request, ServiceStat $stat)
+    {
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($this->get('session')->get('logged_user')->getId());
+
+        if(!$user->getIsBanned()) {
+            $order = $this->getDoctrine()
+            ->getRepository(FormOrder::class)
+            ->find($id);
+
+
+            $city = $this->get('session')->get('city');
+            $in_city = $city->getUrl();
+
+            $stat_arr = [
+                'url' => $request->getPathInfo(),
+                'event_type' => 'order_page',
+                'page_type' => 'order_page',
+                'user_id' => $user->getId(),
+            ];
+            $stat->setStat($stat_arr);
+
+            $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.total DESC');
+            $generalTypes = $query->getResult();
+
+            $totalSum = $this->countSum($user->getId());
+
+
+            return $this->render('user/mobile_user_order_page.html.twig', [
                 'share' => true,
-                'orders' => $orders,
+                'o' => $order,
                 'city' => $city,
                 'full' => true,
                 'in_city' => $in_city,
                 'cityId' => $city->getId(),
                 'generalTypes' => $generalTypes,
                 'lang' => $_SERVER['LANG'],
-                'totalSum' => $totalSum
+                'totalSum' => $totalSum,
+                'no_jivosite' => true
             ]);
+
+
+
+        } else return new Response("",404);
+    }
+
+    /**
+     * @Route("/user/order_page_more/{id}", name="order_page_more")
+     */
+    public function order_page_moreAction($id, EntityManagerInterface $em, Request $request, ServiceStat $stat)
+    {
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($this->get('session')->get('logged_user')->getId());
+
+        if(!$user->getIsBanned()) {
+            $order = $this->getDoctrine()
+            ->getRepository(FormOrder::class)
+            ->find($id);
+
+
+            $city = $this->get('session')->get('city');
+            $in_city = $city->getUrl();
+
+            $stat_arr = [
+                'url' => $request->getPathInfo(),
+                'event_type' => 'order_page',
+                'page_type' => 'order_page',
+                'user_id' => $user->getId(),
+            ];
+            $stat->setStat($stat_arr);
+
+            $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.total DESC');
+            $generalTypes = $query->getResult();
+
+            $totalSum = $this->countSum($user->getId());
+
+
+            return $this->render('user/mobile_order_page_more.html.twig', [
+                'share' => true,
+                'o' => $order,
+                'city' => $city,
+                'full' => true,
+                'in_city' => $in_city,
+                'cityId' => $city->getId(),
+                'generalTypes' => $generalTypes,
+                'lang' => $_SERVER['LANG'],
+                'totalSum' => $totalSum,
+                'no_jivosite' => true
+            ]);
+
+
+
         } else return new Response("",404);
     }
 
