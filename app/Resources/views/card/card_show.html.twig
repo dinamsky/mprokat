@@ -27,9 +27,9 @@
 
 {% block socialScripts %}
     <!-- VK -->
-    <script type="text/javascript" src="//vk.com/js/api/openapi.js?149"></script>
-    <script type="text/javascript">VK.init({apiId: 6213461, onlyWidgets: true});</script>
-    <script type="text/javascript" src="https://vk.com/js/api/share.js?95" charset="windows-1251"></script>
+    {#<script type="text/javascript" src="//vk.com/js/api/openapi.js?149"></script>#}
+    {#<script type="text/javascript">VK.init({apiId: 6213461, onlyWidgets: true});</script>#}
+    {#<script type="text/javascript" src="https://vk.com/js/api/share.js?95" charset="windows-1251"></script>#}
     <!-- VK -->
     {#<script src='https://www.google.com/recaptcha/api.js'></script>#}
 {% endblock %}
@@ -193,9 +193,20 @@
                 </div>
                 {% endif %}
 
+                {% set btn_name = 'Оставить заявку' %}
+                {% if card.user.adminId is null %}
+                    {% set btn_name = 'Забронировать' %}
+                {% endif %}
+
                 {% if is_mobile() and card.user.id != 1971%}
-                <div class="uk-margin-bottom card_blanc border_green">
-                    <div class="cursor-pointer uk-text-center c_green" uk-toggle="target: {{ app.session.has('logged_user') ? '#user_book_form' : '#nonreged_user_book_form' }}"><i class="fa fa-pencil-square-o"></i> {% trans %}Отправить заявку{% endtrans %}</div>
+                <div class="" style="position: fixed;bottom:0;left:0;width:100%;z-index:9999;background: white">
+                    <div class="cursor-pointer uk-text-center"
+                         style="background: #25b45b;
+                                color: white;
+                                margin: 10px;
+                                padding: 10px;
+                                border-radius: 5px;"
+                         uk-toggle="target: {{ app.session.has('logged_user') ? '#user_book_form' : '#nonreged_user_book_form' }}">{{ btn_name }}</div>
                 </div>
                 {% endif %}
 
@@ -363,9 +374,9 @@
                 </div>
 
                 {% if not is_admin_card %}
-                <div class="uk-margin-bottom card_blanc">
-                    <div class="cursor-pointer uk-text-center" uk-toggle="target: #user_message_form"><i class="fa fa-commenting"></i> {% trans %}Написать сообщение{% endtrans %}</div>
-                </div>
+                {#<div class="uk-margin-bottom card_blanc ">#}
+                    {#<div class="cursor-pointer uk-text-center" uk-toggle="target: #user_message_form"><i class="fa fa-commenting"></i> {% trans %}Написать сообщение{% endtrans %}</div>#}
+                {#</div>#}
                 {% endif %}
 
                 <div class="uk-margin-bottom card_blanc">
@@ -388,7 +399,7 @@
 
 
                     {% if is_mobile() %}
-                        <button class="uk-button uk-button-default uk-width-1-1" uk-toggle="target: #coms_opins">{% trans %}Комментарии и отзывы{% endtrans %}</button>
+                        {#<button class="uk-button uk-button-default uk-width-1-1" uk-toggle="target: #coms_opins">{% trans %}Комментарии и отзывы{% endtrans %}</button>#}
                     {% endif %}
 
                     <div uk-grid class="uk-margin-top" {{ is_mobile() ? 'id="coms_opins" hidden' }}>
@@ -511,7 +522,7 @@
                 {% if not is_mobile() and card.user.id != 1971%}
                     <div class="uk-margin-bottom" uk-sticky="offset: 94" style="z-index: 100">
                         <div class="card_blanc border_green newbook" >
-                            <div data-id="{{ card.id }}" class="nbinner cursor-pointer uk-text-center c_green" uk-toggle="target: {{ app.session.has('logged_user') ? '#user_book_form' : '#nonreged_user_book_form' }}"><i class="fa fa-pencil-square-o"></i> {% trans %}Отправить заявку{% endtrans %}</div>
+                            <div data-id="{{ card.id }}" class="nbinner cursor-pointer uk-text-center c_green" uk-toggle="target: {{ app.session.has('logged_user') ? '#user_book_form' : '#nonreged_user_book_form' }}">{{ btn_name }}</div>
                         </div>
                         <div style="background: #f9f9f9;text-align: center">Пока вы ни за что не платите</div>
                     </div>
@@ -744,32 +755,32 @@
                 </div>
 
 
-                <div uk-toggle="target: #share_butons" class="share_button uk-margin-bottom"><i uk-icon="icon:social"></i> {% trans %}Поделиться{% endtrans %}</div>
+                {#<div uk-toggle="target: #share_butons" class="share_button uk-margin-bottom"><i uk-icon="icon:social"></i> {% trans %}Поделиться{% endtrans %}</div>#}
 
                 <div id="share_butons" uk-modal>
                     <div class="uk-modal-dialog uk-modal-body">
                         <h2 class="uk-modal-title">{% trans %}Расскажи всем!{% endtrans %}</h2>
                         <button class="uk-modal-close-default" type="button" uk-close></button>
                         <div class="">
-                            <div class="">
-                                <div uk-grid class="uk-flex uk-flex-center uk-grid-small">
-                                    <div><!-- VK like -->
-                                        <div id="vk_like"></div>
-                                        <script type="text/javascript">VK.Widgets.Like("vk_like", {type: "button"});</script>
-                                    </div>
-                                    <div class="  vk_share"><!-- VK share -->
-                                        <script type="text/javascript">document.write(VK.Share.button(false,{type: "round", text: "Поделиться"}));</script>
-                                    </div>
-                                    <div class="uk-width-2-3">
-                                        <div class="fb-like" data-href="{{ app.request.schemeAndHttpHost ~ app.request.requestUri }}" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
-                                    </div>
-                                    <div>
-                                        <script src="https://apis.google.com/js/platform.js" async defer></script>
-                                        <g:plusone></g:plusone>
-                                        <div class="g-plus" data-action="share" data-height="24"></div>
-                                    </div>
-                                </div>
-                            </div>
+                            {#<div class="">#}
+                                {#<div uk-grid class="uk-flex uk-flex-center uk-grid-small">#}
+                                    {#<div><!-- VK like -->#}
+                                        {#<div id="vk_like"></div>#}
+                                        {#<script type="text/javascript">VK.Widgets.Like("vk_like", {type: "button"});</script>#}
+                                    {#</div>#}
+                                    {#<div class="  vk_share"><!-- VK share -->#}
+                                        {#<script type="text/javascript">document.write(VK.Share.button(false,{type: "round", text: "Поделиться"}));</script>#}
+                                    {#</div>#}
+                                    {#<div class="uk-width-2-3">#}
+                                        {#<div class="fb-like" data-href="{{ app.request.schemeAndHttpHost ~ app.request.requestUri }}" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>#}
+                                    {#</div>#}
+                                    {#<div>#}
+                                        {#<script src="https://apis.google.com/js/platform.js" async defer></script>#}
+                                        {#<g:plusone></g:plusone>#}
+                                        {#<div class="g-plus" data-action="share" data-height="24"></div>#}
+                                    {#</div>#}
+                                {#</div>#}
+                            {#</div>#}
                         </div>
                     </div>
                 </div>
@@ -857,9 +868,9 @@
 {% endblock %}
 
 {% block jivosite %}
-<!-- BEGIN JIVOSITE CODE {literal} -->
-<script type='text/javascript'>
-(function(){ var widget_id = 'pFfFoRqpXP';var d=document;var w=window;function l(){var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;s.src = '//code.jivosite.com/script/widget/'+widget_id; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);}if(d.readyState=='complete'){l();}else{if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
-</script>
-<!-- {/literal} END JIVOSITE CODE -->
+{#<!-- BEGIN JIVOSITE CODE {literal} -->#}
+{#<script type='text/javascript'>#}
+{#(function(){ var widget_id = 'pFfFoRqpXP';var d=document;var w=window;function l(){var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;s.src = '//code.jivosite.com/script/widget/'+widget_id; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);}if(d.readyState=='complete'){l();}else{if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();#}
+{#</script>#}
+{#<!-- {/literal} END JIVOSITE CODE -->#}
 {% endblock %}

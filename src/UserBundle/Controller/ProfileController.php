@@ -189,7 +189,7 @@ class ProfileController extends Controller
 
             return $this->render('user/user_cards.html.twig', [
                 'share' => true,
-                'cards' => $cards,
+                'cards' => $cards ? $cards : array(),
                 'city' => $city,
 
                 'in_city' => $in_city,

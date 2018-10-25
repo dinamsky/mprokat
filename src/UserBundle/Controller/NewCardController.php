@@ -175,6 +175,11 @@ class NewCardController extends Controller
             $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g ORDER BY g.total DESC');
             $generalTypes = $query->getResult();
 
+            $promoted = $this->getDoctrine()
+            ->getRepository(Card::class)
+            ->getTopSlider($this->get('session')->get('city')->getId());
+
+
             $response = $this->render('card/card_new.html.twig', [
                 'generalTopLevel' => $mgt->getTopLevel(),
                 'generalSecondLevel' => $mgt->getSecondLevel(1),
@@ -188,6 +193,7 @@ class NewCardController extends Controller
                 'prices' => $prices,
                 'tariffs' =>$tariffs,
 
+                'promoted' => $promoted,
                 //'countries' => $mc->getCountry(),
                 'countryCode' => $city->getCountry(),
                 'regionId' => $city->getParentId(),

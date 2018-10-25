@@ -49,12 +49,12 @@
         </div>
 
         <div class="uk-width-expand">
-            <div>{{ o.transport }}</div>
-            <div>{{ rightuser.header }}</div>
-            <div class="uk-text-small">{{ o.dateCreate|date('d.m.Y - H:i') }}</div>
-        </div>
-        <div class="uk-text-center" style="width: 20px;">
-            <a href="/user/order_page_more/{{ o.id }}" style="position: relative;right: 15px;"><i uk-icon="icon:more-vertical;ratio:2"></i></a>
+            <div style="line-height: 16px">{{ o.transport }}</div>
+            <div style="line-height: 16px">{{ rightuser.header }}</div>
+            <div class="uk-text-small" style="line-height: 16px">{{ o.dateCreate|date('d.m.Y - H:i') }}</div>
+            <div class="uk-text-small" style="line-height: 16px">
+                <a href="/user/order_page_more/{{ o.id }}">Детали заявки</a>
+            </div>
         </div>
     </div>
 </div>
@@ -148,14 +148,14 @@
         {% endif %}
 
 
-        {% set btm = 0 %}
+        {% set btm = 65 %}
 
         {% if o.ownerStatus in ['wait_for_accept','answered','wait_for_answer'] and app.session.get('logged_user').id == o.userId %}
-            {% set btm = 45 %}
+            {% set btm = 65 %}
         {% endif %}
 
         {% if o.renterStatus == 'wait_for_pay' and app.session.get('logged_user').id == o.renterId %}
-            {% set btm = 45 %}
+            {% set btm = 65 %}
         {% endif %}
 
         <div style="border: 1px solid grey;
@@ -185,18 +185,25 @@
                 width: 100%;
                 bottom: 0px;
                 left: 0;
-                background: #25b45b;
-                padding-bottom: 6px;">
-            <a href="/pay_for_order/{{ o.id }}" class="ok_btn uk-margin-top uk-text-center uk-display-block">Оплатить</a>
+                background: white;
+                padding-bottom: 0;">
+            <a href="/pay_for_order/{{ o.id }}" class="ok_btn uk-margin-top uk-text-center uk-display-block" style="margin: 10px 10px;
+    border-radius: 5px;">Оплатить</a>
             </div>
         {% endif %}
 
 
-        {% if o.ownerStatus in ['wait_for_accept','answered','wait_for_answer'] and app.session.get('logged_user').id == o.userId %}
-            <div style="position: fixed;width: 100%;bottom: 0;left:0">
-            <button type="button" id="owner_accept" class="ok_btn ok_big uk-width-1-1" value="{{ o.id }}">Одобрить</button>
+        {#{% if o.ownerStatus in ['wait_for_accept','answered','wait_for_answer'] and app.session.get('logged_user').id == o.userId %}#}
+            <div style="position: fixed;width: 100%;bottom: 0;left:0;background: white">
+            <button type="button" id="owner_accept" class="ok_btn ok_big uk-width-1-1" value="{{ o.id }}" style="margin: 10px 10px;
+    padding: 15px 25px;
+    box-sizing: border-box;
+    display: block;
+    width: 94%;
+
+    border-radius: 5px;">Одобрить</button>
             </div>
-        {% endif %}
+        {#{% endif %}#}
 
 
 
