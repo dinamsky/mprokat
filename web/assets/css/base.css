@@ -1756,3 +1756,8 @@ body.mobile {
     padding-bottom: 5px;
     padding-top: 5px;
 }
+
+.uo_divider{
+    border-bottom: 1px solid lightgrey;
+    margin: 5px 0;
+}
