@@ -20,9 +20,9 @@
     <a href="/userLogout"><span><i uk-icon="icon:sign-out"></i> {% trans %}Выход{% endtrans %}</span></a>
     <hr>
     <div>
-        {#{{ dump(app.session.get('logged_user').cards.owner.cards|length) }}#}
 
-        {% if app.session.get('logged_user').cards.owner.cards|length > 1%}
+
+        {% if app.session.get('logged_user').cards.owner and app.session.get('logged_user').cards.owner.cards|length > 1%}
 
             {% if app.session.get('logged_user').accountTypeId == 0 %}
                 {% trans %}Ваш аккаунт{% endtrans %}: <b>{% trans %}стандартный{% endtrans %}</b>

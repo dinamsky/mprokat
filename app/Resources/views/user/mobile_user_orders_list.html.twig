@@ -18,9 +18,21 @@
 
 <div class="">
                 {% for o in orders %}
-                    <div class="uk-margin-bottom">
 
-                        <a class="uk-grid uk-grid-small" href="/user/order_page/{{ o.id }}">
+
+                    {% set card = getcard(o.cardId) %}
+                        {% set rightuser = getuser(o.userId) %}
+                        {% set rating = o.ownerRating %}
+                    {% if app.session.get('logged_user').id == o.userId %}
+                        {% set rightuser = getuser(o.renterId) %}
+                        {% set rating = o.renterRating %}
+                    {% endif %}
+
+
+
+                    <div class="">
+
+                        <a class="uk-grid uk-grid-small" href="/user/order_page/{{ o.id }}" style="color:black">
                             <div style="width: 60px;">
                                 {% set card = getcard(o.cardId) %}
 
@@ -43,11 +55,23 @@
                             </div>
 
                             <div class="uk-width-expand">
-                                <div>{{ o.transport }}</div>
-                                <div class="uk-text-small">{{ o.dateIn|date('d.m.Y') }} - {{ o.dateOut|date('d.m.Y') }}</div>
+                                <div style="font-size: 16px;line-height: 18px">{{ o.transport }}</div>
+                                <div style="font-size: 16px;line-height: 18px">{{ rightuser.header }}</div>
+                                <div class="uk-text-small" style="font-size: 14px;line-height: 20px">
+
+                                {% if o.messages != '' %}
+                                    {% for m in jsond(o.messages) %}
+                                        {% if loop.last %}
+                                            {{ m.date }} {{ m.time }}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                                </div>
                             </div>
                         </a>
                     </div>
+
+                    <div class="uo_divider"></div>
                 {% endfor %}
 
             </div>
