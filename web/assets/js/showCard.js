@@ -183,9 +183,7 @@ $( document ).ready(function() {
         });
     });
 
-    $('#bookMessageButton').on('click', function () {
-        $(this).remove();
-    });
+
 
 
 });
