@@ -1116,7 +1116,7 @@ class ProfileController extends Controller
 
         $message = urlencode('Владелец одобрил вашу заявку №'.$id.'. Можно оплачивать');
         $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
-        $sms_result = file_get_contents($url);
+        $sms_result = @file_get_contents($url);
 
         // ---------------------------
 

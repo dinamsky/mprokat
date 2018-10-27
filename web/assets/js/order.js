@@ -11,7 +11,7 @@ $( document ).ready(function() {
             data: {id:id},
             dataType: 'html',
             success: function (html) {
-                //console.log(html);
+                console.log(html);
                 document.location.href = window.location.href;
             }
         });
