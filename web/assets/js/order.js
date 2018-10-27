@@ -13,6 +13,10 @@ $( document ).ready(function() {
             success: function (html) {
                 console.log(html);
                 document.location.href = window.location.href;
+            },
+            error: function (html) {
+                console.log(html);
+
             }
         });
     });
