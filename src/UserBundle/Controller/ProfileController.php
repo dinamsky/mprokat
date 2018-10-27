@@ -666,8 +666,8 @@ class ProfileController extends Controller
 
             //dump($this->container->get('kernel')->getEnvironment());
 
-            //$url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
-            //$sms_result = file_get_contents($url);
+            $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
+            $sms_result = file_get_contents($url);
 
 
             $renter = $this->get('session')->get('logged_user');
@@ -678,28 +678,10 @@ class ProfileController extends Controller
                     ->setTo($user->getEmail())
                     ->setBcc('mail@multiprokat.com')
                     ->setBody(
-                        $this->renderView(
-                            $_SERVER['LANG'] == 'ru' ? 'email/book.html.twig' : 'email/book_' . $_SERVER['LANG'] . '.html.twig',
-                            array(
-                                'header' => $post->get('header'),
-                                'date_in' => $post->get('date_in'),
-                                'date_out' => $post->get('date_out'),
-                                'city_in' => $post->get('city_in'),
-                                'city_out' => $post->get('city_out'),
-                                'alternative' => $post->get('alternative'), // this is comment
-                                'email' => $post->get('email'),
-                                'full_name' => $post->get('full_name'),
-                                'phone' => $post->get('phone'),
-                                'card' => $card,
-                                'user' => $user,
-                                'fio_renter' => $renter->getHeader(),
-                                'passport4' => $post->get('passport4'),
-                                'driving_license4' => $post->get('driving_license4'),
-                            )
-                        ),
+                        'Добрый день! Поступила новая заявка на аренду вашего транспорта на сайте: <a href="https://multiprokat.com">https://multiprokat.com</a>. Увидеть заявку вы можете в личном кабинете вашего аккаунта.',
                         'text/html'
                     );
-                //$mailer->send($message);
+                $mailer->send($message);
             }
 
             $form_order = new FormOrder();
