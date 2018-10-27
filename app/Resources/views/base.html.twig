@@ -43,14 +43,32 @@
         <div id="content">
             {% for label, messages in app.flashes %}
                 {% for message in messages %}
-                    <div id="main_message" uk-alert class="uk-position-absolute uk-position-center uk-width-1-3">
+                    <div id="main_message" uk-alert class="uk-position-absolute uk-position-center uk-width-1-3@s">
                         <a class="uk-alert-close" uk-close></a>
                         <div class="flash-{{ label }}">
                             {{ message|raw }}
                         </div>
                     </div>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function(event) {
+                          setTimeout(function() {
+                            UIkit.alert('#main_message').close();
+                          }, 3000);
+                        });
+                    </script>
                 {% endfor %}
             {% endfor %}
+
+
+            {#<div id="main_message" uk-alert="duration:500" class="uk-position-absolute uk-position-center uk-width-1-3@s">#}
+                        {#<a class="uk-alert-close" uk-close></a>#}
+                        {#<div class="flash-notice">#}
+                            {#Отправляйте заявки и другим владельцам, чтобы воспользоваться самым лучшим предложением#}
+                        {#</div>#}
+                    {#</div>#}
+
+
+
 
             {% block content %}{% endblock %}
 

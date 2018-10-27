@@ -423,7 +423,7 @@ class ProfileController extends Controller
             ->getRepository(User::class)
             ->find($this->get('session')->get('logged_user')->getId());
 
-        $user->setHeader(trim(strip_tags($post->get('header'))));
+        $user->setHeader(trim(strip_tags($this->cut_num($post->get('header')))));
         $user->setEmail(trim(strip_tags($post->get('email'))));
         $user->setWhois('standard_renter');
         $user->setTempPassword('');
@@ -456,7 +456,15 @@ class ProfileController extends Controller
 
         $this->get('session')->set('logged_user', $user);
 
-        if($post->has('back_url') and $post->get('back_url') != '' ) return $this->redirect($post->get('back_url'));
+        if($post->has('back_url') and $post->get('back_url') != '' ) {
+
+            $this->addFlash(
+                'notice',
+                'Отправляйте заявки и другим владельцам, чтобы воспользоваться самым лучшим предложением'
+            );
+
+            return $this->redirect($post->get('back_url'));
+        }
         else return $this->redirectToRoute('user_profile');
     }
 
@@ -709,7 +717,7 @@ class ProfileController extends Controller
             $form_order->setFormType('new_transport_order');
 
             if($post->get('content') != ''){
-                $msg = $post->get('content');
+                $msg = $this->cut_num($post->get('content'));
             } else {
                 $msg = 'Добрый день! Отправляю вам заявку';
             }
@@ -1515,6 +1523,34 @@ class ProfileController extends Controller
                     'time' => date('H:i'),
                     'from' => 'system_ok',
                     'message' => 'Заявка оплачена. Деньги за заявку №'.$id.' получены',
+                    'status' => 'send'
+                ];
+
+                $owner = $this->getDoctrine()
+                ->getRepository(User::class)
+                ->find($order->getUserId());
+                $owner_info = $this->getDoctrine()
+                ->getRepository(UserInfo::class)
+                ->findBy(['userId' => $order->getUserId()]);
+
+                $owner_phone = '';
+                foreach ($owner_info as $oi){
+                    if ($oi->getUiKey() == 'phone') $owner_phone = $oi->getUiValue();
+                }
+
+                $messages[] = [
+                    'date' => date('d-m-Y'),
+                    'time' => date('H:i'),
+                    'from' => 'system',
+                    'message' => 'Пожалуйста обсудите детали аренды с владельцем: '.$owner->getHeader().' номер телефона: '.$owner_phone,
+                    'status' => 'send'
+                ];
+
+                $messages[] = [
+                    'date' => date('d-m-Y'),
+                    'time' => date('H:i'),
+                    'from' => 'system',
+                    'message' => 'Если у вас возникли какие-либо затруднения обращайтесь в <a href="/contacts">поддержку</a>',
                     'status' => 'send'
                 ];
 
