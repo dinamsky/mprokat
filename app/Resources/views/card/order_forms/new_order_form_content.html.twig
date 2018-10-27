@@ -12,12 +12,12 @@
                             </div>
 
                             <div class="uk-width-1-2@s">
-                                <span class="uk-text-small">{% trans %}Дата приема{% endtrans %} <span class="c_red">{{ reserved ? 'с '~card.dateRentFinish|date_modify("+1 day")|date('d.m.Y') }}</span></span>
+                                <span class="uk-text-small">Дата приема (дд.мм.гггг) <span class="c_red">{{ reserved ? 'с '~card.dateRentFinish|date_modify("+1 day")|date('d.m.Y') }}</span></span>
                                 <input type="text" name="date_in" class="uk-input uk-width-1-1 datepicker-reserve" autocomplete="off" required>
                             </div>
 
                             <div class="uk-width-1-2@s">
-                                <span class="uk-text-small">{% trans %}Дата возврата{% endtrans %} <span class="c_red">{{ reserved ? 'с '~card.dateRentFinish|date_modify("+1 day")|date('d.m.Y') }}</span></span>
+                                <span class="uk-text-small">Дата возврата (дд.мм.гггг)<span class="c_red">{{ reserved ? 'с '~card.dateRentFinish|date_modify("+1 day")|date('d.m.Y') }}</span></span>
                                 <input type="text" name="date_out" class="uk-input uk-width-1-1 datepicker-reserve" autocomplete="off" required>
                             </div>
 
