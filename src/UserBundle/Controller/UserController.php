@@ -318,7 +318,8 @@ class UserController extends Controller
         $user->setEmail('');
         $user->setLogin('');
         $user->setPassword($password->HashPassword($code));
-        $user->setHeader($request->request->get('phone'));
+        //$user->setHeader($request->request->get('phone'));
+        $user->setHeader('');
         $user->setActivateString($code);
         $user->setTempPassword($bu);
         $user->setIsSubscriber(true);
@@ -357,7 +358,7 @@ class UserController extends Controller
             $phone = $user->getHeader();
 
             //$user->setTempPassword('');
-            $user->setHeader('');
+            //$user->setHeader('');
             $user->setIsActivated(true);
             $user->setActivateString('');
             $em = $this->getDoctrine()->getManager();

@@ -20,11 +20,18 @@
         <div id="content" class="standard_wide {{ is_mobile() ? '' : 'uk-margin-top' }}">
             {% for label, messages in app.flashes %}
                 {% for message in messages %}
-                    <div id="main_message" uk-alert class="uk-position-absolute uk-position-center uk-width-1-3">
+                    <div id="main_message" uk-alert class="uk-position-absolute uk-position-center uk-width-1-3@s">
                         <a class="uk-alert-close" uk-close></a>
                         <div class="flash-{{ label }}">
                             {{ message|raw }}
                         </div>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function(event) {
+                              setTimeout(function() {
+                                UIkit.alert('#main_message').close();
+                              }, 3000);
+                            });
+                        </script>
                     </div>
                 {% endfor %}
             {% endfor %}
