@@ -57,7 +57,7 @@
                             <div class="uk-width-expand">
                                 <div style="font-size: 16px;line-height: 18px">{{ o.transport }}</div>
                                 <div style="font-size: 16px;line-height: 18px">{{ rightuser.header }}</div>
-                                <div class="uk-text-small" style="font-size: 14px;line-height: 20px">
+                                <div class="uk-text-small uk-clearfix" style="font-size: 10px;line-height: 20px;color: grey;">
 
                                 {% if o.messages != '' %}
                                     {% for m in jsond(o.messages) %}
@@ -66,6 +66,57 @@
                                         {% endif %}
                                     {% endfor %}
                                 {% endif %}
+
+                                    <span style="color:red;float: right;font-weight: bold">
+                                        {% if o.ownerStatus == 'wait_for_accept' and app.session.get('logged_user').id == o.renterId %}
+                                            Ожидает одобрения
+                                        {% endif %}
+
+                                        {% if o.ownerStatus == 'wait_for_accept' and app.session.get('logged_user').id == o.userId %}
+                                            Ожидает одобрения
+                                        {% endif %}
+
+                                         {#---- after accept#}
+
+                                        {% if o.renterStatus == 'wait_for_pay' and app.session.get('logged_user').id == o.renterId %}
+                                            Ожидает оплаты
+                                        {% endif %}
+
+                                        {% if o.ownerStatus == 'accepted' and app.session.get('logged_user').id == o.userId %}
+                                            Ожидает оплаты
+                                        {% endif %}
+
+                                         {#---- after payment#}
+
+                                        {% if o.renterStatus == 'wait_for_finish' and app.session.get('logged_user').id == o.renterId %}
+                                            Заявка оплачена
+                                        {% endif %}
+
+                                        {% if o.ownerStatus == 'wait_for_rent' and app.session.get('logged_user').id == o.userId %}
+                                            Заявка оплачена
+                                        {% endif %}
+
+                                        {#---- after pincode#}
+
+                                        {% if o.renterStatus == 'rent_in_process' and app.session.get('logged_user').id == o.renterId %}
+                                            Идет аренда
+                                        {% endif %}
+
+                                        {% if o.ownerStatus == 'rent_in_process' and app.session.get('logged_user').id == o.userId %}
+                                            Идет аренда
+                                        {% endif %}
+
+                                        {#----- messages#}
+                                        {% if o.renterStatus == 'wait_for_answer' and app.session.get('logged_user').id == o.renterId %}
+                                            Есть ответ
+                                        {% endif %}
+
+                                        {% if o.ownerStatus == 'wait_for_answer' and app.session.get('logged_user').id == o.userId %}
+                                            Есть ответ
+                                        {% endif %}
+                                    </span>
+
+
                                 </div>
                             </div>
                         </a>

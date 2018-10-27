@@ -128,7 +128,8 @@ $( document ).ready(function() {
     //var dat = $(this).data('res').split("-");
 
     $('.datepicker-reserve').datepicker({
-        minDate: new Date(document.getElementById('user_book_form').getAttribute('data-res'))
+        minDate: new Date(document.getElementById('user_book_form').getAttribute('data-res')),
+        position: 'center center'
     });
 
 
