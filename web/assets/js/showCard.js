@@ -129,7 +129,7 @@ $( document ).ready(function() {
 
     $('.datepicker-reserve').datepicker({
         minDate: new Date(document.getElementById('user_book_form').getAttribute('data-res')),
-        position: 'center center',
+
         autoClose: true
     });
 
