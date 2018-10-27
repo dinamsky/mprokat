@@ -1120,13 +1120,13 @@ class ProfileController extends Controller
 
         // ---------------------------
 
-
-        $msg = (new \Swift_Message('Владелец одобрил вашу заявку №'.$id.'. Можно оплачивать'))
+        if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)) {
+            $msg = (new \Swift_Message('Владелец одобрил вашу заявку №' . $id . '. Можно оплачивать'))
                 ->setFrom('mail@multiprokat.com')
                 ->setTo($user->getEmail())
-                ->setBody('Владелец одобрил вашу заявку №'.$id.'. Можно оплачивать','text/html');
-        $mailer->send($msg);
-
+                ->setBody('Владелец одобрил вашу заявку №' . $id . '. Можно оплачивать', 'text/html');
+            $mailer->send($msg);
+        }
 
         return new Response("");
     }
@@ -1177,16 +1177,16 @@ class ProfileController extends Controller
 
         $message = urlencode('Владелец отклонил вашу заявку №'.$id);
         $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
-        $sms_result = file_get_contents($url);
+        $sms_result = @file_get_contents($url);
 
         // ---------------------------
-
-        $msg = (new \Swift_Message('Владелец отклонил вашу заявку №'.$id))
+        if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)) {
+            $msg = (new \Swift_Message('Владелец отклонил вашу заявку №' . $id))
                 ->setFrom('mail@multiprokat.com')
                 ->setTo($user->getEmail())
-                ->setBody('Владелец отклонил вашу заявку №'.$id,'text/html');
-        $mailer->send($msg);
-
+                ->setBody('Владелец отклонил вашу заявку №' . $id, 'text/html');
+            $mailer->send($msg);
+        }
         return new Response("");
     }
 
@@ -1250,16 +1250,18 @@ class ProfileController extends Controller
         $message = urlencode('Владелец ответил на ваше сообщение в заявке №'.$id);
         if(isset($number)) {
             $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
-            $sms_result = file_get_contents($url);
+            $sms_result = @file_get_contents($url);
         }
 
         // ---------------------------
 
-        $msg = (new \Swift_Message('Владелец ответил на ваше сообщение в заявке №'.$id))
+        if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)) {
+            $msg = (new \Swift_Message('Владелец ответил на ваше сообщение в заявке №' . $id))
                 ->setFrom('mail@multiprokat.com')
                 ->setTo($user->getEmail())
-                ->setBody('Владелец ответил на ваше сообщение в заявке №'.$id,'text/html');
-        $mailer->send($msg);
+                ->setBody('Владелец ответил на ваше сообщение в заявке №' . $id, 'text/html');
+            $mailer->send($msg);
+        }
 
         $msg = (new \Swift_Message('Мультипрокат. Владелец ответил на сообщение в заявке №'.$id))
                 ->setFrom('mail@multiprokat.com')
@@ -1320,16 +1322,18 @@ class ProfileController extends Controller
         $message = urlencode('Арендатор ответил на ваше сообщение в заявке №'.$id);
         if(isset($number)) {
             $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
-            $sms_result = file_get_contents($url);
+            $sms_result = @file_get_contents($url);
         }
 
         // ---------------------------
 
-        $msg = (new \Swift_Message('Арендатор ответил на ваше сообщение в заявке №'.$id))
+        if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)) {
+            $msg = (new \Swift_Message('Арендатор ответил на ваше сообщение в заявке №' . $id))
                 ->setFrom('mail@multiprokat.com')
                 ->setTo($user->getEmail())
-                ->setBody('Арендатор ответил на ваше сообщение в заявке №'.$id,'text/html');
-        $mailer->send($msg);
+                ->setBody('Арендатор ответил на ваше сообщение в заявке №' . $id, 'text/html');
+            $mailer->send($msg);
+        }
 
         $msg = (new \Swift_Message('Мультипрокат. Арендатор ответил на сообщение в заявке №'.$id))
                 ->setFrom('mail@multiprokat.com')
@@ -1562,15 +1566,17 @@ class ProfileController extends Controller
 
                 $message = urlencode('Арендатор оплатил заявку №'.$id);
                 $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
-                $sms_result = file_get_contents($url);
+                $sms_result = @file_get_contents($url);
 
                 // ---------------------------
 
-                $msg = (new \Swift_Message('Арендатор оплатил заявку №'.$id))
-                ->setFrom('mail@multiprokat.com')
-                ->setTo($user->getEmail())
-                ->setBody('Арендатор оплатил заявку №'.$id,'text/html');
-                $mailer->send($msg);
+                if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)) {
+                    $msg = (new \Swift_Message('Арендатор оплатил заявку №' . $id))
+                        ->setFrom('mail@multiprokat.com')
+                        ->setTo($user->getEmail())
+                        ->setBody('Арендатор оплатил заявку №' . $id, 'text/html');
+                    $mailer->send($msg);
+                }
 
                 $msg = (new \Swift_Message('Арендатор оплатил заявку №'.$id))
                 ->setFrom('mail@multiprokat.com')
