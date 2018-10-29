@@ -97,7 +97,7 @@ button{
     padding: 5px;
     background: transparent;
     cursor: pointer;
-    float: left;
+    /*float: left;*/
     min-height: 28px;
 }
 
@@ -1545,26 +1545,34 @@ top: 80%;
 }
 
 .left_message{
+    float: left;
+}
+
+.left_message .ms_content{
     background: lightgrey;
     color:black;
     display: inline-block;
     padding: 5px 10px;
     max-width: 80%;
     border-radius: 0 20px 20px 20px;
-    float: left;
-    margin-top: 32px;
+    margin-top: 5px;
     word-break: break-all;
 }
 
 .right_message{
+    float: right;
+    text-align: right;
+}
+
+.right_message .ms_content{
+
     background: #6f729b;
     color: white;
     display: inline-block;
     padding: 5px 10px;
     max-width: 80%;
     border-radius: 20px 0 20px 20px;
-    float: right;
-    margin-top: 32px;
+    margin-top: 5px;
     word-break: break-all;
 }
 
