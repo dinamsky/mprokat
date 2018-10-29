@@ -206,8 +206,11 @@
                                 {% endif %}
                                 <div class="uk-width-expand">
                                     <div class="{{ dir }}_message">
-                                        {{ m.message }}
+                                        <div style="font-size: 10px">{{ m.date }} {{ m.time }}</div>
+                                        <div class="ms_content">{{ m.message }}</div>
+
                                     </div>
+
                                 </div>
                                 {% if dir == 'right' %}
 
