@@ -28,10 +28,10 @@
 
 
             {% if is_mobile() %}
-            <button class="uk-button uk-width-1-1" id="button_main_search">Поиск</button>
+            <div class="uk-text-center c_white"><i uk-icon="location"></i> {{ city.header }}</div>
             {% endif %}
 
-            <div id="the_main_selector" class="main_search" {% if is_mobile() %}hidden{% endif %} >
+            <div id="the_main_selector" class="main_search"  >
 
 
                 <div class="uk-margin-auto uk-width-3-4@s uk-margin-bottom">
