@@ -1,5 +1,8 @@
 <div>
     {% if app.session.has('logged_user') %}
+
+        <div class="uk-text-center uk-text-truncate uk-margin-top">{{ app.session.get('logged_user').header }}</div>
+        <hr>
         <div uk-grid class="uk-grid-small">
             <div class="uk-width-auto">
                 <a href="/user" style="background:url(/assets/images/users/t/{{ app.session.get('user_pic') }}.jpg) center center no-repeat;
@@ -11,14 +14,14 @@
                 </a>
             </div>
             <div class="uk-width-expand">
+                <div class="uk-text-right" ><i uk-icon="icon:star"></i> <a href="/user/transport_orders">Заявки</a></div>
 
-                <div class="uk-text-right"><a href="/userLogout" class=""><span><i uk-icon="icon:sign-out"></i> Выход</span></a></div>
-                <div class="uk-text-right" style="margin-top: 10px"><i uk-icon="icon:user"></i> <a href="/profile">Профиль</a></div>
+                <div class="uk-text-right" style="margin-top: 20px"><i uk-icon="icon:user"></i> <a href="/profile">Профиль</a></div>
                 <div class="uk-text-right" style="margin-top: 10px"><i uk-icon="icon:album"></i> <a href="/user/cards">Объявления</a></div>
-                <div class="uk-text-right" style="margin-top: 10px"><i uk-icon="icon:star"></i> <a href="/user/transport_orders">Заявки</a></div>
+                <div class="uk-text-right" style="margin-top: 10px"><a href="/userLogout" class=""><span><i uk-icon="icon:sign-out"></i> Выход</span></a></div>
             </div>
         </div>
-        <div class="uk-text-center uk-text-truncate uk-margin-top">{{ app.session.get('logged_user').header }}</div>
+
 
 
 

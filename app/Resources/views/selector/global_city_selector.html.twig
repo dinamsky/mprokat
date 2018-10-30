@@ -1,18 +1,25 @@
 <input type="hidden" id="cityURL" name="cityURL" value="{{ city.url }}">
 <input type="hidden" id="cityId" name="cityId" value="{{ city.id }}">
-<div uk-toggle="target: #city_popular" class="cursor-pointer sticky_top_city_selector">
+<div uk-toggle="target: #city_popular" class="cursor-pointer sticky_top_city_selector {{ hide_cityname is defined ? 'mobile_top_button' }}">
     <i class="fa fa-map-marker"></i>
     {#<span class="city_selector">{{ city.header }}#}
 
         {#{{ app.session.has('city')[0] ? app.session.get('city')[0].header }}#}
-        {{ app.session.has('city') ? app.session.get('city').header : city.header }}
+    {% if hide_cityname is not defined %}
+        {{  app.session.has('city')  ? app.session.get('city').header : city.header }}
+    {% endif %}
     </span>
 </div>
 
 <div id="city_popular" class="uk-modal-container uk-modal" uk-modal>
     <div class="uk-modal-dialog uk-modal-body">
         <button class="uk-modal-close-default" type="button" uk-close></button>
-        <h2 class="uk-modal-title">{% trans %}Выберите город{% endtrans %}</h2>
+
+        {% if is_mobile() %}
+        <div class="c_grey"><i uk-icon="location"></i> {{ city.header }}</div>
+        {% endif %}
+
+        <h2 class="uk-modal-title uk-margin-remove-top">{% trans %}Выберите{% endtrans %}</h2>
         <div>
             {% trans %}или начните вводить наименование города{% endtrans %}: <input name="input_city" class="uk-input uk-width-1-5@s">
         </div>

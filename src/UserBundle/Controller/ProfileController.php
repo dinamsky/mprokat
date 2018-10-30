@@ -963,7 +963,8 @@ class ProfileController extends Controller
                 'generalTypes' => $generalTypes,
                 'lang' => $_SERVER['LANG'],
                 'totalSum' => $totalSum,
-                'no_jivosite' => true
+                'no_jivosite' => true,
+                'no_header' => true
             ]);
 
 
@@ -1013,7 +1014,8 @@ class ProfileController extends Controller
                 'generalTypes' => $generalTypes,
                 'lang' => $_SERVER['LANG'],
                 'totalSum' => $totalSum,
-                'no_jivosite' => true
+                'no_jivosite' => true,
+                'no_header' => true
             ]);
 
 

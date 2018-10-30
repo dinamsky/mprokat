@@ -7,8 +7,20 @@
             {{ include('user/auth_left_bar.html.twig') }}
         </div>
 
-        <hr>
 
+
+        <div class="uk-margin-top uk-margin-large-bottom">
+            {% if app.session.has('logged_user') %}
+                <a href="/card/new" class="uk-button uk-button-success uk-width-1-1 m_add_card_button">Сдать</a>
+            {% elseif app.session.has('admin') %}
+                <a href="/card/new" class="uk-button uk-button-success uk-width-1-1 m_add_card_button">Сдать</a>
+            {% else %}
+                <a uk-toggle="target: #sign_in" class="uk-button uk-button-success uk-width-1-1 m_add_card_button">Сдать</a>
+            {% endif %}
+        </div>
+
+        <div class="uk-margin-top"><a href="/"><i uk-icon="home"></i> &nbsp; Главная</a></div>
+        
         <div class="uk-margin-top">
             {#{% for gt in t3_new.getGt|slice(0,4) if gt.carTypeIds%}#}
             {% for gt in t3_new.getGt if gt.carTypeIds%}
@@ -27,15 +39,7 @@
         </div>
 
 
-        <div class="uk-margin-top uk-margin-large-bottom">
-            {% if app.session.has('logged_user') %}
-                <a href="/card/new" class="uk-button uk-button-success uk-width-1-1 m_add_card_button">Сдать</a>
-            {% elseif app.session.has('admin') %}
-                <a href="/card/new" class="uk-button uk-button-success uk-width-1-1 m_add_card_button">Сдать</a>
-            {% else %}
-                <a uk-toggle="target: #sign_in" class="uk-button uk-button-success uk-width-1-1 m_add_card_button">Сдать</a>
-            {% endif %}
-        </div>
+
     </div>
 </div>
 {% endif %}
