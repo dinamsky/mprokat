@@ -13,7 +13,7 @@
     <div class="uk-width-auto">
 
         {% if app.session.has('logged_user') %}
-            <div>
+            <div id="mobile_notify_placeholder">
 
                 {% if t3_new.getNotify|length > 0 and hide_notify is not defined%}
                     <a class="std_ord_notify" href="/user/transport_orders"><i uk-icon="bell"></i></a>

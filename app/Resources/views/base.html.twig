@@ -84,6 +84,11 @@
             <script src="{{ asset('assets/js/top_autocomplete.js') }}"></script>
             <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
             <script src="{{ asset('assets/js/search_popup.js') }}"></script>
+
+            {% if app.session.has('logged_user') %}
+            <script src="{{ asset('assets/js/user_notify.js') }}"></script>
+            {% endif %}
+
         {% endblock %}
         {{ include('yandex_metrica.html.twig') }}
         {{ include('counters.html.twig') }}
