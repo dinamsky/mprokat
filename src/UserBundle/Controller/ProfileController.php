@@ -1990,4 +1990,30 @@ class ProfileController extends Controller
         return new Response();
     }
 
+    /**
+     * @Route("/ajax_check_notify", name="ajax_check_notify")
+     */
+    public function ajax_check_notifyAction()
+    {
+        $notifies = $this->getDoctrine()
+            ->getRepository(Notify::class)
+            ->findBy(['userId'=>$this->get('session')->get('logged_user')->getId()]);
+
+        $mobileDetector = $this->get('mobile_detect.mobile_detector');
+        if ($mobileDetector->isMobile()) {
+            if(count($notifies) > 0){
+                echo '<a class="std_ord_notify" href="/user/transport_orders"><i uk-icon="bell"></i></a>';
+            } else {
+                echo '<a class="mobile_top_button" href="/user/transport_orders"><i uk-icon="icon:user"></i></a>';
+            }
+        } else {
+            if(count($notifies) > 0){
+                echo '<div class="top_ord_notify"><i uk-icon="bell"></i></div>';
+            } else {
+                echo '';
+            }
+        }
+        return new Response();
+    }
+
 }
