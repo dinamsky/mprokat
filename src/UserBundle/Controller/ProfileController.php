@@ -3,6 +3,7 @@
 namespace UserBundle\Controller;
 
 use AppBundle\Entity\Card;
+use AppBundle\Entity\Notify;
 use AppBundle\Foto\FotoUtils;
 use AppBundle\Menu\ServiceStat;
 use UserBundle\Entity\Blocking;
@@ -731,6 +732,15 @@ class ProfileController extends Controller
             $em->persist($form_order);
             $em->flush();
 
+
+            $notify = new Notify();
+            $notify->setUserId($user->getId());
+            $notify->setObjectId($form_order->getId());
+            $notify->setNotify('new_order');
+            $em->persist($notify);
+            $em->flush();
+
+
             $this->addFlash(
                 'notice',
                 'Ваша заявка успешно отправлена! Ожидайте ответа в личном кабинете, на email, по СМС'
@@ -888,6 +898,15 @@ class ProfileController extends Controller
             $totalSum = $this->countSum($user->getId());
 
 
+            $ntf = array();
+            $notifies = $this->getDoctrine()
+            ->getRepository(Notify::class)
+            ->findBy(['userId'=>$this->get('session')->get('logged_user')->getId()]);
+            foreach ($notifies as $n){
+                $ntf[$n->getObjectId()][] = $n;
+            }
+
+
             $mobileDetector = $this->get('mobile_detect.mobile_detector');
 
             if ($mobileDetector->isMobile()) {
@@ -900,9 +919,17 @@ class ProfileController extends Controller
                     'cityId' => $city->getId(),
                     'generalTypes' => $generalTypes,
                     'lang' => $_SERVER['LANG'],
-                    'totalSum' => $totalSum
+                    'totalSum' => $totalSum,
+                    'notifies' => $ntf,
+                    'hide_notify' => true
                 ]);
             } else {
+
+                $query = $em->createQuery('DELETE AppBundle:Notify n WHERE n.userId = ?1');
+                $query->setParameter(1, $this->get('session')->get('logged_user')->getId());
+                $query->execute();
+
+
                 return $this->render('user/user_orders_list.html.twig', [
                     'share' => true,
                     'orders' => $orders,
@@ -912,7 +939,8 @@ class ProfileController extends Controller
                     'cityId' => $city->getId(),
                     'generalTypes' => $generalTypes,
                     'lang' => $_SERVER['LANG'],
-                    'totalSum' => $totalSum
+                    'totalSum' => $totalSum,
+                    'notifies' => $ntf
                 ]);
             }
 
@@ -952,6 +980,18 @@ class ProfileController extends Controller
 
             $totalSum = $this->countSum($user->getId());
 
+            $ntf = array();
+            $notifies = $this->getDoctrine()
+            ->getRepository(Notify::class)
+            ->findBy(['userId'=>$this->get('session')->get('logged_user')->getId()]);
+            foreach ($notifies as $n){
+                $ntf[$n->getObjectId()][] = $n;
+            }
+
+            $query = $em->createQuery('DELETE AppBundle:Notify n WHERE n.userId = ?1 AND n.objectId = ?2');
+            $query->setParameter(1, $this->get('session')->get('logged_user')->getId());
+            $query->setParameter(2, $id);
+            $query->execute();
 
             return $this->render('user/mobile_user_order_page.html.twig', [
                 'share' => true,
@@ -964,7 +1004,8 @@ class ProfileController extends Controller
                 'lang' => $_SERVER['LANG'],
                 'totalSum' => $totalSum,
                 'no_jivosite' => true,
-                'no_header' => true
+                'no_header' => true,
+                'notifies' => $ntf
             ]);
 
 
@@ -1130,6 +1171,13 @@ class ProfileController extends Controller
             $mailer->send($msg);
         }
 
+        $notify = new Notify();
+        $notify->setUserId($user->getId());
+        $notify->setObjectId($id);
+        $notify->setNotify('order_accept');
+        $em->persist($notify);
+        $em->flush();
+
         return new Response("");
     }
 
@@ -1189,6 +1237,14 @@ class ProfileController extends Controller
                 ->setBody('Владелец отклонил вашу заявку №' . $id, 'text/html');
             $mailer->send($msg);
         }
+
+        $notify = new Notify();
+        $notify->setUserId($user->getId());
+        $notify->setObjectId($id);
+        $notify->setNotify('order_reject');
+        $em->persist($notify);
+        $em->flush();
+
         return new Response("");
     }
 
@@ -1271,6 +1327,14 @@ class ProfileController extends Controller
                 ->setBody($request->request->get('answer'),'text/html');
         $mailer->send($msg);
 
+
+        $notify = new Notify();
+        $notify->setUserId($user->getId());
+        $notify->setObjectId($id);
+        $notify->setNotify('order_answer');
+        $em->persist($notify);
+        $em->flush();
+
         return new Response("");
     }
 
@@ -1342,6 +1406,13 @@ class ProfileController extends Controller
                 ->setTo('mail@multiprokat.com')
                 ->setBody($request->request->get('answer'),'text/html');
         $mailer->send($msg);
+
+        $notify = new Notify();
+        $notify->setUserId($user->getId());
+        $notify->setObjectId($id);
+        $notify->setNotify('order_answer');
+        $em->persist($notify);
+        $em->flush();
 
         return new Response("");
     }
@@ -1585,6 +1656,14 @@ class ProfileController extends Controller
                 ->setTo('mail@multiprokat.com')
                 ->setBody('Арендатор оплатил заявку №'.$id,'text/html');
                 $mailer->send($msg);
+
+                $notify = new Notify();
+                $notify->setUserId($user->getId());
+                $notify->setObjectId($id);
+                $notify->setNotify('order_payed');
+                $em->persist($notify);
+                $em->flush();
+
 
                 return new Response('OK', 200);
             } else {

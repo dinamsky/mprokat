@@ -13,7 +13,18 @@
     <div class="uk-width-auto">
 
         {% if app.session.has('logged_user') %}
-            <div><a class="mobile_top_button" href="/user/transport_orders"><i uk-icon="icon:user"></i></a></div>
+            <div>
+
+                {% if t3_new.getNotify|length > 0 and hide_notify is not defined%}
+                    <a class="std_ord_notify" href="/user/transport_orders"><i uk-icon="bell"></i></a>
+                {% else %}
+                    <a class="mobile_top_button" href="/user/transport_orders">
+                        <i uk-icon="icon:user"></i>
+                    </a>
+                {% endif %}
+
+
+            </div>
         {% else %}
             <div uk-toggle="target: #sign_in" class="mobile_top_button"><span uk-icon="icon:user"></span></div>
         {% endif %}
