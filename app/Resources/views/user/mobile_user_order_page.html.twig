@@ -36,7 +36,7 @@
 
             {% set bgrnd = 'white' %}
 
-            {% if main_foto  %}
+            {% if main_foto is defined %}
                 {% set bgrnd = 'url(/assets/images/cards/'~main_foto.folder~'/t/'~main_foto.id~'.jpg)' %}
             {% elseif card.fotos[0] is defined %}
                 {% set bgrnd = 'url(/assets/images/cards/'~card.fotos[0].folder~'/t/'~card.fotos[0].id~'.jpg)' %}
