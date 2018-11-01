@@ -46,6 +46,10 @@
 
                         <hr>
 
+                    {% if lang is not defined %}
+        {% set lang = 'ru' %}
+    {% endif %}
+
                     {% if lang == 'ru' %}
                             <a href="/regions" class="c_grey">Россия. Регионы</a>
                             <hr>

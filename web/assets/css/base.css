@@ -1782,3 +1782,31 @@ body.mobile {
     box-sizing: border-box;
 }
 
+.std_ord_notify{
+    background: red;
+    color: white;
+    display: inline-block;
+    padding: 0px 4px 3px 4px;
+    border-radius: 14px;
+    margin-right: 10px;
+}
+
+.ord_notify{
+    background: red;
+    color: white;
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    padding: 0px 4px 3px 4px;
+    border-radius: 14px;
+}
+
+.top_ord_notify{
+    background: red;
+    color: white;
+    position: absolute;
+    right: -33px;
+    top: 4px;
+    padding: 0px 4px 4px 4px;
+    border-radius: 14px;
+}

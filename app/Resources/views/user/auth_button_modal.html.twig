@@ -1,7 +1,8 @@
-<div class="top_user_actions" uk-height-match>
+<div class="top_user_actions uk-position-relative" uk-height-match>
     {% if app.session.has('logged_user') %}
         <a class="user_image_block" href="/user/cards"><img src="/assets/images/users/t/{{ app.session.get('user_pic') }}.jpg" alt="" style="height: 40px"> {{ app.session.get('logged_user').header }}
-            {% if t3_new.getUnread>0 %}<span class="uk-badge red_badge">{{ t3_new.getUnread }}</span>{% endif %}
+
+            {% if t3_new.getNotify|length > 0 %}<div class="top_ord_notify"><i uk-icon="bell"></i></div>{% endif %}
         </a>
 
 
@@ -9,7 +10,9 @@
             <a href="/profile">{% trans %}Профиль{% endtrans %}</a><br>
             <a href="/user/cards">{% trans %}Объявления{% endtrans %}</a>
 
-            <a href="/user/transport_orders" >Заявки</a><br>
+            <a href="/user/transport_orders" class="uk-position-relative">Заявки
+            {% if t3_new.getNotify|length > 0 %}<div class="top_ord_notify"><i uk-icon="bell"></i></div>{% endif %}
+            </a><br>
             <a href="/userLogout" style="color:red !important">Выход</a>
         </div>
         {#<a href="/userLogout" class="uk-position-relative right_quit"><span><i uk-icon="icon:sign-out"></i> Выход</span></a>#}

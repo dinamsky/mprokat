@@ -57,7 +57,7 @@
 
                                 {% set bgrnd = 'white' %}
 
-                                {% if main_foto  %}
+                                {% if main_foto is defined %}
                                     {% set bgrnd = 'url(/assets/images/cards/'~main_foto.folder~'/t/'~main_foto.id~'.jpg)' %}
                                 {% elseif card.fotos[0] is defined %}
                                     {% set bgrnd = 'url(/assets/images/cards/'~card.fotos[0].folder~'/t/'~card.fotos[0].id~'.jpg)' %}
@@ -132,6 +132,37 @@
 
                             </div>
                         </div>
+
+
+                        {% set ord_icon = 'bell' %}
+                        {% if notifies[o.id] is defined %}
+
+                            {% if notifies[o.id]|length > 1%}
+
+                            {% else %}
+                                {% if notifies[o.id][0].notify == 'new_order' %}
+                                    {% set ord_icon = 'star' %}
+                                {% endif %}
+                                {% if notifies[o.id][0].notify == 'order_accept' %}
+                                    {% set ord_icon = 'check' %}
+                                {% endif %}
+                                {% if notifies[o.id][0].notify == 'order_reject' %}
+                                    {% set ord_icon = 'ban' %}
+                                {% endif %}
+                                {% if notifies[o.id][0].notify == 'order_answer' %}
+                                    {% set ord_icon = 'mail' %}
+                                {% endif %}
+                                {% if notifies[o.id][0].notify == 'order_payed' %}
+                                    {% set ord_icon = 'happy' %}
+                                {% endif %}
+                            {% endif %}
+
+                            <div class="ord_notify"><i uk-icon="{{ ord_icon }}"></i></div>
+                        {% endif %}
+
+
+
+
                     </div>
                 {% endfor %}
 
@@ -372,7 +403,7 @@
 
                                     {% set bgrnd = 'white' %}
 
-                                    {% if main_foto  %}
+                                    {% if main_foto is defined %}
                                         {% set bgrnd = '/assets/images/cards/'~main_foto.folder~'/t/'~main_foto.id~'.jpg' %}
                                     {% elseif card.fotos[0] is defined %}
                                         {% set bgrnd = '/assets/images/cards/'~card.fotos[0].folder~'/t/'~card.fotos[0].id~'.jpg' %}

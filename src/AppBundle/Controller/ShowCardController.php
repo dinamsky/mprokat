@@ -354,7 +354,7 @@ class ShowCardController extends Controller
             'in_city' => $in_city,
             'bodyType' => $bodyType,
             'page_type' => 'card',
-            'lang' => $_SERVER['LANG'],
+            'lang' => (isset($_SERVER['LANG']) and !$_SERVER['LANG']) ? $_SERVER['LANG'] : 'ru',
             'reserved' => $card->getDateRentFinish() > new \DateTime() ? true : false,
             'is_admin_card' => $is_admin_card,
 
