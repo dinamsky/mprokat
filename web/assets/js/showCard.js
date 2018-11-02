@@ -194,7 +194,7 @@ function new_book_validate(){
 
     var message = [];
 
-    var phone = $('#phone').val();
+    var phone = $('#nbf_form #phone').val();
     if (!phone) message.push('<br>Заполните номер телефона!');
 
     if (message.length > 0){
