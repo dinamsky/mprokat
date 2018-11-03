@@ -37,12 +37,13 @@ class MainPageController extends Controller
 
         $all = $this->getDoctrine()
             ->getRepository(Card::class)
-            ->getLimitedSliders([2,6,17,8], $this->get('session')->get('city')->getId());
+            ->getLimitedSliders([2,6,17,10], $this->get('session')->get('city')->getId());
 
         $cars = $all[2];
         $wedding = $all[6];
-        //$snow = $all[10];
-        $moto = $all[8];
+        $snow = $all[10];
+        shuffle($cars);
+        //$moto = $all[8];
         $heli = $all[17];
 
 
@@ -115,8 +116,8 @@ class MainPageController extends Controller
 
             'cars' => $cars,
             'heli' => $heli,
-            //'snow' => $snow,
-            'moto' => $moto,
+            'snow' => $snow,
+            //'moto' => $moto,
             'wedding' => $wedding,
 
 

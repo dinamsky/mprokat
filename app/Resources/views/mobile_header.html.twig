@@ -19,12 +19,19 @@
                     <a class="std_ord_notify" href="/user/transport_orders"><i uk-icon="bell"></i></a>
                 {% else %}
                     <a class="mobile_top_button" href="/user/transport_orders">
-                        <i uk-icon="icon:user"></i>
+                        <div style="background:url(/assets/images/users/t/{{ app.session.get('user_pic') }}.jpg) center center no-repeat;
+                                background-size: cover;
+                                width: 30px;
+                                height: 30px;
+                                display: block;
+                                border-radius:15px ;
+                                ">
+                        </div>
                     </a>
                 {% endif %}
 
 
-            </div>
+            </a>
         {% else %}
             <div uk-toggle="target: #sign_in" class="mobile_top_button"><span uk-icon="icon:user"></span></div>
         {% endif %}

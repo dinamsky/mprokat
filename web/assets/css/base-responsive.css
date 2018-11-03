@@ -4,6 +4,10 @@
         display: none;
     }
 
+    *{
+        font-size: 14px;
+    }
+
 .uk-offcanvas-bar {
     width: 300px !important;
 }
@@ -307,6 +311,26 @@
     #sign_up button {
         font-size: 12px;
         padding: 0 15px;
+    }
+
+    .top_txt{
+        font-size: 12px !important;
+    }
+
+    .after_top{
+        font-size: 12px !important;
+    }
+
+    .card_h1{
+        font-size: 18px !important;
+    }
+
+    footer{
+        margin-bottom: 120px;
+    }
+
+    .crd_dsc{
+        padding-bottom: 5px !important;
     }
 }
 
