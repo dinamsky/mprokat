@@ -84,7 +84,7 @@
             <div class="uk-width-3-4@s ">
 
                 <div class="">
-                    <h1 itemprop="name">{{ include(':seo_templates:p_h1.html.twig') }}</h1>
+                    <h1 itemprop="name" class="card_h1">{{ include(':seo_templates:p_h1.html.twig') }}</h1>
                     <div>
                         {% if card.address != '' %}
                             <i class="fa fa-map-marker"></i> {{ card.address }}
@@ -135,7 +135,7 @@
                                     background:url('/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg') center center;
                                     background-size: cover;
                                     display: block;
-                                    height: {% if is_mobile() %}150px{% else %}500px{% endif %};
+                                    height: {% if is_mobile() %}185px{% else %}500px{% endif %};
                                     "
                             {% if k == 0 %}
                             title="{{ card.serviceTypeId == 1 ? 'Прокат' : 'Аренда' }} {% if card.generalType.chegoSingular is defined %}{{ card.generalType.chegoSingular }}{% else %}{% endif %} {{ card.markModel.Mark.header }} {{ card.markModel.header }} в {{ card.city.gde }}"
@@ -198,8 +198,13 @@
                     {% set btn_name = 'Забронировать' %}
                 {% endif %}
 
+                {% set btm = 0 %}
+                {% if card.user.isNew != 1%}
+                    {% set btm = 52 %}
+                {% endif %}
+
                 {% if is_mobile() and card.user.id != 1971%}
-                <div class="" style="position: fixed;bottom:0;left:0;width:100%;z-index:2;background: white">
+                <div class="" style="position: fixed;bottom:{{ btm }}px;left:0;width:100%;z-index:2;background: white">
                     <div class="cursor-pointer uk-text-center"
                          style="background: #25b45b;
                                 color: white;

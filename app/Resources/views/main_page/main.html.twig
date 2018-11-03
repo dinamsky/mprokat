@@ -40,7 +40,7 @@
 
 <div class="top_slider_block">
     <div class="standard_wide uk-position-relative">
-        <div class="uk-text-center tx_24 uk-margin-bottom">Мультипрокат - это платформа аренды, где владельцы сдают свой транспорт</div>
+        <div class="uk-text-center tx_24 uk-margin-bottom top_txt">Мультипрокат - аренда транспорта от владельцев</div>
         <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-items="6" data-dots="0">
             {% for card in topSlider %}
                 {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px', 'micro':true}) }}
@@ -50,7 +50,7 @@
             {% if app.session.has('logged_user') %}
                 <a href="/card/new" class="" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip>{% trans %}Разместить объявление в ТОП{% endtrans %}</a>
             {% else %}
-                <a class="" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip uk-toggle="target: #sign_in_or_up">{% trans %}Разместить объявление в ТОП{% endtrans %}</a>
+                <a class="after_top" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip uk-toggle="target: #sign_in_or_up">{% trans %}Разместить объявление в ТОП{% endtrans %}</a>
             {% endif %}
         </div>
     </div>
@@ -64,7 +64,7 @@
         </div>
 
 
-    <div id="top_selector_block" class="">
+    <div id="top_selector_block" class="uk-visible@s">
         <div class="standard_wide top_selector_all" >
 
             {% if custom_seo and custom_seo.h1 != ''%}
@@ -217,15 +217,15 @@
                 </div>
             </div>
             <div class="uk-width-1-4@s">
-                <a href="/rent/{{ in_city }}/all/bikes" class="cat_main_header padding20 c_grey bordered b_shadowed uk-display-block uk-text-center uk-margin-bottom">Мотоциклы</a>
+                <a href="/rent/{{ in_city }}/all/bikes" class="cat_main_header padding20 c_grey bordered b_shadowed uk-display-block uk-text-center uk-margin-bottom">Снегоходы</a>
                 {#<div>#}
                     {#{{ include('search/one_grid_view.html.twig', {'card':bicycles, 'height':'150px'}) }}#}
                 {#</div>#}
                 <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-items="1" data-dots="0">
-                    {% for card in moto %}
+                    {% for card in snow %}
                         {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px'}) }}
                     {% endfor %}
-                    {{ include('search/all_more.html.twig', {'title':'Все мотоциклы', 'url':'/rent/'~in_city~'/all/bikes'}) }}
+                    {{ include('search/all_more.html.twig', {'title':'Все снегоходы', 'url':'/rent/'~in_city~'/all/snow'}) }}
                 </div>
             </div>
         </div>
