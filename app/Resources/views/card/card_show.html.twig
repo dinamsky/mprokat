@@ -199,9 +199,9 @@
                 {% endif %}
 
                 {% set btm = 0 %}
-                {% if card.user.isNew != 1%}
-                    {% set btm = 52 %}
-                {% endif %}
+                {#{% if card.user.isNew != 1%}#}
+                    {#{% set btm = 52 %}#}
+                {#{% endif %}#}
 
                 {% if is_mobile() and card.user.id != 1971%}
                 <div class="" style="position: fixed;bottom:{{ btm }}px;left:0;width:100%;z-index:2;background: white">
