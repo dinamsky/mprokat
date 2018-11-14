@@ -216,24 +216,24 @@
                 {% endif %}
 
                 {% if not reserved and is_mobile() and card.user.isNew != 1%}
-                        <div class="uk-margin-bottom card_page_phone">
-                            <div uk-grid class="uk-grid-collapse uk-grid-match b_shadowed">
-                                <div class="phone_block uk-width-1-1">
-                                    {% if app.session.get('phone')[card.user.id] is not defined %}
-                                        <div class="hidden_phone show_phone uk-text-center c_white" data-card_id="{{ card.id }}" data-profile="0" style="background: lightgrey">
-                                            <div class="uk-text-center">{% trans %}Показать телефон{% endtrans %}</div>
-                                            <i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue|slice(0,5) }} XXX-XX-XX{% endfor %}
-                                        </div>
+                        {#<div class="uk-margin-bottom card_page_phone">#}
+                            {#<div uk-grid class="uk-grid-collapse uk-grid-match b_shadowed">#}
+                                {#<div class="phone_block uk-width-1-1">#}
+                                    {#{% if app.session.get('phone')[card.user.id] is not defined %}#}
+                                        {#<div class="hidden_phone show_phone uk-text-center c_white" data-card_id="{{ card.id }}" data-profile="0" style="background: lightgrey">#}
+                                            {#<div class="uk-text-center">{% trans %}Показать телефон{% endtrans %}</div>#}
+                                            {#<i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue|slice(0,5) }} XXX-XX-XX{% endfor %}#}
+                                        {#</div>#}
 
-                                    {% else %}
-                                        <a class="opened_phone c_white uk-text-center" href="tel:{% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}">
-                                            <i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}
-                                        </a>
-                                    {% endif %}
-                                </div>
+                                    {#{% else %}#}
+                                        {#<a class="opened_phone c_white uk-text-center" href="tel:{% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}">#}
+                                            {#<i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}#}
+                                        {#</a>#}
+                                    {#{% endif %}#}
+                                {#</div>#}
 
-                            </div>
-                        </div>
+                            {#</div>#}
+                        {#</div>#}
                     {% endif %}
 
 
@@ -636,24 +636,24 @@
                     </div>
 
                     {% if not reserved and card.user.isNew != 1%}
-                        <div class="uk-margin-bottom card_page_phone">
-                            <div uk-grid class="uk-grid-collapse uk-grid-match b_shadowed">
-                                <div class="phone_block uk-width-1-1">
-                                    {% if app.session.get('phone')[card.user.id] is not defined %}
-                                        <div class="hidden_phone show_phone uk-text-center c_white" data-card_id="{{ card.id }}" data-profile="0" style="background: lightgrey">
-                                            <div class="uk-text-center">{% trans %}Показать телефон{% endtrans %}</div>
-                                            <i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue|slice(0,5) }} XXX-XX-XX{% endfor %}
-                                        </div>
+                        {#<div class="uk-margin-bottom card_page_phone">#}
+                            {#<div uk-grid class="uk-grid-collapse uk-grid-match b_shadowed">#}
+                                {#<div class="phone_block uk-width-1-1">#}
+                                    {#{% if app.session.get('phone')[card.user.id] is not defined %}#}
+                                        {#<div class="hidden_phone show_phone uk-text-center c_white" data-card_id="{{ card.id }}" data-profile="0" style="background: lightgrey">#}
+                                            {#<div class="uk-text-center">{% trans %}Показать телефон{% endtrans %}</div>#}
+                                            {#<i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue|slice(0,5) }} XXX-XX-XX{% endfor %}#}
+                                        {#</div>#}
 
-                                    {% else %}
-                                        <a class="opened_phone c_white uk-text-center" href="tel:{% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}">
-                                            <i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}
-                                        </a>
-                                    {% endif %}
-                                </div>
+                                    {#{% else %}#}
+                                        {#<a class="opened_phone c_white uk-text-center" href="tel:{% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}">#}
+                                            {#<i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}#}
+                                        {#</a>#}
+                                    {#{% endif %}#}
+                                {#</div>#}
 
-                            </div>
-                        </div>
+                            {#</div>#}
+                        {#</div>#}
                     {% endif %}
                 {% endif %}
 
