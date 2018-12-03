@@ -65,7 +65,7 @@ class AdminController extends Controller
     public function logoutAction(Request $request)
     {
         $response = new Response();
-        $response->headers->clearCookie('the_hash');
+        $response->headers->clearCookie('the_mhash');
         $response->sendHeaders();
         $this->get('session')->remove('admin');
         $this->addFlash(
