@@ -172,6 +172,13 @@ class FormOrder
     /**
      * @var int
      *
+     * @ORM\Column(name="hours", type="integer", nullable=true)
+     */
+    private $hours = null;
+
+    /**
+     * @var int
+     *
      * @ORM\Column(name="deposit", type="integer")
      */
     private $deposit = 0;
@@ -1171,5 +1178,29 @@ class FormOrder
     public function getTotal()
     {
         return $this->total;
+    }
+
+    /**
+     * Set hours
+     *
+     * @param integer $hours
+     *
+     * @return FormOrder
+     */
+    public function setHours($hours)
+    {
+        $this->hours = $hours;
+
+        return $this;
+    }
+
+    /**
+     * Get hours
+     *
+     * @return integer
+     */
+    public function getHours()
+    {
+        return $this->hours;
     }
 }
