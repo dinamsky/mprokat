@@ -626,11 +626,14 @@ class ProfileController extends Controller
                 ->find($card_id);
             $user = $card->getUser();
 
-            $price = $deposit = $service = 0;
+            $price = $price_hour = $deposit = $service = 0;
             foreach ($card->getCardPrices() as $cp){
                 if($cp->getpriceId() == 2) $price = $cp->getValue();
+                if($cp->getpriceId() == 1) $price_hour = $cp->getValue();
                 if($cp->getpriceId() == 10) $deposit = $cp->getValue();
             }
+
+
 
             $period = (strtotime(str_replace(".","-",$post->get('date_out'))) - strtotime(str_replace(".","-",$post->get('date_in'))))/60/60/24;
 
@@ -638,7 +641,16 @@ class ProfileController extends Controller
 
             $price = $period*$price;
 
-            $service = ceil($price/100*15);
+
+            $hours = 0;
+            if($post->has('hours') and $post->get('hours') !=0) $hours = $post->get('hours');
+            if($post->has('hours') and $post->get('hours') ==0 ) $hours = 1;
+
+            if($price == 0 and $price_hour !=0 and $hours !=0 ){
+                $price = $hours * $price_hour;
+            }
+
+            $service = ceil($price/100*7);
 
             if($service == 0) $service = 500;
 
@@ -667,79 +679,91 @@ class ProfileController extends Controller
 
             //dump($this->container->get('kernel')->getEnvironment());
 
-            $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
-            $sms_result = file_get_contents($url);
 
+            if($price !=0) {
 
-            $renter = $this->get('session')->get('logged_user');
+                $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
+                $sms_result = file_get_contents($url);
 
-            if(!$is_admin_reged) {
-                $message = (new \Swift_Message($_t->trans('Запрос на бронирование')))
-                    ->setFrom(['mail@multiprokat.com' => 'Робот Мультипрокат'])
-                    ->setTo($user->getEmail())
-                    ->setBcc('mail@multiprokat.com')
-                    ->setBody(
-                        'Добрый день! Поступила новая заявка на аренду вашего транспорта на сайте: <a href="https://multiprokat.com">https://multiprokat.com</a>. Увидеть заявку вы можете в личном кабинете вашего аккаунта.',
-                        'text/html'
-                    );
-                $mailer->send($message);
-            }
+                $renter = $this->get('session')->get('logged_user');
 
-            $form_order = new FormOrder();
-            $form_order->setCardId($card->getId());
-            $form_order->setUserId($user->getId());
-            $form_order->setCityIn($post->get('city_in'));
-            $form_order->setCityOut($post->get('city_out'));
-            $form_order->setDateIn(\DateTime::createFromFormat('d.m.Y', $post->get('date_in')));
-            $form_order->setDateOut(\DateTime::createFromFormat('d.m.Y', $post->get('date_out')));
-            $form_order->setContent('');
-            $form_order->setTransport($post->get('header'));
-            $form_order->setEmail('');
-            $form_order->setPhone('');
-            $form_order->setName('');
-            $form_order->setFormType('new_transport_order');
+                if (!$is_admin_reged) {
+                    $message = (new \Swift_Message($_t->trans('Запрос на бронирование')))
+                        ->setFrom(['mail@multiprokat.com' => 'Робот Мультипрокат'])
+                        ->setTo($user->getEmail())
+                        ->setBcc('mail@multiprokat.com')
+                        ->setBody(
+                            'Добрый день! Поступила новая заявка на аренду вашего транспорта на сайте: <a href="https://multiprokat.com">https://multiprokat.com</a>. Увидеть заявку вы можете в личном кабинете вашего аккаунта.',
+                            'text/html'
+                        );
+                    $mailer->send($message);
+                }
 
-            if($post->get('content') != ''){
-                $msg = $this->cut_num($post->get('content'));
+                if (!$post->has('date_out')) {
+                    $date_out = \DateTime::createFromFormat('d.m.Y', $post->get('date_in'));
+                } else {
+                    $date_out = \DateTime::createFromFormat('d.m.Y', $post->get('date_out'));
+                }
+
+                $form_order = new FormOrder();
+                $form_order->setCardId($card->getId());
+                $form_order->setUserId($user->getId());
+                $form_order->setCityIn($post->get('city_in'));
+                $form_order->setCityOut($post->get('city_out'));
+                $form_order->setDateIn(\DateTime::createFromFormat('d.m.Y', $post->get('date_in')));
+                $form_order->setDateOut($date_out);
+                $form_order->setContent('');
+                $form_order->setTransport($post->get('header'));
+                $form_order->setEmail('');
+                $form_order->setPhone('');
+                $form_order->setName('');
+                $form_order->setHours($hours);
+                $form_order->setFormType('new_transport_order');
+
+                if ($post->get('content') != '') {
+                    $msg = $this->cut_num($post->get('content'));
+                } else {
+                    $msg = 'Добрый день! Отправляю вам заявку';
+                }
+
+                $messages[] = [
+                    'date' => date('d-m-Y'),
+                    'time' => date('H:i'),
+                    'from' => 'renter',
+                    'message' => $msg,
+                    'status' => 'send'
+                ];
+
+                $form_order->setMessages(json_encode($messages));
+                $form_order->setRenterId($renter->getId());
+                $form_order->setFioRenter($renter->getHeader());
+                $form_order->setPassport4('');
+                $form_order->setDrivingLicense4('');
+                $form_order->setOwnerStatus('wait_for_accept');
+                $form_order->setRenterStatus('wait_for_accept');
+                $form_order->setIsNew(1);
+
+                $form_order->setPrice($price);
+                $form_order->setDeposit($deposit);
+                $form_order->setService($service);
+                $form_order->setTotal($total);
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($form_order);
+                $em->flush();
+
+                $notify = new Notify();
+                $notify->setUserId($user->getId());
+                $notify->setObjectId($form_order->getId());
+                $notify->setNotify('new_order');
+                $em->persist($notify);
+                $em->flush();
             } else {
-                $msg = 'Добрый день! Отправляю вам заявку';
+                $this->addFlash(
+                    'notice',
+                    'Заявка может быть оформлена только если владелец указал стоимость аренды в день или час!'
+                );
             }
-
-            $messages[] = [
-                'date' => date('d-m-Y'),
-                'time' => date('H:i'),
-                'from' => 'renter',
-                'message' => $msg,
-                'status' => 'send'
-            ];
-
-
-            $form_order->setMessages(json_encode($messages));
-            $form_order->setRenterId($renter->getId());
-            $form_order->setFioRenter($renter->getHeader());
-            $form_order->setPassport4('');
-            $form_order->setDrivingLicense4('');
-            $form_order->setOwnerStatus('wait_for_accept');
-            $form_order->setRenterStatus('wait_for_accept');
-            $form_order->setIsNew(1);
-
-            $form_order->setPrice($price);
-            $form_order->setDeposit($deposit);
-            $form_order->setService($service);
-            $form_order->setTotal($total);
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($form_order);
-            $em->flush();
-
-
-            $notify = new Notify();
-            $notify->setUserId($user->getId());
-            $notify->setObjectId($form_order->getId());
-            $notify->setNotify('new_order');
-            $em->persist($notify);
-            $em->flush();
-
 
             $this->addFlash(
                 'notice',

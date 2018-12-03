@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use UserBundle\Entity\Faq;
 use UserBundle\Entity\UserInfo;
 use UserBundle\Security\Password;
 use UserBundle\Entity\User;
@@ -390,4 +391,98 @@ class AdminController extends Controller
         }
     }
 
+    /**
+     * @Route("/adminFaq", name="adminFaq")
+     */
+    public function adminFaqAction()
+    {
+        if ($this->get('session')->get('admin') === null) return $this->render('AdminBundle::admin_enter_form.html.twig');
+        else {
+            $em = $this->getDoctrine()->getManager();
+
+            //$query = $em->createQuery('SELECT o FROM UserBundle:FormOrder o WHERE o.isNew =1 ORDER BY o.dateCreate DESC');
+
+            //$orders = $query->getResult();
+
+            $faq = $this->getDoctrine()
+            ->getRepository(Faq::class)
+            ->findBy([],['position'=>'ASC']);
+
+            $city = $this->get('session')->get('city');
+
+            return $this->render('AdminBundle::admin_faq.html.twig', [
+                'faq' => $faq,
+                'city' => $city,
+            ]);
+        }
+    }
+
+    /**
+     * @Route("/adminFaqAdd", name="adminFaqAdd")
+     */
+    public function adminFaqAddAction(Request $request)
+    {
+        $city = $this->get('session')->get('city');
+        if($request->isMethod('GET')) {
+            return $this->render('AdminBundle::admin_faq_add.html.twig', [
+                'city' => $city
+            ]);
+        }
+        if($request->isMethod('POST')){
+            $em = $this->getDoctrine()->getManager();
+            $post = $request->request;
+            $news = new Faq();
+            $news->setHeader($post->get('header'));
+            $news->setPosition((int)$post->get('position'));
+            $news->setContent($post->get('content'));
+            $em->persist($news);
+            $em->flush();
+            return $this->redirectToRoute('adminFaq');
+        }
+    }
+
+    /**
+     * @Route("/adminFaqEdit/{id}", name="adminFaqEdit")
+     */
+    public function adminFaqEdittAction($id='', Request $request)
+    {
+        $city = $this->get('session')->get('city');
+        if($request->isMethod('GET')) {
+            $f = $this->getDoctrine()
+                ->getRepository(Faq::class)
+                ->find((int)$id);
+            return $this->render('AdminBundle::admin_faq_edit.html.twig', [
+                'f' => $f,
+                'city' => $city
+            ]);
+        }
+        if($request->isMethod('POST')){
+            $em = $this->getDoctrine()->getManager();
+            $post = $request->request;
+            $f = $this->getDoctrine()
+                ->getRepository(Faq::class)
+                ->find($post->get('id'));
+            $f->setHeader($post->get('header'));
+            $f->setPosition((int)$post->get('position'));
+            $f->setContent($post->get('content'));
+            $em->persist($f);
+            $em->flush();
+            return $this->redirect('/adminFaqEdit/'.$post->get('id'));
+        }
+    }
+
+    /**
+     * @Route("/adminFaqDelete", name="adminFaqDelete")
+     */
+    public function adminFaqDeleteAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $post = $request->request;
+        $f = $this->getDoctrine()
+            ->getRepository(Faq::class)
+            ->find($post->get('id'));
+        $em->remove($f);
+        $em->flush();
+        return $this->redirectToRoute('adminFaq');
+    }
 }
