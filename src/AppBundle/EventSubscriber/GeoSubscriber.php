@@ -117,8 +117,8 @@ class GeoSubscriber implements EventSubscriberInterface
         }
 
 
-        if($event->getRequest()->cookies->has('the_hash')){
-            $hash = $event->getRequest()->cookies->get('the_hash');
+        if($event->getRequest()->cookies->has('the_mhash')){
+            $hash = $event->getRequest()->cookies->get('the_mhash');
             $sh = substr($hash,0,40);
             $user_id = base64_decode(substr_replace($hash, null, 0, 40));
 
@@ -156,7 +156,7 @@ class GeoSubscriber implements EventSubscriberInterface
         }
 
         if($request->attributes->has('remove_cookie')) {
-            $response->headers->clearCookie('the_hash');
+            $response->headers->clearCookie('the_mhash');
         }
 
         if($request->attributes->has('first_cookie')) {

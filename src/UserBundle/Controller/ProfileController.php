@@ -69,6 +69,7 @@ class ProfileController extends Controller
         $number = preg_replace('~[^0-9]+~','',$request->request->get('phone'));
 
         if(strlen($number)==11) $number = substr($number, 1);
+        if(strlen($number)<10) $number = '9999999999';
 
         $like = '%'.implode("%",str_split($number)).'%';
         $query = $em->createQuery("SELECT u FROM UserBundle:UserInfo u WHERE u.uiKey='phone' AND u.uiValue LIKE '".$like."'");
@@ -147,7 +148,7 @@ class ProfileController extends Controller
     {
         $response = new Response();
         $hash = $this->cookieMaster->setHash($user->getId());
-        $cookie = new Cookie('the_hash', $hash.base64_encode($user->getId()), strtotime('now +1 year'));
+        $cookie = new Cookie('the_mhash', $hash.base64_encode($user->getId()), strtotime('now +1 year'));
         $response->headers->setCookie($cookie);
         $response->sendHeaders();
     }
