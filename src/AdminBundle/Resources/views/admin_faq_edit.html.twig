@@ -1,0 +1,36 @@
+{% extends 'AdminBundle::admin_base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/tinymce/jquery.tinymce.min.js') }}"></script>
+    <script src="{{ asset('assets/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ asset('assets/js/visual_editor.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+
+<h1>Новый материал FAQ</h1>
+
+<form action="/adminFaqEdit" method="POST" enctype="multipart/form-data">
+    <div>Заголовок
+        <input type="text" name="header"  class="uk-input" value="{{ f.header }}">
+    </div>
+    <div class="uk-margin-top">
+        Позиция в списке
+        <input type="text" name="position"  class="uk-input" value="{{ f.position }}">
+    </div>
+    <div class="uk-margin-top">
+        Контент
+        <textarea name="content" class="visual_editor">{{ f.content }}</textarea>
+    </div>
+<br>
+    <input type="hidden" name="id" value="{{ f.id }}">
+    <button class="uk-button uk-button-primary">Записать</button>
+</form>
+
+
+{% endblock %}

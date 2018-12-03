@@ -3,7 +3,7 @@
                                 {#text-decoration: underline;#}
                                 {#padding: 0;#}
                                 {#margin-bottom: 10px;">Как это работает?</button>#}
-
+                        {% if(price_day != 0 or price_hour != 0) %}
                         <form id="nbf_form" action="/user/bookMessage" uk-grid class="uk-grid-small" method="POST" onsubmit="return new_book_validate();">
 
                             <div class="uk-width-1-1">
@@ -11,15 +11,32 @@
                                 <input type="text" name="header" class="uk-input" value="{{ card.markModel.mark.header }} {{ card.markModel.header }}" required>
                             </div>
 
-                            <div class="uk-width-1-2@s">
-                                <span class="uk-text-small">Дата приема (дд.мм.гггг) <span class="c_red">{{ reserved ? 'с '~card.dateRentFinish|date_modify("+1 day")|date('d.m.Y') }}</span></span>
-                                <input type="text" name="date_in" class="uk-input uk-width-1-1 datepicker-reserve" autocomplete="off" required>
-                            </div>
 
-                            <div class="uk-width-1-2@s">
-                                <span class="uk-text-small">Дата возврата (дд.мм.гггг)<span class="c_red">{{ reserved ? 'с '~card.dateRentFinish|date_modify("+1 day")|date('d.m.Y') }}</span></span>
-                                <input type="text" name="date_out" class="uk-input uk-width-1-1 datepicker-reserve" autocomplete="off" required>
-                            </div>
+
+
+
+
+
+
+                            {% if(price_day == 0 and price_hour != 0) %}
+                                <div class="uk-width-1-2@s">
+                                    <span class="uk-text-small">Дата приема/возврата (дд.мм.гггг) <span class="c_red">{{ reserved ? 'с '~card.dateRentFinish|date_modify("+1 day")|date('d.m.Y') }}</span></span>
+                                    <input type="text" name="date_in" class="uk-input uk-width-1-1 datepicker-reserve" autocomplete="off" required>
+                                </div>
+                                <div class="uk-width-1-2">
+                                    <span class="uk-text-small">Часов аренды</span>
+                                    <input type="text" name="hours" class="uk-input uk-width-1-1" value="1" autocomplete="off" required>
+                                </div>
+                            {% else %}
+                                <div class="uk-width-1-2@s">
+                                    <span class="uk-text-small">Дата приема (дд.мм.гггг) <span class="c_red">{{ reserved ? 'с '~card.dateRentFinish|date_modify("+1 day")|date('d.m.Y') }}</span></span>
+                                    <input type="text" name="date_in" class="uk-input uk-width-1-1 datepicker-reserve" autocomplete="off" required>
+                                </div>
+                                <div class="uk-width-1-2@s">
+                                    <span class="uk-text-small">Дата возврата (дд.мм.гггг)<span class="c_red">{{ reserved ? 'с '~card.dateRentFinish|date_modify("+1 day")|date('d.m.Y') }}</span></span>
+                                    <input type="text" name="date_out" class="uk-input uk-width-1-1 datepicker-reserve" autocomplete="off" required>
+                                </div>
+                            {% endif %}
 
                             <div class="uk-width-1-2">
                                 <span class="uk-text-small">Место приема</span>
@@ -64,3 +81,8 @@
                             <input type="hidden" name="is_nonreged" value="1">
                             {% endif %}
                         </form>
+                        {% else %}
+
+                            <div>Отсутствуют цены аренды транспорта! Выберите другой транспорт!</div>
+
+                        {% endif %}

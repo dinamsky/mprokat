@@ -305,6 +305,14 @@ class ShowCardController extends Controller
             //if(isset($phone) and $phone != '') $phone = true;
         }
 
+        $day = $hour = 0;
+        foreach($card->getCardPrices() as $cp){
+            if($cp->getPriceId() == 1 and $cp->getValue()!=0) $hour = $cp->getValue();
+            if($cp->getPriceId() == 2 and $cp->getValue()!=0) $day = $cp->getValue();
+        }
+
+
+
         return $this->render('card/card_show.html.twig', [
 
             'card' => $card,
@@ -358,7 +366,9 @@ class ShowCardController extends Controller
             'reserved' => $card->getDateRentFinish() > new \DateTime() ? true : false,
             'is_admin_card' => $is_admin_card,
 
-            'blockings' => $blk
+            'blockings' => $blk,
+            'price_hour' => $hour,
+            'price_day' => $day
 
         ]);
     }
