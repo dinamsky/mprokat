@@ -21,7 +21,7 @@
                 {% if faq is defined %}
                     <h1 style="">{{ faq.header }}</h1>
                     <div>
-                        {{ faq.content }}
+                        {{ faq.content|raw }}
                     </div>
                 {% endif %}
             </div>
