@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+
+{% block content %}
+    <div class="standard_wide">
+        <div uk-grid class="uk-margin-top">
+            <div class="uk-width-1-4">
+
+                <h2>Арендаторам</h2>
+                {% for a in arnd %}
+                    <div><a href="/faq/{{ a.id }}">{{ a.header }}</a></div>
+                {% endfor %}
+
+                <h2>Владельцам</h2>
+                {% for o in ownr %}
+                    <div><a href="/faq/{{ o.id }}">{{ o.header }}</a></div>
+                {% endfor %}
+
+            </div>
+            <div class="uk-width-3-4">
+                {% if faq is defined %}
+                    <h1 style="">{{ faq.header }}</h1>
+                    <div>
+                        {{ faq.content }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
