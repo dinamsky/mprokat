@@ -651,7 +651,7 @@ class ProfileController extends Controller
                 $price = $hours * $price_hour;
             }
 
-            $service = ceil($price/100*7);
+            $service = ceil($price/100*8.5);
 
             if($service == 0) $service = 500;
 
