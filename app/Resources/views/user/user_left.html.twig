@@ -13,8 +13,10 @@
     {#<a href="/user/messages">{% trans %}Мои сообщения{% endtrans %}</a>#}
     {#{% if t3_new.getUnread>0 %}<span class="uk-badge">{{ t3_new.getUnread }}</span>{% endif %}#}
     <br><br>
+    <div class="uk-position-relative">
     <a href="/user/transport_orders" style="border: 1px solid #07d;padding: 2px 5px;width: 100%;display: block;text-align: center">Заявки</a><br>
-
+    {% if t3_new.getNotify|length > 0 %}<div class="top_ord_notify"><i uk-icon="bell"></i></div>{% endif %}
+    </div>
 
     <br>
     <a href="/userLogout"><span><i uk-icon="icon:sign-out"></i> {% trans %}Выход{% endtrans %}</span></a>
