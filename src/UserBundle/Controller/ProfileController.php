@@ -702,8 +702,10 @@ class ProfileController extends Controller
 
                 if (!$post->has('date_out')) {
                     $date_out = \DateTime::createFromFormat('d.m.Y', $post->get('date_in'));
+                    $d_o = $post->get('date_in');
                 } else {
                     $date_out = \DateTime::createFromFormat('d.m.Y', $post->get('date_out'));
+                    $d_o = $post->get('date_out');
                 }
 
                 $form_order = new FormOrder();
@@ -720,6 +722,35 @@ class ProfileController extends Controller
                 $form_order->setName('');
                 $form_order->setHours($hours);
                 $form_order->setFormType('new_transport_order');
+
+
+                $between = (strtotime(implode("-",array_reverse(explode(".",$d_o)))) - strtotime(implode("-",array_reverse(explode(".",$post->get('date_in'))))))/(60*60*24);
+                if ($between == 0) $between = 1;
+
+
+                $msg1='<div class="uk-text-left"><a href="/card/'.$card->getId().'">'.$post->get('header').'</a><br>     
+                        <i class="fa fa-calendar"></i> '.$post->get('date_in').' - <i class="fa fa-calendar"></i> '.$d_o.'
+                        <br>
+                        Дней аренды: '.$between.'
+                        <br>        
+                        Получить: '.$post->get('city_in').'<br>
+                        Вернуть: '.$post->get('city_out').'<br><br>
+                        Аренда: '.($price+$service).' <i class="fa fa-ruble"></i><br>
+                        В т.ч. бронирование: '.($service*2).' <i class="fa fa-ruble"></i><br>
+                        <b>Итого: '.($price+$service).' <i class="fa fa-ruble"></i></b><br><br>
+                        Иногда владелец может попросить залог</div>';
+
+
+
+
+
+                $messages[] = [
+                    'date' => date('d-m-Y'),
+                    'time' => date('H:i'),
+                    'from' => 'system',
+                    'message' => $msg1,
+                    'status' => 'send'
+                ];
 
                 if ($post->get('content') != '') {
                     $msg = $this->cut_num($post->get('content'));
@@ -1507,7 +1538,7 @@ class ProfileController extends Controller
             "payment" => [
                 "orderId" => $id,
                 "action" => "pay",
-                "price" => $order->getService().'.00',
+                "price" => ($order->getService()*2).'.00',
             ],
             "customerInfo" => [
                 "email" => $eml,

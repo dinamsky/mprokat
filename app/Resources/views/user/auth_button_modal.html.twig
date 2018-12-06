@@ -1,6 +1,9 @@
 <div class="top_user_actions uk-position-relative" uk-height-match>
     {% if app.session.has('logged_user') %}
-        <a class="user_image_block" href="/user/cards"><img src="/assets/images/users/t/{{ app.session.get('user_pic') }}.jpg" alt="" style="height: 40px"> {{ app.session.get('logged_user').header }}
+        <a class="user_image_block"
+           href="{{ t3_new.getNotify|length > 0 ? '/user/transport_orders' : '/user/cards' }}"
+        >
+            <img src="/assets/images/users/t/{{ app.session.get('user_pic') }}.jpg" alt="" style="height: 40px"> {{ app.session.get('logged_user').header }}
 
             {% if t3_new.getNotify|length > 0 %}<div class="top_ord_notify"><i uk-icon="bell"></i></div>{% endif %}
         </a>

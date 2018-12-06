@@ -18,8 +18,10 @@
 
             </div>
             <div class="uk-width-3-4">
+                <h1>Ответы на часто задаваемые вопросы</h1>
+                <hr>
                 {% if faq is defined %}
-                    <h1 style="">{{ faq.header }}</h1>
+                    <h2 style="">{{ faq.header }}</h2>
                     <div>
                         {{ faq.content|raw }}
                     </div>
