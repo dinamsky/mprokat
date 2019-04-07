@@ -1,6 +1,5 @@
 {% extends 'base.html.twig' %}
 
-
 {% block stylesheets %}
     {{ parent() }}
     <link href="{{ asset('assets/css/main_page/top_slider.css') }}" rel="stylesheet"/>
@@ -36,7 +35,85 @@
 
 {% block content %}
 
+{# begin верхний блок быстрого выбора и заставки #}
+<div uk-grid class="uk-text-center bg_blue  uk-margin-remove" >
+    <div class="uk-grid-collapse uk-child-width-expand@s uk-text-center uk-width-1-1 uk-padding-remove" uk-grid>
+        <div class="uk-tile uk-tile-primary bg_blue">
+            <div class="uk-padding-large uk-light uk-h4">Аренда и прокат транспорта от владельцев</div>
+            {% if total is defined %}
+            <div class="uk-padding-remove-top uk-light uk-h4 uk-text-small"><b>{{ total.cards }}</b> единиц транспорта в <b>{{ total.cities }}</b> городах</div>
+            {% endif %}
+        </div>
+    </div>
+{% if app.session.has('logged_user') %}
 
+    <div class="uk-width-1-2 ">
+        <a class=" uk-button uk-button-danger" href="/sl_page" style="border-radius: 30px;"></i>Арендовать</a>
+    </div>
+    <div class="uk-width-1-2 uk-padding-remove-left">
+        <a class=" uk-button uk-button-default bg_white " href="/card/new"  style="border-radius: 30px;">Сдать в аренду</a>
+    </div>
+
+{% else %}
+    <div class="uk-width-1-2 uk-padding-remove-left uk-margin-bottom uk-margin-remove-top">
+        <button class=" uk-button uk-button-danger" uk-toggle="target: #sign_up" style="border-radius: 30px;">{% trans %}Арендовать{% endtrans %}</button>
+    </div>
+    <div class="uk-width-1-2 uk-padding-remove-left uk-margin-bottom uk-margin-remove-top">
+        <button class=" uk-button uk-button-default bg_white " uk-toggle="target: #sign_up" style="border-radius: 30px;">{% trans %}Сдать в аренду{% endtrans %}</button>
+    </div>
+
+{% endif %}
+</div>
+{# end верхний блок быстрого выбора и заставки #}
+
+{# begin блок поиска #}
+{{ include('search_form.html.twig') }}
+{# end блок поиска #}
+
+{# begin блок выбора города #}
+<div uk-grid class="uk-text-center" >
+    <div class="uk-grid-collapse uk-child-width-expand@s uk-text-center uk-width-1-1" uk-grid>
+        <div class="uk-tile  ">
+            <div class="uk-h2 ">Популярные в</div>
+            {{ include('selector/global_city_selector.html.twig',{'main_city':true}) }}
+            {# {% if hide_cityname is not defined %}
+                <a>{{  app.session.has('city')  ? app.session.get('city').header : city.header }}</a>
+            {% endif %} #}
+        </div>
+    </div>
+</div>
+{# end блок выбора города #}
+
+{# begin блок слайдера ТОП оплаченных #}
+<div class="top_slider_block">
+    <div class="standard_wide uk-position-relative">
+        <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-items="6" data-dots="0">
+            {% for card in topSlider %}
+                {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px', 'micro':true}) }}
+            {% endfor %}
+        </div>
+        <div class="uk-text-center">
+            {% if app.session.has('logged_user') %}
+                <a href="/card/new" class="" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip>{% trans %}Разместить объявление в ТОП{% endtrans %}</a>
+            {% else %}
+                <a class="after_top" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip uk-toggle="target: #sign_in_or_up">{% trans %}Разместить объявление в ТОП{% endtrans %}</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{# end блок слайдера ТОП оплаченных #}
+
+{# begin блок слайдера ТОП активных арендаторов #}
+
+{# end блок слайдера ТОП активных арендаторов #}
+
+{# begin блок слайдера ТОП ?? #}
+
+{# end блок слайдера ТОП ?? #}
+
+{# begin блок слайдера ТОП новых бесплатных #}
+
+{# end блок слайдера ТОП новых бесплатных #}
 
 <div class="top_slider_block">
     <div class="standard_wide uk-position-relative">

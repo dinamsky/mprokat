@@ -35,11 +35,8 @@
         <meta name="yandex-verification" content="a2d59e156f2bd014" />
     </head>
     <body {% block bodyVars %}{% endblock %} class="{{ is_mobile() ? 'mobile' : 'desktop' }} {% block bodyClass %}{% endblock %}">
-
-
-
-
         {{ include('header.html.twig') }}
+        
         <div id="content">
             {% for label, messages in app.flashes %}
                 {% for message in messages %}

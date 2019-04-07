@@ -1,6 +1,6 @@
 <input type="hidden" id="cityURL" name="cityURL" value="{{ city.url }}">
 <input type="hidden" id="cityId" name="cityId" value="{{ city.id }}">
-<div uk-toggle="target: #city_popular" class="cursor-pointer sticky_top_city_selector {{ hide_cityname is defined ? 'mobile_top_button' }}">
+<div uk-toggle="target: #city_popular" class="cursor-pointer {{ hide_cityname is defined ? 'mobile_top_button' }} {{ main_city is defined ? 'uk-h2' : 'sticky_top_city_selector' }}">
     <i class="fa fa-map-marker"></i>
     {#<span class="city_selector">{{ city.header }}#}
 
