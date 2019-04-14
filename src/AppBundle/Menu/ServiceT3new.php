@@ -37,6 +37,23 @@ class ServiceT3new extends Controller
         return $query->getResult();
     }
 
+    public function getTop10()
+    {
+        $cityId = $this->sess->get('city')->getId();
+        $query = $this->em->createQuery('SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.cityId = ?1 AND c.isActive = 1 ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
+        $query->setParameter(1, $cityId);
+        $query->setMaxResults(10);
+        if(count($query->getResult())<10) {
+
+            $query = $this->em->createQuery('SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.cityId < 1260 AND c.isActive = 1 ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
+            $query->setMaxResults(10);
+        }
+
+
+
+        return $query->getResult();
+    }
+
     public function getNew()
     {
         $cityId = $this->sess->get('city')->getId();

@@ -67,6 +67,25 @@ class CardRepository extends \Doctrine\ORM\EntityRepository
         return $query->getResult();
     }
 
+    public function getTop10Slider($cityId)
+    {
+        $em = $this->getEntityManager();
+        $query = $em->createQuery('SELECT c.id FROM AppBundle:Card c JOIN c.tariff t WHERE c.cityId=?1 ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
+        $query->setParameter(1, $cityId);
+        $query->setMaxResults(10);
+
+        if(count($query->getScalarResult())<6) {
+            $query = $em->createQuery('SELECT c.id FROM AppBundle:Card c JOIN c.tariff t ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
+            $query->setMaxResults(10);
+        }
+
+
+        foreach ($query->getScalarResult() as $cars_id) $cars_ids[] = $cars_id['id'];
+        $dql = 'SELECT c,f,p,g,m FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.fotos f LEFT JOIN c.cardPrices p LEFT JOIN c.city g LEFT JOIN c.markModel m WHERE c.id IN ('.implode(",",$cars_ids).') ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
+        $query = $em->createQuery($dql);
+        return $query->getResult();
+    }
+
     public function getTopOne($gt)
     {
         $em = $this->getEntityManager();

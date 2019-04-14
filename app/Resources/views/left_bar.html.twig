@@ -1,48 +1,121 @@
 {% if is_mobile() %}
-<div id="left_bar" uk-offcanvas>
+    <div id="left_bar" uk-offcanvas>
 
-    <div class="uk-offcanvas-bar">
+        <div class="uk-offcanvas-bar">
 
-        <div class="uk-clearfix">
-            {{ include('user/auth_left_bar.html.twig') }}
-        </div>
+            <div class="uk-clearfix">
+                {{ include('user/auth_left_bar.html.twig') }}
+            </div>
 
 
+            <div class="uk-margin-top uk-margin-large-bottom">
+                {% if app.session.has('logged_user') %}
+                    <a class="uk-button uk-button-success uk-width-1-1 m_add_card_button" href="/card/new">Сдать</a>
+                {% elseif app.session.has('admin') %}
+                    <a class="uk-button uk-button-success uk-width-1-1 m_add_card_button" href="/card/new">Сдать</a>
+                {% else %}
+                    <a class="uk-button uk-button-success uk-width-1-1 m_add_card_button" uk-toggle="target: #sign_in">Сдать</a>
+                {% endif %}
+            </div>
 
-        <div class="uk-margin-top uk-margin-large-bottom">
-            {% if app.session.has('logged_user') %}
-                <a href="/card/new" class="uk-button uk-button-success uk-width-1-1 m_add_card_button">Сдать</a>
-            {% elseif app.session.has('admin') %}
-                <a href="/card/new" class="uk-button uk-button-success uk-width-1-1 m_add_card_button">Сдать</a>
-            {% else %}
-                <a uk-toggle="target: #sign_in" class="uk-button uk-button-success uk-width-1-1 m_add_card_button">Сдать</a>
-            {% endif %}
-        </div>
+            <div class="uk-margin-top">
+                <a href="/">
+                    <i uk-icon="home"></i>
+                    &nbsp; Главная</a>
+            </div>
 
-        <div class="uk-margin-top"><a href="/"><i uk-icon="home"></i> &nbsp; Главная</a></div>
-        
-        <div class="uk-margin-top">
-            {#{% for gt in t3_new.getGt|slice(0,4) if gt.carTypeIds%}#}
-            {% for gt in t3_new.getGt if gt.carTypeIds%}
-                <div class="left_gtypes">
-                    <a href="/rent/{{ city.url }}/all/{{ gt.url }}" class=""><i class="fa fa-{{ gt.icon }} left_gt_icon"></i> {{ gt.header }}</a>
-                </div>
-            {% endfor %}
-            {#<div class="uk-text-center cursor-pointer  left_bar_more" uk-toggle="target: #left_more_gt">еще категории <i uk-icon="icon:chevron-down"></i></div>#}
+            <div
+                class="uk-margin-top">
+                {#{% for gt in t3_new.getGt|slice(0,4) if gt.carTypeIds%}#}
+                {% for gt in t3_new.getGt if gt.carTypeIds%}
+                    <div class="left_gtypes">
+                        <a class="" href="/rent/{{ city.url }}/all/{{ gt.url }}">
+                            <i class="fa fa-{{ gt.icon }} left_gt_icon"></i>
+                            {{ gt.header }}</a>
+                    </div>
+                {% endfor %}
+                {#<div class="uk-text-center cursor-pointer  left_bar_more" uk-toggle="target: #left_more_gt">еще категории <i uk-icon="icon:chevron-down"></i></div>#}
             {#<div id="left_more_gt" hidden class="uk-margin-top">#}
                 {#{% for gt in t3_new.getGt|slice(4) if gt.carTypeIds %}#}
-                    {#<div class="left_gtypes">#}
-                        {#<a href="/rent/{{ city.url }}/all/{{ gt.url }}" class=""><i class="fa fa-{{ gt.icon }} left_gt_icon"></i> <span class="uk-text-truncate uk-display-inline-block" style="width: 200px">{{ gt.header }}</span></a>#}
-                    {#</div>#}
+                {#<div class="left_gtypes">#}
+                {#<a href="/rent/{{ city.url }}/all/{{ gt.url }}" class=""><i class="fa fa-{{ gt.icon }} left_gt_icon"></i> <span class="uk-text-truncate uk-display-inline-block" style="width: 200px">{{ gt.header }}</span></a>#}
+                {#</div>#}
                 {#{% endfor %}#}
-            {#</div>#}
+                {#</div>#}
+            </div>
+
+
         </div>
-
-
-
     </div>
-</div>
+
+    <div class="uk-offcanvas" id="navbar-slide" style="" uk-offcanvas="">
+        <div class="uk-offcanvas-bar uk-flex uk-flex-column uk-text-center">
+
+            <button class="uk-offcanvas-close uk-close-large uk-close uk-icon" type="button" uk-close="">.</button>
+
+            <div>
+                {{ include('user/auth_left_bar.html.twig') }}
+            </div>
+
+            <ul
+                class="uk-nav uk-nav-default uk-nav-center uk-margin-auto-vertical uk-nav-parent-icon" uk-nav="">
+                {# <li class="uk-active"><a href="#">Active</a></li> #}
+                <li class="uk-parent">
+                    <a href="#">Категории транспорта</a>
+                    <ul aria-hidden="true" class="uk-nav-sub" hidden="">
+                        {% for gt in t3_new.getGt if gt.carTypeIds%}
+                            <li>
+                                <a class="" href="/rent/{{ city.url }}/all/{{ gt.url }}">
+                                    <i class="fa fa-{{ gt.icon }} left_gt_icon"></i>
+                                    {{ gt.header }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li>
+                    <a href="#js-options" uk-toggle="target: #howtopay">Как это работает?</a>
+                </li>
+                <li>
+                    {% if app.session.has('logged_user') %}
+                        <a href="/card/new">Сдать в аренду</a>
+                    {% elseif app.session.has('admin') %}
+                        <a href="/card/new">Сдать в аренду</a>
+                    {% else %}
+                        <a uk-toggle="target: #sign_in">Сдать в аренду</a>
+                    {% endif %}
+                </li>
+                <li>
+                    <a href="/sl_page">Поиск</a>
+                </li>
+                <li>
+                    <a href="/faq">Часто задаваемые вопросы</a>
+                </li>
+            </ul>
+
+            <div>
+                <div class="uk-grid-small uk-child-width-auto uk-flex-inline uk-grid" uk-grid="">
+                    <div class="uk-first-column">
+                        <a class="uk-icon-button uk-icon" href="https://www.facebook.com/multiprokatcom/" uk-icon="icon: facebook"></a>
+                    </div>
+                    <div>
+                        <a class="uk-icon-button uk-icon" href="https://twitter.com/multiprokat" uk-icon="icon: twitter"></a>
+                    </div>
+                    <div>
+                        <a class="uk-icon-button uk-icon" href="https://plus.google.com/u/1/102220936243060868002" uk-icon="icon: google-plus"></a>
+                    </div>
+                    <div>
+                        <a class="uk-icon-button uk-icon" href="https://www.instagram.com/multiprokat/" uk-icon="icon: instagram"></a>
+                    </div>
+                    <div>
+                        <a class="uk-icon-button uk-icon" href="https://vk.com/multiprokatcom">
+                            <span class="fa fa-vk" style="font: normal normal normal 20px/1 FontAwesome;"></span>
+                        </a>
+                    </div>
+                    <div>
+                        <a class="uk-icon-button uk-icon" href="https://www.youtube.com/channel/UCj-igu9KFIbzdzVCezy1qFg" uk-icon="icon: youtube"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endif %}
-
-
-

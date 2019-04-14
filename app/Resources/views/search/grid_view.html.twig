@@ -1,7 +1,28 @@
-<div uk-grid class="uk-grid-small uk-grid-match">
+{# <div uk-grid class="uk-grid-small uk-grid-match">
     {% for card in cards %}
         <div class="uk-width-1-4@s">
             {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}
         </div>
     {% endfor %}
+</div> #}
+
+<div uk-slider="center: true">
+
+    <div class="uk-position-relative uk-visible-toggle " tabindex="-1">
+
+        <ul class="uk-slider-items uk-child-width-1-3@s uk-grid">
+            {% for card in cards %}
+                <li>
+                    {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}
+                </li>
+            {% endfor %}
+        </ul>
+
+        <a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#" uk-slidenav-previous uk-slider-item="previous"></a>
+        <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slider-item="next"></a>
+
+    </div>
+
+    <ul class="uk-slider-nav uk-dotnav uk-flex-center uk-margin"></ul>
+
 </div>

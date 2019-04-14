@@ -1,5 +1,5 @@
-<div id="f_search" class="uk-padding" style="background: #f1f1f1c4;">
-    <form >
+<div class="uk-padding" id="f_search" style="background: #f1f1f1c4;">
+    <form name="ms_search_form" method="POST">
         <fieldset class="uk-fieldset">
 
             <legend class="uk-legend">Арендовать...</legend>
@@ -7,7 +7,7 @@
             <div class="uk-grid uk-grid-small ">
                 <div class="uk-width-1-3@m">
                     <span class="uk-text-small">Что?</span>
-                    <select class="uk-select" name="car_type_in" required>
+                    <select class="uk-select" name="ms_car_type_in" required form="ms_search_form">
                         {% for gt in t3_new.getGt if gt.carTypeIds%}
                             <option value="{{ gt.url }}">{{ gt.header }}</option>
                         {% endfor %}
@@ -15,31 +15,26 @@
                 </div>
                 <div class="uk-width-1-3@m">
                     <span class="uk-text-small">Когда?</span>
-                    <input type="date" name="date_in" class="uk-input uk-width-1-1 datepicker-reserve" autocomplete="off" >
+                    <input autocomplete="off" class="uk-input uk-width-1-1 datepicker-reserve" name="ms_date_in" type="date" form="ms_search_form">
                 </div>
                 <div class="uk-width-1-3@m">
                     <span class="uk-text-small">Где?</span>
-                    <input type="text" name="input_city" class="uk-input uk-width-1-1 datepicker-reserve" autocomplete="off" placeholder="Введите название города" required>
+                    <input autocomplete="on" class="uk-input uk-width-1-1 datepicker-reserve" name="ms_input_city" placeholder="Введите название города" required type="text" form="ms_search_form">
+                    <input autocomplete="off" hidden name="ms_input_city_id" type="text" form="ms_search_form">
                 </div>
                 <div class="uk-width-1-1 uk-text-center uk-margin-top">
-                    <button class="uk-button uk-button-success zero_buttonuk-width-1-2@m uk-width-1-3@l" uk-toggle="target: #f_search_res" style="border-radius: 30px; ">Найти</button>
+                    <button class="uk-button uk-button-success zero_button uk-width-1-2@m uk-width-1-3@l" style="border-radius: 30px; " form="ms_search_form">Найти</button>
+                    {# <button class="uk-button uk-button-success zero_buttonuk-width-1-2@m uk-width-1-3@l" style="border-radius: 30px; " uk-toggle="target: #f_search_res" form="ms_search_form">Найти</button> #}
                 </div>
             </div>
         </fieldset>
     </form>
-    <div id="f_search_res" class="standard_wide uk-position-relative" hidden>
-{#        <div class="uk-text-center tx_24 uk-margin-bottom top_txt">Результат поиска</div>
-        <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-items="6" data-dots="0">
+    <div class="standard_wide uk-position-relative" hidden id="f_search_res">
+        <div class="uk-text-center tx_24 uk-margin-bottom top_txt">Результат поиска</div>
+        <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="6">
             {% for card in topSlider %}
                 {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px', 'micro':true}) }}
             {% endfor %}
         </div>
-        <div class="uk-text-center">
-            {% if app.session.has('logged_user') %}
-                <a href="/card/new" class="" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip>{% trans %}Разместить объявление в ТОП{% endtrans %}</a>
-            {% else %}
-                <a class="after_top" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip uk-toggle="target: #sign_in_or_up">{% trans %}Разместить объявление в ТОП{% endtrans %}</a>
-            {% endif %}
-        </div> #}
     </div>
 </div>
