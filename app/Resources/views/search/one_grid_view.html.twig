@@ -153,9 +153,16 @@
         'USD': '<i class="fa fa-dollar"></i>'
     } %}
 {# {{ dump(card.generalType) }} #}
-    <div class="uk-card-media-top uk-text-center" style="height: 250px;">
+    <div class="uk-card-media-top uk-text-center" style="background:url('{{ img_src }}') center center;
+            background-size: cover; display: block; height: {{ height }};">
         {# <img src="{{ img_src }}" alt="" onError="this.src='{{ img_src_error }}';" uk-slideshow="ratio: 7:3; min-height: 100px; max-height: 170px"/> #}
-        <img data-src="{{ img_src }}" onError="this.src='{{ img_src_error }}';" data-width="250" data-height="250" alt="" uk-img class="uk-responsive-height"/>
+        <a href="/card/{{ card.id }}" class="slide uk-width-1-1" style="" >
+        {# <img src="{{ img_src }}" alt="" style="visibility: hidden; height: 0;width: 0;" itemprop="image"> #}
+        {# <img src="{{ img_src }}" alt="" onError="this.src='{{ img_src_error }}';"/> #}
+        </a>
+        {# <a target="_blanc" href="/card/{{ card.id }}"><img data-src="{{ img_src }}" onError="this.src='{{ img_src_error }}';" data-width="250" data-height="250" alt="" uk-img class="uk-responsive-height"/> #}
+        </a>
+
     </div>
 
     {% set c_price = '' %}
