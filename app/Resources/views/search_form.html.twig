@@ -1,5 +1,5 @@
 <div class="uk-padding" id="f_search" style="background: #f1f1f1c4;">
-    <form name="ms_search_form" method="POST">
+    <form id="ms_search_form" method="POST" action="#">
         <fieldset class="uk-fieldset">
 
             <legend class="uk-legend">Арендовать...</legend>
@@ -23,8 +23,7 @@
                     <input autocomplete="off" hidden name="ms_input_city_id" type="text" form="ms_search_form">
                 </div>
                 <div class="uk-width-1-1 uk-text-center uk-margin-top">
-                    <button class="uk-button uk-button-success zero_button uk-width-1-2@m uk-width-1-3@l" style="border-radius: 30px; " form="ms_search_form">Найти</button>
-                    {# <button class="uk-button uk-button-success zero_buttonuk-width-1-2@m uk-width-1-3@l" style="border-radius: 30px; " uk-toggle="target: #f_search_res" form="ms_search_form">Найти</button> #}
+                    <button id="ms_search_button_main" class="uk-button uk-button-success uk-width-1-2@m uk-width-1-3@l" style="border-radius: 30px; " form="ms_search_form">Найти</button>
                 </div>
             </div>
         </fieldset>

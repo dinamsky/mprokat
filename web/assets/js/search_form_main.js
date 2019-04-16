@@ -23,9 +23,31 @@ $( document ).ready(function() {
             return '<div class="autocomplete-suggestion "  data-header="' + item + '" data-id="' + id + '" data-val = "' + id + '" >' + item.replace(re, "<b>$1</b>") + '</div>';
         },
         onSelect: function(e, term, item){
-            $('input[name="ms_input_city_id"]').val(item.getAttribute('data-header'));
+            $('input[name="ms_input_city_id"]').val(item.getAttribute('data-id'));
             $('input[name="ms_input_city"]').val(item.getAttribute('data-header'));
         }
+    });
+
+    $('#ms_search_form').submit(function (e) {
+        e.preventDefault();
+        var cityId = $('input[name="ms_input_city_id"]').val();
+        
+        $.ajax({
+            url: '/ajax/getCityOne',
+            type: 'POST',
+            dataType: 'json',
+            data: {city_id: cityId},
+            success: function (json) {
+                var city = json.city_url;
+                console.log(city);
+                var gt = $('select[name="ms_car_type_in"]').val();
+                console.log(gt);
+                document.location.href = '/rent/'+city+'/all/'+gt;
+            }
+        });
+
+        
+        return false;
     });
 
     

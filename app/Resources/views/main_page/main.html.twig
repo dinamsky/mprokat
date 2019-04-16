@@ -18,6 +18,7 @@
     <script src="{{ asset('assets/html5_banner/init.js') }}"></script>
     <script src="{{ asset('assets/js/mark_autocomplete.js') }}"></script>
     <script src="{{ asset('assets/js/search_form_main.js') }}"></script>
+    {# <script src="{{ asset('assets/js/uikit.min.js') }}"></script> #}
 
 
 {% endblock %}
@@ -100,7 +101,7 @@
         
             <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="6">
                 {% for card in top10Slider %}
-                    {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px', 'micro':true}) }}
+                    {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px', 'micro':true}) }}
                 {% endfor %}
             </div>
             <div class="uk-text-center">
