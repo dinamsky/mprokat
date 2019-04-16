@@ -69,6 +69,22 @@ class ServiceT3new extends Controller
         $query = $this->em->createQuery($dql);
         return $query->getResult();
     }
+    
+    public function getNew10()
+    {
+        $cityId = $this->sess->get('city')->getId();
+        $query = $this->em->createQuery('SELECT c.id FROM AppBundle:Card c WHERE c.cityId = ?1 AND c.isActive = 1 ORDER BY c.dateCreate DESC');
+        $query->setParameter(1, $cityId);
+        $query->setMaxResults(10);
+        if(count($query->getResult())<10) {
+            $query = $this->em->createQuery('SELECT c.id FROM AppBundle:Card c WHERE c.cityId < 1260 AND c.isActive = 1 ORDER BY c.dateCreate DESC');
+            $query->setMaxResults(10);
+        }
+        foreach ($query->getResult() as $cars_id) $cars_ids[] = $cars_id['id'];
+        $dql = 'SELECT c,f,p,g,m FROM AppBundle:Card c LEFT JOIN c.fotos f LEFT JOIN c.cardPrices p LEFT JOIN c.city g LEFT JOIN c.markModel m WHERE c.id IN ('.implode(",",$cars_ids).') AND c.isActive = 1';
+        $query = $this->em->createQuery($dql);
+        return $query->getResult();
+    }
 
     public function popularCities()
     {

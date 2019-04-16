@@ -55,29 +55,28 @@
                         <b>{{ total.cities }}</b>
                         городах</div>
                 {% endif %}
-                </div>
             </div>
-            {% if app.session.has('logged_user') %}
+        </div>
+        {% if app.session.has('logged_user') %}
 
             <div class="uk-width-1-2 " style="margin: 0px 0px 30px 0px;">
                 <a class=" uk-button uk-button-danger" href="/sl_page" style="border-radius: 30px;"></i>Арендовать</a>
-            </div>
-            <div class="uk-width-1-2 uk-padding-remove-left" style="margin: 0px 0px 30px 0px;">
-                <a class=" uk-button uk-button-default bg_white " href="/card/new" style="border-radius: 30px;">Сдать в аренду</a>
-            </div>
-
-        {% else %}
-            <div class="uk-width-1-2 uk-padding-remove-left uk-margin-bottom uk-margin-remove-top" style="margin: 0px 0px 30px 0px;">
-                <a class=" uk-button uk-button-danger" href="/sl_page" style="border-radius: 30px;"></i>Арендовать</a>
-                {# <button class=" uk-button uk-button-danger" style="border-radius: 30px; " uk-toggle="target: #sign_up">{% trans %}Арендовать{% endtrans %}</button> #}
-            </div>
-            <div class="uk-width-1-2 uk-padding-remove-left uk-margin-bottom uk-margin-remove-top" style="margin: 0px 0px 30px 0px;">
-                <a class=" uk-button uk-button-default bg_white " href="/card/new" style="border-radius: 30px;">Сдать в аренду</a>
-                {# <button class=" uk-button uk-button-default bg_white " style="border-radius: 30px; " uk-toggle="target: #sign_up">Сдать в аренду</button> #}
-            </div>
-
-        {% endif %}
         </div>
+        <div class="uk-width-1-2 uk-padding-remove-left" style="margin: 0px 0px 30px 0px;">
+            <a class=" uk-button uk-button-default bg_white " href="/card/new" style="border-radius: 30px;">Сдать в аренду</a>
+        </div>
+
+    {% else %}
+        <div class="uk-width-1-2 uk-padding-remove-left uk-margin-bottom uk-margin-remove-top" style="margin: 0px 0px 30px 0px;">
+            <a class=" uk-button uk-button-danger" href="/sl_page" style="border-radius: 30px;"></i>Арендовать</a>
+        {# <button class=" uk-button uk-button-danger" style="border-radius: 30px; " uk-toggle="target: #sign_up">{% trans %}Арендовать{% endtrans %}</button> #}
+    </div>
+    <div class="uk-width-1-2 uk-padding-remove-left uk-margin-bottom uk-margin-remove-top" style="margin: 0px 0px 30px 0px;">
+        <a class=" uk-button uk-button-default bg_white " href="/card/new" style="border-radius: 30px;">Сдать в аренду</a>
+        {# <button class=" uk-button uk-button-default bg_white " style="border-radius: 30px; " uk-toggle="target: #sign_up">Сдать в аренду</button> #}
+    </div>
+
+{% endif %}</div>
 {# end верхний блок быстрого выбора и заставки #}
 
 {# begin блок поиска #}
@@ -85,34 +84,33 @@
 {# end блок поиска #}
 
 {# begin блок выбора города #}
-<div class="uk-text-center" uk-grid> 
-    <div class="uk-grid-collapse uk-child-width-expand@s uk-text-center uk-width-1-1" uk-grid>
-        <div class="uk-tile  ">
-            <div class="uk-h2 ">Популярные в</div>
-            {{ include('selector/global_city_selector.html.twig',{'main_city':true}) }}
-        </div>
+<div class="uk-text-center" > 
+    <div class="uk-tile  uk-text-center">
+        <div class="uk-h2 ">Популярные в</div>
+        {{ include('selector/global_city_selector.html.twig',{'main_city':true}) }}
     </div>
 </div>
 {# end блок выбора города #}
+
 {# {{dump(t3_new.getGt)}} #}
+
 {# begin блок слайдера ТОП оплаченных #}
 
-    <div class="top_slider_block"> <div class="standard_wide uk-position-relative">
-        
-            <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="6">
-                {% for card in top10Slider %}
-                    {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px', 'micro':true}) }}
-                {% endfor %}
-            </div>
-            <div class="uk-text-center">
-                {% if app.session.has('logged_user') %}
-                    <a class="" href="/card/new" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip>{% trans %}Разместить объявление в ТОП{% endtrans %}</a>
-                {% else %}
-                    <a class="after_top" title="Хотите сюда?<br>Разместите объявление!" uk-toggle="target: #sign_in_or_up" uk-tooltip>{% trans %}Разместить объявление в ТОП{% endtrans %}</a>
-                {% endif %}
-            </div>
-        </div>
+<div class="uk-width-1-1" style="padding: 10px 0 15px 0; background: #eaeaea;"> 
+    <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="5">
+        {% for card in top10Slider %}
+            {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px', 'micro':true}) }}
+        {% endfor %}
     </div>
+    <div class="uk-text-center">
+        {% if app.session.has('logged_user') %}
+            <a class="" href="/card/new" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip>{% trans %}Разместить объявление в ТОП{% endtrans %}</a>
+        {% else %}
+            <a class="after_top" title="Хотите сюда?<br>Разместите объявление!" uk-toggle="target: #sign_in_or_up" uk-tooltip>{% trans %}Разместить объявление в ТОП{% endtrans %}</a>
+        {% endif %}
+    </div>
+
+</div>
 
 {# <div class="top_slider_block">
     <div>
@@ -148,12 +146,6 @@
 {# begin блок слайдера ТОП ?? #}
 
 {# end блок слайдера ТОП ?? #}
-
-{# begin блок слайдера ТОП новых бесплатных #}
-
-{# end блок слайдера ТОП новых бесплатных #}
-
-
 
 <div class="uk-visible@s" id="animation_container" style="background-color:rgba(255, 255, 255, 1.00); width:100%; height:90px">
     <canvas height="90" id="canvas" style="position: absolute; display: block; background-color:rgba(255, 255, 255, 1.00);" width="100%"></canvas>
@@ -231,6 +223,30 @@
     </div>
     {#g#}
 </div>
+{# begin блок слайдера ТОП новых бесплатных #}
+<div class="uk-width-1-1"> 
+    <div class="uk-text-center ">
+        <div class="uk-h2 uk-text-truncate">{% trans %}Новые на сайте{% endtrans %}</div>
+    </div>
+    {#<a class="cat_main_header padding20 c_grey bordered b_shadowed uk-display-block uk-text-center uk-margin-bottom" href="/rent/{{ in_city }}/all/wedding">{% trans %}Свадебные авто{% endtrans %}</a>#}
+    {#<div>#}
+    {#{{ include('search/one_grid_view.html.twig', {'card':moto, 'height':'150px'}) }}#}
+    {#</div>#}
+    <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="5"> {% for card in t3_new.getNew10 %}
+            {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px'}) }}
+        {% endfor %}
+    </div>
+</div>
+{# <div class="uk-width-1-5@l uk-visible@l">
+    <div class="uk-margin-bottom uk-text-uppercase"><b>{% trans %}Новые на сайте{% endtrans %}</b></div>
+    {% for card in t3_new.getNew %}
+        {{ include(':footer:top_new_tpl.html.twig', {'card':card}) }}
+    {% endfor %}
+</div> #}
+{# end блок слайдера ТОП новых бесплатных #}
+
+
+
 
 {{ include('waytosuccess.html.twig') }}
 
@@ -247,13 +263,12 @@
     {#</div>#}
         <div class="uk-grid-small uk-margin-large-bottom" uk-grid> <div class="uk-width-1-4@s">
             <div class="uk-text-center ">
-                <div class="uk-h2 uk-text-truncate">Квадроциклы</div>
+                <div class="uk-h2 uk-text-truncate"><a href="/rent/{{ in_city }}/all/quadro"  class="uk-h2 uk-text-truncate">Квадроциклы</a></div>
             </div>
             {#<div>#}
             {#{{ include('search/one_grid_view.html.twig', {'card':cars, 'height':'150px'}) }}#}
             {#</div>#}
-                <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="1"> 
-                {% for card in quadro %}
+                <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="1"> {% for card in quadro %}
                     {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px'}) }}
                 {% endfor %}
                 {{ include('search/all_more.html.twig', {'title':'Все квадроциклы', 'url':'/rent/'~in_city~'/all/quadro'}) }}
@@ -261,14 +276,13 @@
         </div>
         <div class="uk-width-1-4@s">
             <div class="uk-text-center ">
-                <div class="uk-h2 uk-text-truncate">{% trans %}Свадебные авто{% endtrans %}</div>
+                <div class="uk-h2 uk-text-truncate"><a href="/rent/{{ in_city }}/all/wedding"  class="uk-h2 uk-text-truncate">{% trans %}Свадебные авто{% endtrans %}</a></div>
             </div>
             {#<a class="cat_main_header padding20 c_grey bordered b_shadowed uk-display-block uk-text-center uk-margin-bottom" href="/rent/{{ in_city }}/all/wedding">{% trans %}Свадебные авто{% endtrans %}</a>#}
             {#<div>#}
             {#{{ include('search/one_grid_view.html.twig', {'card':moto, 'height':'150px'}) }}#}
             {#</div>#}
-                <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="1"> 
-                {% for card in wedding %}
+                <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="1"> {% for card in wedding %}
                     {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px'}) }}
                 {% endfor %}
                 {{ include('search/all_more.html.twig', {'title':'Все свадебные авто', 'url':'/rent/'~in_city~'/all/wedding'}) }}
@@ -276,14 +290,13 @@
         </div>
         <div class="uk-width-1-4@s">
             <div class="uk-text-center ">
-                <div class="uk-h2 uk-text-truncate">Мотоциклы</div>
+                <div class="uk-h2 uk-text-truncate"><a href="/rent/{{ in_city }}/all/bikes"  class="uk-h2 uk-text-truncate">Мотоциклы</a></div>
             </div>
             {# <a class="cat_main_header padding20 c_grey bordered b_shadowed uk-display-block uk-text-center uk-margin-bottom" href="/rent/{{ in_city }}/all/bikes">Мотоциклы</a> #}
             {#<div>#}
             {#{{ include('search/one_grid_view.html.twig', {'card':trucks, 'height':'150px'}) }}#}
             {#</div>#}
-                <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="1"> 
-                {% for card in bikes %}
+                <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="1"> {% for card in bikes %}
                     {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px'}) }}
                 {% endfor %}
                 {{ include('search/all_more.html.twig', {'title':'Все мотоциклы', 'url':'/rent/'~in_city~'/all/bikes'}) }}
@@ -291,14 +304,13 @@
         </div>
         <div class="uk-width-1-4@s">
             <div class="uk-text-center ">
-                <div class="uk-h2 uk-text-truncate">Грузовые авто</div>
+                <div class="uk-h2 uk-text-truncate"><a href="/rent/{{ in_city }}/all/trucks"  class="uk-h2 uk-text-truncate">Грузовые авто</a></div>
             </div>
             {# <a class="cat_main_header padding20 c_grey bordered b_shadowed uk-display-block uk-text-center uk-margin-bottom" href="/rent/{{ in_city }}/all/bikes">Грузовые авто</a> #}
             {#<div>#}
             {#{{ include('search/one_grid_view.html.twig', {'card':bicycles, 'height':'150px'}) }}#}
             {#</div>#}
-                <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="1"> 
-                {% for card in trucks %}
+                <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="1"> {% for card in trucks %}
                     {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px'}) }}
                 {% endfor %}
                 {{ include('search/all_more.html.twig', {'title':'Все грузовые авто', 'url':'/rent/'~in_city~'/all/trucks'}) }}
@@ -307,7 +319,7 @@
     </div>
 
 </div>
-
+{# 
 {% if not is_mobile() %}
     <div class="top_counter bg_white c_grey uk-margin-large-bottom">
         <div class="standard_wide">
@@ -343,9 +355,9 @@
             </div>
         </div>
     </div>
-{% endif %}
+{% endif %} #}
 
-{% if is_mobile() %}
+
     <div class="top_counter bg_white c_grey uk-margin-large-bottom">
         <div class="standard_wide">
             <div uk-grid class="{% if is_mobile() %}{% else %}uk-grid-divider{% endif %}">
@@ -380,7 +392,7 @@
             </div>
         </div>
     </div>
-{% endif %}
+
 
 {% set seo_text = '' %}
 {% if custom_seo and custom_seo.seoText != ''%}
