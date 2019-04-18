@@ -92,7 +92,7 @@
 {# begin блок слайдера ТОП оплаченных #}
 
 <div class="uk-width-1-1" style="padding: 10px 0 15px 0; background: #eaeaea;"> 
-    <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="5">
+    <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="3">
         {% for card in top10Slider %}
             {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px', 'micro':true}) }}
         {% endfor %}
@@ -149,7 +149,7 @@
 
 
 {# begin блок слайдера ТОП новых бесплатных #}
-<div class="uk-width-1-1"> 
+<div class="uk-width-1-1 uk-margin-medium-top"> 
     <div class="uk-text-center ">
         <div class="uk-h2 uk-text-truncate">{% trans %}Новые на сайте{% endtrans %}</div>
     </div>
@@ -157,7 +157,7 @@
     {#<div>#}
     {#{{ include('search/one_grid_view.html.twig', {'card':moto, 'height':'150px'}) }}#}
     {#</div>#}
-    <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="5"> {% for card in t3_new.getNew10 %}
+    <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="3"> {% for card in t3_new.getNew10 %}
             {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px'}) }}
         {% endfor %}
     </div>
@@ -186,7 +186,8 @@
     {#{% endfor %}#}
     {#</div>#}
     {#</div>#}
-        <div class="uk-grid-small uk-margin-large-bottom" uk-grid> <div class="uk-width-1-4@s">
+    <div class="uk-grid-small uk-margin-large-bottom " uk-grid> 
+        <div class="uk-width-1-4@s uk-margin-medium-top">
             <div class="uk-text-center ">
                 <div class="uk-h2 uk-text-truncate"><a href="/rent/{{ in_city }}/all/quadro"  class="uk-h2 uk-text-truncate">Квадроциклы</a></div>
             </div>
@@ -199,7 +200,7 @@
                 {{ include('search/all_more.html.twig', {'title':'Все квадроциклы', 'url':'/rent/'~in_city~'/all/quadro'}) }}
             </div>
         </div>
-        <div class="uk-width-1-4@s">
+        <div class="uk-width-1-4@s uk-margin-medium-top">
             <div class="uk-text-center ">
                 <div class="uk-h2 uk-text-truncate"><a href="/rent/{{ in_city }}/all/wedding"  class="uk-h2 uk-text-truncate">{% trans %}Свадебные авто{% endtrans %}</a></div>
             </div>
@@ -213,7 +214,7 @@
                 {{ include('search/all_more.html.twig', {'title':'Все свадебные авто', 'url':'/rent/'~in_city~'/all/wedding'}) }}
             </div>
         </div>
-        <div class="uk-width-1-4@s">
+        <div class="uk-width-1-4@s uk-margin-medium-top">
             <div class="uk-text-center ">
                 <div class="uk-h2 uk-text-truncate"><a href="/rent/{{ in_city }}/all/bikes"  class="uk-h2 uk-text-truncate">Мотоциклы</a></div>
             </div>
@@ -227,7 +228,7 @@
                 {{ include('search/all_more.html.twig', {'title':'Все мотоциклы', 'url':'/rent/'~in_city~'/all/bikes'}) }}
             </div>
         </div>
-        <div class="uk-width-1-4@s">
+        <div class="uk-width-1-4@s uk-margin-medium-top">
             <div class="uk-text-center ">
                 <div class="uk-h2 uk-text-truncate"><a href="/rent/{{ in_city }}/all/trucks"  class="uk-h2 uk-text-truncate">Грузовые авто</a></div>
             </div>
