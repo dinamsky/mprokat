@@ -84,12 +84,7 @@
 {# end блок поиска #}
 
 {# begin блок выбора города #}
-<div class="uk-text-center" > 
-    <div class="uk-tile  uk-text-center">
-        <div class="uk-h2 ">Популярные в</div>
-        {{ include('selector/global_city_selector.html.twig',{'main_city':true}) }}
-    </div>
-</div>
+{{ include('selector/main_city_selector.html.twig',{'main_city':true}) }}
 {# end блок выбора города #}
 
 {# {{dump(t3_new.getGt)}} #}
