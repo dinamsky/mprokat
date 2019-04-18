@@ -261,9 +261,9 @@
             <i class="fa fa-map-marker"></i>
             {{ card.city.header }}
         </div> #}
-        <div class="uk-width-auto uk-text-small c_grey {{ micro is defined ? 'micro' : '' }}">
+        {# <div class="uk-width-auto uk-text-small c_grey {{ micro is defined ? 'micro' : '' }}">
             <i class="fa fa-eye"></i>
-            {{ card.views }}</div>
+            {{ card.views }}</div> #}
 
         {% if card.dateRentFinish > date() %}
             <div class="reserved">бронь до
