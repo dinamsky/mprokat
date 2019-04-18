@@ -1,0 +1,38 @@
+<input type="hidden" id="cityURL" name="cityURL" value="{{ city.url }}">
+<input type="hidden" id="cityId" name="cityId" value="{{ city.id }}">
+<div class="uk-text-center" > 
+    <div class="uk-tile  uk-text-center">
+        <div class="uk-h4 ">Популярные в <a uk-toggle="target: #city_popular_main" class="uk-h4 " style="color: #1e87f0;">{{  app.session.has('city')  ? app.session.get('city').gde : city.gde }}</a></div>
+    </div>
+</div>
+
+<div id="city_popular_main" class="uk-modal-container uk-modal" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+
+        {% if is_mobile() %}
+        <div class="c_grey"><i uk-icon="location"></i> {{ city.header }}</div>
+        {% endif %}
+
+        <h2 class="uk-modal-title uk-margin-remove-top">{% trans %}Выберите{% endtrans %}</h2>
+        <div>
+            {% trans %}или начните вводить наименование города{% endtrans %}: <input name="input_city" class="uk-input uk-width-1-5@s">
+        </div>
+        <hr>
+        <div class="uk-column-1-1 uk-column-1-5@s">
+            {#<div class="city_block uk-margin-bottom" data-id="0" data-url="rus" data-header="Россия">Россия</div>#}
+            {% for city in t3_new.popularCities if city.total >= 10 %}
+                <div class="city_block" data-id="{{ city.id }}" data-url="{{ city.url }}" data-header="{{ city.header }}">{{ city.header }}</div>
+            {% endfor %}
+        </div>
+        <hr>
+        <button uk-toggle="target: #more_cities" type="button" class="more_cities_button">{% trans %}показать все города{% endtrans %}</button>
+        <div id="more_cities" hidden>
+            <div class="uk-column-1-1 uk-column-1-5@s">
+                {% for city in t3_new.popularCities if city.total < 10 %}
+                    <div class="city_block" data-id="{{ city.id }}" data-url="{{ city.url }}" data-header="{{ city.header }}">{{ city.header }}</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
