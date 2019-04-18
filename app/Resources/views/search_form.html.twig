@@ -2,11 +2,11 @@
     <form id="ms_search_form" method="POST" action="#">
         <fieldset class="uk-fieldset">
 
-            <legend class="uk-legend">Арендовать...</legend>
+            
 
             <div class="uk-grid uk-grid-small ">
                 <div class="uk-width-1-3@m">
-                    <span class="uk-text-small">Что?</span>
+                    <span class="uk-text-small">Что нужно арендовать?</span>
                     <select class="uk-select" name="ms_car_type_in" required form="ms_search_form">
                         {% for gt in t3_new.getGt if gt.carTypeIds%}
                             <option value="{{ gt.url }}">{{ gt.header }}</option>
