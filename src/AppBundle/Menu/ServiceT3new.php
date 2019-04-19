@@ -81,7 +81,7 @@ class ServiceT3new extends Controller
             $query->setMaxResults(10);
         }
         foreach ($query->getResult() as $cars_id) $cars_ids[] = $cars_id['id'];
-        $dql = 'SELECT c,f,p,g,m FROM AppBundle:Card c LEFT JOIN c.fotos f LEFT JOIN c.cardPrices p LEFT JOIN c.city g LEFT JOIN c.markModel m WHERE c.id IN ('.implode(",",$cars_ids).') AND c.isActive = 1';
+        $dql = 'SELECT c,f,p,g,m FROM AppBundle:Card c LEFT JOIN c.fotos f LEFT JOIN c.cardPrices p LEFT JOIN c.city g LEFT JOIN c.markModel m WHERE c.id IN ('.implode(",",$cars_ids).') AND c.isActive = 1 ORDER BY c.dateCreate DESC';
         $query = $this->em->createQuery($dql);
         return $query->getResult();
     }

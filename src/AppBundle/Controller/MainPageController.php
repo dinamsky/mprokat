@@ -39,6 +39,15 @@ class MainPageController extends Controller
             ->getRepository(Card::class)
             ->getTop10Slider($this->get('session')->get('city')->getId());
 
+        $top13_10Slider = $this->getDoctrine()
+            ->getRepository(Card::class)
+            ->getTop13_10($this->get('session')->get('city')->getId());
+
+        $getOwnerTop10Slider = $this->getDoctrine()
+            ->getRepository(Card::class)
+            ->getOwnerTop10Slider($this->get('session')->get('city')->getId());
+    
+
         $all = $this->getDoctrine()
             ->getRepository(Card::class)
             ->getLimitedSliders([2,3,6,8,9], $this->get('session')->get('city')->getId());
@@ -121,6 +130,9 @@ class MainPageController extends Controller
 
             'topSlider' => $topSlider,
             'top10Slider' => $top10Slider,
+            'top13_10Slider' => $top13_10Slider,
+            'top10OwnerSlider' => $getOwnerTop10Slider,
+            
 
             'cars' => $cars,
             // 'heli' => $heli,

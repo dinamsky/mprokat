@@ -107,39 +107,33 @@
 
 </div>
 
-{# <div class="top_slider_block">
-    <div>
-        <div class="uk-position-relative uk-visible-toggle" finite="1" tabindex="-1" uk-slider="center: true">
-            <ul class="mp-slider-show-all uk-slider-items uk-grid uk-child-width-3-4 uk-child-width-1-5@s uk-child-width-1-6@m uk-child-width-expand@l" data-dots="0" data-items="10">
-                {% for card in topSlider %}
-                    <li class="">
-                        {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px', 'micro':true}) }}
-                    </li>
-                {% endfor %}
-            </ul>
-
-            <a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#" uk-slidenav-previous uk-slider-item="previous"></a>
-            <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slider-item="next"></a>
-
-        </div>
-        
-        <div class="uk-text-center">
-            {% if app.session.has('logged_user') %}
-                <a class="" href="/card/new" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip>{% trans %}Разместить объявление в ТОП{% endtrans %}</a>
-            {% else %}
-                <a class="after_top" title="Хотите сюда?<br>Разместите объявление!" uk-toggle="target: #sign_in_or_up" uk-tooltip>{% trans %}Разместить объявление в ТОП{% endtrans %}</a>
-            {% endif %}
-        </div>
-    </div>
-</div> #}
 {# end блок слайдера ТОП оплаченных #}
 
 {# begin блок слайдера ТОП активных арендаторов #}
-
+ {# {{ dump(top10OwnerSlider) }}  #}
+<div class="uk-width-1-1  uk-margin-medium-top"> 
+    <div class="uk-text-center ">
+        <div class="uk-h4 uk-text-truncate"></div>
+    </div>
+    <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="3">
+        {% for card in top10OwnerSlider %}
+            {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px'}) }}
+        {% endfor %}
+    </div>
+</div> 
 {# end блок слайдера ТОП активных арендаторов #}
 
 {# begin блок слайдера ТОП ?? #}
-
+<div class="uk-width-1-1  uk-margin-medium-top"> 
+    <div class="uk-text-center ">
+        <div class="uk-h4 uk-text-truncate"></div>
+    </div>
+    <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="3">
+        {% for card in top13_10Slider %}
+            {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px'}) }}
+        {% endfor %}
+    </div>
+</div>
 {# end блок слайдера ТОП ?? #}
 
 {# <div class="uk-visible@s" id="animation_container" style="background-color:rgba(255, 255, 255, 1.00); width:100%; height:90px">
@@ -153,10 +147,6 @@
     <div class="uk-text-center ">
         <div class="uk-h4 uk-text-truncate">{% trans %}Новые на сайте{% endtrans %}</div>
     </div>
-    {#<a class="cat_main_header padding20 c_grey bordered b_shadowed uk-display-block uk-text-center uk-margin-bottom" href="/rent/{{ in_city }}/all/wedding">{% trans %}Свадебные авто{% endtrans %}</a>#}
-    {#<div>#}
-    {#{{ include('search/one_grid_view.html.twig', {'card':moto, 'height':'150px'}) }}#}
-    {#</div>#}
     <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="3"> {% for card in t3_new.getNew10 %}
             {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px'}) }}
         {% endfor %}
