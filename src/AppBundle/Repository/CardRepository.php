@@ -134,7 +134,7 @@ class CardRepository extends \Doctrine\ORM\EntityRepository
             $ccars_ids = [];
             $carInQ = '';
             foreach ($cars as $cars_id) $ccars_ids[] = $cars_id['cardId'];
-            if (count($ccars_ids > 0)) {
+            if (count($ccars_ids) > 0) {
                 $carInQ = 'AND o.cardId NOT IN ('.implode(",",$ccars_ids).') ';
             } 
             $q = $em->createQuery('SELECT DISTINCT o.cardId FROM UserBundle:FormOrder o JOIN AppBundle:Card c WHERE c.isActive = 1 AND o.ownerStatus NOT IN (\'rejected\', \'wait_for_acczept\') AND o.isActiveOwner = 1 '.$carInQ.' ORDER BY o.dateCreate DESC');
