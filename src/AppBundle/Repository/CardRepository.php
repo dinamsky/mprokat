@@ -143,8 +143,13 @@ class CardRepository extends \Doctrine\ORM\EntityRepository
                 $cars[] = $car;
             }
         }
+        $cars_ids = [];
         foreach ($cars as $cars_id) $cars_ids[] = $cars_id['cardId'];
-
+        if (count($cars_ids) > 0) {
+            $carInQ = 'AND o.cardId NOT IN ('.implode(",",$ccars_ids).') ';
+        } else {
+            return array();
+        }
         $dql = 'SELECT c,f,p,g,m FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.fotos f LEFT JOIN c.cardPrices p LEFT JOIN c.city g LEFT JOIN c.markModel m WHERE c.id IN ('.implode(",",$cars_ids).') ORDER BY c.dateUpdate DESC';
         $query = $em->createQuery($dql);
         return $query->getResult();
