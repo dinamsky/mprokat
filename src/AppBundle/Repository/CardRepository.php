@@ -146,7 +146,7 @@ class CardRepository extends \Doctrine\ORM\EntityRepository
         $cars_ids = [];
         foreach ($cars as $cars_id) $cars_ids[] = $cars_id['cardId'];
         if (count($cars_ids) > 0) {
-            $carInQ = 'AND o.cardId NOT IN ('.implode(",",$ccars_ids).') ';
+            $carInQ = 'AND o.cardId NOT IN ('.implode(",",$cars_ids).') ';
         } else {
             return array();
         }
