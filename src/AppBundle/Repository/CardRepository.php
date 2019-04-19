@@ -108,8 +108,13 @@ class CardRepository extends \Doctrine\ORM\EntityRepository
         $query->setFirstResult(3);
         $cars = $query->getResult();
         if(count($query->getResult())<10) {
+            $ccars_ids = [];
+            $carInQ = '';
             foreach ($cars as $cars_id) $ccars_ids[] = $cars_id['cardId'];
-            $query = $this->em->createQuery('SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.cityId < 1260 AND c.isActive = 1 AND c.id NOT IN ('.implode(",",$ccars_ids).') ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
+            if (count($ccars_ids > 0)) {
+                $carInQ = 'AND o.cardId NOT IN ('.implode(",",$ccars_ids).') ';
+            }
+            $query = $this->em->createQuery('SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.cityId < 1260 AND c.isActive = 1 '.$carInQ.' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
             $query->setMaxResults(13 - count($query->getResult()));
             foreach ($query->getResult() as $car) {
                 $cars[] = $car;
@@ -126,8 +131,13 @@ class CardRepository extends \Doctrine\ORM\EntityRepository
         $query->setMaxResults(10);
         $cars = $query->getResult();
         if(count($query->getResult())<10) {
+            $ccars_ids = [];
+            $carInQ = '';
             foreach ($cars as $cars_id) $ccars_ids[] = $cars_id['cardId'];
-            $q = $em->createQuery('SELECT DISTINCT o.cardId FROM UserBundle:FormOrder o JOIN AppBundle:Card c WHERE c.isActive = 1 AND o.ownerStatus NOT IN (\'rejected\', \'wait_for_accept\') AND o.isActiveOwner = 1 AND o.cardId NOT IN ('.implode(",",$ccars_ids).') ORDER BY o.dateCreate DESC');
+            if (count($ccars_ids > 0)) {
+                $carInQ = 'AND o.cardId NOT IN ('.implode(",",$ccars_ids).') ';
+            } 
+            $q = $em->createQuery('SELECT DISTINCT o.cardId FROM UserBundle:FormOrder o JOIN AppBundle:Card c WHERE c.isActive = 1 AND o.ownerStatus NOT IN (\'rejected\', \'wait_for_acczept\') AND o.isActiveOwner = 1 '.$carInQ.' ORDER BY o.dateCreate DESC');
             $q->setMaxResults(12 - count($ccars_ids));
             foreach ($q->getResult() as $car) {
                 $cars[] = $car;
