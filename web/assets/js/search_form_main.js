@@ -9,9 +9,7 @@ $( document ).ready(function() {
                 dataType: 'json',
                 data: {q: term},
                 success: function(json){
-                    console.log(json);
                     response(json);
-                    
                 }
             });
         },
@@ -32,7 +30,6 @@ $( document ).ready(function() {
     $('#ms_search_form').submit(function (e) {
         e.preventDefault();
         var cityId = $('input[name="ms_input_city_id"]').val();
-        
         $.ajax({
             url: '/ajax/getCityOne',
             type: 'POST',
@@ -46,12 +43,17 @@ $( document ).ready(function() {
                 document.location.href = '/rent/'+city+'/all/'+gt;
             }
         });
+        var message = [];
 
-        
-        return false;
+        var cityf = $('input[name="ms_input_city_id"]').val();
+        if (!cityf) message.push('<br>Выберите город из выпадающего списка!');
+    
+        if (message.length > 0){
+            UIkit.notification('Выберите город из выпадающего списка!',{status:'danger',timeout:100000});
+            return false;
+        }
     });
 
-    
 
 });
 

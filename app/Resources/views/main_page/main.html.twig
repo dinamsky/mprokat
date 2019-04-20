@@ -110,7 +110,8 @@
 {# end блок слайдера ТОП оплаченных #}
 
 {# begin блок слайдера ТОП активных арендаторов #}
- {# {{ dump(top10OwnerSlider) }}  #}
+{# {{ dump(top10OwnerSlider) }}  #}
+{% if top10OwnerSlider is not empty %}
 <div class="uk-width-1-1  uk-margin-medium-top"> 
     <div class="uk-text-center ">
         <div class="uk-h4 uk-text-truncate"></div>
@@ -121,9 +122,12 @@
         {% endfor %}
     </div>
 </div> 
+{% endif %}
+
 {# end блок слайдера ТОП активных арендаторов #}
 
 {# begin блок слайдера ТОП ?? #}
+{# {{ dump(top13_10Slider) }}  #}
 <div class="uk-width-1-1  uk-margin-medium-top"> 
     <div class="uk-text-center ">
         <div class="uk-h4 uk-text-truncate"></div>

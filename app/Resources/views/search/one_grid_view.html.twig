@@ -197,7 +197,7 @@
         </div>
 
         <div class="">
-            <div class="uk-text-small uk-text-truncate" uk-tooltip="title:{{ card.user.header }} ({{ card.city.header }})">{% trans %}Владелец:&nbsp;{% endtrans %}<a href="/user/{{ card.user.id }}" class="uk-text-truncate">{{ card.user.header }}</a></div>
+            <div class="uk-text-small uk-text-truncate" >{% trans %}Владелец:&nbsp;{% endtrans %}<a href="/user/{{ card.user.id }}" class="uk-text-truncate">{{ card.user.header }}</a></div>
             <div class="c_black">{{ card.city.header }}</div>
         </div>
         {% if share is defined %}
