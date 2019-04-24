@@ -617,8 +617,8 @@ class ProfileController extends Controller
         //var_dump($post->has('is_nonreged'));
 
 
-        if ($this->captchaVerify($post->get('g-recaptcha-response')) or $post->has('is_nonreged')) {
-        //if (1==1) {
+        // if ($this->captchaVerify($post->get('g-recaptcha-response')) or $post->has('is_nonreged')) {
+        if (1==1) {
 
             $card_id = $post->get('card_id');
 
@@ -626,6 +626,12 @@ class ProfileController extends Controller
                 ->getRepository(Card::class)
                 ->find($card_id);
             $user = $card->getUser();
+
+            $gt_id = $card->getGeneralTypeId();
+
+            $gt = $this->getDoctrine()
+            ->getRepository(GeneralType::class)
+            ->find($gt_id);
 
             $price = $price_hour = $deposit = $service = 0;
             foreach ($card->getCardPrices() as $cp){
@@ -651,9 +657,9 @@ class ProfileController extends Controller
                 $price = $hours * $price_hour;
             }
 
-            $service = ceil($price/100*8.5);
+            $service = ceil($price/100*floatval($gt->getServicePercent()));
 
-            if($service == 0) $service = 500;
+            // if($service == 0) $service = 500;
 
             //$total = $price + $deposit + $service;
             $total = $price + $service;
