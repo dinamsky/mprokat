@@ -56,8 +56,7 @@
                                 {% endif %}
 
                                 {% set bgrnd = 'white' %}
-{% dump(main_foto) %}
-{% dump(card) %}
+
 
                                  {% if main_foto is defined and main_foto.folder is defined and main_foto.id is defined %}
                                     {% set bgrnd = 'url(/assets/images/cards/'~main_foto.folder~'/t/'~main_foto.id~'.jpg)' %}
