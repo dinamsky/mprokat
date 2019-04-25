@@ -245,7 +245,7 @@
 
     </div>
 
-    {% if share is defined %}
+    {# {% if share is defined %}
         <a class="bottom_share" href="/card_share/{{ card.id }}">Разместить в своих соцсетях</a>
         <div class="uk-text-center uk-text-small">Ваш тариф: "
             {{ card.tariffId == 1 ? 'Стандарт' }}
@@ -255,7 +255,7 @@
         <div class="uk-text-center">
             <a class="promote_card_link" href="/promote_card/{{ card.id }}">Продвинуть</a>
         </div>
-    {% endif %}
+    {% endif %} #}
 
     <div class="uk-grid-collapse" uk-grid>
         {# <div class="uk-width-expand uk-text-truncate uk-text-small c_grey {{ micro is defined ? 'micro' : '' }}">
@@ -281,7 +281,7 @@
 
     </div>
 
-    {% if (
+    {# {% if (
        ( app.session.has('admin') and card.adminId == app.session.get('admin').id )
        or ( app.session.has('admin') and app.session.get('admin').role == 'superadmin' )
        or ( app.session.has('logged_user') and card.user.id == app.session.get('logged_user').id )
@@ -296,5 +296,5 @@
                 <i class="fa fa-pencil"></i>
             </a>
         {% endif %}
-    {% endif %}
+    {% endif %} #}
 </div>
