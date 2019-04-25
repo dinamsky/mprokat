@@ -56,17 +56,19 @@
                                 {% endif %}
 
                                 {% set bgrnd = 'white' %}
+{% dump(main_foto) %}
+{% dump(card) %}
 
-                                {% if main_foto is defined %}
+                                 {% if main_foto is defined and main_foto.folder is defined and main_foto.id is defined %}
                                     {% set bgrnd = 'url(/assets/images/cards/'~main_foto.folder~'/t/'~main_foto.id~'.jpg)' %}
-                                {% elseif card.fotos[0] is defined %}
+                                {% elseif card is defined and card.fotos is defined and card.fotos[0] is defined and card.fotos[0].folder is defined and card.fotos[0].id is defined%}
                                     {% set bgrnd = 'url(/assets/images/cards/'~card.fotos[0].folder~'/t/'~card.fotos[0].id~'.jpg)' %}
                                 {% else %}
                                     {% set bgrnd = 'url(/assets/images/interface/no_image.jpg)' %}
                                 {% endif %}
 
                                 <div style="background: {{ bgrnd }} center center;background-size: cover;height: 60px;position: relative;">
-                                </div>
+                                </div> 
                             </div>
 
                             <div class="uk-width-expand">
