@@ -6,12 +6,13 @@
     <div class="footer_info bg_dark">
         <div class="standard_wide c_white">
             <div uk-grid>
+             {% if generalTypes is defined and city is defined  %}
                 <div class="uk-width-1-1">
                     <div class="uk-margin-bottom uk-text-uppercase"><b>{% trans %}Категории{% endtrans %}</b></div>
                         <div  uk-grid class="uk-flex uk-margin-top uk-grid-small">
                             {% for gt in generalTypes if gt.carTypeIds %}
                                 <div class="uk-width-1-2 uk-width-auto@s">
-                                    <a href="/rent/{{ in_city }}/all/{{ gt.url }}" class=""><i class="fa fa-{{ gt.icon }}"></i> {{ lang == 'ru' ? gt.header : gt.url }}</a>
+                                    <a href="/rent/{{ city.url }}/all/{{ gt.url }}" class=""><i class="fa fa-{{ gt.icon }}"></i> {{ lang == 'ru' ? gt.header : gt.url }}</a>
                                 </div>
                             {% endfor %}
                         </div>
@@ -21,6 +22,7 @@
  #}
 
                 </div>
+                {% endif %}
                 {# <div class="uk-width-1-5@l uk-visible@l">
                     <div class="uk-margin-bottom uk-text-uppercase"><b>{% trans %}Лучшие предложения{% endtrans %}</b></div>
                     {% for card in t3_new.getTop3 %}
