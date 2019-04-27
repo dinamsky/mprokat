@@ -31,6 +31,11 @@
                 <div class="uk-margin-bottom"><label><input type="checkbox" name="oferta"> Я ознакомлен и согласен с условиями <a target="_blanc" class="underline" uk-tooltip="title:откроется в новом окне" href="/assets/docs/oferta.pdf">оферты</a></label></div>
                 <button class="uk-button uk-button-primary" disabled>{% trans %}Зарегистрироваться{% endtrans %}</button>
             </form>
+            <hr>
+            <div uk-grid class="reg_in_signin_block">
+                <div class="uk-width-1-2" style="font-size: 21px;">Есть аккаунт?</div>
+                <div class="uk-width-1-2 uk-text-right"><button  uk-toggle="target: #sign_in" class="uk-button uk-button-success "><span uk-icon="icon:lock"></span>{% trans %}Войти{% endtrans %}</button></div>
+            </div>
         </div>
     </div>
 

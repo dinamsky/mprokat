@@ -617,8 +617,8 @@ class ProfileController extends Controller
         //var_dump($post->has('is_nonreged'));
 
 
-        if ($this->captchaVerify($post->get('g-recaptcha-response')) or $post->has('is_nonreged')) {
-        //if (1==1) {
+        // if ($this->captchaVerify($post->get('g-recaptcha-response')) or $post->has('is_nonreged')) {
+        if (1==1) {
 
             $card_id = $post->get('card_id');
 
@@ -626,6 +626,12 @@ class ProfileController extends Controller
                 ->getRepository(Card::class)
                 ->find($card_id);
             $user = $card->getUser();
+
+            $gt_id = $card->getGeneralTypeId();
+
+            $gt = $this->getDoctrine()
+            ->getRepository(GeneralType::class)
+            ->find($gt_id);
 
             $price = $price_hour = $deposit = $service = 0;
             foreach ($card->getCardPrices() as $cp){
@@ -651,9 +657,10 @@ class ProfileController extends Controller
                 $price = $hours * $price_hour;
             }
 
-            $service = ceil($price/100*8.5);
+            $service = ceil($price/100*floatval($gt->getServicePercent()));
 
-            if($service == 0) $service = 500;
+            // if($service == 0) $service = 500;
+            $reservation = ($service == 0)?500:2*$service;
 
             //$total = $price + $deposit + $service;
             $total = $price + $service;
@@ -736,7 +743,7 @@ class ProfileController extends Controller
                         Получить: '.$post->get('city_in').'<br>
                         Вернуть: '.$post->get('city_out').'<br><br>
                         Аренда: '.($price+$service).' <i class="fa fa-ruble"></i><br>
-                        В т.ч. бронирование: '.($service*2).' <i class="fa fa-ruble"></i><br>
+                        В т.ч. бронирование: '.($reservation).' <i class="fa fa-ruble"></i><br>
                         <b>Итого: '.($price+$service).' <i class="fa fa-ruble"></i></b><br><br>
                         Иногда владелец может попросить залог</div>';
 
@@ -778,6 +785,7 @@ class ProfileController extends Controller
                 $form_order->setPrice($price);
                 $form_order->setDeposit($deposit);
                 $form_order->setService($service);
+                $form_order->setReservation($reservation);
                 $form_order->setTotal($total);
 
                 $em = $this->getDoctrine()->getManager();
@@ -1491,8 +1499,10 @@ class ProfileController extends Controller
 
     private function get_secret(){
         return [
-            'id' => "1110",
-            'secret' => 'hpljOY3gop'
+            'id' => "2288",
+            'secret' => 'eZME2OkIdI'
+            // 'id' => "1110",
+            // 'secret' => 'hpljOY3gop'
         ];
     }
 
@@ -1538,7 +1548,7 @@ class ProfileController extends Controller
             "payment" => [
                 "orderId" => $id,
                 "action" => "pay",
-                "price" => ($order->getService()*2).'.00',
+                "price" => ($order->getReservation()).'.00',
             ],
             "customerInfo" => [
                 "email" => $eml,

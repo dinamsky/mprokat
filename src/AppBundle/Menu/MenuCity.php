@@ -67,6 +67,18 @@ class MenuCity extends Controller
     }
 
     /**
+     * @Route("/ajax/getCityOne")
+     */
+    public function getCityOneAction(Request $request)
+    {
+        //return new Response(json_encode($this->getCity($request->request->get('city_id'))[0]->getUrl()));
+        $res = [
+            'city_url'=>$this->getCity($request->request->get('city_id'))[0]->getUrl()
+        ];
+        return new Response(json_encode($res));
+    }
+
+    /**
      * @Route("/ajax/getRegion")
      */
     public function getRegionAction(Request $request)

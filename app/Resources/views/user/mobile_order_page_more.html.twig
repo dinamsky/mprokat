@@ -124,13 +124,21 @@
 
                                     {% set bgrnd = 'white' %}
 
-                                    {% if main_foto  %}
+                                    {% if main_foto is defined and main_foto.folder is defined and main_foto.id is defined %}
+                                        {% set bgrnd = 'url(/assets/images/cards/'~main_foto.folder~'/t/'~main_foto.id~'.jpg)' %}
+                                    {% elseif card is defined and card.fotos is defined and card.fotos[0] is defined and card.fotos[0].folder is defined and card.fotos[0].id is defined%}
+                                        {% set bgrnd = 'url(/assets/images/cards/'~card.fotos[0].folder~'/t/'~card.fotos[0].id~'.jpg)' %}
+                                    {% else %}
+                                        {% set bgrnd = 'url(/assets/images/interface/no_image.jpg)' %}
+                                    {% endif %}
+
+                                    {# {% if main_foto  %}
                                         {% set bgrnd = '/assets/images/cards/'~main_foto.folder~'/t/'~main_foto.id~'.jpg' %}
                                     {% elseif card.fotos[0] is defined %}
                                         {% set bgrnd = '/assets/images/cards/'~card.fotos[0].folder~'/t/'~card.fotos[0].id~'.jpg' %}
                                     {% else %}
                                         {% set bgrnd = '/assets/images/interface/no_image.jpg' %}
-                                    {% endif %}
+                                    {% endif %} #}
 
                                     <div uk-lightbox>
                                         <a href="{{ bgrnd }}">
@@ -166,7 +174,7 @@
                             {#</div>#}
                             <div class="uk-grid uk-margin-remove-top">
                                 <div class="uk-width-expand">В т.ч. бронирование:</div>
-                                <div class="uk-width-auto">{{ o.service }} <i class="fa fa-ruble"></i></div>
+                                <div class="uk-width-auto">{{ o.reservation }} <i class="fa fa-ruble"></i></div>
                             </div>
                             <div class="uk-grid uk-margin-remove-top">
                                 <div class="uk-width-expand"><b>Итого:</b></div>
@@ -181,7 +189,7 @@
 
                         <div class="uk-margin-top">
                             {% if o.renterStatus == 'wait_for_pay' and app.session.get('logged_user').id == o.renterId %}
-                                <a href="/pay_for_order/{{ o.id }}" class="ok_btn uk-margin-top uk-text-center uk-display-block">Оплатить бронирование:<br><b>{{ o.service }}</b> <i class="fa fa-ruble"></i></a>
+                                <a href="/pay_for_order/{{ o.id }}" class="ok_btn uk-margin-top uk-text-center uk-display-block">Оплатить бронирование:<br><b>{{ o.reservation }}</b> <i class="fa fa-ruble"></i></a>
 
                                 <div class="uk-margin-top">
                                     Оплата производится через партнера: <a href="http://mandarinpay.com/" target="_blank">Mandarin Pay</a><br>

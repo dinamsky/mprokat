@@ -27,12 +27,12 @@
 
 
     {% elseif app.session.get('admin').email is defined %}
-        <div class="uk-clearfix">
+        <div class="uk-clearfix uk-margin-top">
             <div class="uk-float-left"><a href="/admin"><span uk-icon="icon:user"></span> {{ app.session.get('admin').email }}</a></div>
             <div class="uk-float-right"><a href="/adminLogout" class=""><span><i uk-icon="icon:sign-out"></i> Выход</span></a></div>
         </div>
     {% else %}
-        <div class="uk-clearfix">
+        <div class="uk-clearfix uk-margin-top">
             <div class="uk-float-left"><div uk-toggle="target: #sign_in" class=""><span uk-icon="icon:sign-in"></span> Войти</div></div>
             <div class="uk-float-right"><div uk-toggle="target: #sign_up" class=""><span uk-icon="icon:lock"></span>Регистрация</div></div>
         </div>

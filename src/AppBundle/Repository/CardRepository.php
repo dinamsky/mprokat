@@ -67,6 +67,25 @@ class CardRepository extends \Doctrine\ORM\EntityRepository
         return $query->getResult();
     }
 
+    public function getTop10Slider($cityId)
+    {
+        $em = $this->getEntityManager();
+        $query = $em->createQuery('SELECT c.id FROM AppBundle:Card c JOIN c.tariff t WHERE c.cityId=?1 ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
+        $query->setParameter(1, $cityId);
+        $query->setMaxResults(10);
+
+        if(count($query->getScalarResult())<10) {
+            $query = $em->createQuery('SELECT c.id FROM AppBundle:Card c JOIN c.tariff t ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
+            $query->setMaxResults(10);
+        }
+
+
+        foreach ($query->getScalarResult() as $cars_id) $cars_ids[] = $cars_id['id'];
+        $dql = 'SELECT c,f,p,g,m FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.fotos f LEFT JOIN c.cardPrices p LEFT JOIN c.city g LEFT JOIN c.markModel m WHERE c.id IN ('.implode(",",$cars_ids).') ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC';
+        $query = $em->createQuery($dql);
+        return $query->getResult();
+    }
+
     public function getTopOne($gt)
     {
         $em = $this->getEntityManager();
@@ -77,5 +96,49 @@ class CardRepository extends \Doctrine\ORM\EntityRepository
 //        $query = $em->createQuery($dql);
         $res = $query->getResult();
         return $res[0];
+    }
+
+    public function getTop13_10($cityId)
+    {
+        // $cityId = $this->sess->get('city')->getId();
+        $em = $this->getEntityManager();
+        $query = $em->createQuery('SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.cityId = ?1 AND c.isActive = 1 ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
+        $query->setParameter(1, $cityId);
+        $query->setMaxResults(10);
+        $query->setFirstResult(10);
+        $cars = $query->getResult();
+        // return $cars;
+        if(count($cars)<10) {
+            $ccars_ids = [];
+            $carInQ = '';
+            if (count($cars) > 0) {
+                foreach ($cars as $cars_id) $ccars_ids[] = $cars_id['cardId'];
+                $carInQ = 'AND o.cardId NOT IN ('.implode(",",$ccars_ids).') ';
+            }
+            $query = $this->em->createQuery('SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.cityId < 1260 AND c.isActive = 1 '.$carInQ.' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
+            $query->setMaxResults(10 - count($cars));
+            $query->setFirstResult(10);
+            // return $query->getResult();
+            foreach ($query->getResult() as $car) {
+                $cars[] = $car;
+            }
+        }
+        return $cars;
+    }
+
+    public function getOwnerTop10Slider($cityId)
+    {
+        $em = $this->getEntityManager();
+        $query = $em->createQuery('SELECT DISTINCT o.cardId FROM UserBundle:FormOrder o JOIN AppBundle:Card c WITH c.id = o.cardId WHERE c.cityId = ?1 AND c.isActive = 1 AND o.ownerStatus NOT IN (\'rejected\', \'wait_for_accept\') AND o.isActiveOwner = 1 ORDER BY o.dateCreate DESC');
+        $query->setParameter(1, $cityId);
+        $query->setMaxResults(10);
+        $cars_ids = [];
+        foreach ($query->getResult() as $cars_id) $cars_ids[] = $cars_id['cardId'];
+        if (count($cars_ids) < 1) {
+            return array();
+        }
+        $dql = 'SELECT c,f,p,g,m FROM AppBundle:Card c JOIN c.tariff t LEFT JOIN c.fotos f LEFT JOIN c.cardPrices p LEFT JOIN c.city g LEFT JOIN c.markModel m WHERE c.id IN ('.implode(",",$cars_ids).') ORDER BY c.dateUpdate DESC';
+        $query = $em->createQuery($dql);
+        return $query->getResult();
     }
 }

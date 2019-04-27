@@ -479,12 +479,20 @@ class UserController extends Controller
                         ),
                         'text/html'
                     );
-                $mailer->send($message);
+                $errorsRecip = [];
+                $mailer->send($message, $errorsRecip);
 
-                $this->addFlash(
-                    'notice',
-                    $_t->trans('Вам отправлено письмо с активацией нового пароля')
-                );
+                if (empty($errorsRecip)) {
+                    $this->addFlash(
+                        'notice',
+                        $_t->trans('Вам отправлено письмо с активацией нового пароля')
+                    );              
+                } else {
+                    $this->addFlash(
+                        'notice',
+                        $_t->trans('Сбой при отправке письма на указанный email: '.implode(';',$errorsRecip))
+                    );
+                }
             } else {
                 $this->addFlash(
                     'notice',

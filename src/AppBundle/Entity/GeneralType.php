@@ -100,6 +100,13 @@ class GeneralType
     private $total;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="service_percent", type="decimal", precision=7, scale=4)
+     */
+    private $servicePercent;
+
+    /**
      * One Category has Many Categories.
      * @ORM\OneToMany(targetEntity="GeneralType", mappedBy="parent")
      */
@@ -486,5 +493,29 @@ class GeneralType
     public function getSingularEn()
     {
         return $this->singularEn;
+    }
+
+    /**
+     * Set servicePercent
+     *
+     * @param string $servicePercent
+     *
+     * @return GeneralType
+     */
+    public function setServicePercent($servicePercent)
+    {
+        $this->servicePercent = $servicePercent;
+
+        return $this;
+    }
+
+    /**
+     * Get servicePercent
+     *
+     * @return string
+     */
+    public function getServicePercent()
+    {
+        return $this->servicePercent;
     }
 }

@@ -35,16 +35,33 @@ class MainPageController extends Controller
             ->getRepository(Card::class)
             ->getTopSlider($this->get('session')->get('city')->getId());
 
+        $top10Slider = $this->getDoctrine()
+            ->getRepository(Card::class)
+            ->getTop10Slider($this->get('session')->get('city')->getId());
+
+        $top13_10Slider = $this->getDoctrine()
+            ->getRepository(Card::class)
+            ->getTop13_10($this->get('session')->get('city')->getId());
+
+        $getOwnerTop10Slider = $this->getDoctrine()
+            ->getRepository(Card::class)
+            ->getOwnerTop10Slider($this->get('session')->get('city')->getId());
+    
+
         $all = $this->getDoctrine()
             ->getRepository(Card::class)
-            ->getLimitedSliders([2,6,17,10], $this->get('session')->get('city')->getId());
+            ->getLimitedSliders([2,6,8,9,13], $this->get('session')->get('city')->getId());
 
         $cars = $all[2];
+        $quadro = $all[9];
         $wedding = $all[6];
-        $snow = $all[10];
+        // $snow = $all[10];
+        // $trucks = $all[3];
+        $yachts = $all[13];
+        $bikes = $all[8];
         shuffle($cars);
-        //$moto = $all[8];
-        $heli = $all[17];
+        // $moto = $all[8];
+        // $heli = $all[17];
 
 
 
@@ -113,13 +130,20 @@ class MainPageController extends Controller
             'city' => $city,
 
             'topSlider' => $topSlider,
+            'top10Slider' => $top10Slider,
+            'top13_10Slider' => $top13_10Slider,
+            'top10OwnerSlider' => $getOwnerTop10Slider,
+            
 
             'cars' => $cars,
-            'heli' => $heli,
-            'snow' => $snow,
-            //'moto' => $moto,
+            // 'heli' => $heli,
+            // 'snow' => $snow,
+            // 'moto' => $moto,
             'wedding' => $wedding,
-
+            'quadro' => $quadro,
+            // 'trucks' => $trucks,
+            'yachts' => $yachts,
+            'bikes' => $bikes,
 
             'cityId' => $city->getId(),
 

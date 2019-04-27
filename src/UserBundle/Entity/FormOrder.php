@@ -193,6 +193,13 @@ class FormOrder
     /**
      * @var int
      *
+     * @ORM\Column(name="reservation", type="integer")
+     */
+    private $reservation = 0;
+
+    /**
+     * @var int
+     *
      * @ORM\Column(name="total", type="integer")
      */
     private $total = 0;
@@ -1202,5 +1209,29 @@ class FormOrder
     public function getHours()
     {
         return $this->hours;
+    }
+
+    /**
+     * Set reservation
+     *
+     * @param integer $reservation
+     *
+     * @return FormOrder
+     */
+    public function setReservation($reservation)
+    {
+        $this->reservation = $reservation;
+
+        return $this;
+    }
+
+    /**
+     * Get reservation
+     *
+     * @return integer
+     */
+    public function getReservation()
+    {
+        return $this->reservation;
     }
 }

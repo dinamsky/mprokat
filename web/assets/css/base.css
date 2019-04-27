@@ -745,12 +745,12 @@ footer a:hover{
     z-index: 1;
 }
 
-.uk-offcanvas-close{
+/* .uk-offcanvas-close{
     right: -307px;
     top: 0px;
     background: #222222;
     padding: 12px;
-}
+} */
 
 .left_gtypes{
     margin-bottom: 15px;
