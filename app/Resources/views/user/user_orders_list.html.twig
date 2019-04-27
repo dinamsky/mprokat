@@ -277,7 +277,7 @@
 
                                 <div class="uk-width-1-1">
                                     {% if o.renterStatus == 'wait_for_pay' and app.session.get('logged_user').id == o.renterId %}
-                                        <a href="/pay_for_order/{{ o.id }}" class="ok_btn uk-margin-top uk-text-center uk-display-block">Оплатить бронирование:<br><b>{{ o.service*2 }}</b> <i class="fa fa-ruble"></i></a>
+                                        <a href="/pay_for_order/{{ o.id }}" class="ok_btn uk-margin-top uk-text-center uk-display-block">Оплатить бронирование:<br><b>{{ o.reservation }}</b> <i class="fa fa-ruble"></i></a>
                                     {% endif %}
                                 </div>
 
