@@ -1548,7 +1548,7 @@ class ProfileController extends Controller
             "payment" => [
                 "orderId" => $id,
                 "action" => "pay",
-                "price" => ($order->getReservation).'.00',
+                "price" => ($order->getReservation()).'.00',
             ],
             "customerInfo" => [
                 "email" => $eml,
