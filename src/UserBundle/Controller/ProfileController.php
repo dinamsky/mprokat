@@ -4,6 +4,7 @@ namespace UserBundle\Controller;
 
 use AppBundle\Entity\Card;
 use AppBundle\Entity\Notify;
+use AppBundle\Entity\GeneralType;
 use AppBundle\Foto\FotoUtils;
 use AppBundle\Menu\ServiceStat;
 use UserBundle\Entity\Blocking;
