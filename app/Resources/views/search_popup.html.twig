@@ -19,6 +19,7 @@
         {% set lang = 'ru' %}
     {% endif %}
 
+{% if gt is defined and city is defined  %}
     <div  class=" top_pop_carousel owl-carousel uk-margin-bottom">
             {% for gt in t3_new.getGt if gt.carTypeIds %}
                 <div class="uk-width-1-1" style="display: none">
@@ -30,5 +31,5 @@
                 </div>
             {% endfor %}
         </div>
-
+{% endif %}
 </div>

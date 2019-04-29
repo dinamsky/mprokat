@@ -1500,8 +1500,8 @@ class ProfileController extends Controller
 
     private function get_secret(){
         return [
-            'id' => "2288",
-            'secret' => 'eZME2OkIdI'
+            'id' => "2293",
+            'secret' => 'sODWChwJ54'
             // 'id' => "1110",
             // 'secret' => 'hpljOY3gop'
         ];
