@@ -150,6 +150,25 @@ $( document ).ready(function() {
     });
 
 
+    $('body').on('click', '.city_block_main', function () {
+        var cityId = $(this).data('id');
+        $('#cityId').val(cityId);
+        $('#cityURL').val($(this).data('url'));
+        $('.city_selector').html($(this).data('header'));
+        $.ajax({
+            url: '/ajax/setCity',
+            type: 'POST',
+            data: {cityId:cityId},
+            success: function(){
+                UIkit.modal('#city_popular_main').hide();
+                var go_href = getSelectorUrl() + getQueryVars();
+                if($('body').hasClass('main_page')) go_href = '/';
+                if($('body').hasClass('promo')) go_href = '/promo';
+                document.location.href = go_href;
+            }
+        });
+    });
+
     $('body').on('click','.mark_block', function () {
         $('#markURL').val($(this).data('url')).attr('data-id',$(this).data('id'));
         UIkit.modal('#mark_popular').hide();
