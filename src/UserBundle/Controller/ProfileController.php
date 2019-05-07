@@ -661,7 +661,7 @@ class ProfileController extends Controller
             $service = ceil($price/100*floatval($gt->getServicePercent()));
 
             // if($service == 0) $service = 500;
-            $reservation = ($service == 0)?500:2*$service;
+            $reservation = ($service == 0)?100:$service;
 
             //$total = $price + $deposit + $service;
             $total = $price + $service;
