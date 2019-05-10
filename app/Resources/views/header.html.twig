@@ -4,6 +4,8 @@
         {{ include('mobile_header.html.twig') }}
 
 {% else %}
+<input type="hidden" id="cityURL" name="cityURL" value="{{ city.url }}">
+<input type="hidden" id="cityId" name="cityId" value="{{ city.id }}">
     <div class="top_sticky desktop_header" uk-sticky>
 
         <div class="standard_wide">

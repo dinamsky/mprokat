@@ -80,7 +80,9 @@
 {# end верхний блок быстрого выбора и заставки #}
 
 {# begin блок поиска #}
+<div class="standard_wide">
 {{ include('search_form.html.twig') }}
+</div>
 {# end блок поиска #}
 
 {# begin блок выбора города #}
@@ -92,7 +94,8 @@
 {# begin блок слайдера ТОП оплаченных #}
 
 <div class="uk-width-1-1" style="padding: 10px 0 15px 0; background: #eaeaea;"> 
-    <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="3">
+<div class="standard_wide">
+    <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="4">
         {% for card in top10Slider %}
             {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px', 'micro':true}) }}
         {% endfor %}
@@ -104,7 +107,7 @@
             <a class="after_top" title="Хотите сюда?<br>Разместите объявление!" uk-toggle="target: #sign_in_or_up" uk-tooltip>{% trans %}Разместить объявление в ТОП{% endtrans %}</a>
         {% endif %}
     </div>
-
+</div>
 </div>
 
 {# end блок слайдера ТОП оплаченных #}
@@ -113,6 +116,7 @@
 {# {{ dump(top10OwnerSlider) }}  #}
 {% if top10OwnerSlider is not empty %}
 <div class="uk-width-1-1  uk-margin-medium-top"> 
+<div class="standard_wide">
     <div class="uk-text-center ">
         <div class="uk-h4 uk-text-truncate"></div>
     </div>
@@ -121,6 +125,7 @@
             {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px'}) }}
         {% endfor %}
     </div>
+</div>
 </div> 
 {% endif %}
 
@@ -129,6 +134,7 @@
 {# begin блок слайдера ТОП ?? #}
 {# {{ dump(top13_10Slider) }}  #}
 <div class="uk-width-1-1  uk-margin-medium-top"> 
+<div class="standard_wide">
     <div class="uk-text-center ">
         <div class="uk-h4 uk-text-truncate"></div>
     </div>
@@ -137,6 +143,7 @@
             {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px'}) }}
         {% endfor %}
     </div>
+    <div class="standard_wide">
 </div>
 {# end блок слайдера ТОП ?? #}
 
@@ -148,6 +155,7 @@
 
 {# begin блок слайдера ТОП новых бесплатных #}
 <div class="uk-width-1-1 uk-margin-medium-top"> 
+<div class="standard_wide">
     <div class="uk-text-center ">
         <div class="uk-h4 uk-text-truncate">{% trans %}Новые на сайте{% endtrans %}</div>
     </div>
@@ -155,6 +163,7 @@
             {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px'}) }}
         {% endfor %}
     </div>
+</div>
 </div>
 {# <div class="uk-width-1-5@l uk-visible@l">
     <div class="uk-margin-bottom uk-text-uppercase"><b>{% trans %}Новые на сайте{% endtrans %}</b></div>
