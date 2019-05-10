@@ -80,9 +80,7 @@
 {# end верхний блок быстрого выбора и заставки #}
 
 {# begin блок поиска #}
-<div class="standard_wide">
 {{ include('search_form.html.twig') }}
-</div>
 {# end блок поиска #}
 
 {# begin блок выбора города #}
@@ -120,7 +118,7 @@
     <div class="uk-text-center ">
         <div class="uk-h4 uk-text-truncate"></div>
     </div>
-    <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="3">
+    <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="4">
         {% for card in top10OwnerSlider %}
             {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px'}) }}
         {% endfor %}
@@ -138,7 +136,7 @@
     <div class="uk-text-center ">
         <div class="uk-h4 uk-text-truncate"></div>
     </div>
-    <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="3">
+    <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="4">
         {% for card in top13_10Slider %}
             {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px'}) }}
         {% endfor %}
@@ -159,7 +157,7 @@
     <div class="uk-text-center ">
         <div class="uk-h4 uk-text-truncate">{% trans %}Новые на сайте{% endtrans %}</div>
     </div>
-    <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="3"> {% for card in t3_new.getNew10 %}
+    <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="4"> {% for card in t3_new.getNew10 %}
             {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px'}) }}
         {% endfor %}
     </div>
