@@ -112,7 +112,7 @@
 
 {# begin блок слайдера ТОП активных арендаторов #}
 {# {{ dump(top10OwnerSlider) }}  #}
-{% if top10OwnerSlider is not empty %}
+{% if top10OwnerSlider is not empty and top10OwnerSlider|length > 3 %}
 <div class="uk-width-1-1  uk-margin-medium-top"> 
 <div class="standard_wide">
     <div class="uk-text-center ">
