@@ -11,7 +11,7 @@
             <div>
                 [{{ m.dateCreate|date('H:i') }}]
                 <a href="/user/{{ m.fromUserId }}">{{ users[m.fromUserId].header }}</a>
-                <span uk-icon="icon: arrow-right"></span> {{ m.message }}
+                <span uk-icon="icon: arrow-right"></span> {{ m.message|raw }}
                 {% if m.isAttachment == 1 %}
                     <span uk-lightbox><a href="/assets/images/chat/{{ m.id }}.jpg" alt="">[фото]</a></span>
                 {% endif %}

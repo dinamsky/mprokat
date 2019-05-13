@@ -86,7 +86,7 @@
                 {% if app.session.get('logged_user').id == o.renterId and m.from == 'owner' %}
                     {% set dir = 'left' %}
                 {% endif %}
-                {% if m.from == 'system' %}
+                {% if m.from == 'system' or m.from == 'system_renter' or m.from == 'system_owner' %}
                     {% set dir = 'system' %}
                 {% endif %}
                 {% if m.from == 'system_ok' %}
@@ -118,14 +118,28 @@
                         ></a>
                     </div>
                     {% endif %}
-                    <div class="uk-width-expand">
-                                    <div class="{{ dir }}_message">
-                                        <div style="font-size: 10px">{{ m.date }} {{ m.time }}</div>
-                                        <div class="ms_content">{{ m.message|raw  }}</div>
-
-                                    </div>
-
-                                </div>
+                    {% if app.session.get('logged_user').id == o.userId and m.from == 'system_owner' %}
+                        <div class="uk-width-expand">
+                            <div class="{{ dir }}_message">
+                                <div style="font-size: 10px">{{ m.date }} {{ m.time }}</div>
+                                <div class="ms_content">{{ m.message|raw  }}</div>
+                            </div>
+                        </div>
+                    {% elseif app.session.get('logged_user').id == o.renterId and m.from == 'system_renter' %}
+                        <div class="uk-width-expand">
+                            <div class="{{ dir }}_message">
+                                <div style="font-size: 10px">{{ m.date }} {{ m.time }}</div>
+                                <div class="ms_content">{{ m.message|raw  }}</div>
+                            </div>
+                        </div>
+                    {% elseif (m.from == 'system_owner' or m.from == 'system_renter') != true %}
+                        <div class="uk-width-expand">
+                            <div class="{{ dir }}_message">
+                                <div style="font-size: 10px">{{ m.date }} {{ m.time }}</div>
+                                <div class="ms_content">{{ m.message|raw  }}</div>
+                            </div>
+                        </div>
+                    {% endif %}
                     {% if dir == 'right' %}
 
                         {% set url = '/assets/images/users/t/user_'~o.renterId~'.jpg' %}

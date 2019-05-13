@@ -736,34 +736,88 @@ class ProfileController extends Controller
                 if ($between == 0) $between = 1;
 
 
-                $msg1='<div class="uk-text-left"><a href="/card/'.$card->getId().'">'.$post->get('header').'</a><br>     
-                        <i class="fa fa-calendar"></i> '.$post->get('date_in').' - <i class="fa fa-calendar"></i> '.$d_o.'
+                // $msg1='<div class="uk-text-left"><a href="/card/'.$card->getId().'">'.$post->get('header').'</a><br>     
+                //         <i class="fa fa-calendar"></i> '.$post->get('date_in').' - <i class="fa fa-calendar"></i> '.$d_o.'
+                //         <br>
+                //         Дней аренды: '.$between.'. Город:         
+                //         Получить: '.$post->get('city_in').'<br>
+                //         Вернуть: '.$post->get('city_out').'<br><br>
+                //         Аренда: '.($price+$service).' <i class="fa fa-ruble"></i><br>
+                //         В т.ч. бронирование: '.($reservation).' <i class="fa fa-ruble"></i><br>
+                //         <b>Итого: '.($total).' <i class="fa fa-ruble"></i></b><br><br>
+                //         Иногда владелец может попросить залог</div>';
+
+                $msg_tmp_city = ($post->get('city_in') === $post->get('city_out'))?$post->get('city_in'):($post->get('city_in').'<span uk-icon="icon: arrow-right"></span>'.$post->get('city_out'));
+                $msg_tmp = '<div class="mp-garant-information-'.$card->getId().'" aria-hidden="false">
+                        <div class="uk-text-left"><a href="/card/'.$card->getId().'">'.$post->get('header').'</a><br>
+                        <b><i class="fa fa-calendar"></i> '.$post->get('date_in').' - <i class="fa fa-calendar"></i> '.$d_o.'
+                        Дней аренды: '.$between.'. Город:'.$msg_tmp_city.'<br><br>
+                        Стоимость аренды: '.($total).' <i class="fa fa-ruble"></i><br>
+                        В том числе бронирование: '.$reservation.' <i class="fa fa-ruble"></i><br>
+                        Оплата при получении транспорта: '.$price.' <i class="fa fa-ruble"></i><br></b>
+                        <hr/>
+                        Мы гарантируем безопасность сделки при условии бронирования на сайте.<br>
+                        В целях безопасности Ваш телефон скрыт от владельца. Он увидит его, когда подтвердит бронь, а Вы оплатите бронирование.<br><br>
+                        После оплаты бронирования:<br>
+                        Оплатите остаток '.$price.' руб на месте приемки транспорта<br><br>
+                        <span class="uk-text-muted">В целях безопасности не переводите деньги и не общайтесь за пределами сайта!<span><br>
+                        <a href uk-toggle="target: .mp-garant-information-'.$card->getId().'">Скрыть условия аренды...</a>
+                        </div></div>
+                        <div class="mp-garant-information-'.$card->getId().'" aria-hidden="true" hidden>
+                        <div class="uk-text-left"><a href="/card/'.$card->getId().'">'.$post->get('header').'</a><br>
+                        <b><i class="fa fa-calendar"></i> '.$post->get('date_in').' - <i class="fa fa-calendar"></i> '.$d_o.'
+                        Дней аренды: '.$between.'. Город:'.$msg_tmp_city.'<br><br>
+                        Стоимость аренды: '.($total).' <i class="fa fa-ruble"></i><br>
+                        В том числе бронирование: '.$reservation.' <i class="fa fa-ruble"></i><br>
+                        Оплата при получении транспорта: '.$price.' <i class="fa fa-ruble"></i><br></b>
                         <br>
-                        Дней аренды: '.$between.'
-                        <br>        
-                        Получить: '.$post->get('city_in').'<br>
-                        Вернуть: '.$post->get('city_out').'<br><br>
-                        Аренда: '.($price+$service).' <i class="fa fa-ruble"></i><br>
-                        В т.ч. бронирование: '.($reservation).' <i class="fa fa-ruble"></i><br>
-                        <b>Итого: '.($price+$service).' <i class="fa fa-ruble"></i></b><br><br>
-                        Иногда владелец может попросить залог</div>';
+                        <a href uk-toggle="target: .mp-garant-information-'.$card->getId().'">Показать условия аренды...</a>
+                        </div></div>';
+                $msg_renter=$msg_tmp;
+                
+                $messages[] = [
+                    'date' => date('d-m-Y'),
+                    'time' => date('H:i'),
+                    'from' => 'system_renter',
+                    'message' => $msg_renter,
+                    'status' => 'send'
+                ];
 
+                $msg_tmp_1 = '<div class="uk-text-left"><a href="/card/'.$card->getId().'">'.$post->get('header').'</a><br>
+                        <b><i class="fa fa-calendar"></i> '.$post->get('date_in').' - <i class="fa fa-calendar"></i> '.$d_o.'
+                        Дней аренды: '.$between.'. Город:'.$msg_tmp_city.'<br><br>
+                        Стоимость аренды: '.($total).' <i class="fa fa-ruble"></i><br>
+                        В том числе бронирование: '.$reservation.' <i class="fa fa-ruble"></i><br>
+                        Оплата при получении транспорта: '.$price.' <i class="fa fa-ruble"></i><br></b>
+                        </div>';
+                
+                $messages[] = [
+                    'date' => date('d-m-Y'),
+                    'time' => date('H:i'),
+                    'from' => 'system_owner',
+                    'message' => $msg_tmp_1,
+                    'status' => 'send'
+                ];
 
-
-
+                $msg_tmp_2 = '<div class="uk-text-left">        
+                        Мы гарантируем безопасность сделки при условии бронирования на сайте<br>
+                        В целях безопасности Ваш телефон скрыт от арендатора, он увидит его когда оплатит бронь (10 % от вашей цены)<br><br>
+                        После бронирования:<br>
+                        Вы договоритесь о встрече и получите остаток '.$price.' руб на месте приемки транспорта
+                        </div>';
 
                 $messages[] = [
                     'date' => date('d-m-Y'),
                     'time' => date('H:i'),
-                    'from' => 'system',
-                    'message' => $msg1,
+                    'from' => 'system_owner',
+                    'message' => $msg_tmp_2,
                     'status' => 'send'
                 ];
 
                 if ($post->get('content') != '') {
                     $msg = $this->cut_num($post->get('content'));
                 } else {
-                    $msg = 'Добрый день! Отправляю вам заявку';
+                    $msg = 'Добрый день! Я хотел бы забронировать Ваш '.$post->get('header');
                 }
 
                 $messages[] = [
@@ -1320,6 +1374,7 @@ class ProfileController extends Controller
         $s = preg_replace('/[0-9]{7}/', '*', $s);
         $s = preg_replace('/[0-9]{2}\-[0-9]{2}\-[0-9]{3}/', '*', $s);
         $s = preg_replace('/[0-9]{3}\-[0-9]{2}\-[0-9]{2}/', '*', $s);
+        $s = preg_replace('/[0-9]{2,3}[ \.\-_\+]+[0-9]{2,3}[ \.\-_\+]+[0-9]{2,3}/', '*', $s);
         return $s;
     }
 
@@ -1668,7 +1723,7 @@ class ProfileController extends Controller
                     'date' => date('d-m-Y'),
                     'time' => date('H:i'),
                     'from' => 'system',
-                    'message' => 'Пожалуйста обсудите детали аренды с владельцем: '.$owner->getHeader().' номер телефона: '.$owner_phone,
+                    'message' => 'Пожалуйста обсудите детали аренды с владельцем: '.$owner->getHeader().' номер телефона: '.$owner_phone, // <a href="tel:+7-303-499-7111">
                     'status' => 'send'
                 ];
 

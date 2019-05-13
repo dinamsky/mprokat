@@ -115,7 +115,7 @@
                                 {% endif %}
                                 <div class="uk-width-expand">
                                     <div class="{{ dir }}_message dbl_edit" data-i="{{ i }}" data-id="{{ o.id }}">
-                                        {{ m.message }}
+                                        {{ m.message|raw }}
                                     </div>
                                 </div>
                                 {% if dir == 'right' %}
@@ -256,7 +256,7 @@
                             <hr>
                             <div class="uk-grid uk-margin-remove-top">
                                 <div class="uk-width-expand">Аренда:</div>
-                                <div class="uk-width-auto">{{ o.price }} <i class="fa fa-ruble"></i></div>
+                                <div class="uk-width-auto">{{ o.price +o.service}} <i class="fa fa-ruble"></i></div>
                             </div>
                             {#<div class="uk-grid uk-margin-remove-top">#}
                                 {#<div class="uk-width-expand">Залог:</div>#}
