@@ -70,9 +70,15 @@
 <div id="ord_desc_{{ o.id }}" class=" ord_content">
 
         {% if o.messages != '' %}
+            {% set cur_date = ''  %}
             <div class="ord_messages uk-margin-top uk-clearfix" style="margin-bottom: 100px">
             {% for m in jsond(o.messages) %}
-
+                {% if cur_date != m.date %}
+                    {% set cur_date = m.date %}
+                    <div class="uk-width-expand">
+                        <div class="date_message">{{ m.date }}</div>
+                    </div>
+                {% endif %}
                 {% set dir = 'left' %}
                 {% if app.session.get('logged_user').id == o.userId and m.from == 'owner' %}
                     {% set dir = 'right' %}
@@ -94,7 +100,7 @@
                 {% endif %}
 
                 <div class="uk-grid uk-grid-small" {{ is_mobile() ? '' : 'style="margin-right: 10px"' }}>
-                    {% if dir == 'left' %}
+                    {# {% if dir == 'left' %}
 
                         {% set url = '/assets/images/users/t/user_'~o.renterId~'.jpg' %}
                         {% if(m.from == 'owner') %}
@@ -117,30 +123,30 @@
                             position: relative;"
                         ></a>
                     </div>
-                    {% endif %}
+                    {% endif %} #}
                     {% if app.session.get('logged_user').id == o.userId and m.from == 'system_owner' %}
                         <div class="uk-width-expand">
                             <div class="{{ dir }}_message">
-                                <div style="font-size: 10px">{{ m.date }} {{ m.time }}</div>
+                                <div style="font-size: 8px">{{ m.time }}</div>
                                 <div class="ms_content">{{ m.message|raw  }}</div>
                             </div>
                         </div>
                     {% elseif app.session.get('logged_user').id == o.renterId and m.from == 'system_renter' %}
                         <div class="uk-width-expand">
                             <div class="{{ dir }}_message">
-                                <div style="font-size: 10px">{{ m.date }} {{ m.time }}</div>
+                                <div style="font-size: 8px">{{ m.time }}</div>
                                 <div class="ms_content">{{ m.message|raw  }}</div>
                             </div>
                         </div>
                     {% elseif (m.from == 'system_owner' or m.from == 'system_renter') != true %}
                         <div class="uk-width-expand">
                             <div class="{{ dir }}_message">
-                                <div style="font-size: 10px">{{ m.date }} {{ m.time }}</div>
+                                <div style="font-size: 8px">{{ m.time }}</div>
                                 <div class="ms_content">{{ m.message|raw  }}</div>
                             </div>
                         </div>
                     {% endif %}
-                    {% if dir == 'right' %}
+                    {# {% if dir == 'right' %}
 
                         {% set url = '/assets/images/users/t/user_'~o.renterId~'.jpg' %}
                         {% if(m.from == 'owner') %}
@@ -150,7 +156,6 @@
                             {% set url = '/assets/images/interface/default-user.png' %}
                         {% endif %}
 
-                        {#{{ dump(file_exists('.'~url)) }}#}
                     <div style="width: 60px;">
                         <a target="_blanc"
                            href="/user/{{  m.from == 'owner' ? o.userId : o.renterId }}"
@@ -163,7 +168,7 @@
                             position: relative;"
                         ></a>
                     </div>
-                    {% endif %}
+                    {% endif %} #}
                 </div>
 
                 <div class="uk-width-1-1" style="height: 10px;clear:both;"></div>

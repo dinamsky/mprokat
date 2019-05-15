@@ -15,73 +15,7 @@
                     <a class="uk-margin-small-right" uk-toggle="target: #mp-nav-primary">
                         <i class="mp-menu-queued-icon uk-icon c_white" uk-icon="ratio: 2; icon:menu"></i>
                     </a>
-                    {# <div class="uk-margin-remove-top uk-overflow-auto" uk-drop="pos: bottom-justify; boundary: .mp-drop-menu-main; boundary-align: true; mode: click; animation: uk-animation-slide-top; flip: 'y';">
-                                            <div class="uk-card uk-card-default bg_blue c_white ">
-                                                <div
-                                                    class="uk-card-body ">
-                                                    <ul
-                                                        class="uk-nav uk-nav-primary uk-nav-center uk-navbar-dropdown-nav uk-nav-parent-icon c_white " uk-nav="">
-                                                           <li class="uk-parent">
-                                                            <a href="#">Категории транспорта</a>
-                                                            <ul aria-hidden="true" class="uk-nav-sub" hidden="">
-                                                                {% for gt in t3_new.getGt if gt.carTypeIds%}
-                                                                    <li>
-                                                                        <a class="" href="/rent/{{ city.url }}/all/{{ gt.url }}">
-                                                                            <i class="fa fa-{{ gt.icon }} left_gt_icon"></i>
-                                                                            {{ gt.header }}</a>
-                                                                    </li>
-                                                                {% endfor %}
-                                                            </ul>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#js-options" uk-toggle="target: #howtopay">Как это работает?</a>
-                                                        </li>
-                                                        <li>
-                                                            {% if app.session.has('logged_user') %}
-                                                                <a href="/card/new">Сдать в аренду</a>
-                                                            {% elseif app.session.has('admin') %}
-                                                                <a href="/card/new">Сдать в аренду</a>
-                                                            {% else %}
-                                                                <a uk-toggle="target: #sign_in">Сдать в аренду</a>
-                                                            {% endif %}
-                                                        </li>
-                                                        <li>
-                                                            <a href="/sl_page">Поиск</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="/faq">Часто задаваемые вопросы</a>
-                                                        </li>
-                    
-                                                    </ul>
-                                                </div>
-                                                <div class="uk-card-footer  uk-text-center">
-                                                    <div class="uk-grid-small uk-child-width-auto uk-flex-inline uk-grid" uk-grid="">
-                                                        <div class="uk-first-column">
-                                                            <a class="uk-icon-button uk-icon uk-icon-hover" href="https://www.facebook.com/multiprokatcom/" uk-icon="icon: facebook"></a>
-                                                        </div>
-                                                        <div>
-                                                            <a class="uk-icon-button uk-icon uk-icon-hover" href="https://twitter.com/multiprokat" uk-icon="icon: twitter"></a>
-                                                        </div>
-                                                        <div>
-                                                            <a class="uk-icon-button uk-icon uk-icon-hover" href="https://plus.google.com/u/1/102220936243060868002" uk-icon="icon: google-plus"></a>
-                                                        </div>
-                                                        <div>
-                                                            <a class="uk-icon-button uk-icon uk-icon-hover" href="https://www.instagram.com/multiprokat/" uk-icon="icon: instagram"></a>
-                                                        </div>
-                                                        <div>
-                                                            <a class="uk-icon-button uk-icon uk-icon-hover" href="https://vk.com/multiprokatcom">
-                                                                <span class="fa fa-vk" style="font: normal normal normal 20px/1 FontAwesome;"></span>
-                                                            </a>
-                                                        </div>
-                                                        <div>
-                                                            <a class="uk-icon-button uk-icon uk-icon-hover" href="https://www.youtube.com/channel/UCj-igu9KFIbzdzVCezy1qFg" uk-icon="icon: youtube"></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                    
-                                            </div>
-                                        </div> #}
-                </div>
+                 </div>
             </div>
         </nav>
     </div>

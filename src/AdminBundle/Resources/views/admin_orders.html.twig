@@ -84,16 +84,17 @@
                             {% if m.from == 'renter' %}
                                 {% set dir = 'left' %}
                             {% endif %}
-                            {% if m.from == 'system' %}
+                            {% if m.from == 'system' or m.from == 'system_renter' or m.from == 'system_owner' %}
                                 {% set dir = 'system' %}
                             {% endif %}
                             {% if m.from == 'system_ok' %}
                                 {% set dir = 'system_ok' %}
                             {% endif %}
+                            
                             <div class="uk-grid uk-grid-small" {{ is_mobile() ? '' : 'style="margin-right: 10px"' }}>
                                 {% if dir == 'left' %}
                                     {% set url = '/assets/images/users/t/user_'~o.renterId~'.jpg' %}
-                                    {% if(m.from == 'owner') %}
+                                    {% if( m.from == 'owner') %}
                                         {% set url = '/assets/images/users/t/user_'~o.userId~'.jpg' %}
                                     {% endif %}
                                     {% if not file_exists('.'~url) %}
@@ -115,12 +116,17 @@
                                 {% endif %}
                                 <div class="uk-width-expand">
                                     <div class="{{ dir }}_message dbl_edit" data-i="{{ i }}" data-id="{{ o.id }}">
+                                        {% if (m.from == 'system_owner') %}
+                                            <div>Сообщение для владельца</div>
+                                        {% elseif (m.from == 'system_renter') %}
+                                            <div>Сообщение для арендатора</div>
+                                        {% endif %}
                                         {{ m.message|raw }}
                                     </div>
                                 </div>
                                 {% if dir == 'right' %}
                                     {% set url = '/assets/images/users/t/user_'~o.renterId~'.jpg' %}
-                                    {% if(m.from == 'owner') %}
+                                    {% if (m.from == 'owner') %}
                                         {% set url = '/assets/images/users/t/user_'~o.userId~'.jpg' %}
                                     {% endif %}
                                     {% if not file_exists('.'~url) %}

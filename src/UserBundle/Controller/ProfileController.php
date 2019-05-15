@@ -799,7 +799,7 @@ class ProfileController extends Controller
                     'status' => 'send'
                 ];
 
-                $msg_tmp_2 = '<div class="uk-text-left">        
+                $msg_tmp_2 = '<div>        
                         Мы гарантируем безопасность сделки при условии бронирования на сайте<br>
                         В целях безопасности Ваш телефон скрыт от арендатора. Он увидит его, когда оплатит бронь (10 % от вашей цены)<br><br>
                         После бронирования:<br>
@@ -1067,12 +1067,23 @@ class ProfileController extends Controller
         } else return new Response("",404);
     }
 
+    private function isNotAuthorise(Request $request)
+    {
+        $req = $request;
+        if (!$this->get('session')->get('logged_user'))
+            return new RedirectResponse('/');
+        
+        $this->redirect($req->get('back_url')); // $req->has('back_url')
+    }
 
     /**
      * @Route("/user/order_page/{id}", name="user_order_page")
      */
     public function user_order_pageAction($id, EntityManagerInterface $em, Request $request, ServiceStat $stat)
     {
+
+        $this->isNotAuthorise($request);
+
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->find($this->get('session')->get('logged_user')->getId());
@@ -1276,17 +1287,17 @@ class ProfileController extends Controller
             }
         }
 
-        $message = urlencode('Владелец одобрил вашу заявку №'.$id.'. Можно оплачивать');
+        $message = urlencode('Владелец одобрил вашу заявку №'.$id.'. Можно оплачивать'.'. Детали по адресу: https://multiprokat.com/user/order_page/'.$id);
         $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
         $sms_result = @file_get_contents($url);
 
         // ---------------------------
 
         if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)) {
-            $msg = (new \Swift_Message('Владелец одобрил вашу заявку №' . $id . '. Можно оплачивать'))
+            $msg = (new \Swift_Message('Владелец одобрил вашу заявку №' . $id . '. Можно оплачивать'.'. Детали по адресу: https://multiprokat.com/user/order_page/'.$id))
                 ->setFrom('mail@multiprokat.com')
                 ->setTo($user->getEmail())
-                ->setBody('Владелец одобрил вашу заявку №' . $id . '. Можно оплачивать', 'text/html');
+                ->setBody('Владелец одобрил вашу заявку №' . $id . '. Можно оплачивать'.'. Детали по адресу: https://multiprokat.com/user/order_page/'.$id, 'text/html');
             $mailer->send($msg);
         }
 
@@ -1344,16 +1355,16 @@ class ProfileController extends Controller
             }
         }
 
-        $message = urlencode('Владелец отклонил вашу заявку №'.$id);
+        $message = urlencode('Владелец отклонил вашу заявку №'.$id.'. Можно посмотреть по адресу: https://multiprokat.com/user/order_page/'.$id);
         $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
         $sms_result = @file_get_contents($url);
 
         // ---------------------------
         if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)) {
-            $msg = (new \Swift_Message('Владелец отклонил вашу заявку №' . $id))
+            $msg = (new \Swift_Message('Владелец отклонил вашу заявку №' . $id.'. Можно посмотреть по адресу: https://multiprokat.com/user/order_page/'.$id))
                 ->setFrom('mail@multiprokat.com')
                 ->setTo($user->getEmail())
-                ->setBody('Владелец отклонил вашу заявку №' . $id, 'text/html');
+                ->setBody('Владелец отклонил вашу заявку №' . $id.'. Можно посмотреть по адресу: https://multiprokat.com/user/order_page/'.$id, 'text/html');
             $mailer->send($msg);
         }
 
@@ -1425,7 +1436,7 @@ class ProfileController extends Controller
             }
         }
 
-        $message = urlencode('Владелец ответил на ваше сообщение в заявке №'.$id);
+        $message = urlencode('Владелец ответил на ваше сообщение в заявке №'.$id.'. Можно посмотреть по адресу: https://multiprokat.com/user/order_page/'.$id);
         if(isset($number)) {
             $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
             $sms_result = @file_get_contents($url);
@@ -1434,14 +1445,14 @@ class ProfileController extends Controller
         // ---------------------------
 
         if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)) {
-            $msg = (new \Swift_Message('Владелец ответил на ваше сообщение в заявке №' . $id))
+            $msg = (new \Swift_Message('Владелец ответил на ваше сообщение в заявке №' . $id.'. Можно посмотреть по адресу: https://multiprokat.com/user/order_page/'.$id))
                 ->setFrom('mail@multiprokat.com')
                 ->setTo($user->getEmail())
-                ->setBody('Владелец ответил на ваше сообщение в заявке №' . $id, 'text/html');
+                ->setBody('Владелец ответил на ваше сообщение в заявке №' . $id.'. Можно посмотреть по адресу: https://multiprokat.com/user/order_page/'.$id, 'text/html');
             $mailer->send($msg);
         }
 
-        $msg = (new \Swift_Message('Мультипрокат. Владелец ответил на сообщение в заявке №'.$id))
+        $msg = (new \Swift_Message('Мультипрокат. Владелец ответил на сообщение в заявке №'.$id.'. Можно посмотреть по адресу: https://multiprokat.com/user/order_page/'.$id))
                 ->setFrom('mail@multiprokat.com')
                 ->setTo('mail@multiprokat.com')
                 ->setBody($request->request->get('answer'),'text/html');
@@ -1505,7 +1516,7 @@ class ProfileController extends Controller
             }
         }
 
-        $message = urlencode('Арендатор ответил на ваше сообщение в заявке №'.$id);
+        $message = urlencode('Арендатор ответил на ваше сообщение в заявке №'.$id.'. Можно посмотреть по адресу: https://multiprokat.com/user/order_page/'.$id);
         if(isset($number)) {
             $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
             $sms_result = @file_get_contents($url);
@@ -1514,14 +1525,14 @@ class ProfileController extends Controller
         // ---------------------------
 
         if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)) {
-            $msg = (new \Swift_Message('Арендатор ответил на ваше сообщение в заявке №' . $id))
+            $msg = (new \Swift_Message('Арендатор ответил на ваше сообщение в заявке №' . $id.'. Можно посмотреть по адресу: https://multiprokat.com/user/order_page/'.$id))
                 ->setFrom('mail@multiprokat.com')
                 ->setTo($user->getEmail())
-                ->setBody('Арендатор ответил на ваше сообщение в заявке №' . $id, 'text/html');
+                ->setBody('Арендатор ответил на ваше сообщение в заявке №' . $id.'. Можно посмотреть по адресу: https://multiprokat.com/user/order_page/'.$id, 'text/html');
             $mailer->send($msg);
         }
 
-        $msg = (new \Swift_Message('Мультипрокат. Арендатор ответил на сообщение в заявке №'.$id))
+        $msg = (new \Swift_Message('Мультипрокат. Арендатор ответил на сообщение в заявке №'.$id.'. Можно посмотреть по адресу: https://multiprokat.com/user/order_page/'.$id))
                 ->setFrom('mail@multiprokat.com')
                 ->setTo('mail@multiprokat.com')
                 ->setBody($request->request->get('answer'),'text/html');

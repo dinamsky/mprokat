@@ -1546,43 +1546,58 @@ top: 80%;
 
 .left_message{
     float: left;
+    max-width: 80%;
 }
 
 .left_message .ms_content{
-    background: lightgrey;
+    background: #feffef;
     color:black;
     display: inline-block;
     padding: 5px 10px;
-    max-width: 80%;
     border-radius: 0 20px 20px 20px;
-    margin-top: 5px;
-    word-break: break-all;
+    /* margin-top: 5px; */
+    /* word-break: break-all; */
+    text-align: justify;
 }
 
 .right_message{
     float: right;
     text-align: right;
+    max-width: 80%;
 }
 
 .right_message .ms_content{
 
-    background: #6f729b;
-    color: white;
+    background: #eff4ff;
+    color: black;
     display: inline-block;
     padding: 5px 10px;
-    max-width: 80%;
     border-radius: 20px 0 20px 20px;
-    margin-top: 5px;
-    word-break: break-all;
+    /* margin-top: 5px; */
+    /* word-break: break-all; */
+    text-align: justify;
 }
 
 .system_message{
-    background: lightgrey;
+    background: #f3fbf9;
     padding: 10px;
     text-align: center;
     color: #3a3a3a;
 }
 
+.system_message .ms_content{
+    text-align: justify;
+}
+
+.date_message{
+    border-radius: 20px;
+    margin: 5px;
+    background: #f3fbf9;
+    padding: 10px;
+    text-align: center;
+    color: #3a3a3a;
+    font-size: 10px;
+}
 .system_ok_message{
     background: #25b45b;
     padding: 10px;
