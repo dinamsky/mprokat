@@ -1067,13 +1067,24 @@ class ProfileController extends Controller
         } else return new Response("",404);
     }
 
-    private function isNotAuthorise(Request $request)
+    private function isNotAuthorise($id = null, Request $request)
     {
         $req = $request;
         if (!$this->get('session')->get('logged_user'))
-            return new RedirectResponse('/');
-        
-        $this->redirect($req->get('back_url')); // $req->has('back_url')
+        {
+            $city = $this->get('session')->get('city');
+            $in_city = $city->getUrl();
+
+            return $this->render('main.html.twig', [
+                'city' => $city,
+                'in_city' => $in_city,
+                'cityId' => $city->getId(),
+                'lang' => $_SERVER['LANG'],
+            ]);
+            // return new RedirectResponse('/');
+        }
+        return false;
+        // $this->redirect($req->get('back_url')); // $req->has('back_url')
     }
 
     /**
@@ -1082,7 +1093,9 @@ class ProfileController extends Controller
     public function user_order_pageAction($id, EntityManagerInterface $em, Request $request, ServiceStat $stat)
     {
 
-        $this->isNotAuthorise($request);
+        // if ($ob = $this->isNotAuthorise($id, $request)) {
+        //     return $ob;
+        // }
 
         $user = $this->getDoctrine()
             ->getRepository(User::class)
