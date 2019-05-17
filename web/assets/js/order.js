@@ -3,6 +3,7 @@ $( document ).ready(function() {
 
 
     $('#owner_accept').on('click', function () {
+        $(this).attr("disabled", true);
         var id = $(this).val();
 
         $.ajax({
@@ -11,17 +12,18 @@ $( document ).ready(function() {
             data: {id:id},
             dataType: 'html',
             success: function (html) {
-                console.log(html);
+                //console.log(html);
                 document.location.href = window.location.href;
             },
             error: function (html) {
-                console.log(html);
-
+                // console.log(html);
+                $(this).attr("disabled", false);
             }
         });
     });
 
     $('#owner_reject').on('click', function () {
+        $(this).attr("disabled", true);
         var id = $(this).val();
 
         $.ajax({
@@ -32,14 +34,19 @@ $( document ).ready(function() {
             success: function (html) {
                 //console.log(html);
                 document.location.href = window.location.href;
+            },
+            error: function (html) {
+                // console.log(html);
+                $(this).attr("disabled", false);
             }
         });
     });
 
     $('#owner_answer').on('click', function () {
+        $(this).attr("disabled", true);
         var id = $(this).val();
         var answer = $(this).parents('.ord_content').find('textarea[name="answer"]').val();
-
+        
         $.ajax({
             url: '/ajax_owner_answer',
             type: 'POST',
@@ -47,12 +54,18 @@ $( document ).ready(function() {
             dataType: 'html',
             success: function (html) {
                 //console.log(html);
+                //$(this).attr('disabled');
                 document.location.href = window.location.href;
+            },
+            error: function (html) {
+                // console.log(html);
+                $(this).attr('disabled', false);
             }
         });
     });
 
     $('#renter_answer').on('click', function () {
+        $(this).attr("disabled", true);
         var id = $(this).val();
         var answer = $(this).parents('.ord_content').find('textarea[name="answer"]').val();
 
@@ -64,11 +77,16 @@ $( document ).ready(function() {
             success: function (html) {
                 //console.log(html);
                 document.location.href = window.location.href;
+            },
+            error: function (html) {
+                // console.log(html);
+                $(this).attr('disabled', false);
             }
         });
     });
 
     $('#owner_pincode').on('click', function () {
+        $(this).attr("disabled", true);
         var id = $(this).val();
         var pincode = $('input[name="owner_pincode"]').val();
 
@@ -85,6 +103,7 @@ $( document ).ready(function() {
     });
 
     $('.ord_toggler').on('click', function () {
+        $(this).attr("disabled", true);
         var id = $(this).data('id');
         var user_id = $(this).data('user_id');
 
@@ -107,6 +126,7 @@ $( document ).ready(function() {
             data: {id:id,user_id:user_id},
             dataType: 'html',
             success: function () {
+                $(this).attr("disabled", false);
                 //document.location.href = window.location.href;
             }
         });
