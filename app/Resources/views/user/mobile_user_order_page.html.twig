@@ -56,13 +56,22 @@
             </div>
         </div>
 
-        <div class="uk-width-expand">
-            <div style="line-height: 16px">{{ o.transport }}</div>
-            <div style="line-height: 16px">{{ rightuser.header }}</div>
-            <div class="uk-text-small" style="line-height: 16px">{{ o.dateCreate|date('d.m.Y - H:i') }}</div>
-            <div class="uk-text-small" style="line-height: 16px">
-                <a href="/user/order_page_more/{{ o.id }}">Детали заявки</a>
-            </div>
+        <div class="uk-width-expand ">
+            <div class="mobile-small-hide" style="line-height: 16px">{{ o.transport }}</div>
+            <div class="mobile-small-hide" style="line-height: 16px">{{ rightuser.header }}</div>
+            <div class="mobile-small-hide" style="line-height: 16px">{{ o.dateCreate|date('d.m.Y - H:i') }}</div>
+        </div>
+        {# <div class="uk-width-expand uk-text-center">
+        </div> #}
+        <div class="uk-text-center" style="width: 60px; font-size: 10px;">
+            <div><img src="/assets/images/interface/info.svg" uk-svg style="color: darkcyan; width: 30px;
+    height: 30px;"/></div>
+            <div><a  href="/user/order_page_more/{{ o.id }}" style="font-size: 10px;">Детали заявки</a></div>
+        </div>
+        <div class="uk-text-center" style="width: 60px; font-size: 10px;">
+            <div><img src="/assets/images/interface/protection.svg" uk-svg style="color: darkcyan; width: 30px;
+    height: 30px;"/></div>
+            <div><a  style="font-size: 10px;">Безопасные сделки</a></div>
         </div>
     </div>
 </div>

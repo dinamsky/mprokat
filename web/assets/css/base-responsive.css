@@ -1,3 +1,10 @@
+@media (max-width: 360px){
+
+    .mobile-small-hide {
+        display: none;
+    }
+
+}
 @media (max-width: 600px){
 
     .big_order_list footer{

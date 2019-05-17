@@ -159,6 +159,10 @@ class ProfileController extends Controller
      */
     public function userCardsAction(EntityManagerInterface $em, Request $request, ServiceStat $stat)
     {
+        if ($ob = $this->isNotAuthorise('/user/cards', $request)) {
+            return $ob;
+        }
+
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->find($this->get('session')->get('logged_user')->getId());
@@ -210,6 +214,10 @@ class ProfileController extends Controller
      */
     public function userMessagesAction(EntityManagerInterface $em, Request $request, ServiceStat $stat)
     {
+        if ($ob = $this->isNotAuthorise('/user/messages', $request)) {
+            return $ob;
+        }
+
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->find($this->get('session')->get('logged_user')->getId());
@@ -336,6 +344,10 @@ class ProfileController extends Controller
      */
     public function indexAction(Password $password, EntityManagerInterface $em)
     {
+        if ($ob = $this->isNotAuthorise('/user', $request)) {
+            return $ob;
+        }
+
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->find($this->get('session')->get('logged_user')->getId());
@@ -371,6 +383,10 @@ class ProfileController extends Controller
      */
     public function editProfileAction(EntityManagerInterface $em, Request $request, ServiceStat $stat)
     {
+        if ($ob = $this->isNotAuthorise('/profile', $request)) {
+            return $ob;
+        }
+
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->find($this->get('session')->get('logged_user')->getId());
@@ -420,6 +436,10 @@ class ProfileController extends Controller
      */
     public function updateProfileAction(Request $request)
     {
+        if ($ob = $this->isNotAuthorise('/profile/save', $request)) {
+            return $ob;
+        }
+
         $post = $request->request;
 
         $user = $this->getDoctrine()
@@ -986,10 +1006,105 @@ class ProfileController extends Controller
     }
 
     /**
+     * @Route("/user/transport_orders/{id}", name="user_transport_orders_id")
+     */
+    public function userTorderIDAction($id, EntityManagerInterface $em, Request $request, ServiceStat $stat)
+    {
+        if ($ob = $this->isNotAuthorise('/user/transport_orders/'.$id, $request)) {
+            return $ob;
+        }
+
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($this->get('session')->get('logged_user')->getId());
+
+        if(!$user->getIsBanned()) {
+            $query = $em->createQuery('SELECT o FROM UserBundle:FormOrder o WHERE o.userId = ?1 OR o.renterId = ?1 ORDER BY o.dateCreate DESC');
+            $query->setParameter(1, $this->get('session')->get('logged_user')->getId());
+            $orders = $query->getResult();
+
+            $order = $this->getDoctrine()
+            ->getRepository(FormOrder::class)
+            ->find($id);
+
+            $city = $this->get('session')->get('city');
+            $in_city = $city->getUrl();
+
+            $stat_arr = [
+                'url' => $request->getPathInfo(),
+                'event_type' => 'orders_page',
+                'page_type' => 'orders_list',
+                'user_id' => $user->getId(),
+            ];
+            $stat->setStat($stat_arr);
+
+            $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.total DESC');
+            $generalTypes = $query->getResult();
+
+            $totalSum = $this->countSum($user->getId());
+
+
+            $ntf = array();
+            $notifies = $this->getDoctrine()
+            ->getRepository(Notify::class)
+            ->findBy(['userId'=>$this->get('session')->get('logged_user')->getId()]);
+            foreach ($notifies as $n){
+                $ntf[$n->getObjectId()][] = $n;
+            }
+
+
+            $mobileDetector = $this->get('mobile_detect.mobile_detector');
+
+            if ($mobileDetector->isMobile()) {
+                return $this->render('user/mobile_user_order_page.html.twig', [
+                    'share' => true,
+                    'o' => $order,
+                    'city' => $city,
+                    'full' => true,
+                    'in_city' => $in_city,
+                    'cityId' => $city->getId(),
+                    'generalTypes' => $generalTypes,
+                    'lang' => $_SERVER['LANG'],
+                    'totalSum' => $totalSum,
+                    'no_jivosite' => true,
+                    'no_header' => true,
+                    'notifies' => $ntf,
+                ]);
+            } else {
+
+                $query = $em->createQuery('DELETE AppBundle:Notify n WHERE n.userId = ?1');
+                $query->setParameter(1, $this->get('session')->get('logged_user')->getId());
+                $query->execute();
+
+
+                return $this->render('user/user_orders_list.html.twig', [
+                    'share' => true,
+                    'orders' => $orders,
+                    'order' => $order,
+                    'city' => $city,
+                    'full' => true,
+                    'in_city' => $in_city,
+                    'cityId' => $city->getId(),
+                    'generalTypes' => $generalTypes,
+                    'lang' => $_SERVER['LANG'],
+                    'totalSum' => $totalSum,
+                    'notifies' => $ntf,
+                ]);
+            }
+
+
+        } else return new Response("",404);
+    }
+
+    /**
      * @Route("/user/transport_orders", name="user_transport_orders")
      */
     public function userTorderAction(EntityManagerInterface $em, Request $request, ServiceStat $stat)
     {
+        if ($ob = $this->isNotAuthorise('/user/transport_orders', $request)) {
+            return $ob;
+        }
+
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->find($this->get('session')->get('logged_user')->getId());
@@ -1067,7 +1182,7 @@ class ProfileController extends Controller
         } else return new Response("",404);
     }
 
-    private function isNotAuthorise($id = null, Request $request)
+    private function isNotAuthorise(String $urlReturn, Request $request)
     {
         $req = $request;
         if (!$this->get('session')->get('logged_user'))
@@ -1075,16 +1190,16 @@ class ProfileController extends Controller
             $city = $this->get('session')->get('city');
             $in_city = $city->getUrl();
 
-            return $this->render('main.html.twig', [
+            return $this->render('/user/auth_main.html.twig', [
                 'city' => $city,
                 'in_city' => $in_city,
                 'cityId' => $city->getId(),
                 'lang' => $_SERVER['LANG'],
+                'urlReturn' => $urlReturn,
             ]);
             // return new RedirectResponse('/');
         }
         return false;
-        // $this->redirect($req->get('back_url')); // $req->has('back_url')
     }
 
     /**
@@ -1093,9 +1208,9 @@ class ProfileController extends Controller
     public function user_order_pageAction($id, EntityManagerInterface $em, Request $request, ServiceStat $stat)
     {
 
-        // if ($ob = $this->isNotAuthorise($id, $request)) {
-        //     return $ob;
-        // }
+        if ($ob = $this->isNotAuthorise('/user/order_page/'.$id, $request)) {
+            return $ob;
+        }
 
         $user = $this->getDoctrine()
             ->getRepository(User::class)
@@ -1161,6 +1276,10 @@ class ProfileController extends Controller
      */
     public function order_page_moreAction($id, EntityManagerInterface $em, Request $request, ServiceStat $stat)
     {
+        if ($ob = $this->isNotAuthorise('/user/order_page_more/'.$id, $request)) {
+            return $ob;
+        }
+
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->find($this->get('session')->get('logged_user')->getId());
@@ -1300,17 +1419,17 @@ class ProfileController extends Controller
             }
         }
 
-        $message = urlencode('Владелец одобрил вашу заявку №'.$id.'. Можно оплачивать'.'. Детали по адресу: https://multiprokat.com/user/order_page/'.$id);
+        $message = urlencode('Владелец одобрил вашу заявку №'.$id.'. Можно оплачивать'.'. Детали по адресу: https://multiprokat.com/user/transport_orders/'.$id);
         $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
         $sms_result = @file_get_contents($url);
 
         // ---------------------------
 
         if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)) {
-            $msg = (new \Swift_Message('Владелец одобрил вашу заявку №' . $id . '. Можно оплачивать'.'. Детали по адресу: https://multiprokat.com/user/order_page/'.$id))
+            $msg = (new \Swift_Message('Владелец одобрил вашу заявку №' . $id . '. Можно оплачивать'.'. Детали по адресу: https://multiprokat.com/user/transport_orders/'.$id))
                 ->setFrom('mail@multiprokat.com')
                 ->setTo($user->getEmail())
-                ->setBody('Владелец одобрил вашу заявку №' . $id . '. Можно оплачивать'.'. Детали по адресу: https://multiprokat.com/user/order_page/'.$id, 'text/html');
+                ->setBody('Владелец одобрил вашу заявку №' . $id . '. Можно оплачивать'.'. Детали по адресу: https://multiprokat.com/user/transport_orders/'.$id, 'text/html');
             $mailer->send($msg);
         }
 
@@ -1368,16 +1487,16 @@ class ProfileController extends Controller
             }
         }
 
-        $message = urlencode('Владелец отклонил вашу заявку №'.$id.'. Можно посмотреть по адресу: https://multiprokat.com/user/order_page/'.$id);
+        $message = urlencode('Владелец отклонил вашу заявку №'.$id.'. Можно посмотреть по адресу: https://multiprokat.com/user/transport_orders/'.$id);
         $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
         $sms_result = @file_get_contents($url);
 
         // ---------------------------
         if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)) {
-            $msg = (new \Swift_Message('Владелец отклонил вашу заявку №' . $id.'. Можно посмотреть по адресу: https://multiprokat.com/user/order_page/'.$id))
+            $msg = (new \Swift_Message('Владелец отклонил вашу заявку №' . $id.'. Можно посмотреть по адресу: https://multiprokat.com/user/transport_orders/'.$id))
                 ->setFrom('mail@multiprokat.com')
                 ->setTo($user->getEmail())
-                ->setBody('Владелец отклонил вашу заявку №' . $id.'. Можно посмотреть по адресу: https://multiprokat.com/user/order_page/'.$id, 'text/html');
+                ->setBody('Владелец отклонил вашу заявку №' . $id.'. Можно посмотреть по адресу: https://multiprokat.com/user/transport_orders/'.$id, 'text/html');
             $mailer->send($msg);
         }
 
@@ -1449,7 +1568,7 @@ class ProfileController extends Controller
             }
         }
 
-        $message = urlencode('Владелец ответил на ваше сообщение в заявке №'.$id.'. Можно посмотреть по адресу: https://multiprokat.com/user/order_page/'.$id);
+        $message = urlencode('Владелец ответил на ваше сообщение в заявке №'.$id.'. Можно посмотреть по адресу: https://multiprokat.com/user/transport_orders/'.$id);
         if(isset($number)) {
             $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
             $sms_result = @file_get_contents($url);
@@ -1458,14 +1577,14 @@ class ProfileController extends Controller
         // ---------------------------
 
         if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)) {
-            $msg = (new \Swift_Message('Владелец ответил на ваше сообщение в заявке №' . $id.'. Можно посмотреть по адресу: https://multiprokat.com/user/order_page/'.$id))
+            $msg = (new \Swift_Message('Владелец ответил на ваше сообщение в заявке №' . $id.'. Можно посмотреть по адресу: https://multiprokat.com/user/transport_orders/'.$id))
                 ->setFrom('mail@multiprokat.com')
                 ->setTo($user->getEmail())
-                ->setBody('Владелец ответил на ваше сообщение в заявке №' . $id.'. Можно посмотреть по адресу: https://multiprokat.com/user/order_page/'.$id, 'text/html');
+                ->setBody('Владелец ответил на ваше сообщение в заявке №' . $id.'. Можно посмотреть по адресу: https://multiprokat.com/user/transport_orders/'.$id, 'text/html');
             $mailer->send($msg);
         }
 
-        $msg = (new \Swift_Message('Мультипрокат. Владелец ответил на сообщение в заявке №'.$id.'. Можно посмотреть по адресу: https://multiprokat.com/user/order_page/'.$id))
+        $msg = (new \Swift_Message('Мультипрокат. Владелец ответил на сообщение в заявке №'.$id.'. Можно посмотреть по адресу: https://multiprokat.com/user/transport_orders/'.$id))
                 ->setFrom('mail@multiprokat.com')
                 ->setTo('mail@multiprokat.com')
                 ->setBody($request->request->get('answer'),'text/html');
@@ -1529,7 +1648,7 @@ class ProfileController extends Controller
             }
         }
 
-        $message = urlencode('Арендатор ответил на ваше сообщение в заявке №'.$id.'. Можно посмотреть по адресу: https://multiprokat.com/user/order_page/'.$id);
+        $message = urlencode('Арендатор ответил на ваше сообщение в заявке №'.$id.'. Можно посмотреть по адресу: https://multiprokat.com/user/transport_orders/'.$id);
         if(isset($number)) {
             $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
             $sms_result = @file_get_contents($url);
@@ -1538,14 +1657,14 @@ class ProfileController extends Controller
         // ---------------------------
 
         if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)) {
-            $msg = (new \Swift_Message('Арендатор ответил на ваше сообщение в заявке №' . $id.'. Можно посмотреть по адресу: https://multiprokat.com/user/order_page/'.$id))
+            $msg = (new \Swift_Message('Арендатор ответил на ваше сообщение в заявке №' . $id.'. Можно посмотреть по адресу: https://multiprokat.com/user/transport_orders/'.$id))
                 ->setFrom('mail@multiprokat.com')
                 ->setTo($user->getEmail())
-                ->setBody('Арендатор ответил на ваше сообщение в заявке №' . $id.'. Можно посмотреть по адресу: https://multiprokat.com/user/order_page/'.$id, 'text/html');
+                ->setBody('Арендатор ответил на ваше сообщение в заявке №' . $id.'. Можно посмотреть по адресу: https://multiprokat.com/user/transport_orders/'.$id, 'text/html');
             $mailer->send($msg);
         }
 
-        $msg = (new \Swift_Message('Мультипрокат. Арендатор ответил на сообщение в заявке №'.$id.'. Можно посмотреть по адресу: https://multiprokat.com/user/order_page/'.$id))
+        $msg = (new \Swift_Message('Мультипрокат. Арендатор ответил на сообщение в заявке №'.$id.'. Можно посмотреть по адресу: https://multiprokat.com/user/transport_orders/'.$id))
                 ->setFrom('mail@multiprokat.com')
                 ->setTo('mail@multiprokat.com')
                 ->setBody($request->request->get('answer'),'text/html');

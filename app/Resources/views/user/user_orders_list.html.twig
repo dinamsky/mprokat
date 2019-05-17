@@ -37,11 +37,14 @@
 
             <div {{ is_mobile() ? '' : 'style="background: #e8e8e8;"' }} class="lft_blk">
                 {% for o in orders %}
-                    <div class="uk-margin-bottom ord_toggler
-                                {{ app.session.get('logged_user').id == o.userId and o.isActiveOwner == 1 ? 'active' : '' }}
-                                {{ app.session.get('logged_user').id == o.renterId and o.isActiveRenter == 1 ? 'active' : '' }}"
+                    <div class="uk-margin-bottom ord_toggler {% if order is defined %}
+                                {{ order.id == o.id ? 'active' : '' }}
+                            {% else %}{{ app.session.get('logged_user').id == o.userId and o.isActiveOwner == 1 ? 'active' : '' }}
+                                {{ app.session.get('logged_user').id == o.renterId and o.isActiveRenter == 1 ? 'active' : '' }}{% endif %}"
+                            
                          data-id="{{ o.id }}"
                          data-user_id="{{ app.session.get('logged_user').id }}"
+                        
                     >
 
         {{ app.session.get('logged_user').id == o.userId and o.isActiveOwner == 1 ? '<div class="active_white"></div>' : '' }}
