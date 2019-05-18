@@ -7,6 +7,10 @@
 }
 @media (max-width: 600px){
 
+    .mp-modal-body {
+        padding: 10px 10px;
+    }
+
     .big_order_list footer{
         display: none;
     }
@@ -339,6 +343,12 @@
     .crd_dsc{
         padding-bottom: 5px !important;
     }
+
+    #howtopay.ver1 h2{
+        font-size: 25px;
+        color:black;
+        font-weight: bold;
+    }
 }
 
 @media (min-width: 600px) and (max-width: 1024px){
@@ -364,5 +374,9 @@
 @media (min-width: 600px) {
     .mobile_header{
         display: none;
+    }
+
+    .mp-modal-body {
+        padding: 30px 30px;
     }
 }

@@ -1,0 +1,177 @@
+
+    @media (max-width: 600px){
+        .mp-list ol {
+            counter-reset:myCounter;
+            margin-left:0;
+            padding-left:5px;
+            color: rgb(100,100,100);
+        }
+
+        .mp-list li {
+            position: relative;
+            padding-left: 3em;
+            margin: 0.45em 0;
+            list-style: none;
+            line-height: 1.8em;
+            cursor: pointer;
+            -webkit-transition: all 0.2s ease-in-out;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .mp-list li:hover {
+            color: rgb(0,0,0);
+        }
+
+        .mp-list li:before {
+            content:counter(myCounter);
+            counter-increment:myCounter;
+            position:absolute;
+            top:0;
+            left:0;
+            width: 1.8em;
+            height: 1.8em;
+            line-height: 1.8em;
+            padding:0px;
+            color:#fff;
+            background:#2980b9;
+            font-weight:bold;
+            text-align:center;
+            border-radius: .9em;
+            box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.3);
+            z-index: 1;
+            -webkit-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .mp-list li:hover:before {
+            background-color: #2ecc71;
+        }
+
+        .mp-list li li:before{
+            background-color: #3498db;
+        }
+
+        .mp-list li:after {
+            position: absolute;
+            top: 2.1em;
+            left: 0.9em;
+            width: 2px;
+            height: calc(100% - 2em);
+            content: '';
+            background-color: rgb(203, 203, 203);
+            z-index: 0;
+        }
+
+        .mp-list li:hover:after {
+            background-color: #2ecc71;
+        }
+
+        .mp-list li li {
+            font-size: 0.8em;
+        }
+    }
+
+    @media (min-width: 600px){
+        .mp-list ol {
+            counter-reset:myCounter;
+            margin-left:0;
+            padding-left:5px;
+            color: rgb(100,100,100);
+          }
+    
+          .mp-list li {
+            position: relative;
+            
+            margin: 0.45em 0;
+            list-style: none;
+            line-height: 1.8em;
+            cursor: pointer;
+            -webkit-transition: all 0.2s ease-in-out;
+            transition: all 0.2s ease-in-out;
+          }
+    
+          .mp-list li:nth-child(odd){
+            text-align: left;
+            padding-left: 3em;
+            margin-left: 48.6%;
+          }
+
+          .mp-list li:nth-child(even){
+            text-align: right;
+            padding-right: 3em;
+            margin-right: 48.6%;
+          }
+
+          .mp-list li:hover {
+            color: rgb(0,0,0);
+          }
+    
+          .mp-list li:before {
+            content:counter(myCounter);
+            counter-increment:myCounter;
+            position:absolute;
+            top:0;
+            /* left:50%; */
+            width: 1.8em;
+            height: 1.8em;
+            line-height: 1.8em;
+            padding:0px;
+            color:#fff;
+            background:#2980b9;
+            font-weight:bold;
+            text-align:center;
+            border-radius: .9em;
+            box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.3);
+            z-index: 1;
+            -webkit-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+          }
+    
+          .mp-list li:hover:before {
+            background-color: #2ecc71;
+          }
+    
+          .mp-list li li:before{
+            background-color: #3498db;
+          }
+    
+          .mp-list li:nth-child(odd):after{
+            color:red;
+            left:0.9em;
+            
+          }
+
+          .mp-list li:nth-child(even):after{
+            color:green;
+            right: 0.9em;
+            
+          }
+
+          .mp-list li:nth-child(odd):before{
+            left: 0;
+          }
+
+          .mp-list li:nth-child(even):before{
+            right: 0;
+          }
+
+          .mp-list li:after {
+            
+            position: absolute;
+            top: 2.1em;
+            
+            width: 2px;
+            height: calc(100% - 2em);
+            content: '';
+            background-color: rgb(203, 203, 203);
+            z-index: 0;
+          }
+    
+          .mp-list li:hover:after {
+            background-color: #2ecc71;
+          }
+    
+          .mp-list li li {
+            font-size: 0.8em;
+          }
+    }
