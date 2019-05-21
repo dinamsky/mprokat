@@ -4,24 +4,24 @@
 {% block content %}
     <div class="standard_wide">
         <div uk-grid class="uk-margin-top">
-            <div class="uk-width-1-4">
+            <div class="uk-width-1-2 uk-width-1-4@s">
 
-                <h2>Арендаторам</h2>
+                <h5>Арендаторам</h5>
                 {% for a in arnd %}
                     <div><a href="/faq/{{ a.id }}">{{ a.header }}</a></div>
                 {% endfor %}
 
-                <h2>Владельцам</h2>
+                <h5>Владельцам</h5>
                 {% for o in ownr %}
                     <div><a href="/faq/{{ o.id }}">{{ o.header }}</a></div>
                 {% endfor %}
 
             </div>
-            <div class="uk-width-3-4">
-                <h1>Ответы на часто задаваемые вопросы</h1>
+            <div class="uk-width-1-2 uk-width-3-4@s">
+                <h5>Ответы на часто задаваемые вопросы</h5>
                 <hr>
                 {% if faq is defined %}
-                    <h2 style="">{{ faq.header }}</h2>
+                    <h5>{{ faq.header }}</h5>
                     <div>
                         {{ faq.content|raw }}
                     </div>
