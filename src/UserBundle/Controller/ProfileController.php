@@ -1219,6 +1219,10 @@ class ProfileController extends Controller
         $order = $this->getDoctrine()
             ->getRepository(FormOrder::class)
             ->find($id);
+        
+        if (empty($order)){
+            return new Response("",404);
+        }    
             
         if(!$user->getIsBanned() && (($order->getRenterId() == $user->getId()) || ($order->getUserId() == $user->getId() ))) {
             // $order = $this->getDoctrine()
