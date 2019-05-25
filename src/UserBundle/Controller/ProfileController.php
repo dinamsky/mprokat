@@ -1434,7 +1434,7 @@ class ProfileController extends Controller
         // ---------------------------
 
         if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)) {
-            $msg = (new \Swift_Message('Владелец одобрил вашу заявку №' . $id . '. Можно оплачивать'.'. Детали по адресу: https://multiprokat.com/user/transport_orders/'.$id))
+            $msg = (new \Swift_Message('Владелец одобрил вашу заявку №' . $id))
                 ->setFrom('mail@multiprokat.com')
                 ->setTo($user->getEmail())
                 ->setBody('Владелец одобрил вашу заявку №' . $id . '. Можно оплачивать'.'. Детали по адресу: https://multiprokat.com/user/transport_orders/'.$id, 'text/html');
@@ -1501,7 +1501,7 @@ class ProfileController extends Controller
 
         // ---------------------------
         if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)) {
-            $msg = (new \Swift_Message('Владелец отклонил вашу заявку №' . $id.'. Можно посмотреть по адресу: https://multiprokat.com/user/transport_orders/'.$id))
+            $msg = (new \Swift_Message('Владелец отклонил вашу заявку №' . $id))
                 ->setFrom('mail@multiprokat.com')
                 ->setTo($user->getEmail())
                 ->setBody('Владелец отклонил вашу заявку №' . $id.'. Можно посмотреть по адресу: https://multiprokat.com/user/transport_orders/'.$id, 'text/html');
@@ -1585,14 +1585,14 @@ class ProfileController extends Controller
         // ---------------------------
 
         if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)) {
-            $msg = (new \Swift_Message('Владелец ответил на ваше сообщение в заявке №' . $id.'. Можно посмотреть по адресу: https://multiprokat.com/user/transport_orders/'.$id))
+            $msg = (new \Swift_Message('Владелец ответил на ваше сообщение в заявке №' . $id))
                 ->setFrom('mail@multiprokat.com')
                 ->setTo($user->getEmail())
                 ->setBody('Владелец ответил на ваше сообщение в заявке №' . $id.'. Можно посмотреть по адресу: https://multiprokat.com/user/transport_orders/'.$id, 'text/html');
             $mailer->send($msg);
         }
 
-        $msg = (new \Swift_Message('Мультипрокат. Владелец ответил на сообщение в заявке №'.$id.'. Можно посмотреть по адресу: https://multiprokat.com/user/transport_orders/'.$id))
+        $msg = (new \Swift_Message('Мультипрокат. Владелец ответил на сообщение в заявке №'.$id))
                 ->setFrom('mail@multiprokat.com')
                 ->setTo('mail@multiprokat.com')
                 ->setBody($request->request->get('answer'),'text/html');
@@ -1738,7 +1738,7 @@ class ProfileController extends Controller
         
 
         if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)) {
-            $msg = (new \Swift_Message('Арендатор ответил на ваше сообщение в заявке №' . $id.'. Можно посмотреть по адресу: https://multiprokat.com/user/transport_orders/'.$id))
+            $msg = (new \Swift_Message('Арендатор ответил на ваше сообщение в заявке №' . $id))
                 ->setFrom('mail@multiprokat.com')
                 ->setTo($user->getEmail())
                 ->setBody('Арендатор ответил на ваше сообщение в заявке №' . $id.'. Можно посмотреть по адресу: https://multiprokat.com/user/transport_orders/'.$id, 'text/html');
@@ -1754,7 +1754,7 @@ class ProfileController extends Controller
             $mailer->send($msg);
         }
 
-        $msg = (new \Swift_Message('Мультипрокат. Арендатор ответил на сообщение в заявке №'.$id.'. Можно посмотреть по адресу: https://multiprokat.com/user/transport_orders/'.$id))
+        $msg = (new \Swift_Message('Мультипрокат. Арендатор ответил на сообщение в заявке №'.$id))
                 ->setFrom('mail@multiprokat.com')
                 ->setTo('mail@multiprokat.com')
                 ->setBody($request->request->get('answer'),'text/html');
@@ -1850,7 +1850,7 @@ class ProfileController extends Controller
         
         //  return new Response( json_encode($_FILES['files']) );
         if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)) {
-            $msg = (new \Swift_Message('Арендатор ответил на ваше сообщение в заявке №' . $id.'. Можно посмотреть по адресу: https://multiprokat.com/user/transport_orders/'.$id))
+            $msg = (new \Swift_Message('Арендатор ответил на ваше сообщение в заявке №' . $id))
                 ->setFrom('mail@multiprokat.com')
                 ->setTo($user->getEmail())
                 ->setBody('Арендатор ответил на ваше сообщение в заявке №' . $id.'. Можно посмотреть по адресу: https://multiprokat.com/user/transport_orders/'.$id, 'text/html');
