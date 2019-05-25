@@ -29,6 +29,10 @@
                     </div>
                 </div>
             </div>
+            {% if city is defined %}
+                <input type="hidden" id="cityURL" name="cityURL" value="{{ city.url }}">
+                <input type="hidden" id="cityId" name="cityId" value="{{ city.id }}">
+            {% endif %}
         </header>
 
 

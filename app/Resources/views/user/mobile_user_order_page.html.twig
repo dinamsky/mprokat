@@ -6,6 +6,7 @@
     <script src="{{ asset('assets/js/jquery.maskedinput.js') }}"></script>
     <script src="{{ asset('assets/js/phone_validate.js') }}"></script>
     <script src="{{ asset('assets/js/order.js') }}"></script>
+    <script src="{{ asset('assets/js/upload_files.js') }}"></script>
 {% endblock %}
 
 {% block bodyClass %}
@@ -188,15 +189,30 @@
 
 
         {% set btm = 0 %}
+        {% set btm_prog = 36 %}
 
         {% if o.ownerStatus in ['wait_for_accept','answered','wait_for_answer'] and app.session.get('logged_user').id == o.userId %}
             {% set btm = 65 %}
+            {% set btm_prog = 101 %}
         {% endif %}
 
         {% if o.renterStatus == 'wait_for_pay' and app.session.get('logged_user').id == o.renterId %}
             {% set btm = 82 %}
+            {% set btm_prog = 118 %}
         {% endif %}
 
+        {% if app.session.get('logged_user').id == o.renterId %}
+        <div id="js-attachfiles" class="attach-back-chat uk-card uk-card-default" style="    margin-top: 3px;
+    margin-bottom: 3px;
+    position: fixed;
+    bottom: {{ btm_prog }}px;" hidden>
+            <button id="attach_files_clear" type="button" uk-close></button>
+            <b>Файлы для отправки: </b><br>
+        </div>
+        <div style="margin-top: 3px; margin-bottom: 3px; position: fixed; bottom: {{ btm_prog }}px; width: 100%; z-index: 100; left:0;">
+            <progress id="js-progressbar" class="uk-progress" value="0" max="100" hidden></progress>
+        </div>
+        {% endif %}
         <div style="border: 1px solid grey;
             margin-top: 40px;
             margin-bottom: 0px;
@@ -209,26 +225,39 @@
             box-sizing: border-box;">
 
             <div class="uk-grid uk-grid-small">
+                {% if app.session.get('logged_user').id == o.renterId %}
+
+                <div class="js-upload" uk-form-custom>
+                    {# <progress id="js-progressbar" class="uk-progress" max="1" hidden="hidden"></progress> #}
+                    <input id="attach_files" type="file" name="atfiles[]" multiple concurrent="5" >
+                    <button class="uk-button uk-button-default" type="button" tabindex="-1" style="padding: 0px 0px;">
+                    <div class="uk-flex uk-flex-center" style="height: auto;    color: #12d061;
+    width: 40px;
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position: center;" data-src="/assets/images/interface/attach.svg" uk-img >
+                        <b>&nbsp;</b>
+                    </div>
+                    
+                </div>
+                {% endif %}
                 <div class="uk-width-expand msgb">
                     <textarea name="answer" class="uk-width-1-1 autoExpand"
                               rows='1'
                               data-min-rows='1'
                               style="display: block;
-                              box-sizing: padding-box;
                               overflow: hidden;
 
-                              padding: 10px;
+                              padding: 5px 0px;
                               width: 250px;
-                              font-size: 14px;
-
-                              border-radius: 6px;
 
                               border: 0;"
                               placeholder="Написать сообщение"></textarea>
-
                 </div>
                 <div class="uk-width-auto">
-                    <button type="button" id="{{ app.session.get('logged_user').id == o.userId ? 'owner' : 'renter' }}_answer" class="snd_btn" value="{{ o.id }}" disabled><i class="fa fa-send"></i> Отправить</button>
+                    <button type="button" id="{{ app.session.get('logged_user').id == o.userId ? 'owner' : 'renter' }}_answer" class="snd_btn" value="{{ o.id }}" style="    border: 1px solid #e5e5e5;
+                            background-color: transparent;
+                            box-shadow: 2px 2px 1px lightgrey;" disabled><i class="fa fa-send"></i> Отправить</button>
                 </div>
             </div>
         </div>
@@ -257,8 +286,6 @@
     border-radius: 5px;">Одобрить</button>
             </div>
         {% endif %}
-
-
 
     </div>
 

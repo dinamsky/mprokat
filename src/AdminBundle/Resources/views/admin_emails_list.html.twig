@@ -3,6 +3,10 @@
 {% block content %}
     <h1>Письма</h1>
     {% for email in emails %}
-        <div><a href="/adminEditEmail/{{ email }}">{{ names[email] }}</a></div>
+        {% if names.email is defined %}
+            <div><a href="/adminEditEmail/{{ email }}">{{ names.email }}</a></div>
+        {% else %}
+            <div><a href="/adminEditEmail/{{ email }}">{{ email }}</a></div>
+        {% endif %}
     {% endfor %}
 {% endblock %}

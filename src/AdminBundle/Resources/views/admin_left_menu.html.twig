@@ -21,7 +21,9 @@
     {%  endif %}
     {% if app.session.has('admin') %}
     <a class="uk-button uk-button-default uk-button-small uk-width-1-1 uk-text-small" href="/adminNewUser">Создать новый аккаунт</a>
+    {% if city is defined %}
     <a class="uk-button uk-button-default uk-button-small uk-width-1-1 uk-text-small" href="/rent/{{ city.url }}/all/cars">Объявления</a>
+    {% endif %}
     {% endif %}
 
 </div>

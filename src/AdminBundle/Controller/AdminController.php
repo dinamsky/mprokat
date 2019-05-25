@@ -25,9 +25,11 @@ class AdminController extends Controller
 
         $city = $this->get('session')->get('city');
 
+        $in_city = $city->getUrl();
+
         if ($this->get('session')->get('admin') === null) return $this->render('AdminBundle::admin_enter_form.html.twig');
         else {
-            return $this->render('AdminBundle::admin_main.html.twig',['city'=>$city]);
+            return $this->render('AdminBundle::admin_main.html.twig',['city'=>$city,'in_city'=>$in_city]);
         }
     }
 
@@ -233,6 +235,9 @@ class AdminController extends Controller
         if ($this->get('session')->get('admin') === null) return $this->render('AdminBundle::admin_enter_form.html.twig');
         else {
 
+            $city = $this->get('session')->get('city');
+            $in_city = $city->getUrl();
+
             $names = array(
                 "admin_registration.html.twig" => 'Регистрация админом',
                 "admin_registration_en.html.twig" => 'Регистрация админом EN',
@@ -253,7 +258,9 @@ class AdminController extends Controller
 
             return $this->render('AdminBundle::admin_emails_list.html.twig', [
                 'names' => $names,
-                'emails' => $files
+                'emails' => $files,
+                'city' => $city,
+                'in_city' => $in_city,
             ]);
         }
     }

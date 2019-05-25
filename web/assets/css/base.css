@@ -1825,3 +1825,10 @@ body.mobile {
     padding: 0px 4px 4px 4px;
     border-radius: 14px;
 }
+
+.attach-back-chat{
+    background: rgba(222, 184, 135, 0.57);
+    color: rgba(0, 0, 0, 0.47);
+    border-radius: 10px;
+    padding: 5px;
+}
