@@ -1746,7 +1746,7 @@ class ProfileController extends Controller
                 foreach($filess as $file)
                 {
                     if (!empty($file['name'])){
-                        $msg->attach(Swift_Attachment::fromPath($file['tmp_name'])
+                        $msg->attach(\Swift_Attachment::fromPath($file['tmp_name'])
                             ->setFilename($file['name']));
                     }
                 }
@@ -1762,7 +1762,7 @@ class ProfileController extends Controller
                 foreach($filess as $file)
                 {
                     if (!empty($file['name'])){
-                        $msg->attach(Swift_Attachment::fromPath($file['tmp_name'])
+                        $msg->attach(\Swift_Attachment::fromPath($file['tmp_name'])
                             ->setFilename($file['name']));
                     }
                 }
