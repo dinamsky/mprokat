@@ -66,9 +66,9 @@ $( document ).ready(function() {
 
     $('#attach_files').on('change', function () {
         if (this.files.length > 0){
-            $(this).parents('.ord_content').find('#js-attachfiles').removeAttr("hidden");
-            $(this).parents('.ord_content').find('#renter_answer').attr("disabled", false);
-            var ins = $(this).parents('.ord_content').find('#js-attachfiles');
+            $('#js-attachfiles').removeAttr("hidden");
+            $('#renter_answer').attr("disabled", false);
+            var ins = $('#js-attachfiles');
             $(ins).children('ol').remove();
             $(ins).append('<ol></ol>');
             for (var i = 0; i < this.files.length; ++i) {
@@ -81,32 +81,37 @@ $( document ).ready(function() {
     });
 
     $('#attach_files_clear').on('click', function () {
-        var attFiles = $(this).parents('.ord_content').find("#attach_files");
+        var attFiles = $("#attach_files");
         attFiles.replaceWith( attFiles = attFiles.clone( true ) );
-        $(this).parents('.ord_content').find("#attach_files").value = "";
-        if ($(this).parents('.ord_content').find("#attach_files").files == undefined){
-            $(this).parents('.ord_content').find('#js-attachfiles').attr("hidden","");
+        document.getElementById("attach_files").value = "";
+        if ($("#attach_files").files == undefined){
+            $('#js-attachfiles').attr("hidden","");
         }
 
-        var answer = $(this).parents('.ord_content').find('textarea[name="answer"]').val();
+        var answer = $('#renter_answer').parents('.ord_content').find('textarea[name="answer"]').val();
         if (answer == ''){
-            $(this).parents('.ord_content').find('#renter_answer').attr("disabled", true);
+            $('#renter_answer').attr("disabled", true);
         }
     });
 
     $('#renter_answer').on('click', function () {
 
         $(this).attr("disabled", true);
-        var bar = document.getElementById('js-progressbar-'+$(this).val());
+        // var id = $(this).val();
+        // var answer = $(this).parents('.ord_content').find('textarea[name="answer"]').val();
+        // var files = $(this).parents('#attach_files').find('input[name="atfiles"]').val();
+        var bar = document.getElementById('js-progressbar');
         
         var answer = $(this).parents('.ord_content').find('textarea[name="answer"]').val();
         var fd = new FormData;
 
         fd.append('id', $(this).val());
         fd.append('answer', answer);
-        $.each($('#attach_files-'+$(this).val())[0].files, function(i, file) {
+        $.each($('#attach_files')[0].files, function(i, file) {
             fd.append('files[]', file);
         });
+        // fd.append('files', $input.prop('files'));
+
         
         bar.removeAttribute('hidden');
 
@@ -114,12 +119,14 @@ $( document ).ready(function() {
             xhr: function() {
                 var xhr = new window.XMLHttpRequest();
                 xhr.upload.addEventListener("progress", function(evt) {
+                    // bar.removeAttribute('hidden');
                     bar.max = evt.total;
                     bar.value = evt.loaded;
                     if (evt.lengthComputable) {
                         // var percentComplete = evt.loaded / evt.total;
                         bar.max = evt.total;
                         bar.value = evt.loaded;
+                        //Do something with upload progress here
                     }
                 }, false);
         
