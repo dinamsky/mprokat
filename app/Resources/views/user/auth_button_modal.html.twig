@@ -3,7 +3,8 @@
         <a class="user_image_block"
            href="{{ t3_new.getNotify|length > 0 ? '/user/transport_orders' : '/user/cards' }}"
         >
-            <img src="/assets/images/users/t/{{ app.session.get('user_pic') }}.jpg" alt="" style="height: 40px"> {{ app.session.get('logged_user').header }}
+            <img src="/assets/images/users/t/{{ app.session.get('user_pic') }}.jpg" alt="" style="height: 40px">{% if app.session.get('logged_user').header != '' %} {{ app.session.get('logged_user').header }}
+            {% else %} без имени {% endif %}
 
             {% if t3_new.getNotify|length > 0 %}<div class="top_ord_notify"><i uk-icon="bell"></i></div>{% endif %}
         </a>
