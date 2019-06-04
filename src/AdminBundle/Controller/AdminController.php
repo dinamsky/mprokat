@@ -129,7 +129,7 @@ class AdminController extends Controller
 
             $user = new User();
             $user->setEmail($request->request->get('email'));
-            $user->setLogin($request->request->get('header'));
+            $user->setLogin(preg_replace('~[^0-9]+~','',$request->request->get('phone')));
             $user->setPassword($password->HashPassword($psw));
             $user->setHeader($request->request->get('header'));
             $user->setActivateString('');

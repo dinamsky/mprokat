@@ -251,7 +251,7 @@ class UserController extends Controller
         $code = md5(rand(0,99999999));
         $user = new User();
         $user->setEmail($request->request->get('email'));
-        $user->setLogin('');
+        $user->setLogin(preg_replace('~[^0-9]+~','',$request->request->get('phone')));
         $user->setPassword($password->HashPassword($request->request->get('password')));
         $user->setHeader($request->request->get('header'));
         $user->setActivateString($code);
@@ -289,50 +289,73 @@ class UserController extends Controller
      */
     public function qreg_ajax_1_Action(Request $request, Password $password, \Swift_Mailer $mailer)
     {
+        $res = array(
+            'error' => 0,
+            'message' => []
+        );
+
+
         $ok = true;
 
         $r = '';
 
-        $user_info = $this->getDoctrine()
-            ->getRepository(UserInfo::class)
+        $user_l = $this->getDoctrine()
+            ->getRepository(User::class)
             ->findOneBy(array(
-                'uiKey' => 'phone',
-                'uiValue' => $request->request->get('phone')
+                'login' => preg_replace('~[^0-9]+~','',$request->request->get('phone'))
             ));
 
-        if ($user_info) {
-            $this->addFlash(
-                'notice',
-                'Пользователь уже зарегистрирован! Выполните вход'
-            );
+        if ($user_l) {
+            // $this->addFlash(
+            //     'notice',
+            //     'Пользователь уже зарегистрирован! Выполните вход'
+            // );
+            $r = 'user';
             $ok = false;
         }
 
+        // $user_info = $this->getDoctrine()
+        //     ->getRepository(UserInfo::class)
+        //     ->findOneBy(array(
+        //         'uiKey' => 'phone',
+        //         'uiValue' => preg_replace('~[^0-9]+~','',$request->request->get('phone'))
+        //     ));
+
+        // if ($user_info) {
+        //     // $this->addFlash(
+        //     //     'notice',
+        //     //     'Пользователь уже зарегистрирован! Выполните вход'
+        //     // );
+        //     $r = 'user';
+        //     $ok = false;
+        // }
+
         //$xn = explode("@",$request->request->get('email'));
 
-
-        $bu = $request->request->get('back_url');
-
-        $code = rand(111111,999999);
-        $user = new User();
-        $user->setEmail('');
-        $user->setLogin('');
-        $user->setPassword($password->HashPassword($code));
-        $user->setHeader($request->request->get('phone'));
-        //$user->setHeader('');
-        $user->setActivateString($code);
-        $user->setTempPassword($bu);
-        $user->setIsSubscriber(true);
-        $user->setIsNew(true);
-        $user->setWhois('new_renter');
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($user);
-        $em->flush();
-
         if($ok) {
+
+            $bu = $request->request->get('back_url');
+
+            $code = rand(111111,999999);
+            $user = new User();
+            $user->setEmail($request->request->get('email'));
+            $user->setLogin(preg_replace('~[^0-9]+~','',$request->request->get('phone')));
+            $user->setPassword($password->HashPassword($code));
+            //$user->setHeader($request->request->get('phone'));
+            $user->setHeader(!empty($request->request->get('name'))?$request->request->get('name'):'Без имени');
+            //$user->setHeader('');
+            $user->setActivateString($code);
+            $user->setTempPassword($bu);
+            $user->setIsSubscriber(true);
+            $user->setIsNew(true);
+            $user->setWhois('new_renter');
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
             $number = preg_replace('~[^0-9]+~','',$request->request->get('phone'));
             //if(strlen($number)==11) $number = substr($number, 1);
-            $message = urlencode('Ваш код регистрации: '.$code);
+            $message = urlencode('Ваш пароль регистрации: '.$code);
             $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
             $sms_result = file_get_contents($url);
             $r = 'ok';
@@ -355,10 +378,10 @@ class UserController extends Controller
 
         if($user) {
 
-            $phone = $user->getHeader();
+            $phone = $user->getLogin();
 
             //$user->setTempPassword('');
-            $user->setHeader('');
+            //$user->setHeader('');
             $user->setIsActivated(true);
             $user->setActivateString('');
             $em = $this->getDoctrine()->getManager();
@@ -444,6 +467,53 @@ class UserController extends Controller
         //
     }
 
+
+    /**
+     * @Route("/userRecoverTel")
+     */
+    public function recoverTelAction(Request $request, Password $password)
+    {
+        $_t = $this->get('translator');
+
+        if($request->request->get('password1') == $request->request->get('password2')) {
+            $user_l = $this->getDoctrine()
+                ->getRepository(User::class)
+                ->findOneBy(array(
+                    'login' => $request->request->get('phone'),
+                ));
+
+            if($user_l) {
+                $code = md5(rand(100000, 999999));
+                $user->setActivateString($code);
+                $user->setTempPassword($password->HashPassword($request->request->get('password1')));
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+
+                $number = preg_replace('~[^0-9]+~','',$request->request->get('phone'));
+                //if(strlen($number)==11) $number = substr($number, 1);
+                $message = urlencode('Ваш пароль восстановления: '.$code);
+                $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
+                $sms_result = file_get_contents($url);
+                $r = 'ok';
+
+            } else {
+                $this->addFlash(
+                    'notice',
+                    'Данного логина не существует!'
+                );
+            }
+            return new Response($r);
+        } else {
+            $this->addFlash(
+                'notice',
+                $_t->trans('Пароли не совпадают!')
+            );
+            return new Response($r);
+        }    
+        return new Response($r);    
+    }
+
     /**
      * @Route("/userRecover")
      */
@@ -456,6 +526,12 @@ class UserController extends Controller
                 ->getRepository(User::class)
                 ->findOneBy(array(
                     'email' => $request->request->get('email'),
+                ));
+
+            $user_l = $this->getDoctrine()
+                ->getRepository(User::class)
+                ->findOneBy(array(
+                    'login' => $request->request->get('email'),
                 ));
 
             if($user) {
@@ -496,7 +572,7 @@ class UserController extends Controller
             } else {
                 $this->addFlash(
                     'notice',
-                    'Данного email не  существует!'
+                    'Данного логина не существует!'
                 );
             }
             return $this->redirect($request->request->get('return'));

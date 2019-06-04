@@ -1,4 +1,43 @@
+
+
+// window.addEventListener("DOMContentLoaded", function () {
 $( document ).ready(function() {
+    // var inputsTel = document.querySelectorAll('input[type="tel"]');
+    // Inputmask({
+    //     "mask": "(999) 999-99-99",
+    //     showMaskOnHover: false
+    // }).mask(inputsTel);
+    
+    // var inputsMail = document.querySelectorAll('input[type="mail"]');
+    // Inputmask({
+    //     "mask": "(999) 999-99-99",
+    //     showMaskOnHover: false
+    // }).mask(inputsMail);
+
+    $("form[name=ver1]").submit(function(evt) {
+        var form = event.target;
+        event.preventDefault()
+        qreg_1($(form).find('#qreg_1'));
+    });
+
+    $("form[name=ver2]").submit(function(evt) {
+        var form = event.target;
+        event.preventDefault()
+        qreg_2($(form).find('#qreg_2'));
+    });
+
+    // $('.country-select').on('change', function(){
+    //     var code = $(this).find(':selected').data('code');
+    //     $('.mp-country-code').text(code);
+    //     var plshold = $(this).find(':selected').data('plshold');
+    //     $('.mp-country-phone').attr('placeholder', plshold);
+    //     var mask = $(this).find(':selected').data('filter');
+    //     Inputmask({
+    //         "mask": mask,
+    //         showMaskOnHover: false
+    //     }).mask(inputsTel);
+    // });
+
     $('#cardTabs').on('shown', function (element) {
         if (element.target.id === 'card_tab') {
             var uluru = {lat: $('#map').data('lat') - 0, lng: $('#map').data('lng') - 0};
@@ -133,42 +172,84 @@ $( document ).ready(function() {
         autoClose: true
     });
 
-
-    $('#qreg_1').on('click', function () {
-        //var email = $('#nrf input[name="email"]').val().trim();
+    function qreg_1(but) {
+        var email = $('#nrf input[name="mail"]').val().trim();
         //var password = $('#nrf input[name="password"]').val().trim();
-        var phone = $('#nrf input[name="phone"]').val().trim();
+        var phone = $('#nrf .mp-country-code').text()+' '+$('#nrf input[name="phone"]').val();
+        console.log(phone);
+        //if ((phone = (phone = String(phone.match(/[0-9]+/g))).replace(/,/g, "")) < 99999) alert("Введите телефон корректно");
+        
         var back_url = $('#nrf input[name="back_url"]').val();
-        var t = $(this);
+        var name = $('#nrf input[name="name"]').val().trim();
+        var t = $(but);
 
-        $(this).remove();
+        $(but).addClass('uk-hidden');
 
         if(phone!=='') {
             $.ajax({
                 url: '/qreg_ajax_1',
                 type: 'POST',
-                data: {phone: phone,back_url:back_url},
+                data: {phone: phone,back_url:back_url,name: name,email: email},
                 success: function (html) {
                     if(html ==='ok') {
-                        $('.rb_1').remove();
+                        $('.rb_1').addClass('uk-hidden');
                         $('.rb_2').removeClass('uk-hidden');
-                    } else {
+                    } else if (html ==='user') {
+                        t.removeClass('uk-hidden');
+                        $('#auth_module').removeClass('uk-hidden');
                         UIkit.notification('Такой пользователь уже есть в базе!',{status:'danger',timeout:100000});
+                    } else {
+                        t.removeClass('uk-hidden');
+                        $(but).removeClass('uk-hidden');
+                        UIkit.notification('Не удалось отправить СМС, попробуйте указать другой номер.',{status:'danger',timeout:100000});
                     }
                 }
             });
         } else {
             UIkit.notification('Все поля обязательны!',{status:'danger',timeout:100000});
         }
-    });
+    };
+    
+    // $('#qreg_1').on('click', function () {
+    //     var email = $('#nrf input[name="email"]').val().trim();
+    //     //var password = $('#nrf input[name="password"]').val().trim();
+    //     var phone = $('#nrf input[name="phone"]').val().trim();
+    //     //if ((phone = (phone = String(phone.match(/[0-9]+/g))).replace(/,/g, "")) < 99999) alert("Введите телефон корректно");
+        
+    //     var back_url = $('#nrf input[name="back_url"]').val();
+    //     var name = $('#nrf input[name="name"]').val().trim();
+    //     var t = $(this);
 
+    //     $(this).addClass('uk-hidden');
 
+    //     if(phone!=='') {
+    //         $.ajax({
+    //             url: '/qreg_ajax_1',
+    //             type: 'POST',
+    //             data: {phone: phone,back_url:back_url,name: name,email: email},
+    //             success: function (html) {
+    //                 if(html ==='ok') {
+    //                     $('.rb_1').remove();
+    //                     $('.rb_2').removeClass('uk-hidden');
+    //                 } else if (html ==='user') {
+    //                     t.removeClass('uk-hidden');
+    //                     UIkit.notification('Такой пользователь уже есть в базе!',{status:'danger',timeout:100000});
+    //                 } else {
+    //                     t.removeClass('uk-hidden');
+    //                     UIkit.notification('Не удалось отправить СМС, попробуйте указать другой номер.',{status:'danger',timeout:100000});
+    //                 }
+    //             }
+    //         });
+    //     } else {
+    //         UIkit.notification('Все поля обязательны!',{status:'danger',timeout:100000});
+    //     }
+    // });
 
-    $('#qreg_2').on('click', function () {
+    function qreg_2(but) {
         var regcode = $('#nrf input[name="regcode"]').val();
-        var t = $(this);
+        var t = $(but);
 
-        $(this).remove();
+        $(but).addClass('uk-hidden');
 
         $.ajax({
             url: '/qreg_ajax_2',
@@ -176,20 +257,46 @@ $( document ).ready(function() {
             data: {regcode: regcode},
             success: function (html) {
                 if(html==='ok') {
-                    $('.rb_2').remove();
+                    $('.rb_2').addClass('uk-hidden');
                     $('.rb_3').removeClass('uk-hidden');
                 } else {
+                    // $('.rb_1').removeClass('uk-hidden');
+                    $('.rb_2').removeClass('uk-hidden');
+                    // $('#qreg_1').removeClass('uk-hidden');
+                    $(but).removeClass('uk-hidden');
                     UIkit.notification('Код не совпал!',{status:'danger',timeout:100000});
                 }
             }
         });
-    });
+    };
+
+    // $('#qreg_2').on('click', function () {
+    //     var regcode = $('#nrf input[name="regcode"]').val();
+    //     var t = $(this);
+
+    //     $(this).remove();
+
+    //     $.ajax({
+    //         url: '/qreg_ajax_2',
+    //         type: 'POST',
+    //         data: {regcode: regcode},
+    //         success: function (html) {
+    //             if(html==='ok') {
+    //                 $('.rb_2').remove();
+    //                 $('.rb_3').removeClass('uk-hidden');
+    //             } else {
+    //                 UIkit.notification('Код не совпал!',{status:'danger',timeout:100000});
+    //             }
+    //         }
+    //     });
+    // });
 
 
 
 
 });
 
+// });
 function new_book_validate(){
 
     var message = [];

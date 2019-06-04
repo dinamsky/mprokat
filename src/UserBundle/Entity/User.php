@@ -83,6 +83,13 @@ class User
     /**
      * @var bool
      *
+     * @ORM\Column(name="is_email_correct", type="boolean")
+     */
+    private $isEmailCorrect = 0;
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(name="is_subscriber", type="boolean")
      */
     private $isSubscriber;
@@ -731,5 +738,29 @@ class User
     public function getWhois()
     {
         return $this->whois;
+    }
+
+    /**
+     * Set isEmailCorrect
+     *
+     * @param boolean $isEmailCorrect
+     *
+     * @return User
+     */
+    public function setIsEmailCorrect($isEmailCorrect)
+    {
+        $this->isEmailCorrect = $isEmailCorrect;
+
+        return $this;
+    }
+
+    /**
+     * Get isEmailCorrect
+     *
+     * @return boolean
+     */
+    public function getIsEmailCorrect()
+    {
+        return $this->isEmailCorrect;
     }
 }

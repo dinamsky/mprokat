@@ -1825,3 +1825,11 @@ body.mobile {
     padding: 0px 4px 4px 4px;
     border-radius: 14px;
 }
+
+.mp-form-span{
+    width: 60px;
+}
+
+.uk-form-icon:not(.uk-form-icon-flip) ~ .uk-input {
+    padding-left: 60px !important;
+  }
