@@ -90,6 +90,13 @@ class User
     /**
      * @var bool
      *
+     * @ORM\Column(name="is_phone_correct", type="boolean")
+     */
+    private $isPhoneCorrect = 0;
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(name="is_subscriber", type="boolean")
      */
     private $isSubscriber;
@@ -762,5 +769,29 @@ class User
     public function getIsEmailCorrect()
     {
         return $this->isEmailCorrect;
+    }
+
+    /**
+     * Set isPhoneCorrect
+     *
+     * @param boolean $isPhoneCorrect
+     *
+     * @return User
+     */
+    public function setIsPhoneCorrect($isPhoneCorrect)
+    {
+        $this->isPhoneCorrect = $isPhoneCorrect;
+
+        return $this;
+    }
+
+    /**
+     * Get isPhoneCorrect
+     *
+     * @return boolean
+     */
+    public function getIsPhoneCorrect()
+    {
+        return $this->isPhoneCorrect;
     }
 }

@@ -67,7 +67,7 @@ $( document ).ready(function() {
             $.ajax({
                 url: '/userRecoverTelCode',
                 type: 'POST',
-                data: {regcode: regcode},
+                data: {code: regcode},
                 success: function (html) {
                     if(html ==='ok') {
                         $(form).addClass('uk-hidden');

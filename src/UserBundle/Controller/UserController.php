@@ -383,6 +383,7 @@ class UserController extends Controller
             //$user->setTempPassword('');
             //$user->setHeader('');
             $user->setIsActivated(true);
+            $user->setIsPhoneCorrect(true);
             $user->setActivateString('');
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
@@ -426,6 +427,12 @@ class UserController extends Controller
             if ($user->getTempPassword() != '') {
                 $user->setPassword($user->getTempPassword());
                 $message = $_t->trans('Ваш новый пароль успешно активирован!');
+            } else if (!$user->getIsEmailCorrect() && $user->getIsActivated()) {
+                $msg = (new \Swift_Message('Подтверждение email на сайте multiprokat.com'))
+                ->setFrom('mail@multiprokat.com')
+                ->setTo('mail@multiprokat.com')
+                ->setBody('Только что был успешно подтвержден email <a href="https://multiprokat.com/user/'.$user->getId().'">пользователя</a>','text/html');
+                $this->mailer->send($msg);;
             } else {
                 $msg = (new \Swift_Message('Регистрация на сайте multiprokat.com'))
                 ->setFrom('mail@multiprokat.com')
@@ -436,6 +443,7 @@ class UserController extends Controller
             }
             $user->setTempPassword('');
             $user->setIsActivated(true);
+            $user->setIsEmailCorrect(true);
             $user->setActivateString('');
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
@@ -474,6 +482,7 @@ class UserController extends Controller
     public function recoverTelAction(Request $request, Password $password)
     {
         $_t = $this->get('translator');
+        $r = 'false';
 
         if($request->request->get('password1') == $request->request->get('password2')) {
             $user_l = $this->getDoctrine()
@@ -503,15 +512,65 @@ class UserController extends Controller
                     'Данного логина не существует!'
                 );
             }
-            return new Response($r);
         } else {
             $this->addFlash(
                 'notice',
                 $_t->trans('Пароли не совпадают!')
             );
-            return new Response($r);
         }    
         return new Response($r);    
+    }
+
+/**
+     * @Route("/userRecoverTelCode", name="user_recover_tel_code")
+     */
+    public function userRecoverTelCodeAction(Request $request)
+    {
+        $_t = $this->get('translator');
+        $r = 'false';
+
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findOneBy(array(
+                'activateString' => $request->request->get('code')
+            ));
+
+        if($user){
+            if ($user->getTempPassword() != '') {
+                $user->setPassword($user->getTempPassword());
+                $message = $_t->trans('Ваш новый пароль успешно активирован!');
+            }
+            $user->setTempPassword('');
+            $user->setIsActivated(true);
+            $user->setIsPhoneCorrect(true);
+            $user->setActivateString('');
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+            $this->get('session')->set('logged_user', $user);
+
+            $this->setAuthCookie($user);
+
+            $this->addFlash(
+                'notice',
+                $message
+            );
+
+            foreach($user->getCards() as $card){
+                $card->setIsActive(true);
+                $em->persist($card);
+                $em->flush();
+            }
+            $r = 'ok';
+
+        } else {
+            $this->addFlash(
+                'notice',
+                $_t->trans('Произошла ошибка, попробуйте еще раз.')
+            );
+        }
+
+        return new Response($r); 
     }
 
     /**

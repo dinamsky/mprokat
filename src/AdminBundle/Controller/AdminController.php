@@ -135,6 +135,8 @@ class AdminController extends Controller
             $user->setActivateString('');
             $user->setTempPassword($psw);
             $user->setIsActivated(true);
+            $user->setIsEmailCorrect(true);
+            $user->setIsPhoneCorrect(true);
             $user->setAdmin($admin);
             $user->setIsSubscriber(true);
             $em = $this->getDoctrine()->getManager();
