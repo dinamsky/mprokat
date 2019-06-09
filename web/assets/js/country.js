@@ -43,9 +43,11 @@ $( document ).ready(function() {
                 type: 'POST',
                 data: {phone: phone,pass1:password1,pass2:password2},
                 success: function (html) {
+                    console.log(html);
+                    console.log(phone);
                     if(html ==='ok') {
-                        $('#pass_recover_tel').addClass('uk-hidden');
-                        $('#pass_recover_tel_code').removeClass('uk-hidden');
+                        UIkit.modal($('#pass_recover_tel')).hide();
+                        UIkit.modal($('#pass_recover_tel_code')).show();
                     } else {
                         $(form).find('#prtc1').removeClass('uk-hidden');
                         UIkit.notification('Не удалось отправить СМС, попробуйте указать другой номер.',{status:'danger',timeout:100000});
@@ -82,4 +84,70 @@ $( document ).ready(function() {
             UIkit.notification('Все поля обязательны!',{status:'danger',timeout:100000});
         }
     };
+
+
+/// смена телефонного номера
+    $("#modal-phone-edit form").submit(function(evt) {
+        var form = event.target;
+        event.preventDefault()
+        phef1(form);
+    });
+
+    $("#modal-phone-edit_code form").submit(function(evt) {
+        var form = event.target;
+        event.preventDefault()
+        phef2(form);
+    });
+
+    function phef1(form) {
+        var t = form;
+        var phone = $(form).find('.mp-country-code').text()+' '+$(form).find('input[name="phone"]').val();
+
+        $(form).find('#btn-pes-1').addClass('uk-hidden');
+
+        if(phone!=='') {
+            $.ajax({
+                url: '/e_ph_ajax_1',
+                type: 'POST',
+                data: {phone: phone},
+                success: function (html) {
+                    if(html ==='ok') {
+                        UIkit.modal($('#modal-phone-edit')).hide();
+                        UIkit.modal($('#modal-phone-edit_code')).show();
+                    } else {
+                        $(form).find('#btn-pes-1').removeClass('uk-hidden');
+                        UIkit.notification('Не удалось отправить СМС, попробуйте указать другой номер.',{status:'danger',timeout:100000});
+                    }
+                }
+            });
+        } else {
+            UIkit.notification('Все поля обязательны!',{status:'danger',timeout:100000});
+        }
+    };
+
+    function phef2(form) {
+        var t = form;
+        var regcode = $(form).find('input[name="regcode"]').val();
+
+        $(form).find('#btn-pes-2').addClass('uk-hidden');
+
+        if(regcode!=='') {
+            $.ajax({
+                url: '/e_ph_ajax_2',
+                type: 'POST',
+                data: {code: regcode},
+                success: function (html) {
+                    if(html ==='ok') {
+                        document.location.href = window.location.href;
+                    } else {
+                        $(form).find('#btn-pes-2').removeClass('uk-hidden');
+                        UIkit.notification('Код не совпал!',{status:'danger',timeout:100000});
+                    }
+                }
+            });
+        } else {
+            UIkit.notification('Все поля обязательны!',{status:'danger',timeout:100000});
+        }
+    };
+
 });

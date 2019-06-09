@@ -7,6 +7,8 @@ use AppBundle\Entity\Notify;
 use AppBundle\Entity\GeneralType;
 use AppBundle\Foto\FotoUtils;
 use AppBundle\Menu\ServiceStat;
+use AppBundle\Menu\ServiceCaptcha;
+use AppBundle\Menu\ServiceVerification;
 use UserBundle\Entity\Blocking;
 use UserBundle\Entity\User;
 use UserBundle\Entity\FormOrder;
@@ -65,11 +67,11 @@ class ProfileController extends Controller
     /**
      * @Route("/account_send_code", name="account_send_code")
      */
-    public function userAccountSendCodeAction(EntityManagerInterface $em, Request $request, ServiceStat $stat)
+    public function userAccountSendCodeAction(EntityManagerInterface $em, Request $request, ServiceStat $stat, ServiceVerification $serVerif)
     {
-        $number = preg_replace('~[^0-9]+~','',$request->request->get('phone'));
+        $number = $serVerif->getFormatPhone($request->request->get('phone'));
 
-        if(strlen($number)==11) $number = substr($number, 1);
+        // if(strlen($number)==11) $number = substr($number, 1);
         if(strlen($number)<10) $number = '9999999999';
 
         $like = '%'.implode("%",str_split($number)).'%';
@@ -494,7 +496,7 @@ class ProfileController extends Controller
     /**
      * @Route("/user/sendAbuse")
      */
-    public function sendAbuseAction(Request $request, \Swift_Mailer $mailer)
+    public function sendAbuseAction(Request $request, \Swift_Mailer $mailer, ServiceCaptcha $captcha)
     {
         $_t = $this->get('translator');
 
@@ -502,7 +504,7 @@ class ProfileController extends Controller
 
         $card_id = $post->get('card_id');
 
-        if ($this->captchaVerify($post->get('g-recaptcha-response'))) {
+        if ($captcha->captchaVerify($post->get('g-recaptcha-response'))) {
 
             foreach($post->get('abuse') as $ms){
                 $msg[] = $ms.'<br>';
@@ -538,7 +540,7 @@ class ProfileController extends Controller
     /**
  * @Route("/user/sendMessage")
  */
-    public function sendMessageAction(Request $request, \Swift_Mailer $mailer)
+    public function sendMessageAction(Request $request, \Swift_Mailer $mailer, ServiceCaptcha $captcha)
     {
         $_t = $this->get('translator');
 
@@ -563,12 +565,8 @@ class ProfileController extends Controller
         }
 
 
-        if ($this->captchaVerify($post->get('g-recaptcha-response'))) {
+        if ($captcha->captchaVerify($post->get('g-recaptcha-response'))) {
         //if (1==1) {
-
-
-
-
             $message = (new \Swift_Message($_t->trans('Сообщение от пользователя')))
                 ->setFrom(['mail@multiprokat.com' => 'Робот Мультипрокат'])
                 ->setTo($user->getEmail())
@@ -627,7 +625,7 @@ class ProfileController extends Controller
      /**
  * @Route("/user/bookMessage")
  */
-    public function bookMessageAction(Request $request, \Swift_Mailer $mailer)
+    public function bookMessageAction(Request $request, \Swift_Mailer $mailer, ServiceCaptcha $captcha, ServiceVerification $serVerif)
     {
         $_t = $this->get('translator');
 
@@ -638,8 +636,8 @@ class ProfileController extends Controller
         //var_dump($post->has('is_nonreged'));
 
 
-        // if ($this->captchaVerify($post->get('g-recaptcha-response')) or $post->has('is_nonreged')) {
-        if (1==1) {
+        if ($captcha->captchaVerify($post->get('g-recaptcha-response')) or $post->has('is_nonreged')) {
+        // if (1==1) {
 
             $card_id = $post->get('card_id');
 
@@ -689,7 +687,7 @@ class ProfileController extends Controller
             $is_admin_reged = false;
             foreach( $user->getInformation() as $info){
                 if($info->getUiKey() == 'phone'){
-                    $number = preg_replace('~[^0-9]+~','',$info->getUiValue());
+                    $number = $serVerif->getFormatPhone($info->getUiValue());
                     if(strlen($number)==11) $number = substr($number, 1);
 
                     $ph = substr(preg_replace('/[^0-9]/', '', $info->getUiValue()),1);
@@ -946,6 +944,14 @@ class ProfileController extends Controller
 
         return $this->redirect('/');
     }
+
+    /**
+     * @Route("/profile/userEditTel")
+     */
+    public function userEditTelAction(Request $request, ServiceVerification $serVerif){
+
+    }
+    
 
     /**
      * @Route("/profile/saveFoto")
@@ -1379,7 +1385,7 @@ class ProfileController extends Controller
     /**
      * @Route("/ajax_owner_accept", name="ajax_owner_accept")
      */
-    public function ownerAcceptAction(EntityManagerInterface $em, Request $request, ServiceStat $stat, \Swift_Mailer $mailer)
+    public function ownerAcceptAction(EntityManagerInterface $em, Request $request, ServiceStat $stat, \Swift_Mailer $mailer, ServiceVerification $serVerif)
     {
         $id = $request->request->get('id');
         $order = $this->getDoctrine()
@@ -1414,7 +1420,7 @@ class ProfileController extends Controller
             ->find($order->getRenterId());
         foreach( $user->getInformation() as $info){
             if($info->getUiKey() == 'phone'){
-                $number = preg_replace('~[^0-9]+~','',$info->getUiValue());
+                $number = $serVerif->getFormatPhone($info->getUiValue());
                 if(strlen($number)==11) $number = substr($number, 1);
             }
         }
@@ -1446,7 +1452,7 @@ class ProfileController extends Controller
     /**
      * @Route("/ajax_owner_reject", name="ajax_owner_reject")
      */
-    public function ownerRejectAction(EntityManagerInterface $em, Request $request, ServiceStat $stat, \Swift_Mailer $mailer)
+    public function ownerRejectAction(EntityManagerInterface $em, Request $request, ServiceStat $stat, \Swift_Mailer $mailer, ServiceVerification $serVerif)
     {
         $id = $request->request->get('id');
         $order = $this->getDoctrine()
@@ -1482,7 +1488,7 @@ class ProfileController extends Controller
             ->find($order->getRenterId());
         foreach( $user->getInformation() as $info){
             if($info->getUiKey() == 'phone'){
-                $number = preg_replace('~[^0-9]+~','',$info->getUiValue());
+                $number = $serVerif->getFormatPhone($info->getUiValue());
                 if(strlen($number)==11) $number = substr($number, 1);
             }
         }
@@ -1524,7 +1530,7 @@ class ProfileController extends Controller
     /**
      * @Route("/ajax_owner_answer", name="ajax_owner_answer")
      */
-    public function ownerAnswerAction(EntityManagerInterface $em, Request $request, ServiceStat $stat, \Swift_Mailer $mailer)
+    public function ownerAnswerAction(EntityManagerInterface $em, Request $request, ServiceStat $stat, \Swift_Mailer $mailer, ServiceVerification $serVerif)
     {
         $id = $request->request->get('id');
         $order = $this->getDoctrine()
@@ -1563,7 +1569,7 @@ class ProfileController extends Controller
             ->find($order->getRenterId());
         foreach( $user->getInformation() as $info){
             if($info->getUiKey() == 'phone'){
-                $number = preg_replace('~[^0-9]+~','',$info->getUiValue());
+                $number = $serVerif->getFormatPhone($info->getUiValue());
                 if(strlen($number)==11) $number = substr($number, 1);
             }
         }
@@ -1604,7 +1610,7 @@ class ProfileController extends Controller
     /**
      * @Route("/ajax_renter_answer", name="ajax_renter_answer")
      */
-    public function renterAnswerAction(EntityManagerInterface $em, Request $request, ServiceStat $stat, \Swift_Mailer $mailer)
+    public function renterAnswerAction(EntityManagerInterface $em, Request $request, ServiceStat $stat, \Swift_Mailer $mailer, ServiceVerification $serVerif)
     {
         $id = $request->request->get('id');
         $order = $this->getDoctrine()
@@ -1643,7 +1649,7 @@ class ProfileController extends Controller
             ->find($order->getUserId());
         foreach( $user->getInformation() as $info){
             if($info->getUiKey() == 'phone'){
-                $number = preg_replace('~[^0-9]+~','',$info->getUiValue());
+                $number = $serVerif->getFormatPhone($info->getUiValue());
                 if(strlen($number)==11) $number = substr($number, 1);
             }
         }
@@ -1708,7 +1714,7 @@ class ProfileController extends Controller
     /**
      * @Route("/pay_for_order/{id}", name="pay_for_order")
      */
-    public function payForOrderAction($id, EntityManagerInterface $em, Request $request, ServiceStat $stat)
+    public function payForOrderAction($id, EntityManagerInterface $em, Request $request, ServiceStat $stat, ServiceVerification $serVerif)
     {
         $order = $this->getDoctrine()
             ->getRepository(FormOrder::class)
@@ -1727,7 +1733,8 @@ class ProfileController extends Controller
 
         $phone = '+79870000000';
         foreach ($renter->getInformation() as $i){
-            if ($i->getUiKey() == 'phone') $phone = '+'.str_replace(array("(",")","+"," "),"",trim($i->getUiValue()));
+            // if ($i->getUiKey() == 'phone') $phone = '+'.str_replace(array("(",")","+"," "),"",trim($i->getUiValue()));
+            if ($i->getUiKey() == 'phone' && !empty($i->getUiValue())) $phone = '+'.$serVerif->getFormatPhone($i->getUiValue());
         }
 
         $merchantId = $s['id'];
@@ -1821,7 +1828,7 @@ class ProfileController extends Controller
     /**
      * @Route("/user_order_pay_success", name="user_order_pay_success")
      */
-    public function userOrderPaySuccessAction(EntityManagerInterface $em, Request $request, ServiceStat $stat, \Swift_Mailer $mailer)
+    public function userOrderPaySuccessAction(EntityManagerInterface $em, Request $request, ServiceStat $stat, \Swift_Mailer $mailer, ServiceVerification $serVerif)
     {
         $cb = (array)$request->request->all();
 
@@ -1897,7 +1904,7 @@ class ProfileController extends Controller
                     ->find($order->getUserId());
                 foreach( $user->getInformation() as $info){
                     if($info->getUiKey() == 'phone'){
-                        $number = preg_replace('~[^0-9]+~','',$info->getUiValue());
+                        $number = $serVerif->getFormatPhone($info->getUiValue());
                         if(strlen($number)==11) $number = substr($number, 1);
                     }
                 }
@@ -2126,21 +2133,21 @@ class ProfileController extends Controller
         } else return new Response("",404);
     }
 
-    private function captchaverify($recaptcha){
-        $url = "https://www.google.com/recaptcha/api/siteverify";
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, array(
-            "secret"=>"6LcGCzUUAAAAAH0yAEPu8N5h9b5BB8THZtFDx3r2","response"=>$recaptcha));
-        $response = curl_exec($ch);
-        curl_close($ch);
-        $data = json_decode($response);
+    // private function captchaverify($recaptcha){
+    //     $url = "https://www.google.com/recaptcha/api/siteverify";
+    //     $ch = curl_init();
+    //     curl_setopt($ch, CURLOPT_URL, $url);
+    //     curl_setopt($ch, CURLOPT_HEADER, 0);
+    //     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    //     curl_setopt($ch, CURLOPT_POST, true);
+    //     curl_setopt($ch, CURLOPT_POSTFIELDS, array(
+    //         "secret"=>"6LcGCzUUAAAAAH0yAEPu8N5h9b5BB8THZtFDx3r2","response"=>$recaptcha));
+    //     $response = curl_exec($ch);
+    //     curl_close($ch);
+    //     $data = json_decode($response);
 
-        return $data->success;
-    }
+    //     return $data->success;
+    // }
 
 
     private function countSum($user_id)

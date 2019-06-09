@@ -794,4 +794,52 @@ class User
     {
         return $this->isPhoneCorrect;
     }
+
+    /**
+     * Set activateEmailString
+     *
+     * @param string $activateEmailString
+     *
+     * @return User
+     */
+    public function setActivateEmailString($activateEmailString)
+    {
+        $this->activateEmailString = $activateEmailString;
+
+        return $this;
+    }
+
+    /**
+     * Get activateEmailString
+     *
+     * @return string
+     */
+    public function getActivateEmailString()
+    {
+        return $this->activateEmailString;
+    }
+
+    /**
+     * Set activatePhoneString
+     *
+     * @param string $activatePhoneString
+     *
+     * @return User
+     */
+    public function setActivatePhoneString($activatePhoneString)
+    {
+        $this->activatePhoneString = $activatePhoneString;
+
+        return $this;
+    }
+
+    /**
+     * Get activatePhoneString
+     *
+     * @return string
+     */
+    public function getActivatePhoneString()
+    {
+        return $this->activatePhoneString;
+    }
 }

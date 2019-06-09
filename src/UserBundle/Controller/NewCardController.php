@@ -30,6 +30,7 @@ use AppBundle\Entity\CardField;
 use AppBundle\Menu\MenuCity;
 use AppBundle\Menu\MenuGeneralType;
 use AppBundle\Menu\MenuMarkModel;
+use AppBundle\Menu\ServiceVerification;
 
 use AppBundle\Menu\MenuSubFieldAjax;
 use AppBundle\SubFields\SubFieldUtils;
@@ -46,7 +47,7 @@ class NewCardController extends Controller
     /**
      * @Route("/card/new/{gt_url}", name="card_new")
      */
-    public function indexAction($gt_url = '', MenuMarkModel $markmenu, MenuGeneralType $mgt, MenuCity $mc, Request $request, FotoUtils $fu, EntityManagerInterface $em, \Swift_Mailer $mailer, ServiceStat $stat, Password $pass)
+    public function indexAction($gt_url = '', MenuMarkModel $markmenu, MenuGeneralType $mgt, MenuCity $mc, Request $request, FotoUtils $fu, EntityManagerInterface $em, \Swift_Mailer $mailer, ServiceStat $stat, Password $pass, ServiceVerification $serVerif)
     {
 
         $admin = false;
@@ -416,7 +417,7 @@ class NewCardController extends Controller
                             $code = md5(rand(0,99999999));
                             $user = new User();
                             $user->setEmail($request->request->get('r_email'));
-                            $user->setLogin(preg_replace('~[^0-9]+~','',$request->request->get('r_phone')));
+                            $user->setLogin($serVerif->getFormatPhone($request->request->get('r_phone')));
                             $user->setPassword($pass->HashPassword($request->request->get('r_password')));
                             $user->setHeader($request->request->get('r_header'));
                             $user->setIsSubscriber(true);
