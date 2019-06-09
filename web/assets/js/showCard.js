@@ -170,6 +170,7 @@ $( document ).ready(function() {
                 }
             });
         } else {
+            $(but).removeClass('uk-hidden');
             UIkit.notification('Все поля обязательны!',{status:'danger',timeout:100000});
         }
     };
