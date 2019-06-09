@@ -55,6 +55,7 @@ $( document ).ready(function() {
                 }
             });
         } else {
+            $(form).find('#prtc1').removeClass('uk-hidden');
             UIkit.notification('Все поля обязательны!',{status:'danger',timeout:100000});
         }
     };
@@ -81,6 +82,7 @@ $( document ).ready(function() {
                 }
             });
         } else {
+            $(form).find('#prtc2').removeClass('uk-hidden');
             UIkit.notification('Все поля обязательны!',{status:'danger',timeout:100000});
         }
     };
@@ -121,6 +123,7 @@ $( document ).ready(function() {
                 }
             });
         } else {
+            $(form).find('#btn-pes-1').removeClass('uk-hidden');
             UIkit.notification('Все поля обязательны!',{status:'danger',timeout:100000});
         }
     };
@@ -146,6 +149,7 @@ $( document ).ready(function() {
                 }
             });
         } else {
+            $(form).find('#btn-pes-2').removeClass('uk-hidden');
             UIkit.notification('Все поля обязательны!',{status:'danger',timeout:100000});
         }
     };
