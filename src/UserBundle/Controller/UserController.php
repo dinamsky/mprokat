@@ -178,13 +178,13 @@ class UserController extends Controller
             $dql = 'SELECT u FROM UserBundle:User u WHERE u.isBanned = 0 AND (u.email = ?1 OR u.login = ?1)';
             $query = $em->createQuery($dql);
 
-            if ($isMail) {
-                $query->setParameter(1, $request->request->get('email'));
+
+            if ($serVerif->isEmail($request->request->get('email'))) {
+                $query->setParameter(1, urldecode($request->request->get('email')));
             } else {
                 $query->setParameter(1, $serVerif->getFormatPhone($request->request->get('email')));
             }
 
-            $query->setParameter(1, urldecode($request->query->get('email')));
             $users = $query->getResult();
 
             foreach ($users as $user) {
@@ -345,7 +345,7 @@ class UserController extends Controller
 
             $number = $serVerif->getFormatPhone($request->request->get('phone'));
             //if(strlen($number)==11) $number = substr($number, 1);
-            $message = urlencode('Логин: ' . $user->getLogin() . '. Ваш пароль регистрации: ' . $code);
+            $message = urlencode('Ваш логин: ' . $user->getLogin() . '. Ваш пароль регистрации: ' . $code);
             $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
             $sms_result = file_get_contents($url);
             $r = 'ok';
@@ -506,7 +506,7 @@ class UserController extends Controller
 
             $number = $serVerif->getFormatPhone($request->request->get('phone'));
             //if(strlen($number)==11) $number = substr($number, 1);
-            $message = urlencode('Логин: ' . $number . '. Ваш пароль регистрации: ' . $code);
+            $message = urlencode('Ваш логин: ' . $number . '. Ваш пароль регистрации: ' . $code);
             $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
             $sms_result = file_get_contents($url);
             $r = 'ok';
@@ -1282,6 +1282,7 @@ class UserController extends Controller
         }
         return new Response('bad_code');
     }
+
     /**
      * @Route("/test_sms")
      */
@@ -1294,6 +1295,41 @@ class UserController extends Controller
         $result = file_get_contents($url);
         var_dump($result);
 
+        return new Response('');
+    }
+
+     /**
+     * @Route("/test_sms_info")
+     */
+    public function testSMSInfo()
+    {
+
+
+        $message = urlencode('Тестирование имени отправителя');
+        $url = 'https://mainsms.ru/api/mainsms/message/info?apikey=72f5f151303b2&project=multiprokat&phones=9177313547';
+        $url = 'https://mainsms.ru/api/mainsms/message/info?apikey=72f5f151303b2&project=multiprokat&phones=002072842703';
+        $result = file_get_contents($url);
+        var_dump($result);
+        $html =  json_decode($result);
+        print_r($html);
+        return new Response('');
+    }
+
+    /**
+     * @Route("/upd_login_phone")
+     */
+    public function updateLoginPhone(ServiceVerification $serVerif){
+        $em = $this->getDoctrine()->getManager();
+        $dql = 'SELECT u FROM UserBundle:User u LEFT JOIN u.information i WHERE u.isBanned = 0 AND u.login = ?1 AND i.uiKey = ?2';
+        $query = $em->createQuery($dql);
+        $query->setParameter(1, '');
+        $query->setParameter(2, 'phone');
+        $query->setMaxResults(10);
+        $users = $query->getResult();
+
+        foreach ($users as $user) {
+            var_dump($user);
+        }
         return new Response('');
     }
 }
