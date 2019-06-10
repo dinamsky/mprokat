@@ -1,10 +1,10 @@
 {% if not app.session.has('logged_user') and not app.session.has('admin')%}
-    <div id="sign_in" class="uk-modal" uk-modal>
+    <div id="sign_in" class="uk-modal" uk-modal bg-close="false">
         <div class="uk-modal-dialog uk-modal-body">
             <button class="uk-modal-close-default" type="button" uk-close></button>
             <h2 class="uk-modal-title">{% trans %}Вход{% endtrans %}</h2>
             <form action="/userSignIn" method="POST">
-                <input type="text" name="email" placeholder="Email" class="uk-input uk-margin-bottom">
+                <input type="text" name="email" placeholder="Email или номер телефона" class="uk-input uk-margin-bottom" >
                 <input type="password" name="password" placeholder="{% trans %}Пароль{% endtrans %}" class="uk-input uk-margin-bottom">
                 <input type="hidden" name="return" value="{{ app.request.requestUri }}">
                 <div class="uk-clearfix">
@@ -20,13 +20,46 @@
         </div>
     </div>
 
-    <div id="sign_up" class="uk-modal" uk-modal>
+    <div id="sign_up" class="uk-modal" uk-modal bg-close="false">
         <div class="uk-modal-dialog uk-modal-body">
             <button class="uk-modal-close-default" type="button" uk-close></button>
             <h2 class="uk-modal-title">{% trans %}Регистрация{% endtrans %}</h2>
             <form id="signUpForm" action="/userSignUp" method="POST" onsubmit="return signup_validate();">
-                <input type="text" name="header" placeholder="{% trans %}Введите название компании или ваше имя{% endtrans %}" class="uk-input uk-margin-bottom">
-                <input type="text" name="email" placeholder="Email" required class="uk-input uk-margin-bottom">
+                <input type="text" name="header" placeholder="{% trans %}Введите название компании или ваше имя{% endtrans %}" class="uk-input uk-margin-bottom" required>
+                <div class="uk-grid uk-margin-bottom" uk-grid>
+                    <div class=" uk-width-1-1 uk-width-auto@s uk-inline">
+                        <div uk-form-custom="target: > * > span:last-child">
+                            <select class="country-select" name="country">
+                                <option value="RU" data-code="+7" data-pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{2}$" data-filter="(999) 999-99-99" data-plshold="(###)###-##-##" selected>Россия</option>
+                                {# {% for countr in country %}
+                                    <option value="2">Абхазия</option>
+                                {% endfor %} #}
+                                
+                                <option value="AB" data-code="+7 840" data-pattern="^\d{3}[-]\d{2}[-]\d{2}$"  data-filter="999-99-99" data-plshold="###-##-##">Абхазия</option>
+                                <option value="KZ" data-code="+7" data-pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{2}$"  data-filter="(999) 999-99-99" data-plshold="(###)###-##-##">Казахстан</option>
+                                <option value="UK" data-code="+380" data-pattern="^\(\d{2}\)\s\d{3}[-]\d{2}[-]\d{2}$"  data-filter="(99) 999-99-99" data-plshold="(##)###-##-##">Украина</option>
+                                <option value="US" data-code="+1" data-pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{3}$"  data-filter="(999) 999-99-999" data-plshold="(###)###-##-###">США</option>
+                            </select>
+                            <span class="uk-link">
+                                <span uk-icon="icon: pencil"></span>
+                                <span></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class=" uk-width-1-1 uk-width-expand@s">
+                        <div class="uk-inline uk-width-expand">
+                            <span class="uk-form-icon mp-country-code mp-form-span">+7</span>
+                            <input type="tel" name="phone" class="uk-input mp-country-phone" placeholder="(###)###-##-##" pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{2}$"  required>
+                        </div>
+                    </div>
+                </div>
+                <input type="mail" name="email" placeholder="Email" required class="uk-input uk-margin-bottom">
+
+                {# <div class="uk-margin-top uk-width-1-1 uk-inline">
+                    <span class="uk-form-icon">+7</span>
+                    <input type="tel" name="phone" placeholder="Телефон в формате 79001234567" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required class="uk-input uk-margin-bottom">
+                </div> #}
+                
                 <input type="password" name="password" placeholder="{% trans %}Пароль{% endtrans %}" required class="uk-input uk-margin-bottom">
                 <div class="uk-margin-bottom"><label><input type="checkbox" name="oferta"> Я ознакомлен и согласен с условиями <a target="_blanc" class="underline" uk-tooltip="title:откроется в новом окне" href="/assets/docs/oferta.pdf">оферты</a></label></div>
                 <button class="uk-button uk-button-primary" disabled>{% trans %}Зарегистрироваться{% endtrans %}</button>
@@ -39,21 +72,83 @@
         </div>
     </div>
 
-    <div id="pass_recover" class="uk-modal" uk-modal>
+    <div id="pass_recover" class="uk-modal" uk-modal bg-close="false">
         <div class="uk-modal-dialog uk-modal-body">
             <button class="uk-modal-close-default" type="button" uk-close></button>
             <h2 class="uk-modal-title">{% trans %}Смена пароля{% endtrans %}</h2>
             <form action="/userRecover" method="POST">
-                <input type="text" name="email" placeholder="{% trans %}Введите email использованный при регистрации{% endtrans %}" class="uk-input uk-margin-bottom">
-                <input type="password" name="password1" placeholder="{% trans %}Придумайте новый пароль{% endtrans %}" class="uk-input uk-margin-bottom">
-                <input type="password" name="password2" placeholder="{% trans %}Повторите новый пароль{% endtrans %}" class="uk-input uk-margin-bottom">
+                <input type="mail" name="email" placeholder="Введите email" class="uk-input uk-margin-bottom">
+                <input type="password" name="password1" placeholder="{% trans %}Придумайте новый пароль{% endtrans %}" class="uk-input uk-margin-bottom" required>
+                <input type="password" name="password2" placeholder="{% trans %}Повторите новый пароль{% endtrans %}" class="uk-input uk-margin-bottom" required>
                 <input type="hidden" name="return" value="{{ app.request.requestUri }}">
-                <button class="uk-button uk-button-primary">{% trans %}Сменить пароль{% endtrans %}</button>
+                <div class="uk-clearfix">
+                    <div class="uk-float-left"><button class="uk-button uk-button-primary">{% trans %}Сменить пароль{% endtrans %}</button></div>
+                    <div class="uk-float-right"><a uk-toggle="target: #pass_recover_tel">{% trans %}Сменить через телефон{% endtrans %}</a></div>
+                </div>
             </form>
         </div>
     </div>
 
-    <div id="sign_in_or_up" class="uk-modal" uk-modal>
+    <div id="pass_recover_tel" class="uk-modal" uk-modal bg-close="false">
+        <div class="uk-modal-dialog uk-modal-body">
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+            <h2 class="uk-modal-title">{% trans %}Смена пароля через телефон{% endtrans %}</h2>
+            <form action="/userRecoverPhone" method="POST">
+                <div class="uk-grid uk-margin-bottom" uk-grid>
+                    <div class=" uk-width-1-1 uk-width-auto@s uk-inline">
+                        <div uk-form-custom="target: > * > span:last-child">
+                            <select class="country-select" name="country">
+                                <option value="RU" data-code="+7" data-pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{2}$" data-filter="(999) 999-99-99" data-plshold="(###)###-##-##" selected>Россия</option>
+                                {# {% for countr in country %}
+                                    <option value="2">Абхазия</option>
+                                {% endfor %} #}
+                                
+                                <option value="AB" data-code="+7 840" data-pattern="^\d{3}[-]\d{2}[-]\d{2}$"  data-filter="999-99-99" data-plshold="###-##-##">Абхазия</option>
+                                <option value="KZ" data-code="+7" data-pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{2}$"  data-filter="(999) 999-99-99" data-plshold="(###)###-##-##">Казахстан</option>
+                                <option value="UK" data-code="+380" data-pattern="^\(\d{2}\)\s\d{3}[-]\d{2}[-]\d{2}$"  data-filter="(99) 999-99-99" data-plshold="(##)###-##-##">Украина</option>
+                                <option value="US" data-code="+1" data-pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{3}$"  data-filter="(999) 999-99-999" data-plshold="(###)###-##-###">США</option>
+                            </select>
+                            <span class="uk-link">
+                                <span uk-icon="icon: pencil"></span>
+                                <span></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class=" uk-width-1-1 uk-width-expand@s">
+                        <div class="uk-inline uk-width-expand">
+                            <span class="uk-form-icon mp-country-code mp-form-span">+7</span>
+                            <input type="tel" name="phone" class="uk-input mp-country-phone" placeholder="(###)###-##-##" pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{2}$"  required>
+                        </div>
+                    </div>
+                </div>                
+                <input type="password" name="password1" placeholder="{% trans %}Придумайте новый пароль{% endtrans %}" class="uk-input uk-margin-bottom" required>
+                <input type="password" name="password2" placeholder="{% trans %}Повторите новый пароль{% endtrans %}" class="uk-input uk-margin-bottom" required>
+                <input type="hidden" name="return" value="{{ app.request.requestUri }}">
+                
+                <div class="uk-clearfix">
+                    <div class="uk-float-left"><button class="uk-button uk-button-primary" id="prtc1">{% trans %}Сменить пароль{% endtrans %}</button></div>
+                    <div class="uk-float-right"><a uk-toggle="target: #pass_recover">{% trans %}Сменить через email{% endtrans %}</a></div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="pass_recover_tel_code" class="uk-modal" uk-modal bg-close="false">
+        <div class="uk-modal-dialog uk-modal-body">
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+            <h2 class="uk-modal-title">Подтверждение</h2>
+            <form action="/userRecoverPhone" method="POST">
+                <div>
+                    <input type="text" name="regcode" class="uk-input" placeholder="пароль из СМС">
+                </div>
+                <div class="uk-margin-top">
+                    <button class="uk-button uk-button-primary" id="prtc2">Войти</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="sign_in_or_up" class="uk-modal" uk-modal bg-close="false">
         <div class="uk-modal-dialog uk-modal-body">
             <button class="uk-modal-close-default" type="button" uk-close></button>
             <h2 class="uk-modal-title">{% trans %}Что дальше?{% endtrans %}</h2>

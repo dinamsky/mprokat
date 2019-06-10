@@ -22,9 +22,9 @@
 {% if not app.session.has('logged_user') and not app.session.has('admin')%}
     <div >
         <div >
-            <h2 >Для продолжение необходимо войти в систему</h2>
+            <h2 >Для продолжения необходимо войти в систему</h2>
             <form action="/userSignIn" method="POST">
-                <input type="text" name="email" placeholder="Email" class="uk-input uk-margin-bottom">
+                <input type="text" name="email" placeholder="Email или номер телефона" class="uk-input uk-margin-bottom">
                 <input type="password" name="password" placeholder="{% trans %}Пароль{% endtrans %}" class="uk-input uk-margin-bottom">
                 <input type="hidden" name="return" value="{{ urlReturn }}">
                 <div class="uk-clearfix">
@@ -40,7 +40,7 @@
             <button class="uk-modal-close-default" type="button" uk-close></button>
             <h2 class="uk-modal-title">{% trans %}Смена пароля{% endtrans %}</h2>
             <form action="/userRecover" method="POST">
-                <input type="text" name="email" placeholder="{% trans %}Введите email использованный при регистрации{% endtrans %}" class="uk-input uk-margin-bottom">
+                <input type="mail" name="email" placeholder="{% trans %}Введите email или номер телефона использованный при регистрации{% endtrans %}" class="uk-input uk-margin-bottom">
                 <input type="password" name="password1" placeholder="{% trans %}Придумайте новый пароль{% endtrans %}" class="uk-input uk-margin-bottom">
                 <input type="password" name="password2" placeholder="{% trans %}Повторите новый пароль{% endtrans %}" class="uk-input uk-margin-bottom">
                 <input type="hidden" name="return" value="{{ urlReturn }}">

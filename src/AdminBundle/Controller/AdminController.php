@@ -14,6 +14,7 @@ use UserBundle\Security\Password;
 use UserBundle\Entity\User;
 use AdminBundle\Entity\Admin;
 use Symfony\Component\Filesystem\Filesystem;
+use AppBundle\Menu\ServiceVerification;
 
 class AdminController extends Controller
 {
@@ -80,7 +81,7 @@ class AdminController extends Controller
     /**
      * @Route("/adminNewUser", name="adminNewUser")
      */
-    public function newUserAction(Request $request, Password $password, \Swift_Mailer $mailer)
+    public function newUserAction(Request $request, Password $password, \Swift_Mailer $mailer, ServiceVerification $serVerif)
     {
         if($request->isMethod('GET')) {
             if ($this->get('session')->get('admin') === null) return $this->render('AdminBundle::admin_enter_form.html.twig');
@@ -131,12 +132,14 @@ class AdminController extends Controller
 
             $user = new User();
             $user->setEmail($request->request->get('email'));
-            $user->setLogin($request->request->get('header'));
+            $user->setLogin($serVerif->getFormatPhone($request->request->get('phone')));
             $user->setPassword($password->HashPassword($psw));
             $user->setHeader($request->request->get('header'));
             $user->setActivateString('');
             $user->setTempPassword($psw);
             $user->setIsActivated(true);
+            $user->setIsEmailCorrect(true);
+            $user->setIsPhoneCorrect(true);
             $user->setAdmin($admin);
             $user->setIsSubscriber(true);
             $em = $this->getDoctrine()->getManager();

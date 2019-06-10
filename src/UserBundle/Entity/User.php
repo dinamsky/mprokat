@@ -83,6 +83,20 @@ class User
     /**
      * @var bool
      *
+     * @ORM\Column(name="is_email_correct", type="boolean")
+     */
+    private $isEmailCorrect = 0;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_phone_correct", type="boolean")
+     */
+    private $isPhoneCorrect = 0;
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(name="is_subscriber", type="boolean")
      */
     private $isSubscriber;
@@ -731,5 +745,101 @@ class User
     public function getWhois()
     {
         return $this->whois;
+    }
+
+    /**
+     * Set isEmailCorrect
+     *
+     * @param boolean $isEmailCorrect
+     *
+     * @return User
+     */
+    public function setIsEmailCorrect($isEmailCorrect)
+    {
+        $this->isEmailCorrect = $isEmailCorrect;
+
+        return $this;
+    }
+
+    /**
+     * Get isEmailCorrect
+     *
+     * @return boolean
+     */
+    public function getIsEmailCorrect()
+    {
+        return $this->isEmailCorrect;
+    }
+
+    /**
+     * Set isPhoneCorrect
+     *
+     * @param boolean $isPhoneCorrect
+     *
+     * @return User
+     */
+    public function setIsPhoneCorrect($isPhoneCorrect)
+    {
+        $this->isPhoneCorrect = $isPhoneCorrect;
+
+        return $this;
+    }
+
+    /**
+     * Get isPhoneCorrect
+     *
+     * @return boolean
+     */
+    public function getIsPhoneCorrect()
+    {
+        return $this->isPhoneCorrect;
+    }
+
+    /**
+     * Set activateEmailString
+     *
+     * @param string $activateEmailString
+     *
+     * @return User
+     */
+    public function setActivateEmailString($activateEmailString)
+    {
+        $this->activateEmailString = $activateEmailString;
+
+        return $this;
+    }
+
+    /**
+     * Get activateEmailString
+     *
+     * @return string
+     */
+    public function getActivateEmailString()
+    {
+        return $this->activateEmailString;
+    }
+
+    /**
+     * Set activatePhoneString
+     *
+     * @param string $activatePhoneString
+     *
+     * @return User
+     */
+    public function setActivatePhoneString($activatePhoneString)
+    {
+        $this->activatePhoneString = $activatePhoneString;
+
+        return $this;
+    }
+
+    /**
+     * Get activatePhoneString
+     *
+     * @return string
+     */
+    public function getActivatePhoneString()
+    {
+        return $this->activatePhoneString;
     }
 }

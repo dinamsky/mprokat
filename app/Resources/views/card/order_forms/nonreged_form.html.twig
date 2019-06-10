@@ -3,36 +3,89 @@
 
             <button class="uk-modal-close-default" type="button" uk-close></button>
             <div id="nrf">
-
+            <form name="ver1">
                 <div class="rb_1">
                     <h2 class="uk-modal-title">Быстрая регистрация</h2>
-                    Пожалуйста, укажите номер мобильного телефона для верификации в Мультипрокат<br><br>
-                    <div class="uk-margin-top">
-                        <input type="text" name="phone" class="uk-input" placeholder="номер мобильного телефона" required>
+                    Пожалуйста, укажите Ваше имя, email и номер мобильного телефона для верификации в Мультипрокат
+                    <fieldset class="uk-fieldset">
+                    <div class="uk-grid uk-hidden" uk-grid id="auth_module">
+                        <div class="uk-margin-top uk-width-1-1 uk-width-1-2@s">
+                            <button  uk-toggle="target: #sign_in" class="uk-button uk-button-success "><span uk-icon="icon:lock"></span>{% trans %}Войти{% endtrans %}</button>
+                        </div>
+                        <div class="uk-margin-top uk-width-1-1 uk-width-1-2@s">
+                            <div class="uk-float-right"><a uk-toggle="target: #pass_recover">{% trans %}Забыли пароль?{% endtrans %}</a></div>
+                        </div>
                     </div>
+                    <div class="uk-grid" uk-grid>
+                        <div class="uk-margin-top uk-width-1-1 uk-width-1-2@s uk-inline">
+                            <div class="uk-inline uk-width-expand">
+                                <span class="uk-form-icon mp-form-span">Имя:</span>
+                                <input type="text" name="name" class="uk-input"  required>
+                            </div>
+                        </div>
+                        <div class="uk-margin-top uk-width-1-1 uk-width-1-2@s uk-inline">
+                            <div class="uk-inline uk-width-expand">
+                                <span class="uk-form-icon mp-form-span">email:</span>
+                                <input type="mail" name="mail" class="uk-input" placeholder="mail@mail.ru" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uk-grid" uk-grid>
+                        <div class=" uk-width-1-1 uk-width-auto@s uk-inline">
+                            <div uk-form-custom="target: > * > span:last-child">
+                                <select class="country-select" name="country">
+                                    <option value="RU" data-code="+7" data-pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{2}$" data-filter="(999) 999-99-99" data-plshold="(###)###-##-##" selected>Россия</option>
+                                    {# {% for countr in country %}
+                                        <option value="2">Абхазия</option>
+                                    {% endfor %} #}
+                                    
+                                    <option value="AB" data-code="+7 840" data-pattern="^\d{3}[-]\d{2}[-]\d{2}$"  data-filter="999-99-99" data-plshold="###-##-##">Абхазия</option>
+                                    <option value="KZ" data-code="+7" data-pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{2}$"  data-filter="(999) 999-99-99" data-plshold="(###)###-##-##">Казахстан</option>
+                                    <option value="UK" data-code="+380" data-pattern="^\(\d{2}\)\s\d{3}[-]\d{2}[-]\d{2}$"  data-filter="(99) 999-99-99" data-plshold="(##)###-##-##">Украина</option>
+                                    <option value="US" data-code="+1" data-pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{3}$"  data-filter="(999) 999-99-999" data-plshold="(###)###-##-###">США</option>
+                                </select>
+                                <span class="uk-link">
+                                    <span uk-icon="icon: pencil"></span>
+                                    <span></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class=" uk-width-1-1 uk-width-expand@s">
+                            <div class="uk-inline uk-width-expand">
+                                <span class="uk-form-icon mp-country-code mp-form-span">+7</span>
+                                <input type="tel" name="phone" class="uk-input mp-country-phone" placeholder="(###)###-##-##" pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{2}$"  required>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="uk-margin-top">
                         <input type="hidden" name="back_url" value="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ card.markModel.mark.header }}/{{ card.markModel.header }}">
                         <button class="uk-button uk-button-primary" id="qreg_1">Отправить СМС с кодом</button>
                     </div>
-                </div>
 
+
+                    </fieldset>
+                </div>
+            </form>
+            <form name="ver2">
                 <div class="rb_2 uk-hidden">
                     <h2 class="uk-modal-title">Подтверждение</h2>
                     <br><br>
                     <div>
-                        <input type="text" name="regcode" class="uk-input" placeholder="код из СМС">
+                        <input type="hidden" name="phone_req" class="uk-input" value="">
+                        <input type="text" name="regcode" class="uk-input" placeholder="пароль из СМС" required>
                     </div>
                     <div class="uk-margin-top">
-                        <button class="uk-button uk-button-primary" id="qreg_2">Проверить</button>
+                        <button class="uk-button uk-button-primary" id="qreg_2">Войти</button>
                     </div>
                 </div>
-
+            </form>
                 <div class="rb_3 uk-hidden">
                     <h2 class="uk-modal-title">{% trans %}Заявка{% endtrans %}</h2>
                     {{ include('card/order_forms/new_order_form_content.html.twig',{'nonreged':true}) }}
 
                 </div>
-
+            
             </div>
 
 
