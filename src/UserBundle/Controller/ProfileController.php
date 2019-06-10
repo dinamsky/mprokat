@@ -631,6 +631,11 @@ class ProfileController extends Controller
 
         $post = $request->request;
 
+        $card_id = $post->get('card_id');
+
+            $card = $this->getDoctrine()
+                ->getRepository(Card::class)
+                ->find($card_id);
         //var_dump($post);
 
         //var_dump($post->has('is_nonreged'));
@@ -639,11 +644,11 @@ class ProfileController extends Controller
         if ($captcha->captchaVerify($post->get('g-recaptcha-response')) or $post->has('is_nonreged')) {
         // if (1==1) {
 
-            $card_id = $post->get('card_id');
+            // $card_id = $post->get('card_id');
 
-            $card = $this->getDoctrine()
-                ->getRepository(Card::class)
-                ->find($card_id);
+            // $card = $this->getDoctrine()
+            //     ->getRepository(Card::class)
+            //     ->find($card_id);
             $user = $card->getUser();
 
             $gt_id = $card->getGeneralTypeId();

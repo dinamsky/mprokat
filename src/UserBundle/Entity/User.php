@@ -161,6 +161,11 @@ class User
     private $opinions;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Document", mappedBy="user", cascade={"remove"}, orphanRemoval=true)
+     */
+    private $documents;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="is_new", type="boolean")
@@ -180,6 +185,7 @@ class User
         $this->cards = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->opinions = new ArrayCollection();
+        $this->documents = new ArrayCollection();
     }
 
     /**
@@ -841,5 +847,39 @@ class User
     public function getActivatePhoneString()
     {
         return $this->activatePhoneString;
+    }
+
+    /**
+     * Add document
+     *
+     * @param \AppBundle\Entity\Document $document
+     *
+     * @return User
+     */
+    public function addDocument(\AppBundle\Entity\Document $document)
+    {
+        $this->documents[] = $document;
+
+        return $this;
+    }
+
+    /**
+     * Remove document
+     *
+     * @param \AppBundle\Entity\Document $document
+     */
+    public function removeDocument(\AppBundle\Entity\Document $document)
+    {
+        $this->documents->removeElement($document);
+    }
+
+    /**
+     * Get documents
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDocuments()
+    {
+        return $this->documents;
     }
 }

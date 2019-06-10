@@ -1314,22 +1314,4 @@ class UserController extends Controller
         print_r($html);
         return new Response('');
     }
-
-    /**
-     * @Route("/upd_login_phone")
-     */
-    public function updateLoginPhone(ServiceVerification $serVerif){
-        $em = $this->getDoctrine()->getManager();
-        $dql = 'SELECT u FROM UserBundle:User u LEFT JOIN u.information i WHERE u.isBanned = 0 AND u.login = ?1 AND i.uiKey = ?2';
-        $query = $em->createQuery($dql);
-        $query->setParameter(1, '');
-        $query->setParameter(2, 'phone');
-        $query->setMaxResults(10);
-        $users = $query->getResult();
-
-        foreach ($users as $user) {
-            var_dump($user);
-        }
-        return new Response('');
-    }
 }

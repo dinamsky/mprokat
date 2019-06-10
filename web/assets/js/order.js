@@ -64,6 +64,29 @@ $( document ).ready(function() {
         });
     });
 
+    // <input id="foto_upload" type="file" name="fotos[]" multiple> ({% trans %}до 5 одновременно{% endtrans %})
+    // <div id="foto_list_view" uk-grid uk-sortable class="uk-grid-small"></div>
+
+    var documentPreview = function(input, placeToInsertImagePreview) {
+
+        if (input.files) {
+            var j = 0;
+            var filesAmount = input.files.length;
+
+            console.log(input.files);
+            for (i = 0; i < filesAmount; i++) {
+                var reader = new FileReader();
+                reader.onload = function(e,i) {
+                    var dataUrl = e.target.result;
+                    $(placeToInsertImagePreview).append('<div class="uk-width-1-5 preview_parent uk-position-relative"><img src="'+dataUrl+'" alt=""><span class="delete_preview"><i class="fa fa-close"></i></span><input type="hidden" name="to_upload[]" value="'+input.files[j].name+'"></div>');
+                    j++;
+                };
+                reader.readAsDataURL(input.files[i]);
+            }
+        }
+
+    };
+
     $('#attach_files').on('change', function () {
         if (this.files.length > 0){
             $('#js-attachfiles').removeAttr("hidden");
@@ -71,14 +94,26 @@ $( document ).ready(function() {
             var ins = $('#js-attachfiles');
             $(ins).children('ol').remove();
             $(ins).append('<ol></ol>');
+            var j = 0;
             for (var i = 0; i < this.files.length; ++i) {
-                var name = this.files.item(i).name;
-                $(ins).find('ol').append("<li>"+name+"</li>");
+                // documentPreview(this, '#foto_list_view');
+                var reader = new FileReader();
+                reader.onload = function(e,i) {
+                    var dataUrl = e.target.result;
+                    $(ins).find('ol').append('<li><img src="'+dataUrl+'" alt=""><span class="delete_preview"><i class="fa fa-close"></i></span><input type="hidden" name="to_upload[]" value="'+input.files[j].name+'"></li>');
+                    j++;
+                };
+                reader.readAsDataURL(this.files[i]);
             }
         } else {
             $('#js-attachfiles').attr("hidden");
         }
     });
+
+    $('#attach_files').on('click','.delete_preview', function() {
+        $(this).parents('.preview_parent').remove();
+    });
+
 
     $('#attach_files_clear').on('click', function () {
         var attFiles = $("#attach_files");
