@@ -22,7 +22,7 @@ class MoveUserImagesCommand extends ContainerAwareCommand
         @mkdir('./web/assets/images/users/t', 0755, true);
 
 
-        $output->writeln('dir created!');
+        // $output->writeln('dir created!');
 
         $fu = $this->getContainer()->get('AppBundle\Foto\FotoUtils');
 

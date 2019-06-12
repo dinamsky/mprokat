@@ -534,8 +534,8 @@
 
                 {% if not is_mobile() and card.user.id != 1971%}
                     <div class="uk-margin-bottom" uk-sticky="offset: 94" style="z-index: 100">
-                        <div class="card_blanc border_green newbook" >
-                            <div data-id="{{ card.id }}" class="nbinner cursor-pointer uk-text-center c_green" uk-toggle="target: {{ app.session.has('logged_user') ? '#user_book_form' : '#nonreged_user_book_form' }}">{{ btn_name }}</div>
+                        <div class="card_blanc border_green newbook" uk-toggle="target: {{ app.session.has('logged_user') ? '#user_book_form' : '#nonreged_user_book_form' }}">
+                            <div data-id="{{ card.id }}" class="nbinner cursor-pointer uk-text-center " >{{ btn_name }}</div>
                         </div>
                         <div style="background: #f9f9f9;text-align: center">Пока вы ни за что не платите</div>
                     </div>

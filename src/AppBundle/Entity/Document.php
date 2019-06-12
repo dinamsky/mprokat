@@ -56,9 +56,8 @@ class Document
     private $user;
 
     //  /**
-    //  * @ORM\ManyToOne(targetEntity="UserBundle\Entity\FormOrder", inversedBy="documents")
-    //  * @ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="CASCADE")
-    //  */
+    //  * @ORM\OneToMany(targetEntity="UserBundle\Entity\FormOrder")
+    //       */
     // private $order;
 
     /**
@@ -191,27 +190,4 @@ class Document
         return $this->user;
     }
 
-    /**
-     * Set order
-     *
-     * @param \UserBundle\Entity\FormOrder $order
-     *
-     * @return Document
-     */
-    public function setOrder(\UserBundle\Entity\FormOrder $order = null)
-    {
-        $this->order = $order;
-
-        return $this;
-    }
-
-    /**
-     * Get order
-     *
-     * @return \UserBundle\Entity\FormOrder
-     */
-    public function getOrder()
-    {
-        return $this->order;
-    }
 }

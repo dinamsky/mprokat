@@ -208,6 +208,39 @@ class FotoUtils extends Controller
         }
     }
 
+    /**
+     * @Route("/ajax/rotateFoto")
+     */
+
+    public function rotateFoto(Request $request)
+    {
+        $main_dir = $_SERVER['DOCUMENT_ROOT'].'/assets/images/cards';
+        $rotateMain = [
+            'r90' => 90,
+            'r180' => 180,
+            'r270' => 270,
+        ];
+        $post = $request->request;
+        $id = (int)$post->get('id');
+        $rotate = $post->get('rotate');
+        $degrees = key_exists($rotate,$rotateMain)?$rotateMain[$rotate]:'';
+        if ($degrees === ''){
+            return new Response();
+        }
+
+        $foto = $this->em
+            ->getRepository(Foto::class)
+            ->find($id);
+
+        $image = $main_dir.'/'.$foto->getFolder().'/'.$id.'.jpg';
+        $img = imagecreatefromjpeg($image);
+        $imgRotated = imagerotate($img, $degrees, 0);
+        imagejpeg($imgRotated, $image);
+        imagedestroy($imgRotated);
+        imagedestroy($img);
+        return new Response();
+    }
+
 
     /**
      * @Route("/ajax/deleteFoto")

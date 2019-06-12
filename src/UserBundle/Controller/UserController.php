@@ -522,22 +522,24 @@ class UserController extends Controller
     {
         $code = $request->request->get('regcode');
         $phone_req = $serVerif->getFormatPhone($request->request->get('phone_req'));
-        
+       
+        //регистрация уже активированных ранее пользователей
         if (!empty($phone_req)){
             $user = $this->getDoctrine()
                 ->getRepository(User::class)
                 ->findOneBy(array(
                     'login' => $phone_req,
+                    'isActivated' => true
                 ));
 
             if ($user) {
                 $activated = $this->getDoctrine()
                     ->getRepository(TempActivated::class)
                     ->findOneBy(array(
-                        'code' => $code,
-                        'name' => 'in_user_phone',
-                        'userId' => $user->getId(),
-                    ));
+                            'code' => $code,
+                            'name' => 'in_user_phone',
+                            'userId' => $user->getId(),
+                        ));
                 if ($activated){
                     $activated->setIsUse(true);
 
@@ -557,11 +559,10 @@ class UserController extends Controller
                     return new Response($r);
                 }
             }
-
-            
-
         }
 
+        //регистрация новых пользователей
+        //TODO: необходимо переделать на новый механизм активирвоания кода
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->findOneBy(array(

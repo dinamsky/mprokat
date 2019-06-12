@@ -64,46 +64,23 @@ $( document ).ready(function() {
         });
     });
 
-    // <input id="foto_upload" type="file" name="fotos[]" multiple> ({% trans %}до 5 одновременно{% endtrans %})
-    // <div id="foto_list_view" uk-grid uk-sortable class="uk-grid-small"></div>
-
-    var documentPreview = function(input, placeToInsertImagePreview) {
-
-        if (input.files) {
-            var j = 0;
-            var filesAmount = input.files.length;
-
-            console.log(input.files);
-            for (i = 0; i < filesAmount; i++) {
-                var reader = new FileReader();
-                reader.onload = function(e,i) {
-                    var dataUrl = e.target.result;
-                    $(placeToInsertImagePreview).append('<div class="uk-width-1-5 preview_parent uk-position-relative"><img src="'+dataUrl+'" alt=""><span class="delete_preview"><i class="fa fa-close"></i></span><input type="hidden" name="to_upload[]" value="'+input.files[j].name+'"></div>');
-                    j++;
-                };
-                reader.readAsDataURL(input.files[i]);
-            }
-        }
-
-    };
-
     $('#attach_files').on('change', function () {
         if (this.files.length > 0){
             $('#js-attachfiles').removeAttr("hidden");
             $('#renter_answer').attr("disabled", false);
-            var ins = $('#js-attachfiles');
-            $(ins).children('ol').remove();
-            $(ins).append('<ol></ol>');
+            var ins = $('#js-attachfiles'); 
+            $(ins).find('.mp-list-files').html('')
             var j = 0;
             for (var i = 0; i < this.files.length; ++i) {
+                var inp = this;
                 // documentPreview(this, '#foto_list_view');
                 var reader = new FileReader();
                 reader.onload = function(e,i) {
                     var dataUrl = e.target.result;
-                    $(ins).find('ol').append('<li><img src="'+dataUrl+'" alt=""><span class="delete_preview"><i class="fa fa-close"></i></span><input type="hidden" name="to_upload[]" value="'+input.files[j].name+'"></li>');
+                    $(ins).find('.mp-list-files').append('<div class="uk-width-1-5 preview_parent uk-position-relative"><img src="'+dataUrl+'" style="max-height: 100px; max-width: 100px;" alt=""><span class="delete_preview"><i class="fa fa-close"></i></span><input type="hidden" name="files[]" value="'+inp.files[j].name+'"></div>');
                     j++;
                 };
-                reader.readAsDataURL(this.files[i]);
+                reader.readAsDataURL(inp.files[i]);
             }
         } else {
             $('#js-attachfiles').attr("hidden");
@@ -114,6 +91,9 @@ $( document ).ready(function() {
         $(this).parents('.preview_parent').remove();
     });
 
+    $('#js-attachfiles').on('click','.delete_preview', function() {
+        $(this).parents('.preview_parent').remove();
+    });
 
     $('#attach_files_clear').on('click', function () {
         var attFiles = $("#attach_files");
@@ -132,9 +112,6 @@ $( document ).ready(function() {
     $('#renter_answer').on('click', function () {
 
         $(this).attr("disabled", true);
-        // var id = $(this).val();
-        // var answer = $(this).parents('.ord_content').find('textarea[name="answer"]').val();
-        // var files = $(this).parents('#attach_files').find('input[name="atfiles"]').val();
         var bar = document.getElementById('js-progressbar');
         
         var answer = $(this).parents('.ord_content').find('textarea[name="answer"]').val();
@@ -143,10 +120,9 @@ $( document ).ready(function() {
         fd.append('id', $(this).val());
         fd.append('answer', answer);
         $.each($('#attach_files')[0].files, function(i, file) {
-            fd.append('files[]', file);
+            fd.append('files_in[]', file.name);
+            fd.append('files[]', file, file.name);
         });
-        // fd.append('files', $input.prop('files'));
-
         
         bar.removeAttribute('hidden');
 
@@ -164,14 +140,7 @@ $( document ).ready(function() {
                         //Do something with upload progress here
                     }
                 }, false);
-        
-            // xhr.addEventListener("progress", function(evt) {
-            //     if (evt.lengthComputable) {
-            //         var percentComplete = evt.loaded / evt.total;
-            //         //Do something with download progress
-            //     }
-            // }, false);
-        
+       
                 return xhr;
             },
             url: '/ajax_renter_answer',
@@ -183,11 +152,11 @@ $( document ).ready(function() {
             contentType: false,
             processData: false,
             success: function(data){
-                console.log(data);
+                // console.log(data);
                 document.location.href = window.location.href;
             },
             error: function (html) {
-                console.log(html);
+                // console.log(html);
                 $(this).attr('disabled', false);
             }
         });

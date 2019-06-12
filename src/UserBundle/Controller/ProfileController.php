@@ -18,6 +18,8 @@ use AppBundle\Menu\MenuGeneralType;
 use AppBundle\Menu\MenuMarkModel;
 use AppBundle\Menu\MenuSubFieldAjax;
 use AppBundle\SubFields\SubFieldUtils;
+use AppBundle\Document\DocumentUtils;
+use AppBundle\Entity\Document;
 use UserBundle\Entity\UserInfo;
 use UserBundle\Security\CookieMaster;
 use UserBundle\Security\Password;
@@ -1674,23 +1676,32 @@ class ProfileController extends Controller
     /**
      * @Route("/ajax_renter_answer", name="ajax_renter_answer")
      */
-    public function renterAnswerAction(EntityManagerInterface $em, Request $request, ServiceStat $stat, \Swift_Mailer $mailer, ServiceVerification $serVerif)
+    public function renterAnswerAction(EntityManagerInterface $em, Request $request, ServiceStat $stat, \Swift_Mailer $mailer, ServiceVerification $serVerif, DocumentUtils $docUtils)
     {
         $id = $request->request->get('id');
         $order = $this->getDoctrine()
             ->getRepository(FormOrder::class)
             ->find($id);
-        
+
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($order->getUserId());
+
         $messages = json_decode($order->getMessages(),true);
 
-        $filess = $_FILES['files'];
+        $docs = $docUtils->uploadDocuments($user, $order, 'files');
 
-        if (count($filess)>0){
+        if ($docs){
+            $msg_s = $this->render('user/user_order_message_image.html.twig', [
+                'docs' => $docs,
+            ]);
+            // var_dump($msg_s->getContent());
+            // return new Response();
             $messages[] = [
                 'date' => date('d-m-Y'),
                 'time' => date('H:i'),
                 'from' => 'system',
-                'message' => 'Файлы отправлены на почту владельцу.',
+                'message' => $msg_s->getContent(),
                 'status' => 'send'
             ];
         }
@@ -1721,13 +1732,6 @@ class ProfileController extends Controller
         //$order->setRenterStatus('answered');
         $em->persist($order);
         $em->flush();
-
-       
-
-        $user = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->find($order->getUserId());
-
         
         // ------- send SMS -------
 
@@ -1753,15 +1757,6 @@ class ProfileController extends Controller
                 ->setFrom('mail@multiprokat.com')
                 ->setTo($user->getEmail())
                 ->setBody('Арендатор ответил на ваше сообщение в заявке №' . $id.'. Можно посмотреть по адресу: https://multiprokat.com/user/transport_orders/'.$id, 'text/html');
-            if (count($filess)>0){
-                foreach($filess as $file)
-                {
-                    if (!empty($file['name'])){
-                        $msg->attach(\Swift_Attachment::fromPath($file['tmp_name'])
-                            ->setFilename($file['name']));
-                    }
-                }
-            }
             $mailer->send($msg);
         }
 
@@ -1769,15 +1764,6 @@ class ProfileController extends Controller
                 ->setFrom('mail@multiprokat.com')
                 ->setTo('mail@multiprokat.com')
                 ->setBody($request->request->get('answer'),'text/html');
-            if (count($filess)>0){
-                foreach($filess as $file)
-                {
-                    if (!empty($file['name'])){
-                        $msg->attach(\Swift_Attachment::fromPath($file['tmp_name'])
-                            ->setFilename($file['name']));
-                    }
-                }
-            }
         $mailer->send($msg);
 
         $notify = new Notify();
