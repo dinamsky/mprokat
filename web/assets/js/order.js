@@ -120,10 +120,13 @@ $( document ).ready(function() {
         fd.append('id', $(this).val());
         fd.append('answer', answer);
         $.each($('#attach_files')[0].files, function(i, file) {
-            fd.append('files_in[]', file.name);
             fd.append('files[]', file, file.name);
         });
         
+        $.each($('#js-attachfiles').find('.mp-list-files input[name="files[]"]'), function(i, file){
+            fd.append('files_in[]', $(file).val());
+        });
+
         bar.removeAttribute('hidden');
 
         $.ajax({

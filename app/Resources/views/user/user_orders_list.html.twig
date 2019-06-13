@@ -339,7 +339,7 @@
 
                             <div class="js-upload" uk-form-custom>
                                 {# <progress id="js-progressbar" class="uk-progress" max="1" hidden="hidden"></progress> #}
-                                <input id="attach_files" type="file" name="atfiles[]" multiple concurrent="5" data-id="{{ o.id }}">
+                                <input id="attach_files" type="file" name="atfiles[]" multiple data-allow="*.jpg" data-concurrent="5" data-id="{{ o.id }}">
                                 <button class="uk-button uk-button-default" type="button" tabindex="-1" style="padding: 0px 0px;">
                                 <div class="uk-flex uk-flex-center" style="height: auto;    color: #12d061;
                 width: 40px;
@@ -399,6 +399,8 @@
 
         <div class="uk-width-1-4@s ord_righter" {{ is_mobile() ? 'uk-offcanvas="flip: true"' }} id="ofc_right">
             {{ is_mobile() ? '<div class="uk-offcanvas-bar"><button class="uk-offcanvas-close" type="button" uk-close></button>' }}
+            <div class="uk-sticky" uk-sticky="offset: 94; bottom: #ofc_right" style="z-index: 100;">
+
             {% for o in orders %}
                 <div id="ord_sum_{{ o.id }}" class=" padding10 ord_sum
                                 {{ (app.session.get('logged_user').id == o.userId and o.isActiveOwner == 1) or (app.session.get('logged_user').id == o.renterId and o.isActiveRenter == 1) ? '' : 'uk-hidden' }}">
@@ -610,6 +612,7 @@
                 </div>
 
             {% endfor %}
+            </div>
             {{ is_mobile() ? '<div class="uk-margin-large-bottom"></div>' }}
             {{ is_mobile() ? '</div>' }}
 
