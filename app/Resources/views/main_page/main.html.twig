@@ -143,7 +143,7 @@
             {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px'}) }}
         {% endfor %}
     </div>
-    <div class="standard_wide">
+</div>
 </div>
 {# end блок слайдера ТОП ?? #}
 
@@ -179,62 +179,66 @@
 {{ include('waytosuccess.html.twig') }}
 
 
+{# begin блок слайдера ТОП Мотоциклы #}
+<div class="uk-width-1-1  uk-margin-medium-top"> 
 <div class="standard_wide">
-
-    {#<div class="uk-margin-large">#}
-    {#<h2>Легковые авто <a class="tx_16 undln" href="/show/rus/all/cars">показать все</a></h2>#}
-    {#<div class="owl-carousel owl-theme uk-width-1-1" data-items="4">#}
-    {#{% for card in cars %}#}
-    {#{{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}#}
-    {#{% endfor %}#}
-    {#</div>#}
-    {#</div>#}
-    <div class="uk-grid-small uk-margin-large-bottom " uk-grid> 
-        <div class="uk-width-1-4@s uk-margin-medium-top">
-            <div class="uk-text-center ">
-                <div class="uk-h4 uk-text-truncate"><a href="/rent/{{ in_city }}/all/bikes"  class="uk-h4 uk-text-truncate">Мотоциклы</a></div>
-            </div>
-                <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="1"> {% for card in bikes %}
-                    {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px'}) }}
-                {% endfor %}
-                {{ include('search/all_more.html.twig', {'title':'Все мотоциклы', 'url':'/rent/'~in_city~'/all/bikes'}) }}
-            </div>
-        </div>
-
-        <div class="uk-width-1-4@s uk-margin-medium-top">
-            <div class="uk-text-center ">
-                <div class="uk-h4 uk-text-truncate"><a href="/rent/{{ in_city }}/all/wedding"  class="uk-h4 uk-text-truncate">{% trans %}Свадебные авто{% endtrans %}</a></div>
-            </div>
-                <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="1"> {% for card in wedding %}
-                    {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px'}) }}
-                {% endfor %}
-                {{ include('search/all_more.html.twig', {'title':'Все свадебные авто', 'url':'/rent/'~in_city~'/all/wedding'}) }}
-            </div>
-        </div>
-
-        <div class="uk-width-1-4@s uk-margin-medium-top">
-            <div class="uk-text-center ">
-                <div class="uk-h4 uk-text-truncate"><a href="/rent/{{ in_city }}/all/quadro"  class="uk-h4 uk-text-truncate">Квадроциклы</a></div>
-            </div>
-                <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="1"> {% for card in quadro %}
-                    {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px'}) }}
-                {% endfor %}
-                {{ include('search/all_more.html.twig', {'title':'Все квадроциклы', 'url':'/rent/'~in_city~'/all/quadro'}) }}
-            </div>
-        </div>
-        <div class="uk-width-1-4@s uk-margin-medium-top">
-            <div class="uk-text-center ">
-                <div class="uk-h4 uk-text-truncate"><a href="/rent/{{ in_city }}/all/yachts"  class="uk-h4 uk-text-truncate">Яхты</a></div>
-            </div>
-                <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="1"> {% for card in yachts %}
-                    {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px'}) }}
-                {% endfor %}
-                {{ include('search/all_more.html.twig', {'title':'Все яхты', 'url':'/rent/'~in_city~'/all/yachts'}) }}
-            </div>
-        </div>
+    <div class="uk-text-center ">
+        <div class="uk-h4 uk-text-truncate"><a href="/rent/{{ in_city }}/all/bikes"  class="uk-h4 uk-text-truncate">Мотоциклы</a></div>
     </div>
-
+        <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="4"> {% for card in bikes %}
+            {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px'}) }}
+        {% endfor %}
+        {{ include('search/all_more.html.twig', {'title':'Все мотоциклы', 'url':'/rent/'~in_city~'/all/bikes'}) }}
+    </div>
 </div>
+</div>
+{# end блок слайдера ТОП Мотоциклы #}
+
+{# begin блок слайдера ТОП Свадебные авто #}
+<div class="uk-width-1-1  uk-margin-medium-top"> 
+<div class="standard_wide">
+    <div class="uk-text-center ">
+        <div class="uk-h4 uk-text-truncate"><a href="/rent/{{ in_city }}/all/wedding"  class="uk-h4 uk-text-truncate">{% trans %}Свадебные авто{% endtrans %}</a></div>
+    </div>
+        <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="4"> {% for card in wedding %}
+            {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px'}) }}
+        {% endfor %}
+        {{ include('search/all_more.html.twig', {'title':'Все свадебные авто', 'url':'/rent/'~in_city~'/all/wedding'}) }}
+    </div>
+</div>
+</div>
+{# end блок слайдера ТОП Свадебные авто #}
+
+{# begin блок слайдера ТОП Квадроциклы #}
+<div class="uk-width-1-1  uk-margin-medium-top"> 
+<div class="standard_wide">
+    <div class="uk-text-center ">
+        <div class="uk-h4 uk-text-truncate"><a href="/rent/{{ in_city }}/all/quadro"  class="uk-h4 uk-text-truncate">Квадроциклы</a></div>
+    </div>
+        <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="4"> {% for card in quadro %}
+            {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px'}) }}
+        {% endfor %}
+        {{ include('search/all_more.html.twig', {'title':'Все квадроциклы', 'url':'/rent/'~in_city~'/all/quadro'}) }}
+    </div>
+</div>
+</div>
+{# end блок слайдера ТОП Квадроциклы #}
+
+{# begin блок слайдера ТОП Яхты #}
+<div class="uk-width-1-1  uk-margin-medium-top"> 
+<div class="standard_wide">
+    <div class="uk-text-center ">
+        <div class="uk-h4 uk-text-truncate"><a href="/rent/{{ in_city }}/all/yachts"  class="uk-h4 uk-text-truncate">Яхты</a></div>
+    </div>
+        <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="4"> {% for card in yachts %}
+            {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px'}) }}
+        {% endfor %}
+        {{ include('search/all_more.html.twig', {'title':'Все яхты', 'url':'/rent/'~in_city~'/all/yachts'}) }}
+    </div>
+</div>
+</div>
+{# end блок слайдера ТОП Яхты #}
+
 
 {# begin блок лучших арендаторов #}
 {{ include('owners_top.html.twig') }}

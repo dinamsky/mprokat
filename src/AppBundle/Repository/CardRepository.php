@@ -107,7 +107,7 @@ class CardRepository extends \Doctrine\ORM\EntityRepository
         $query->setMaxResults(10);
         $query->setFirstResult(10);
         $cars = $query->getResult();
-        // return $cars;
+        
         if(count($cars)<10) {
             $ccars_ids = [];
             $carInQ = '';

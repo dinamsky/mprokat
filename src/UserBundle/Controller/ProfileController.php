@@ -460,9 +460,10 @@ class ProfileController extends Controller
          */
 
         $em = $this->getDoctrine()->getManager();
-        $query = $em->createQuery('DELETE UserBundle\Entity\UserInfo u WHERE u.userId = ?1 AND u.uiKey != ?2');
+        $query = $em->createQuery('DELETE UserBundle\Entity\UserInfo u WHERE u.userId = ?1 AND u.uiKey != ?2 AND u.uiKey != ?3');
         $query->setParameter(1, $user->getId());
         $query->setParameter(2, 'foto');
+        $query->setParameter(3, 'phone');
         $query->execute();
 
         foreach($post->get('info') as $uiKey =>$uiValue ){
