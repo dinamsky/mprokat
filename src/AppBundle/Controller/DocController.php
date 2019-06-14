@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Doctrine\ORM\EntityManagerInterface as em;
 use AppBundle\Entity\Document;
 use AppBundle\Document\DocumentUtils;
+use UserBundle\Entity\FormOrder;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -22,36 +23,41 @@ class DocController extends Controller
     }
 
     /**
-     * @Route("/document/{id}/image.jpg", requirements={"id": "\d+"}, name="get_document")
+     * @Route("/document/{id}/image", requirements={"id": "\d+"}, name="get_document")
      */
     public function getDocument($id){
-        $doc = $this->em
-                ->getRepository(Document::class)
-                ->findOneBy(['id' => $id]);
-        if ($doc){
-            
-            $file = $_SERVER['DOCUMENT_ROOT'].$doc->getFolder().'/'.$doc->getId().'.jpg';
-            // var_dump($file);
-            $response = new BinaryFileResponse($file);
-
-            return $response;
-        }
-        return new Response();
+        return $this->getBinaryFileResponse($id, false);
     }
 
     /**
-     * @Route("/document/{id}/t/image.jpg", requirements={"id": "\d+"}, name="get_document_t")
+     * @Route("/document/{id}/t/image", requirements={"id": "\d+"}, name="get_document_t")
      */
     public function getDocumentThumbs($id){
-        $doc = $this->em
-                ->getRepository(Document::class)
-                ->findOneBy(['id' => $id]);
-        if ($doc){
-            
-            $file = $_SERVER['DOCUMENT_ROOT'].$doc->getFolder().'/t/'.$doc->getId().'.jpg';
-            // var_dump($file);
-            $response = new BinaryFileResponse($file);
+        return $this->getBinaryFileResponse($id, true);
+    }
 
+    private function getBinaryFileResponse(int $id, bool $thum = false){
+        $doc = $this->em
+            ->getRepository(Document::class)
+            ->findOneBy(['id' => $id]);
+        if ($doc == null){
+            return new Response();
+        }
+        if (!$this->get('session')->has('logged_user')) {
+            return new Response();
+        }
+        $curUserId = (int) $this->get('session')->get('logged_user')->getId();
+        $order = $this->em
+             ->getRepository(FormOrder::class)
+             ->findOneBy(['id' => $doc->getOrderId()]);
+        if ($order == null){
+            return new Response();
+        }
+
+        if ($this->get('session')->has('admin') || ($curUserId == $order->getUserId()) || ($curUserId == $order->getRenterId())){
+            
+            $file = $_SERVER['DOCUMENT_ROOT'].$doc->getFolder().'/'.($thum?'t/':'').$doc->getId().'.jpg';
+            $response = new BinaryFileResponse($file);
             return $response;
         }
         return new Response();

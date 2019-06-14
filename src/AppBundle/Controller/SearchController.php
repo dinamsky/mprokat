@@ -321,7 +321,7 @@ class SearchController extends Controller
 
         if ($is_filter){
 
-            $fids = false;
+            $fids = array();
             foreach($get['filter'] as $filter_id => $filter_array){
 
                 if ($filter_type[$filter_id] == 'checkbox'){
@@ -346,7 +346,7 @@ class SearchController extends Controller
             }
 
 
-            if($fids) {
+            if($fids == array()) {
                 $result_keys = array_keys($fids);
 
                 if (count($result_keys) > 1) {
