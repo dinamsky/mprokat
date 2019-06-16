@@ -1536,13 +1536,13 @@ class ProfileController extends Controller
     private function cut_num($s, $state = 'empty')
     {
         $accept = [
-            'rejected',
-            'wait_for_accept',
-            'wait_for_pay',
-            'accepted',
-            'empty',
+            'rejected' => 1,
+            'wait_for_accept' => 1,
+            'wait_for_pay' => 1,
+            'accepted' => 1,
+            'empty' => 1,
         ];
-        if ( key_exists($state, $accept) ) {
+        if ( key_exists(trim($state), $accept) ) {
             $s = preg_replace('/\+?\([0-9]+\)[0-9]+/', '*', $s);
             $s = preg_replace('/[0-9]{7}/', '*', $s);
             $s = preg_replace('/[0-9]{2}\-[0-9]{2}\-[0-9]{3}/', '*', $s);
@@ -1785,120 +1785,6 @@ class ProfileController extends Controller
 
         return new Response("");
     }
-
-
-
-
-
-   /**
-     * @Route("/ajax_renter_answer2", name="ajax_renter_answer2")
-     */
-    public function renterAnswer2Action(EntityManagerInterface $em, Request $request, ServiceStat $stat, \Swift_Mailer $mailer)
-    {
-        // return new Response( json_encode($request->request->get('id')) );
-        $id = $request->request->get('id');
-        $order = $this->getDoctrine()
-            ->getRepository(FormOrder::class)
-            ->find($id);
-
-        
-
-        // $_FILES
-        
-        // return new Response( json_encode($_FILES) );
-
-        // $messages = json_decode($order->getMessages(),true);
-        // $messages[] = [
-        //     'date' => date('d-m-Y'),
-        //     'time' => date('H:i'),
-        //     'from' => 'renter',
-        //     'message' => $this->cut_num($request->request->get('answer')),
-        //     'status' => 'send'
-        // ];
-
-        // if($request->request->get('answer') != $this->cut_num($request->request->get('answer'))){
-        //     $messages[] = [
-        //         'date' => date('d-m-Y'),
-        //         'time' => date('H:i'),
-        //         'from' => 'system',
-        //         'message' => '@multiprokat_bot: Номера телефонов будут доступны после успешной оплаты заказа',
-        //         'status' => 'send'
-        //     ];
-        // }
-
-        // $order->setMessages(json_encode($messages));
-        // //$order->setOwnerStatus('wait_for_answer');
-        // //$order->setRenterStatus('answered');
-        // $em->persist($order);
-        // $em->flush();
-
-        // ------- send SMS -------
-
-        $user = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->find($order->getUserId());
-        // foreach( $user->getInformation() as $info){
-        //     if($info->getUiKey() == 'phone'){
-        //         $number = preg_replace('~[^0-9]+~','',$info->getUiValue());
-        //         if(strlen($number)==11) $number = substr($number, 1);
-        //     }
-        // }
-
-        // $message = urlencode('Арендатор ответил на ваше сообщение в заявке №'.$id.'. Можно посмотреть по адресу: https://multiprokat.com/user/transport_orders/'.$id);
-        // if(isset($number)) {
-        //     $url = 'https://mainsms.ru/api/mainsms/message/send?apikey=72f5f151303b2&project=multiprokat&sender=MULTIPROKAT&recipients=' . $number . '&message=' . $message;
-        //     $sms_result = @file_get_contents($url);
-        // }
-
-        // ---------------------------
-
-        $filess = $_FILES['files'];
-
-        
-        //  return new Response( json_encode($_FILES['files']) );
-        if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)) {
-            $msg = (new \Swift_Message('Арендатор ответил на ваше сообщение в заявке №' . $id))
-                ->setFrom('mail@multiprokat.com')
-                ->setTo($user->getEmail())
-                ->setBody('Арендатор ответил на ваше сообщение в заявке №' . $id.'. Можно посмотреть по адресу: https://multiprokat.com/user/transport_orders/'.$id, 'text/html');
-            
-            if (count($filess)>0){
-                foreach($filess as $file)
-                {
-                    if (!empty($file['name'])){
-                        $msg->attach(Swift_Attachment::fromPath($file['tmp_name'])
-                            ->setFilename($file['name']));
-                    }
-                }
-            }
-            $mailer->send($msg);
-        }
-        return new Response( json_encode($_FILES['files']) );
-        $msg = (new \Swift_Message('Мультипрокат. Арендатор ответил на сообщение в заявке №'.$id.'. Можно посмотреть по адресу: https://multiprokat.com/user/transport_orders/'.$id))
-                ->setFrom('mail@multiprokat.com')
-                ->setTo('mail@multiprokat.com')
-                ->setBody($request->request->get('answer'),'text/html');
-        // foreach($files as $file)
-        // {
-        //     if (!empty($file['name'])){
-        //         $msg->attach(Swift_Attachment::fromPath($file['tmp_name'])
-        //             ->setFilename($file['name']));
-        //     }
-        // }
-        $mailer->send($msg);
-
-        $notify = new Notify();
-        $notify->setUserId($user->getId());
-        $notify->setObjectId($id);
-        $notify->setNotify('order_answer');
-        $em->persist($notify);
-        $em->flush();
-
-        return new Response("");
-    }
-
-
-
 
     private function gen_payment($orderid, $price)
     { //generate  array payment
