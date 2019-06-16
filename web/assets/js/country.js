@@ -66,7 +66,7 @@ $( document ).ready(function() {
 
         $(form).find('#prtc2').addClass('uk-hidden');
 
-        if(phone!=='') {
+        if(regcode!=='') {
             $.ajax({
                 url: '/userRecoverTelCode',
                 type: 'POST',
