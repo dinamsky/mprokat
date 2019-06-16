@@ -23,9 +23,15 @@
     width: 300px !important;
 }
 
+    .uk-grid {
+         margin-left: -5px; 
+    }
+    .uk-grid > * {
+        padding-left: 10px;
+    }
     .standard_wide{
         width: 100%;
-        padding: 0 10px;
+        padding: 0px;
         box-sizing: border-box;
     }
     .owl-nav{

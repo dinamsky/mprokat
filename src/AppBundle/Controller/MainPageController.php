@@ -63,6 +63,74 @@ class MainPageController extends Controller
         // $moto = $all[8];
         // $heli = $all[17];
 
+        $countsGr = [
+            'bikes'=>count($bikes),
+            'wedding'=>count($wedding),
+            'quadro'=>count($quadro),
+            'yachts'=>count($yachts),
+        ];
+        $grHeader = [
+            'bikes'=>'Мотоциклы',
+            'wedding'=>'Свадебные авто',
+            'quadro'=>'Квадроциклы',
+            'yachts'=>'Яхты',
+        ];
+        asort($countsGr);
+
+        $totalCount = 0;
+        $keyGr = 0;
+        $grCount = [];
+
+        foreach ($countsGr as $key => $val) {
+            switch ($val) {
+                case 0:
+                    break;
+                case 1:
+                    $totalCount += $val;
+                    $grCount[$key] = [
+                        'group' => $keyGr,
+                        'count' => 1,
+                        'view' => true
+                    ];
+                    if ($totalCount > 3) {
+                        $totalCount = 0;
+                        $keyGr++; 
+                    }
+                    break;
+                case 2:
+                case 3:
+                    $totalCount += $val;
+                    $grCount[$key] = [
+                        'group' => $keyGr,
+                        'count' => 2,
+                        'view' => true
+                    ];
+                    if ($totalCount > 3) {
+                        $totalCount = 0;
+                        $keyGr++; 
+                    }
+                    break;
+                default:
+                    if ($totalCount > 0){
+                        $grCount[$key] = [
+                            'group' => $keyGr,
+                            'count' => 4 - $totalCount,
+                            'view' => true
+                        ];
+                    } else {
+                        $grCount[$key] = [
+                            'group' => $keyGr,
+                            'count' => 4,
+                            'view' => true
+                        ];
+                    }
+                    $totalCount = 0;
+                    $keyGr++;
+                    break;
+            } 
+        }
+
+        
 
 
         $query = $em->createQuery('SELECT g FROM AppBundle:GeneralType g WHERE g.total !=0 ORDER BY g.weight, g.total DESC');
@@ -145,6 +213,18 @@ class MainPageController extends Controller
             'yachts' => $yachts,
             'bikes' => $bikes,
 
+            'blockCars' => [
+                // 'heli' => $heli,
+                // 'snow' => $snow,
+                // 'moto' => $moto,
+                'wedding' => $wedding,
+                'quadro' => $quadro,
+                // 'trucks' => $trucks,
+                'yachts' => $yachts,
+                'bikes' => $bikes,
+            ],
+            'positionCars' => $grCount,
+            'positionHeader' => $grHeader,
             'cityId' => $city->getId(),
 
             'marks' => [],
