@@ -1533,13 +1533,22 @@ class ProfileController extends Controller
     }
 
 
-    private function cut_num($s)
+    private function cut_num($s, $state = 'empty')
     {
-        $s = preg_replace('/\+?\([0-9]+\)[0-9]+/', '*', $s);
-        $s = preg_replace('/[0-9]{7}/', '*', $s);
-        $s = preg_replace('/[0-9]{2}\-[0-9]{2}\-[0-9]{3}/', '*', $s);
-        $s = preg_replace('/[0-9]{3}\-[0-9]{2}\-[0-9]{2}/', '*', $s);
-        $s = preg_replace('/[0-9]{2,3}[ \.\-_\+]+[0-9]{2,3}[ \.\-_\+]+[0-9]{2,3}/', '*', $s);
+        $accept = [
+            'rejected',
+            'wait_for_accept',
+            'wait_for_pay',
+            'accepted',
+            'empty',
+        ];
+        if ( key_exists($state, $accept) ) {
+            $s = preg_replace('/\+?\([0-9]+\)[0-9]+/', '*', $s);
+            $s = preg_replace('/[0-9]{7}/', '*', $s);
+            $s = preg_replace('/[0-9]{2}\-[0-9]{2}\-[0-9]{3}/', '*', $s);
+            $s = preg_replace('/[0-9]{3}\-[0-9]{2}\-[0-9]{2}/', '*', $s);
+            $s = preg_replace('/[0-9]{2,3}[ \.\-_\+]+[0-9]{2,3}[ \.\-_\+]+[0-9]{2,3}/', '*', $s);
+        }        
         return $s;
     }
 
@@ -1558,11 +1567,11 @@ class ProfileController extends Controller
             'date' => date('d-m-Y'),
             'time' => date('H:i'),
             'from' => 'owner',
-            'message' => $this->cut_num($request->request->get('answer')),
+            'message' => $this->cut_num($request->request->get('answer'), $order->getOwnerStatus()),
             'status' => 'send'
         ];
 
-        if($request->request->get('answer') != $this->cut_num($request->request->get('answer'))){
+        if($request->request->get('answer') != $this->cut_num($request->request->get('answer'), $order->getOwnerStatus())){
             $messages[] = [
                 'date' => date('d-m-Y'),
                 'time' => date('H:i'),
@@ -1712,11 +1721,11 @@ class ProfileController extends Controller
                 'date' => date('d-m-Y'),
                 'time' => date('H:i'),
                 'from' => 'renter',
-                'message' => $this->cut_num($request->request->get('answer')),
+                'message' => $this->cut_num($request->request->get('answer'), $order->getOwnerStatus()),
                 'status' => 'send'
             ];
 
-            if($request->request->get('answer') != $this->cut_num($request->request->get('answer'))){
+            if($request->request->get('answer') != $this->cut_num($request->request->get('answer'), $order->getOwnerStatus())){
                 $messages[] = [
                     'date' => date('d-m-Y'),
                     'time' => date('H:i'),

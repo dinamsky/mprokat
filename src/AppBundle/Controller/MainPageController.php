@@ -205,13 +205,13 @@ class MainPageController extends Controller
 
             'cars' => $cars,
             // 'heli' => $heli,
-            // 'snow' => $snow,
-            // 'moto' => $moto,
-            'wedding' => $wedding,
-            'quadro' => $quadro,
-            // 'trucks' => $trucks,
-            'yachts' => $yachts,
-            'bikes' => $bikes,
+            // // 'snow' => $snow,
+            // // 'moto' => $moto,
+            // 'wedding' => $wedding,
+            // 'quadro' => $quadro,
+            // // 'trucks' => $trucks,
+            // 'yachts' => $yachts,
+            // 'bikes' => $bikes,
 
             'blockCars' => [
                 // 'heli' => $heli,

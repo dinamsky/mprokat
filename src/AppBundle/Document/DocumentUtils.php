@@ -41,6 +41,10 @@ class DocumentUtils extends Controller
         //dump($_FILES);
         //dump($_POST['to_upload']);
 
+        if (!key_exists($ff, $_FILES)){
+            return $res;
+        }
+
         foreach($_FILES[$ff]['name'] as $k=>$v)
         {
             if (!empty($_FILES[$ff]['name'][$k]) and in_array($_FILES[$ff]['name'][$k],$_POST[$ff.'_in'],true))

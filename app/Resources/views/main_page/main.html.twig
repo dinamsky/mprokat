@@ -183,19 +183,8 @@
 
 
 <div class="standard_wide" uk-grid>
-    {# {% set old_gr = 100 %} #}
     {% for kPosC, posC in positionCars %}
-        {# {% if loop.first or old_gr <> posC.group %}
-            {% set old_gr = posC.group %}
-            <div class="uk-width-1-1  uk-margin-medium-top"> 
-        {% endif %}
-
-        {% if loop.last or (old_gr <> posC.group and loop.first = false) %}
-            {% set old_gr = posC.group %}
-            </div> 
-        {% endif %} #}
         {{ include('grid_view_tops.html.twig', {'in_city':in_city, 'header':positionHeader[kPosC], 'posC':posC, 'cards':blockCars[kPosC], 'height':'250px'}) }}
-
     {% endfor %}
 </div>
 
