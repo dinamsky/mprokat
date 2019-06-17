@@ -1,7 +1,7 @@
 <div class="uk-width-1-1 uk-width-1-{{4 / posC.count}}@m  uk-margin-medium-top"> 
 
     <div class="uk-text-center ">
-        <div class="uk-h4 uk-text-truncate"><a href="/rent/{{ in_city }}/all/bikes"  class="uk-h4 uk-text-truncate">{{header}}</a></div>
+        <div class="uk-h4 uk-text-truncate"><a href="/rent/{{ in_city }}/all/{{ keyC }}"  class="uk-h4 uk-text-truncate">{{header}}</a></div>
     </div>
     <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="{{posC.count}}"> 
         {% for card in cards %}

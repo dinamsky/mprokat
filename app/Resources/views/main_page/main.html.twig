@@ -184,7 +184,7 @@
 
 <div class="standard_wide" uk-grid>
     {% for kPosC, posC in positionCars %}
-        {{ include('grid_view_tops.html.twig', {'in_city':in_city, 'header':positionHeader[kPosC], 'posC':posC, 'cards':blockCars[kPosC], 'height':'250px'}) }}
+        {{ include('grid_view_tops.html.twig', {'in_city':in_city, 'header':positionHeader[kPosC], 'posC':posC, 'cards':blockCars[kPosC], 'height':'250px', 'keyC':kPosC}) }}
     {% endfor %}
 </div>
 

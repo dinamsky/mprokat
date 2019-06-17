@@ -111,7 +111,7 @@
                         <div class="uk-margin">
                             <label class="uk-form-label" for="form-stacked-text">{% trans %}Имя{% endtrans %}</label>
                             <div class="uk-form-controls uk-width-1-1">
-                                <input name="header" value="{{ user.header }}" class="uk-input" type="text">
+                                <input name="header" value="{{ user.header }}" class="uk-input" type="text" required>
                             </div>
                         </div>
 
@@ -119,7 +119,7 @@
                         <div class="uk-margin">
                             <label class="uk-form-label" for="form-stacked-text">Email</label>
                             <div class="uk-form-controls uk-width-1-1">
-                                <input name="email" value="{{ user.email }}" class="uk-input" type="text">
+                                <input name="email" value="{{ user.email }}" class="uk-input" type="text" required>
                             </div>
                         </div>
                         {# <div>Email: <input name="email" value="{{ user.email }}" class="uk-input"></div> #}

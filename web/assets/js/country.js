@@ -43,8 +43,6 @@ $( document ).ready(function() {
                 type: 'POST',
                 data: {phone: phone,pass1:password1,pass2:password2},
                 success: function (html) {
-                    console.log(html);
-                    console.log(phone);
                     if(html ==='ok') {
                         UIkit.modal($('#pass_recover_tel')).hide();
                         UIkit.modal($('#pass_recover_tel_code')).show();
