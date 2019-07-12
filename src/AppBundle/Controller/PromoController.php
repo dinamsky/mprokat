@@ -186,7 +186,7 @@ class PromoController extends Controller
             }
         }
 
-        $message = (new \Swift_Message('Ваша компания теперь на сайте multiprokat.com. Мы разместили ваше объявление: '.$card->getMarkModel()->getMark()->getHeader().' '.$card->getMarkModel()->getHeader()))
+        $message = (new \Swift_Message('Ваша компания теперь на сайте multiprokat.com. Мы разместили ваш транспорт: '.$card->getMarkModel()->getMark()->getHeader().' '.$card->getMarkModel()->getHeader()))
                     ->setFrom('mail@multiprokat.com','Multiprokat.com - прокат и аренда транспорта')
                     ->setTo('wqs-info@mail.ru')
                     //->setBcc('mail@multiprokat.com')

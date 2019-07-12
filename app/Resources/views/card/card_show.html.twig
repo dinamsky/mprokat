@@ -400,7 +400,7 @@
                         <span class="uk-text-small c_grey">{% trans %}отзывов{% endtrans %}</span>
                     </div>
                     <hr>
-                    <div class="uk-text-center"><a href="/user/{{ card.user.id }}">{% trans %}Все объявления{% endtrans %}<br>{% trans %}пользователя{% endtrans %} ({{ card.user.cards|length }})</a></div>
+                    <div class="uk-text-center"><a href="/user/{{ card.user.id }}">{% trans %}Весь транспорт{% endtrans %}<br>{% trans %}пользователя{% endtrans %} ({{ card.user.cards|length }})</a></div>
 
                 </div>
                 {% endif %}
@@ -496,17 +496,17 @@
 
 
                 {% else %}
-                    <a href="/card/new" class="uk-button uk-button-success uk-width-1-1 uk-margin-top">{% trans %}Разместить еще объявление{% endtrans %}</a>
+                    <a href="/card/new" class="uk-button uk-button-success uk-width-1-1 uk-margin-top">{% trans %}Разместить еще транспорт{% endtrans %}</a>
                 {% endif %}
 
 
                 {% if app.session.has('admin') or ( app.session.has('logged_user') and card.user.id == app.session.get('logged_user').id ) %}
                     <hr>
-                    <a class="uk-button uk-button-primary" href="/user/edit/card/{{ card.id }}">{% trans %}Редактировать объявление{% endtrans %}</a>
+                    <a class="uk-button uk-button-primary" href="/user/edit/card/{{ card.id }}">{% trans %}Редактировать{% endtrans %}</a>
                 {% endif %}
 
 
-                <h2 class="pf_style_header"><span>{% trans %}Похожие объявления{% endtrans %}</span></h2>
+                <h2 class="pf_style_header"><span>{% trans %}Многим нравится{% endtrans %}</span></h2>
                 <div uk-grid class="uk-grid-small uk-grid-match">
                     {% for card in similar %}
                         <div class="uk-width-1-3@s">
@@ -640,7 +640,7 @@
                             <span class="uk-text-small c_grey">{% trans %}отзывов{% endtrans %}</span>
                         </div>
                         <hr>
-                        <div class="uk-text-center"><a href="/user/{{ card.user.id }}">{% trans %}Все объявления{% endtrans %}<br>{% trans %}пользователя{% endtrans %} ({{ card.user.cards|length }})</a></div>
+                        <div class="uk-text-center"><a href="/user/{{ card.user.id }}">{% trans %}Весь транспорт{% endtrans %}<br>{% trans %}пользователя{% endtrans %} ({{ card.user.cards|length }})</a></div>
 
                     </div>
 
@@ -758,7 +758,7 @@
 
                             </form>
                             <div class="uk-margin-top">
-                                Пожалуйста, оцените отзывчивость этого владельца и актуальность его объявления
+                                Пожалуйста, оцените отзывчивость этого владельца и актуальность его транспорта
                             </div>
                         </div>
 
@@ -811,9 +811,9 @@
 
                     <div class="uk-text-center">
                         {% if app.session.has('logged_user') %}
-                            <a href="/card/new" class="" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip>{% trans %}Разместить объявление в ТОП{% endtrans %}</a>
+                            <a href="/card/new" class="" title="Хотите сюда?<br>Разместите транспорт!" uk-tooltip>{% trans %}Разместить в ТОП{% endtrans %}</a>
                         {% else %}
-                            <a class="" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip uk-toggle="target: #sign_in_or_up">{% trans %}Разместить объявление в ТОП{% endtrans %}</a>
+                            <a class="" title="Хотите сюда?<br>Разместите транспорт!" uk-tooltip uk-toggle="target: #sign_in_or_up">{% trans %}Разместить в ТОП{% endtrans %}</a>
                         {% endif %}
                     </div>
                 </div>
@@ -846,7 +846,7 @@
                     <label><input type="checkbox" name="abuse[]" value="Телефон не отвечает">{% trans %}Телефон не отвечает{% endtrans %}</label>
                 </div>
                 <div class="uk-width-1-1">
-                    <label><input type="checkbox" name="abuse[]" value="Объявление больше не актуально">{% trans %}Объявление больше не актуально{% endtrans %}</label>
+                    <label><input type="checkbox" name="abuse[]" value="Транспорт больше не актуален">{% trans %}Транспорт больше не актуален{% endtrans %}</label>
                 </div>
                 <div class="uk-width-1-1">
                     <label><input type="checkbox" name="abuse[]" value="Ворованные фото">{% trans %}Ворованные фото{% endtrans %}</label>

@@ -59,26 +59,7 @@
                 {% endif %}
             </div>
         </div>
-        {% if app.session.has('logged_user') %}
-
-            <div class="uk-width-1-2 uk-hidden@m" style="margin: 0px 0px 30px 0px;">
-                <a class=" uk-button uk-button-danger" href="/sl_page" style="border-radius: 30px; font-size: x-small;"></i>Арендовать</a>
-        </div>
-        <div class="uk-width-1-2 uk-padding-remove-left uk-hidden@m" style="margin: 0px 0px 30px 0px;">
-            <a class=" uk-button uk-button-default bg_white " href="/card/new" style="border-radius: 30px; font-size: x-small;">Сдать в аренду</a>
-        </div>
-
-    {% else %}
-        <div class="uk-width-1-2 uk-padding-remove-left uk-margin-bottom uk-margin-remove-top uk-hidden@m" style="margin: 0px 0px 30px 0px;">
-            <a class=" uk-button uk-button-danger" href="/sl_page" style="border-radius: 30px; font-size: x-small;"></i>Арендовать</a>
-        {# <button class=" uk-button uk-button-danger" style="border-radius: 30px; " uk-toggle="target: #sign_up">{% trans %}Арендовать{% endtrans %}</button> #}
     </div>
-    <div class="uk-width-1-2 uk-padding-remove-left uk-margin-bottom uk-margin-remove-top uk-hidden@m" style="margin: 0px 0px 30px 0px;">
-        <a class=" uk-button uk-button-default bg_white " href="/card/new" style="border-radius: 30px; font-size: x-small;">Сдать в аренду</a>
-        {# <button class=" uk-button uk-button-default bg_white " style="border-radius: 30px; " uk-toggle="target: #sign_up">Сдать в аренду</button> #}
-    </div>
-
-{% endif %}</div>
 {# end верхний блок быстрого выбора и заставки #}
 
 {# begin блок поиска #}
@@ -102,9 +83,9 @@
     </div>
     <div class="uk-text-center">
         {% if app.session.has('logged_user') %}
-            <a class="" href="/card/new" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip>{% trans %}Разместить объявление в ТОП{% endtrans %}</a>
+            <a class="" href="/card/new" title="Хотите сюда?<br>Разместите в ТОП!" uk-tooltip>Разместить в ТОП</a>
         {% else %}
-            <a class="after_top" title="Хотите сюда?<br>Разместите объявление!" uk-toggle="target: #sign_in_or_up" uk-tooltip>{% trans %}Разместить объявление в ТОП{% endtrans %}</a>
+            <a class="after_top" title="Хотите сюда?<br>Разместите в ТОП!" uk-toggle="target: #sign_in_or_up" uk-tooltip>Разместить в ТОП</a>
         {% endif %}
     </div>
 </div>

@@ -72,7 +72,7 @@ class NewCardController extends Controller
             if ($user->getAccountTypeId() == 0 and count($user->getCards()) > 1){
                 $this->addFlash(
                     'notice',
-                    'В стандартном аккаунте вам доступно не более 2-х объявлений.<br>Оплатите PRO аккаунт для неограниченного количества объявлений'
+                    'В стандартном аккаунте вам доступно не более 2-х транспортов.<br>Оплатите PRO аккаунт для неограниченного количества транспорта'
                 );
                 $stat_arr = [
                     'url' => '/card/new',
@@ -393,7 +393,7 @@ class NewCardController extends Controller
                             if(count($user->getCards()) > 1) {
                                 $this->addFlash(
                                     'notice',
-                                    'В стандартном аккаунте вам доступно не более 2-х объявлений.<br>Оплатите PRO аккаунт для неограниченного количества объявлений'
+                                    'В стандартном аккаунте вам доступно не более 2-х транспортов.<br>Оплатите PRO аккаунт для неограниченного количества транспорта'
                                 );
                                 return new RedirectResponse('/user/cards');
                             }
@@ -659,7 +659,7 @@ class NewCardController extends Controller
 
                 //
 
-                $message = (new \Swift_Message('Ваша компания теперь на сайте multiprokat.com. Мы разместили ваше объявление: '.$card->getMarkModel()->getMark()->getHeader().' '.$card->getMarkModel()->getHeader()))
+                $message = (new \Swift_Message('Ваша компания теперь на сайте multiprokat.com. Мы разместили ваш транспорт: '.$card->getMarkModel()->getMark()->getHeader().' '.$card->getMarkModel()->getHeader()))
                     ->setFrom('mail@multiprokat.com','Multiprokat.com - прокат и аренда транспорта')
                     ->setTo($user->getEmail())
                     ->setBcc('mail@multiprokat.com')
@@ -735,7 +735,7 @@ class NewCardController extends Controller
             if (!$this->get('session')->has('admin')) {
                 $this->addFlash(
                     'notice',
-                    'Не забудьте поделиться вашим объявлением в социальных сетях!<br><br>Мы будем информировать Вас о каждой новой заявке через email и SMS!'
+                    'Не забудьте поделиться информацией о вашем транспорте в социальных сетях!<br><br>Мы будем информировать Вас о каждой новой заявке через email и SMS!'
                 );
             }
 

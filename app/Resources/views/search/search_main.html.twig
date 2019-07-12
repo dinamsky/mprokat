@@ -50,9 +50,9 @@
                 {% endif %}
 
                 {% if total_cards > 0 %}
-                    <div class="uk-text-center found_row">{% trans %}Найдено{% endtrans %}: {{ total_cards }} {% trans %}объявлений{% endtrans %}</div>
+                    <div class="uk-text-center found_row">{% trans %}Найдено{% endtrans %}: {{ total_cards }} {% trans %}транспорта{% endtrans %}</div>
                 {% else %}
-                    <div class="uk-text-center found_row">{% trans %}Объявлений не найдено{% endtrans %} ...</div>
+                    <div class="uk-text-center found_row">{% trans %}Транспорт не найден{% endtrans %} ...</div>
                 {% endif %}
 
 
@@ -145,21 +145,21 @@
                 {% if total_cards == 0 %}
 
                     <div class="zero_text">
-                        {% trans %}Пока никто не разместил объявление в этом городе и категории.{% endtrans %}<br>
-                        {% trans %}Будь первым - добавь объявления и получай клиентов!{% endtrans %}
+                        {% trans %}Пока никто не разместил транспорт в этом городе и категории.{% endtrans %}<br>
+                        {% trans %}Будь первым - добавь свой транспорт и получай клиентов!{% endtrans %}
                     </div>
 
 
                     {% if app.session.has('logged_user') %}
-                        <a href="/card/new" class="uk-button uk-button-success zero_button">{% trans %}Разместить объявление!{% endtrans %}</a>
+                        <a href="/card/new" class="uk-button uk-button-success zero_button">{% trans %}Разместить свой транспорт!{% endtrans %}</a>
                     {% elseif app.session.has('admin') %}
-                        <a href="/card/new" class="uk-button uk-button-success zero_button">{% trans %}Разместить объявление!{% endtrans %}</a>
+                        <a href="/card/new" class="uk-button uk-button-success zero_button">{% trans %}Разместить свой транспорт!{% endtrans %}</a>
                     {% else %}
-                        <a uk-toggle="target: #sign_in" class="uk-button uk-button-success zero_button">{% trans %}Разместить объявление!{% endtrans %}</a>
+                        <a uk-toggle="target: #sign_in" class="uk-button uk-button-success zero_button">{% trans %}Разместить транспорт!{% endtrans %}</a>
                     {% endif %}
 
                     {% if similar %}
-                        <h2 class="pf_style_header"><span>{% trans %}Похожие объявления{% endtrans %}</span></h2>
+                        <h2 class="pf_style_header"><span>{% trans %}Многим нравится{% endtrans %}</span></h2>
 
                         <div uk-grid class="uk-grid-small uk-grid-match uk-margin-top">
                             {% for card in similar %}
@@ -215,9 +215,9 @@
                 {% endfor %}
                 <div class="uk-text-center">
                     {% if app.session.has('logged_user') %}
-                        <a href="/card/new" class="" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip>{% trans %}Разместить объявление в ТОП{% endtrans %}</a>
+                        <a href="/card/new" class="" title="Хотите сюда?<br>Разместите свой транспорт!" uk-tooltip>{% trans %}Разместить в ТОП{% endtrans %}</a>
                     {% else %}
-                        <a class="" title="Хотите сюда?<br>Разместите объявление!" uk-tooltip uk-toggle="target: #sign_in_or_up">{% trans %}Разместить объявление в ТОП{% endtrans %}</a>
+                        <a class="" title="Хотите сюда?<br>Разместите свой транспорт!" uk-tooltip uk-toggle="target: #sign_in_or_up">{% trans %}Разместить в ТОП{% endtrans %}</a>
                     {% endif %}
                 </div>
 

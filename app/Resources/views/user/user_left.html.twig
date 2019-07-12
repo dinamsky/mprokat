@@ -9,7 +9,7 @@
     {% endif %}
 
     <a href="/profile">{% trans %}Мой профиль{% endtrans %}</a><br>
-    <a href="/user/cards">{% trans %}Мои объявления{% endtrans %}</a><br>
+    <a href="/user/cards">{% trans %}Мой транспорт{% endtrans %}</a><br>
     {#<a href="/user/messages">{% trans %}Мои сообщения{% endtrans %}</a>#}
     {#{% if t3_new.getUnread>0 %}<span class="uk-badge">{{ t3_new.getUnread }}</span>{% endif %}#}
     <br><br>
@@ -28,7 +28,7 @@
 
             {% if app.session.get('logged_user').accountTypeId == 0 %}
                 {% trans %}Ваш аккаунт{% endtrans %}: <b>{% trans %}стандартный{% endtrans %}</b>
-                <div>{% trans %}Вы можете разместить не более 2-х объявлений{% endtrans %}</div>
+                <div>{% trans %}Вы можете разместить не более 2-х транспортов{% endtrans %}</div>
                 <hr>
                 <a href="/userPayPro/{{ app.session.get('logged_user').id }}" class="uk-button uk-button-success uk-button-small pay_pro_button uk-position-relative">
                     <img src="/assets/images/interface/fb3.svg" alt="" style="width: 22px;
@@ -40,10 +40,10 @@
                         450<i class="fa fa-ruble"></i>
                 </a>
                 <div class="uk-margin-top uk-text-small">{% trans %}Оплаченный PRO аккаунт действует бессрочно{% endtrans %}<br>
-                    {% trans %}и дает больше возможностей, в том числе: размещать больше объявлений и получать больше звонков от клиентов{% endtrans %}</div>
+                    {% trans %}и дает больше возможностей, в том числе: размещать больше транспорта и получать больше звонков от клиентов{% endtrans %}</div>
             {% else %}
                 {% trans %}Ваш аккаунт{% endtrans %}: <img src="/assets/images/interface/fb3.svg" alt="" style="width: 16px"><span class="c_red uk-text-bold">PRO</span>
-                <div class="uk-margin-top">{% trans %}Вы можете разместить неограниченное количество объявлений{% endtrans %}</div>
+                <div class="uk-margin-top">{% trans %}Вы можете разместить неограниченное количество транспорта{% endtrans %}</div>
             {% endif %}
 
 

@@ -85,7 +85,7 @@ msgstr "Sign in"
 msgid "Профиль"
 msgstr "Profile"
 
-msgid "Объявления"
+msgid "Мой транспорт"
 msgstr "My cards"
 
 msgid "Выход"
@@ -224,7 +224,7 @@ msgstr "hour"
 msgid "Пока никто не разместил объявление в этом городе и категории."
 msgstr "Nobody place card in this category and city."
 
-msgid "Будь первым - добавь объявления и получай клиентов!"
+msgid "Будь первым - добавь свой транспорт и получай клиентов!"
 msgstr "Be first - add your card and get profit!"
 
 msgid "Разместить объявление!"
@@ -312,7 +312,7 @@ msgstr "stars from"
 msgid "отзывов"
 msgstr "opinions"
 
-msgid "Все объявления"
+msgid "Весь транспорт"
 msgstr "All cards"
 
 msgid "пользователя"
@@ -351,8 +351,8 @@ msgstr "Place one more card"
 msgid "Редактировать объявление"
 msgstr "Edit card"
 
-msgid "Похожие объявления"
-msgstr "Similar cards"
+msgid "Многим нравится"
+msgstr "Many like it"
 
 msgid "Показать телефон"
 msgstr "Show phone"
@@ -415,16 +415,16 @@ msgstr "Rude owner"
 # -------------------------------------------- new card -----------------------------------------
 
 
-msgid "Новое объявление"
+msgid "Новый транспорт"
 msgstr "New card"
 
-msgid "Разместите объявление и будьте готовы принимать звонки и email-сообщения от клиентов."
+msgid "Разместите транспорт и будьте готовы принимать звонки и email-сообщения от клиентов."
 msgstr "Place card and be ready to get calls and emails from your new clients"
 
 msgid "Заполните номер телефона"
 msgstr "Type your phone number"
 
-msgid "Тип объявления"
+msgid "Тип транспорта"
 msgstr "Card type"
 
 msgid "Сдаете в прокат или в аренду?"
@@ -526,7 +526,7 @@ msgstr "Show"
 msgid "Дополнительно"
 msgstr "Additional"
 
-msgid "Дополнительные параметры объявления будут участвовать в фильтрации"
+msgid "Дополнительные параметры транспорта будут участвовать в фильтрации"
 msgstr "Additional params will take part in filter"
 
 msgid "например"
@@ -594,7 +594,7 @@ msgstr "Delete"
 msgid "Мой профиль"
 msgstr "My profile"
 
-msgid "Мои объявления"
+msgid "Мой транспорт"
 msgstr "My cards"
 
 msgid "Выход"
@@ -630,7 +630,7 @@ msgstr "Social links"
 msgid "Фото"
 msgstr "Foto"
 
-msgid "Объявления пользователя"
+msgid "Транспорт пользователя"
 msgstr "User cards"
 
 msgid "все"
@@ -661,13 +661,13 @@ msgstr "Pay and place"
 msgid "Разместить бесплатно"
 msgstr "Place for free"
 
-msgid "Ваше объявление на самом заметном месте сайта: на главной странице, на первом месте в выбранной вами категории.<br>Премиум размещение дает плюс 1000 просмотров.<br>Размещение объявления на главной странице сайта привлекает больше просмотров, вы повысите количество клиентов за короткий срок."
+msgid "Ваше объявление на самом заметном месте сайта: на главной странице, на первом месте в выбранной вами категории.<br>Премиум размещение дает плюс 1000 просмотров.<br>Размещение траспнорта на главной странице сайта привлекает больше просмотров, вы повысите количество клиентов за короткий срок."
 msgstr "Your card will be in best position: on main page and first place in category<br>Premium give you +1000 views<br>Place in main page give your more views and customers for short time"
 
-msgid "Разместите ваше объявление в разделе «похожие объявления».<br>Ваше объявление в течении 7-ми дней будет размещено в карточках похожих объявлений выбранного региона.<br>Будьте лидером в своем регионе!"
+msgid "Разместите ваше объявление в разделе «Многим нравится».<br>Ваше объявление в течении 7-ми дней будет размещено в карточках похожих объявлений выбранного региона.<br>Будьте лидером в своем регионе!"
 msgstr "Place your card in «similars»<br>Your card will be in similar cards for one week in region<br>Be a leader in your region!"
 
-msgid "Бесплатное размещение вашего объявления на 365 дней<br>Объявление вытесняется другими, не участвует в продвижении на сайте.<br>Нужно больше клиентов в вашем городе?<br>Воспользуйтесь тарифами"
+msgid "Бесплатное размещение вашего транспорта на 365 дней<br>Объявление вытесняется другими, не участвует в продвижении на сайте.<br>Нужно больше клиентов в вашем городе?<br>Воспользуйтесь тарифами"
 msgstr "Free placement for one year<br>Your card will move down with other new cards and not take part in advancement in website<br>Do you need more customers? Choose tariffs"
 
 
