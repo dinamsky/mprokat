@@ -860,7 +860,7 @@ class ProfileController extends Controller
                     $messages[] = [
                         'date' => date('d-m-Y'),
                         'time' => date('H:i'),
-                        'from' => 'system_owner',
+                        'from' => 'system',
                         'message' => $msg_tmp_3,
                         'status' => 'send'
                     ];
