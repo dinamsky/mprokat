@@ -211,7 +211,7 @@
                     {#{% set btm = 52 %}#}
                 {#{% endif %}#}
 
-                {% if is_mobile() and card.user.id != 1971%}
+                {% if is_mobile() and card.user.id != app.session.get('logged_user').id  %}
                 <div class="" style="position: fixed;bottom:{{ btm }}px;left:0;width:100%;z-index:2;background: white">
                     <div class="cursor-pointer uk-text-center"
                          style="background: #25b45b;
@@ -572,7 +572,7 @@
 
 
 
-                {% if not is_mobile() and card.user.id != 1971%}
+                {% if not is_mobile() and card.user.id != app.session.get('logged_user').id %}
                     <div class="uk-margin-bottom" uk-sticky="offset: 94" style="z-index: 100">
                         <div class="card_blanc border_green newbook" uk-toggle="target: {{ app.session.has('logged_user') ? '#user_book_form' : '#nonreged_user_book_form' }}">
                             <div data-id="{{ card.id }}" class="nbinner cursor-pointer uk-text-center " >{{ btn_name }}</div>
