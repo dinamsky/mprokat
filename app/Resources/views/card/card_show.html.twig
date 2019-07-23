@@ -178,9 +178,9 @@
                     {% for price in card.getCardPrices if price.value != '' and price.priceId != 10%}
                         <div class="uk-text-center {{ price.priceId == 2 ? 'price_highlighted' : ''}}">
 
-
-                            {% set c_price = price.value + (price.value/100*8.5)|round(0,'ceil') %}
-
+                            {% set serv_perc = card.generalType.servicePercent %}
+                            {% set c_price = price.value + (price.value/100*serv_perc)|round(0,'ceil') %}
+                            
                             <span class="price_value">{{ c_price|number_format(0,'.','<span class="thousand_separator"></span>')|raw }}</span>
 
 
@@ -250,6 +250,7 @@
                     {% if card.coords != NULL and card.coords != ''%}
                     <li><a href="#">{% trans %}Карта{% endtrans %}</a></li>
                     {% endif %}
+                    <li><a href="#">{% trans %}Отзывы{% endtrans %} ({{ total_opinions }})</a></li>
                     {% if streetView %}
                         <li><a href="#">{% trans %}Местность{% endtrans %}</a></li>
                     {% endif %}
@@ -309,7 +310,46 @@
                             </script>
                     </li>
                     {% endif %}
+                        <li id="card_tab">
+                            <div class="card_blanc">
+                                {% if app.session.has('logged_user') %}
+                                    <form action="/userAddOpinion" method="POST">
+                                        <div class="stars uk-margin-bottom">
+                                            {% for i in 1..5 %}
+                                                <span class="star {{ i == 1 ? 'active' }}" data-star="{{ i }}"><i class="fa fa-star"></i></span>
+                                            {% endfor %}
+                                            <span id="stars">1</span>
+                                        </div>
+                                        <textarea name="content" class="uk-textarea" placeholder="{% trans %}Ваш отзыв{% endtrans %}" required></textarea>
+                                        <input type="hidden" name="stars" value="1">
+                                        <input type="hidden" name="user_id" value="{{ app.session.get('logged_user').id }}">
+                                        <input type="hidden" name="card_id" value="{{ card.id }}">
+                                        <input type="hidden" name="return" value="{{ app.request.requestUri }}">
+                                        <button class="uk-button uk-button-default uk-margin-top">{% trans %}Отправить{% endtrans %}</button>
+                                    </form>
 
+                                {% else %}
+                                    <div>
+                                        <a uk-toggle="target: #sign_in">{% trans %}Войдите{% endtrans %}</a> {% trans %}или{% endtrans %} <a uk-toggle="target: #sign_up">{% trans %}зарегистрируйтесь{% endtrans %}</a>, {% trans %}чтобы оставить отзыв{% endtrans %}.
+                                    </div>
+                                {% endif %}
+
+                                {% if card.opinions is not empty %}
+                                    <hr>
+                                    <div class="uk-margin-top">
+                                        {% for opinion in card.opinions %}
+                                            <div class="uk-margin-bottom">
+                                                <i class="fa fa-calendar"></i> {{ opinion.dateCreate|date('d.m.Y H:i') }}
+                                                <i class="fa fa-user"></i> {{ opinion.user.header }}
+                                                <i class="fa fa-star c_gold"></i> {{ opinion.stars }}
+                                                <div><i class="fa fa-comment-o"></i> {{ opinion.content }}</div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+
+                            </div>
+                        </li>
                     {% if streetView and card.coords != NULL %}
                         <li class="card_blanc">
                             <iframe
@@ -408,11 +448,11 @@
 
 
 
-                {% if not app.session.has('first_card') %}
+                {# {% if not app.session.has('first_card') %}
 
 
                     {% if is_mobile() %}
-                        {#<button class="uk-button uk-button-default uk-width-1-1" uk-toggle="target: #coms_opins">{% trans %}Комментарии и отзывы{% endtrans %}</button>#}
+                        <button class="uk-button uk-button-default uk-width-1-1" uk-toggle="target: #coms_opins">{% trans %}Комментарии и отзывы{% endtrans %}</button>
                     {% endif %}
 
                     <div uk-grid class="uk-margin-top" {{ is_mobile() ? 'id="coms_opins" hidden' }}>
@@ -497,7 +537,7 @@
 
                 {% else %}
                     <a href="/card/new" class="uk-button uk-button-success uk-width-1-1 uk-margin-top">{% trans %}Разместить еще транспорт{% endtrans %}</a>
-                {% endif %}
+                {% endif %} #}
 
 
                 {% if app.session.has('admin') or ( app.session.has('logged_user') and card.user.id == app.session.get('logged_user').id ) %}

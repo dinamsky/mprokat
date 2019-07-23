@@ -854,6 +854,20 @@ class ProfileController extends Controller
                     'status' => 'send'
                 ];
 
+                if (!empty($card->getAddress())){
+                    $msg_tmp_3 = '<div>Ожидаем ответ владельца.'.$post->get('header'). ' находится по адресу: ' .$card->getAddress().'</div>';
+
+                    $messages[] = [
+                        'date' => date('d-m-Y'),
+                        'time' => date('H:i'),
+                        'from' => 'system_owner',
+                        'message' => $msg_tmp_3,
+                        'status' => 'send'
+                    ];
+                }
+
+
+
                 $form_order->setMessages(json_encode($messages));
                 $form_order->setRenterId($renter->getId());
                 $form_order->setFioRenter($renter->getHeader());
