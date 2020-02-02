@@ -94,25 +94,26 @@
                             <div class="uk-grid uk-grid-small" {{ is_mobile() ? '' : 'style="margin-right: 10px"' }}>
                                 {% if dir == 'left' %}
                                     {% set url = '/assets/images/users/t/user_'~o.renterId~'.jpg' %}
-                                    {% if( m.from == 'owner') %}
+                                    {% if(m.from == 'owner') %}
                                         {% set url = '/assets/images/users/t/user_'~o.userId~'.jpg' %}
                                     {% endif %}
                                     {% if not file_exists('.'~url) %}
                                         {% set url = '/assets/images/interface/default-user.png' %}
                                     {% endif %}
-                                <div style="width: 60px;">
+                                <div><div>
                                     <a target="_blanc"
                                        href="/user/{{  m.from == 'owner' ? o.userId : o.renterId }}"
                                        uk-tooltip="title:Перейти на страницу пользователя"
                                        style="background: url({{ url }}) center center;
                                         background-size: cover;
                                         height: 60px;
+                                        width: 60px;
                                         display: block;
                                         border-radius: 30px;
                                         position: relative;"
                                     ></a>
                                     <div style="font-size: 10px;text-align: center">арендатор</div>
-                                </div>
+                                </div></div>
                                 {% endif %}
                                 <div class="uk-width-expand">
                                     <div class="{{ dir }}_message dbl_edit" data-i="{{ i }}" data-id="{{ o.id }}">
@@ -126,24 +127,27 @@
                                 </div>
                                 {% if dir == 'right' %}
                                     {% set url = '/assets/images/users/t/user_'~o.renterId~'.jpg' %}
-                                    {% if (m.from == 'owner') %}
+                                    {% if(m.from == 'owner') %}
                                         {% set url = '/assets/images/users/t/user_'~o.userId~'.jpg' %}
                                     {% endif %}
                                     {% if not file_exists('.'~url) %}
                                         {% set url = '/assets/images/interface/default-user.png' %}
                                     {% endif %}
-                                <div style="width: 60px;">
-                                    <a target="_blanc"
-                                       href="/user/{{  m.from == 'owner' ? o.userId : o.renterId }}"
-                                       uk-tooltip="title:Перейти на страницу пользователя"
-                                       style="background: url({{ url }}) center center;
-                                        background-size: cover;
-                                        height: 60px;
-                                        display: block;
-                                        border-radius: 30px;
-                                        position: relative;"
-                                    ></a>
-                                    <div style="font-size: 10px;text-align: center">владелец</div>
+                                <div>
+                                    <div>
+                                        <a target="_blanc"
+                                        href="/user/{{  m.from == 'owner' ? o.userId : o.renterId }}"
+                                        uk-tooltip="title:Перейти на страницу пользователя"
+                                        style="background: url({{ url }}) center center;
+                                            background-size: cover;
+                                            height: 60px;
+                                            width: 60px;
+                                            display: block;
+                                            border-radius: 30px;
+                                            position: relative;"
+                                        ></a>
+                                        <div style="font-size: 10px;text-align: center">владелец</div>
+                                    </div>
                                 </div>
                                 {% endif %}
                             </div>
@@ -155,8 +159,13 @@
                     <form action="/new_system_message" method="POST">
                         <textarea name="message" class="uk-textarea" style="min-height: 100px" placeholder="Новое сообщение от системы"></textarea>
                         <br>
-                        <button class="uk-button uk-button-primary">Записать</button>
+                        <button type="submit" class="uk-button uk-button-primary"><i class="fa fa-send"></i> Система</button>
+                        <button type="button" class="owner_answer uk-button" value="{{ o.id }}"><i class="fa fa-send"></i> Владелец</button>
                         <input type="hidden" name="id" value="{{ o.id }}">
+                        <div style="float: right;">
+                        <button type="button" class="owner_accept ok_btn" value="{{ o.id }}">Accept</button>
+                        <button type="button" class="owner_reject nt_btn" value="{{ o.id }}">Reject</button>
+                        </div>
                     </form>
 
                 </div>
@@ -317,5 +326,18 @@
     </div>
 </div>
 
+{% if maxPages > 1 %}
+<nav aria-label="Page navigation" class="mt-3">
+  <ul class="pagination">
+    <li class="page-item {{thisPage == 1 ? 'disabled'}}"><a class="page-link" href="{{ path('admin.orders', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">&laquo;</a></li>
+    {# Render each page number #}
+    {% for i in 1..maxPages %}
+        <li class="page-item {{ thisPage == i ? 'active' }}"><a class="page-link" href="{{ path('admin.orders', {page: i}) }}">{{ i }}</a></li>
+
+    {% endfor %}
+    <li class="page-item {{thisPage == maxPages ? 'disabled'}}"><a class="page-link" href="{{ path('admin.orders', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">&raquo;</a></li>
+  </ul>
+</nav>
+{% endif %}
 
 {% endblock %}
