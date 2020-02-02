@@ -14,7 +14,8 @@
                         <div class="uk-grid uk-grid-small">
                             <div style="width: 60px;">
                                 {% set card = getcard(o.cardId) %}
-                                {% set main_foto = main_foto(card.getFotos) %}
+                                {#{% set main_foto = main_foto(card.getFotos) %}#}
+                                {% set main_foto = '' %}
                                 {% set bgrnd = 'white' %}
                                 {% if main_foto  %}
                                     {% set bgrnd = 'url(/assets/images/cards/'~main_foto.folder~'/t/'~main_foto.id~'.jpg)' %}
@@ -32,17 +33,19 @@
                                 <div>{{ o.transport }}</div>
                                 <div class="uk-text-small">{{ o.dateIn|date('d.m.Y') }} - {{ o.dateOut|date('d.m.Y') }}</div>
                                 <div style="color:red;font-weight:bold;font-size: 12px; line-height: 13px;">
-                                    {% if o.ownerStatus == 'wait_for_accept' and app.session.get('logged_user').id == o.renterId %}
+                                    {#{% if o.ownerStatus == 'wait_for_accept' and app.session.get('logged_user').id == o.renterId %}
                                         ожидает одобрения владельцем
-                                    {% endif %}
-                                    {% if o.ownerStatus == 'wait_for_accept' and app.session.get('logged_user').id == o.userId %}
+                                    {% endif %}#}
+                                    {#{% if o.ownerStatus == 'wait_for_accept'  and app.session.get('logged_user').id == o.userId %}#}
+                                    {% if o.ownerStatus == 'wait_for_accept' %}
                                         ожидает вашего одобрения
                                     {% endif %}
                                      {#---- after accept#}
-                                    {% if o.renterStatus == 'wait_for_pay' and app.session.get('logged_user').id == o.renterId %}
+                                    {#{% if o.renterStatus == 'wait_for_pay' and app.session.get('logged_user').id == o.renterId %}#}
+                                    {% if o.renterStatus == 'wait_for_pay' %}
                                         Одобрено владельцем. Ожидает вашей оплаты
                                     {% endif %}
-                                    {% if o.ownerStatus == 'accepted' and app.session.get('logged_user').id == o.userId %}
+                                    {% if o.ownerStatus == 'accepted' %}
                                         Ожидается оплата арендатором
                                     {% endif %}
                                      {#---- after payment#}
@@ -53,13 +56,13 @@
                                         Заявка оплачена
                                     {% endif %}
                                     {#---- after pincode#}
-                                    {% if o.renterStatus == 'rent_in_process' and app.session.get('logged_user').id == o.renterId %}
+                                    {% if o.renterStatus == 'rent_in_process' %}
                                         Заявка в процессе аренды
                                     {% endif %}
 
-                                    {% if o.ownerStatus == 'rent_in_process' and app.session.get('logged_user').id == o.userId %}
+                                    {#{% if o.ownerStatus == 'rent_in_process' and app.session.get('logged_user').id == o.userId %}
                                         Заявка в процессе аренды
-                                    {% endif %}
+                                    {% endif %}#}
                                 </div>
 
                             </div>
@@ -84,13 +87,12 @@
                             {% if m.from == 'renter' %}
                                 {% set dir = 'left' %}
                             {% endif %}
-                            {% if m.from == 'system' or m.from == 'system_renter' or m.from == 'system_owner' %}
+                            {% if m.from == 'system' %}
                                 {% set dir = 'system' %}
                             {% endif %}
                             {% if m.from == 'system_ok' %}
                                 {% set dir = 'system_ok' %}
                             {% endif %}
-                            
                             <div class="uk-grid uk-grid-small" {{ is_mobile() ? '' : 'style="margin-right: 10px"' }}>
                                 {% if dir == 'left' %}
                                     {% set url = '/assets/images/users/t/user_'~o.renterId~'.jpg' %}
@@ -117,11 +119,6 @@
                                 {% endif %}
                                 <div class="uk-width-expand">
                                     <div class="{{ dir }}_message dbl_edit" data-i="{{ i }}" data-id="{{ o.id }}">
-                                        {% if (m.from == 'system_owner') %}
-                                            <div>Сообщение для владельца</div>
-                                        {% elseif (m.from == 'system_renter') %}
-                                            <div>Сообщение для арендатора</div>
-                                        {% endif %}
                                         {{ m.message|raw }}
                                     </div>
                                 </div>
@@ -332,8 +329,15 @@
     <li class="page-item {{thisPage == 1 ? 'disabled'}}"><a class="page-link" href="{{ path('admin.orders', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">&laquo;</a></li>
     {# Render each page number #}
     {% for i in 1..maxPages %}
-        <li class="page-item {{ thisPage == i ? 'active' }}"><a class="page-link" href="{{ path('admin.orders', {page: i}) }}">{{ i }}</a></li>
-
+        {% if (i <= 2 or i >= maxPages - 2 or i - thisPage <= 2 and i - thisPage >= -2) %}
+            {% set outOfRange = false %}
+            <li class="page-item {{ thisPage == i ? 'active' }}"><a class="page-link" href="{{ path('admin.orders', {page: i}) }}">{{ i }}</a></li>
+        {% else %}
+            {% if not outOfRange %}
+                <li class="page-item"><a class="page-link">...</a></li>
+            {% endif %}
+            {% set outOfRange = true %}
+        {% endif %}
     {% endfor %}
     <li class="page-item {{thisPage == maxPages ? 'disabled'}}"><a class="page-link" href="{{ path('admin.orders', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">&raquo;</a></li>
   </ul>
