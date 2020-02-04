@@ -115,7 +115,7 @@ class CardRepository extends \Doctrine\ORM\EntityRepository
                 foreach ($cars as $cars_id) $ccars_ids[] = $cars_id['cardId'];
                 $carInQ = 'AND o.cardId NOT IN ('.implode(",",$ccars_ids).') ';
             }
-            $query = $this->em->createQuery('SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.cityId < 1260 AND c.isActive = 1 '.$carInQ.' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
+            $query = $em->createQuery('SELECT c FROM AppBundle:Card c JOIN c.tariff t WHERE c.cityId < 1260 AND c.isActive = 1 '.$carInQ.' ORDER BY t.weight DESC, c.dateTariffStart DESC, c.dateUpdate DESC');
             $query->setMaxResults(10 - count($cars));
             $query->setFirstResult(10);
             // return $query->getResult();
