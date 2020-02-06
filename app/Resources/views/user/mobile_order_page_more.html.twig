@@ -204,9 +204,9 @@
 
                         {% if o.ownerStatus in ['wait_for_accept','answered','wait_for_answer'] and app.session.get('logged_user').id == o.userId %}
 
-                        <button type="button" id="owner_accept" class="ok_btn ok_big uk-width-1-1" value="{{ o.id }}">Одобрить</button>
+                        <button type="button" class="owner_accept ok_btn ok_big uk-width-1-1" value="{{ o.id }}">Одобрить</button>
                         <br><br>
-                        <button type="button" id="owner_reject" class="nt_btn uk-width-1-1" value="{{ o.id }}">Отклонить</button>
+                        <button type="button" class="owner_reject nt_btn uk-width-1-1" value="{{ o.id }}">Отклонить</button>
 
 
                         {% endif %}

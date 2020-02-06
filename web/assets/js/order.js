@@ -2,7 +2,7 @@ $( document ).ready(function() {
 
 
 
-    $('#owner_accept').on('click', function () {
+    $('.owner_accept').on('click', function () {
         $(this).attr("disabled", true);
         var id = $(this).val();
 
@@ -22,7 +22,7 @@ $( document ).ready(function() {
         });
     });
 
-    $('#owner_reject').on('click', function () {
+    $('.owner_reject').on('click', function () {
         $(this).attr("disabled", true);
         var id = $(this).val();
 
@@ -42,10 +42,10 @@ $( document ).ready(function() {
         });
     });
 
-    $('#owner_answer').on('click', function () {
+    $('.owner_answer').on('click', function () {
         $(this).attr("disabled", true);
         var id = $(this).val();
-        var answer = $(this).parents('.ord_content').find('textarea[name="answer"]').val();
+        var answer = $(this).parents('.ord_content').find('textarea[name="answer"], textarea[name="message"]').val();
         
         $.ajax({
             url: '/ajax_owner_answer',
@@ -67,7 +67,7 @@ $( document ).ready(function() {
     $('#attach_files').on('change', function () {
         if (this.files.length > 0){
             $('#js-attachfiles').removeAttr("hidden");
-            $('#renter_answer').attr("disabled", false);
+            $('.renter_answer').attr("disabled", false);
             var ins = $('#js-attachfiles'); 
             $(ins).find('.mp-list-files').html('')
             var j = 0;
@@ -103,13 +103,13 @@ $( document ).ready(function() {
             $('#js-attachfiles').attr("hidden","");
         }
 
-        var answer = $('#renter_answer').parents('.ord_content').find('textarea[name="answer"]').val();
+        var answer = $('.renter_answer').parents('.ord_content').find('textarea[name="answer"]').val();
         if (answer == ''){
-            $('#renter_answer').attr("disabled", true);
+            $('.renter_answer').attr("disabled", true);
         }
     });
 
-    $('#renter_answer').on('click', function () {
+    $('.renter_answer').on('click', function () {
 
         $(this).attr("disabled", true);
         var bar = document.getElementById('js-progressbar');

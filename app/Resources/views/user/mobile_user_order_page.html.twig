@@ -278,7 +278,7 @@
 
         {% if o.ownerStatus in ['wait_for_accept','answered','wait_for_answer'] and app.session.get('logged_user').id == o.userId %}
             <div style="position: fixed;width: 100%;bottom: 0;left:0;background: white">
-            <button type="button" id="owner_accept" class="ok_btn ok_big uk-width-1-1" value="{{ o.id }}" style="margin: 10px 10px;
+            <button type="button" class="owner_accept ok_btn ok_big uk-width-1-1" value="{{ o.id }}" style="margin: 10px 10px;
     padding: 15px 25px;
     box-sizing: border-box;
     display: block;

@@ -2353,7 +2353,7 @@ class ProfileController extends Controller
         $this->get('session')->set('active_message',$id);
 
 
-        return $this->redirectToRoute('adminOrders');
+        return $this->redirectToRoute('admin.orders');
     }
 
     /**
@@ -2384,7 +2384,7 @@ class ProfileController extends Controller
 
         $this->get('session')->set('active_message',$id);
 
-        return $this->redirectToRoute('adminOrders');
+        return $this->redirectToRoute('admin.orders');
     }
 
     /**

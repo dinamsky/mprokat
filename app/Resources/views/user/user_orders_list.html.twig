@@ -302,11 +302,11 @@
                             {% if o.ownerStatus in ['wait_for_accept','answered','wait_for_answer'] and app.session.get('logged_user').id == o.userId %}
 
                                 <div class="uk-width-1-1">
-                                    <button type="button" id="owner_accept" class="ok_btn ok_big uk-width-1-1" value="{{ o.id }}" style="margin-right: 10px;">Одобрить</button>
+                                    <button type="button" class="owner_accept ok_btn ok_big uk-width-1-1" value="{{ o.id }}" style="margin-right: 10px;">Одобрить</button>
                                 </div>
 
                                 <div class="uk-width-1-1 uk-margin-top">
-                                    <button type="button" id="owner_reject" class="nt_btn uk-width-1-1" value="{{ o.id }}" style="margin-right: 10px;">Отклонить</button>
+                                    <button type="button" class="owner_reject nt_btn uk-width-1-1" value="{{ o.id }}" style="margin-right: 10px;">Отклонить</button>
                                 </div>
 
                             {% endif %}
@@ -381,7 +381,7 @@
                         {#<br><br>#}
                         {#<textarea name="answer" class="uk-width-1-1" style="min-height: 100px" placeholder="Отправить владельцу сообщение:"></textarea>#}
                         {#<br><br>#}
-                        {#<button type="button" id="renter_answer" class="nt_btn" value="{{ o.id }}">Отправить</button>#}
+                        {#<button type="button" class="renter_answer nt_btn" value="{{ o.id }}">Отправить</button>#}
                     {#{% endif %}#}
 
 
@@ -559,9 +559,9 @@
 
                         {#{% if o.ownerStatus in ['wait_for_accept','answered','wait_for_answer'] and app.session.get('logged_user').id == o.userId %}#}
 
-                        {#<button type="button" id="owner_accept" class="ok_btn ok_big uk-width-1-1" value="{{ o.id }}">Одобрить</button>#}
+                        {#<button type="button" class="owner_accept ok_btn ok_big uk-width-1-1" value="{{ o.id }}">Одобрить</button>#}
                         {#<br><br>#}
-                        {#<button type="button" id="owner_reject" class="nt_btn uk-width-1-1" value="{{ o.id }}">Отклонить</button>#}
+                        {#<button type="button" class="owner_reject nt_btn uk-width-1-1" value="{{ o.id }}">Отклонить</button>#}
 
 
                         {#{% endif %}#}
