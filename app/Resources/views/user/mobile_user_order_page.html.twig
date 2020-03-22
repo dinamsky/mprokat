@@ -256,7 +256,7 @@
                               placeholder="Написать сообщение"></textarea>
                 </div>
                 <div class="uk-width-auto">
-                    <button type="button" id="{{ app.session.get('logged_user').id == o.userId ? 'owner' : 'renter' }}_answer" class="snd_btn" value="{{ o.id }}" style="    border: 1px solid #e5e5e5;
+                    <button type="button" class="snd_btn {{ app.session.get('logged_user').id == o.userId ? 'owner' : 'renter' }}_answer" value="{{ o.id }}" style="    border: 1px solid #e5e5e5;
                             background-color: transparent;
                             box-shadow: 2px 2px 1px lightgrey;" disabled><i class="fa fa-send"></i> Отправить</button>
                 </div>

@@ -356,7 +356,7 @@
 
                             </div>
                             <div class="uk-width-auto">
-                                <button type="button" id="{{ app.session.get('logged_user').id == o.userId ? 'owner' : 'renter' }}_answer" class="snd_btn" value="{{ o.id }}" disabled><i class="fa fa-send"></i> Отправить</button>
+                                <button type="button" class="snd_btn {{ app.session.get('logged_user').id == o.userId ? 'owner' : 'renter' }}_answer" value="{{ o.id }}" disabled><i class="fa fa-send"></i> Отправить</button>
                             </div>
                         </div>
                     </div>

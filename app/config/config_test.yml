@@ -43,7 +43,7 @@ swiftmailer:
     host: smtp.yandex.ru
     username:  mail@multiprokat.com
     port: 465
-    password:  ogdaeebwwdmonyno
+    password: abjjgmjhouyoptjn
     encryption: ssl
     auth_mode: login
     logging: true

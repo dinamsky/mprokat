@@ -3,7 +3,6 @@
 namespace AppBundle\EventSubscriber;
 
 use AppBundle\Entity\City;
-use AppBundle\Menu\MyCacheService;
 use UserBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface as em;
 use Symfony\Component\HttpFoundation\Response;

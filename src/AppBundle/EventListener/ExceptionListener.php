@@ -2,11 +2,11 @@
 
 namespace AppBundle\EventListener;
 
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Templating\EngineInterface;
+use Symfony\Bridge\Twig\TwigEngine;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 
 
@@ -18,7 +18,7 @@ class ExceptionListener
 
     protected $templating;
 
-    public function __construct(\Swift_Mailer $mailer,ContainerInterface $container, EngineInterface $templating)
+    public function __construct(\Swift_Mailer $mailer,ContainerInterface $container, TwigEngine $templating)
     {
         $this->mailer = $mailer;
         $this->container = $container;
