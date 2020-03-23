@@ -1,9 +1,102 @@
-<div class="top_user_actions uk-position-relative" uk-height-match>
+{% if app.session.has('logged_user') %}
+<div class="notifications">
+	<span class="icon">
+		<svg
+			width="20"
+			height="20"
+			viewBox="0 0 20 20"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<g clip-path="url(#clip0)">
+				<path
+					d="M10.0017 12.8571L7.52741 10.6914L0.453125 16.7557C0.710268 16.9943 1.05741 17.1428 1.44027 17.1428H18.5631C18.9446 17.1428 19.2903 16.9943 19.546 16.7557L12.476 10.6914L10.0017 12.8571Z"
+					fill="#FAFAFA"
+				/>
+				<path
+					d="M19.5474 3.24456C19.2903 3.00456 18.9446 2.85742 18.5603 2.85742H1.43741C1.05598 2.85742 0.710268 3.00599 0.453125 3.24742L9.99884 11.4289L19.5474 3.24456Z"
+					fill="#FAFAFA"
+				/>
+				<path
+					d="M0 4.11133V15.9799L6.90429 10.1128L0 4.11133Z"
+					fill="#FAFAFA"
+				/>
+				<path
+					d="M13.0977 10.1131L20.0019 15.9803V4.10742L13.0977 10.1131Z"
+					fill="#FAFAFA"
+				/>
+			</g>
+			<defs>
+				<clipPath id="clip0">
+					<rect width="20" height="20" fill="white" />
+				</clipPath>
+			</defs>
+		</svg>
+	</span>
+	{% if t3_new.getNotify|length > 0 %}
+	<span class="count">
+		{{ t3_new.getNotify|length }}
+	</span>
+	{% endif %}
+</div>
+<a class="header-profile" href="#" id="headerProfileMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	<div class="avatar">
+		<img src="/assets/images/users/t/{{ app.session.get('user_pic') }}.jpg" alt="avatar" />
+	</div>
+	<div class="text">
+		<span class="name">
+			{% if app.session.get('logged_user').header != '' %} 
+				{{ app.session.get('logged_user').header }}
+			{% else %} без имени {% endif %}
+		</span>
+		<span class="dropdown-icon">
+			<svg
+				width="10"
+				height="6"
+				viewBox="0 0 10 6"
+				fill="none"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<path
+					d="M1 1L5 5L9 1"
+					stroke="#FAFAFA"
+					stroke-linecap="round"
+				/>
+			</svg>
+		</span>
+	</div>
+</a>
+
+<div class="dropdown-menu dropdown-menu-right" aria-labelledby="headerProfileMenu">
+	<a href="/profile" class="dropdown-item" type="button">{% trans %}Профиль{% endtrans %}</a>
+	<a href="/user/cards" class="dropdown-item" type="button">{% trans %}Мой транспорт{% endtrans %}</a>
+	<a href="/user/transport_orders" class="dropdown-item" type="button">Заявки</a>
+	<a href="/userLogout" class="dropdown-item" type="button">Выход</a>
+</div>
+
+{% elseif app.session.get('admin').email is defined %}
+<a href="/admin"><span uk-icon="icon:user"></span> {{ app.session.get('admin').email }}</a>
+<div class="login">
+	<div class="sign-up"><a href="/adminLogout">{% trans %}Выход{% endtrans %}</a></div>
+</div>
+{% else %}
+<div class="login">
+	<div class="sign-in">
+		<a href="#signIn" data-toggle="modal">Вход</a>
+	</div>
+	<div class="sign-up">
+		<a href="#signUp" data-toggle="modal">Регистрация</a>
+	</div>
+</div>
+{% endif %}
+
+{# <div class="top_user_actions uk-position-relative" uk-height-match>
     {% if app.session.has('logged_user') %}
         <a class="user_image_block"
            href="{{ t3_new.getNotify|length > 0 ? '/user/transport_orders' : '/user/cards' }}"
         >
-            <img src="/assets/images/users/t/{{ app.session.get('user_pic') }}.jpg" alt="" style="height: 40px">{% if app.session.get('logged_user').header != '' %} {{ app.session.get('logged_user').header }}
+            <img src="/assets/images/users/t/{{ app.session.get('user_pic') }}.jpg" alt="" style="height: 40px">
+						{% if app.session.get('logged_user').header != '' %} {{ app.session.get('logged_user').header }}
             {% else %} без имени {% endif %}
 
             {% if t3_new.getNotify|length > 0 %}<div class="top_ord_notify"><i uk-icon="bell"></i></div>{% endif %}
@@ -18,17 +111,14 @@
             {% if t3_new.getNotify|length > 0 %}<div class="top_ord_notify"><i uk-icon="bell"></i></div>{% endif %}
             </a><br>
             <a href="/userLogout" style="color:red !important">Выход</a>
-        </div>
+        </div> #}
         {#<a href="/userLogout" class="uk-position-relative right_quit"><span><i uk-icon="icon:sign-out"></i> Выход</span></a>#}
-    {% elseif app.session.get('admin').email is defined %}
+    {# {% elseif app.session.get('admin').email is defined %}
         <a href="/admin"><span uk-icon="icon:user"></span> {{ app.session.get('admin').email }}</a>
         <a href="/adminLogout" class=""><span><i uk-icon="icon:sign-out"></i> {% trans %}Выход{% endtrans %}</span></a>
     {% else %}
-        <div  uk-toggle="target: #sign_in" class="top_user_actions_button"><span uk-icon="icon:sign-in"></span> {% trans %}Вход{% endtrans %}</div>
+        <div  uk-toggle="target: #sign_in" class="top_user_actions_button"><span uk-icon="icon:sign-in"></span> {% trans %}Вход{% endtrans %}</div> #}
         {#<div  uk-toggle="target: #sign_up" class="top_user_actions_button"><span uk-icon="icon:lock"></span>Регистрация</div>#}
-    {% endif %}
-</div>
+    {# {% endif %}
+</div> #}
 
-
-
-{#<a href="/user/messages">{% trans %}Сообщения{% endtrans %}  {% if t3_new.getUnread>0 %}<span class="uk-badge red_badge">{{ t3_new.getUnread }}</span>{% endif %}</a>#}

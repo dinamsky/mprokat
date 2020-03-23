@@ -18,6 +18,8 @@
             <link href="{{ asset('assets/css/base-responsive.css') }}" rel="stylesheet" />
             <link href="{{ asset('assets/css/auto-complete.css') }}" rel="stylesheet" />
             <link href="{{ asset('assets/css/list-tree.css') }}" rel="stylesheet" />
+            <link href="{{ asset('assets/css/selectric.css') }}" rel="stylesheet" />
+            <link href="{{ asset('assets/css/styles.min.css') }}" rel="stylesheet" />
         {% endblock %}
 
         {% block openGraph %}
@@ -68,8 +70,9 @@
 
 
 
-
-            {% block content %}{% endblock %}
+						<div class="page">
+            	{% block content %}{% endblock %}
+						</div>
 
         </div>
         {{ include('footer.html.twig') }}
@@ -83,6 +86,7 @@
             <script src="{{ asset('assets/js/top_autocomplete.js') }}"></script>
             <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
             <script src="{{ asset('assets/js/search_popup.js') }}"></script>
+						<script src="{{ asset('assets/js/scripts.min.js') }}"></script>
 
             {% if app.session.has('logged_user') %}
             <script src="{{ asset('assets/js/user_notify.js') }}"></script>

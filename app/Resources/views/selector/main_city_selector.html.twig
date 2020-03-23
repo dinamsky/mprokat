@@ -1,10 +1,11 @@
 {# <input type="hidden" id="cityURL" name="cityURL" value="{{ city.url }}">
 <input type="hidden" id="cityId" name="cityId" value="{{ city.id }}"> #}
-<div class="uk-text-center" > 
+{# <div class="uk-text-center" > 
     <div class="uk-tile  uk-text-center">
         <div class="uk-h4 ">Популярные в <a uk-toggle="target: #city_popular_main" class="uk-h4 " style="color: #1e87f0;">{{  app.session.has('city')  ? app.session.get('city').gde : city.gde }}</a></div>
     </div>
-</div>
+</div> #}
+<h2>Популярные в <a href="#" uk-toggle="target: #city_popular_main" class="link">{{  app.session.has('city')  ? app.session.get('city').gde : city.gde }}</a></h2>
 
 <div id="city_popular_main" class="uk-modal-container uk-modal" uk-modal>
     <div class="uk-modal-dialog uk-modal-body">

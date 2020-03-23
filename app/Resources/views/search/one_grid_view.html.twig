@@ -127,7 +127,72 @@
 
 </div> #}
 
-<div class="uk-card uk-card-default">
+<div class="transport-card swiper-slide">
+	{% set main_foto = main_foto(card.getFotos) %}
+
+	{% set img_src = '/assets/images/interface/no_image.jpg' %}
+	{% set img_src_error = '/assets/images/interface/no_image.jpg' %}
+	
+	{% if main_foto  %}
+			{% set img_src = '/assets/images/cards/'~main_foto.folder~'/t/'~main_foto.id~'.jpg' %}
+	{% elseif card.fotos[0] is defined %}
+			{% set img_src = '/assets/images/cards/'~card.fotos[0].folder~'/t/'~card.fotos[0].id~'.jpg' %}
+	{% else %}
+			{% set img_src = '/assets/images/interface/no_image.jpg' %}
+	{% endif %}
+
+
+	{% set serviceType = 'Прокат' %}
+	{% if card.serviceTypeId == 2  %}
+			{% set serviceType = 'Аренда' %}
+	{% endif %}
+
+	{% set currency = {
+			'RUB': '<i class="fa fa-ruble"></i>',
+			'EUR': '<i class="fa fa-euro"></i>',
+			'USD': '<i class="fa fa-dollar"></i>'
+	} %}
+	<div
+		class="image"
+		style="background-image: url({{ img_src }});"
+	></div>
+	{% set c_price = '' %}
+	{% set c_ed = '' %}
+
+	{% for price in card.cardPrices if price.priceId == 2 %}
+
+			{% set c_price = price.value %}
+			{% set c_ed = '/'~'день'|trans %}
+	{% endfor %}
+
+	{% for price in card.cardPrices if price.priceId == 1 and c_price == '' %}
+
+			{% set c_price = price.value %}
+			{% set c_ed = '/'~'час'|trans %}
+	{% endfor %}
+
+	{% for price in card.cardPrices if price.priceId == 6 and c_price == '' %}
+
+			{% set c_price = price.value %}
+			{% set c_ed = '' %}
+	{% endfor %}
+	<div class="content">
+		<h3><a href="/card/{{ card.id }}">{{ card.markModel.Mark.header }} {{ card.markModel.header }}</a></h3>
+		<p class="owner">{% trans %}Владелец:&nbsp;{% endtrans %}<a href="/user/{{ card.user.id }}">{{ card.user.header }}</a></p>
+		{% if c_price != '' %}
+			{% set serv_perc = card.generalType.servicePercent %}
+			{% set c_price = c_price + (c_price/100*serv_perc)|round(0,'ceil') %}
+			<p class="price">
+				{{ c_price|number_format(0,'.','<span class="thousand_separator"></span>')|raw }} 
+				{{ currency[card.currency]|raw }} 
+				{{ c_ed }}
+			</p>
+		{% endif %}
+	</div>
+</div>
+
+
+{# <div class="uk-card uk-card-default">
     {% set main_foto = main_foto(card.getFotos) %}
 
     {% set img_src = '/assets/images/interface/no_image.jpg' %}
@@ -151,19 +216,19 @@
         'RUB': '<i class="fa fa-ruble"></i>',
         'EUR': '<i class="fa fa-euro"></i>',
         'USD': '<i class="fa fa-dollar"></i>'
-    } %}
+    } %} #}
 {# {{ dump(card.generalType) }} #}
-    <div class="uk-card-media-top uk-text-center" style="background:url('{{ img_src }}') center center;
-            background-size: cover; display: block; height: {{ height }};">
+    {# <div class="uk-card-media-top uk-text-center" style="background:url('{{ img_src }}') center center;
+            background-size: cover; display: block; height: {{ height }};"> #}
         {# <img src="{{ img_src }}" alt="" onError="this.src='{{ img_src_error }}';" uk-slideshow="ratio: 7:3; min-height: 100px; max-height: 170px"/> #}
-        <a href="/card/{{ card.id }}" class="slide uk-width-1-1" style="display: block; height: 100%;" >
+        {# <a href="/card/{{ card.id }}" class="slide uk-width-1-1" style="display: block; height: 100%;" > #}
         {# <img src="{{ img_src }}" alt="" style="visibility: hidden; height: 0;width: 0;" itemprop="image"> #}
         {# <img src="{{ img_src }}" alt="" onError="this.src='{{ img_src_error }}';"/> #}
-        </a>
+        {# </a> #}
         {# <a target="_blanc" href="/card/{{ card.id }}"><img data-src="{{ img_src }}" onError="this.src='{{ img_src_error }}';" data-width="250" data-height="250" alt="" uk-img class="uk-responsive-height"/> </a>#}
         
 
-    </div>
+    {# </div>
 
     {% set c_price = '' %}
     {% set c_ed = '' %}
@@ -187,9 +252,9 @@
     {% endfor %}
 
 
-    <div class="uk-card-body uk-padding-small uk-text-center">
+    <div class="uk-card-body uk-padding-small uk-text-center"> #}
         {# <h3 class="uk-card-title">Headline</h3> #}
-        <div class="c_coral uk-text-truncate " style="font-size: 0.7em;  letter-spacing: 0.3em; text-transform: lowercase;">{{ card.generalType.Header }}</div>
+        {# <div class="c_coral uk-text-truncate " style="font-size: 0.7em;  letter-spacing: 0.3em; text-transform: lowercase;">{{ card.generalType.Header }}</div>
         <div>
             <a target="_blanc" class="uk-text-truncate uk-display-block uk-position-relative c_black" href="/card/{{ card.id }}" title="{{ serviceType }} {% if card.generalType.chegoSingular is defined %}{{ card.generalType.chegoSingular }}{% else %}{% endif %} {{ card.markModel.Mark.header }} {{ card.markModel.header }} в {{ card.city.gde }}">
                 <b>{{ card.markModel.Mark.header }} {{ card.markModel.header }}</b>
@@ -243,7 +308,7 @@
             </div>
         {% endif %}
 
-    </div>
+    </div> #}
 
     {# {% if share is defined %}
         <a class="bottom_share" href="/card_share/{{ card.id }}">Разместить в своих соцсетях</a>
@@ -257,7 +322,7 @@
         </div>
     {% endif %} #}
 
-    <div class="uk-grid-collapse" uk-grid>
+    {# <div class="uk-grid-collapse" uk-grid> #}
         {# <div class="uk-width-expand uk-text-truncate uk-text-small c_grey {{ micro is defined ? 'micro' : '' }}">
             <i class="fa fa-map-marker"></i>
             {{ card.city.header }}
@@ -265,7 +330,7 @@
         {# <div class="uk-width-auto uk-text-small c_grey {{ micro is defined ? 'micro' : '' }}">
             <i class="fa fa-eye"></i>
             {{ card.views }}</div> #}
-
+{# 
         {% if card.dateRentFinish > date() %}
             <div class="reserved">бронь до
                 {{ card.dateRentFinish|date("d.m.Y") }}</div>
@@ -279,7 +344,7 @@
             </div>
         {% endif %}
 
-    </div>
+    </div> #}
 
     {# {% if (
        ( app.session.has('admin') and card.adminId == app.session.get('admin').id )
@@ -297,4 +362,4 @@
             </a>
         {% endif %}
     {% endif %} #}
-</div>
+{# </div> #}

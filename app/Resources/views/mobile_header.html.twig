@@ -2,7 +2,88 @@
 <input type="hidden" id="cityId" name="cityId" value="{{ city.id }}">
 {% if no_header is not defined %}
 
-    <div class="uk-sticky " uk-sticky="sel-target: .uk-navbar-container">
+<section class="mobile-header">
+	<div class="container">
+		<div class="inner">
+			<div class="logo">
+				<a href="#">
+					<img src="img/logo.png" alt="logo" />
+				</a>
+			</div>
+			<div class="icons">
+				<div class="city-select">
+					<span class="icon">
+						<svg
+							width="14"
+							height="20"
+							viewBox="0 0 14 20"
+							fill="none"
+							xmlns="http://www.w3.org/2000/svg"
+						>
+							<path
+								d="M6.99871 0C3.32277 0 0.332031 2.99074 0.332031 6.66668C0.332031 7.7702 0.60793 8.86434 1.13242 9.8348L6.63414 19.7852C6.70738 19.9178 6.84695 20 6.99871 20C7.15047 20 7.29004 19.9178 7.36328 19.7852L12.867 9.83152C13.3895 8.86434 13.6654 7.77016 13.6654 6.66664C13.6654 2.99074 10.6746 0 6.99871 0ZM6.99871 10C5.16074 10 3.66539 8.50465 3.66539 6.66668C3.66539 4.82871 5.16074 3.33336 6.99871 3.33336C8.83668 3.33336 10.332 4.82871 10.332 6.66668C10.332 8.50465 8.83668 10 6.99871 10Z"
+								fill="#333"
+							/>
+						</svg>
+					</span>
+				</div>
+				<div class="notifications">
+					<span class="icon">
+						<svg
+							width="20"
+							height="20"
+							viewBox="0 0 20 20"
+							fill="none"
+							xmlns="http://www.w3.org/2000/svg"
+						>
+							<g clip-path="url(#clip0)">
+								<path
+									d="M10.0017 12.8571L7.52741 10.6914L0.453125 16.7557C0.710268 16.9943 1.05741 17.1428 1.44027 17.1428H18.5631C18.9446 17.1428 19.2903 16.9943 19.546 16.7557L12.476 10.6914L10.0017 12.8571Z"
+									fill="#333"
+								/>
+								<path
+									d="M19.5474 3.24456C19.2903 3.00456 18.9446 2.85742 18.5603 2.85742H1.43741C1.05598 2.85742 0.710268 3.00599 0.453125 3.24742L9.99884 11.4289L19.5474 3.24456Z"
+									fill="#333"
+								/>
+								<path
+									d="M0 4.11133V15.9799L6.90429 10.1128L0 4.11133Z"
+									fill="#333"
+								/>
+								<path
+									d="M13.0977 10.1131L20.0019 15.9803V4.10742L13.0977 10.1131Z"
+									fill="#333"
+								/>
+							</g>
+							<defs>
+								<clipPath id="clip0">
+									<rect width="20" height="20" fill="white" />
+								</clipPath>
+							</defs>
+						</svg>
+					</span>
+					<span class="count">
+						6
+					</span>
+				</div>
+				<div class="burger">
+					<svg
+						width="30"
+						height="19"
+						viewBox="0 0 30 19"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<rect width="30" height="3" rx="1.5" fill="#1D1A1A" />
+						<rect y="8" width="30" height="3" rx="1.5" fill="#1D1A1A" />
+						<rect y="16" width="30" height="3" rx="1.5" fill="#1D1A1A" />
+					</svg>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+    {# <div class="uk-sticky " uk-sticky="sel-target: .uk-navbar-container">
         <nav class="uk-navbar uk-navbar-container bg_blue mp-drop-menu-main" style=" background: #06a7ea;">
             <div class="uk-navbar-left">
                 <div>
@@ -10,9 +91,9 @@
                 </div>
             </div>
             <div class="uk-navbar-right">
-                <div>
+                <div> #}
                     {# <button class="" href="#navbar-slide" uk-toggle><i uk-icon="ratio: 2; icon:menu" class="uk-icon c_white" mp-nav-primary></i></button> #}
-                    <a class="uk-margin-small-right" uk-toggle="target: #mp-nav-primary">
+                    {# <a class="uk-margin-small-right" uk-toggle="target: #mp-nav-primary">
                         <i class="mp-menu-queued-icon uk-icon c_white" uk-icon="ratio: 2; icon:menu"></i>
                     </a>
                  </div>
@@ -81,5 +162,5 @@
             </div>
 
         </div>
-    </div>
+    </div> #}
 {% endif %}

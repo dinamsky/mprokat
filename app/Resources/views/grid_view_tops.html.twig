@@ -1,4 +1,4 @@
-<div class="uk-width-1-1 uk-width-1-{{4 / posC.count}}@m  uk-margin-medium-top"> 
+{# <div class="uk-width-1-1 uk-width-1-{{4 / posC.count}}@m  uk-margin-medium-top"> 
 
     <div class="uk-text-center ">
         <div class="uk-h4 uk-text-truncate"><a href="/rent/{{ in_city }}/all/{{ keyC }}"  class="uk-h4 uk-text-truncate">{{header}}</a></div>
@@ -6,8 +6,28 @@
     <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="{{posC.count}}"> 
         {% for card in cards %}
             {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px'}) }}
-        {% endfor %}
+        {% endfor %} #}
         {# {{ include('search/all_more.html.twig', {'title':'Все мотоциклы', 'url':'/rent/'~in_city~'/all/bikes'}) }} #}
-    </div>
+    {# </div>
+</div> #}
 
-</div>
+<section class="cards cards-slide">
+	<div class="container">
+		<div class="cards-header">
+			<h2>{{header}}</h2>
+			<a class="link-underline" href="/rent/{{ in_city }}/all/{{ keyC }}">Показать все</a>
+		</div>
+		<div class="swiper-container">
+			<div class="swiper-wrapper">
+				{% for card in cards %}
+					{{ include('search/one_grid_view.html.twig', {'card':card}) }}
+				{% endfor %}
+			</div>
+			<div class="swiper-button-prev"></div>
+			<div class="swiper-button-next"></div>
+		</div>
+		<div class="show-more">
+			<a href="/rent/{{ in_city }}/all/{{ keyC }}" class="btn btn-outline">Показать больше</a>
+		</div>
+	</div>
+</section>
