@@ -9,7 +9,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Translation\Loader\PoFileLoader;
 use Symfony\Component\Translation\Translator;
-use Symfony\Component\Translation\MessageSelector;
 
 class LocaleSubscriber implements EventSubscriberInterface
 {
@@ -36,7 +35,7 @@ class LocaleSubscriber implements EventSubscriberInterface
         $request->setLocale($_SERVER['LANG']);
 
 
-            $translator = new Translator('en', new MessageSelector());
+            $translator = new Translator('en');
 
             $translator->addLoader('pofile', new PoFileLoader());
             $translator->addResource('pofile', 'messages.en.po', 'en');
