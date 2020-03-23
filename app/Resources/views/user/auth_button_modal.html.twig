@@ -41,7 +41,13 @@
 </div>
 <a class="header-profile" href="#" id="headerProfileMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	<div class="avatar">
-		<img src="/assets/images/users/t/{{ app.session.get('user_pic') }}.jpg" alt="avatar" />
+		{% if app.session.get('logged_user') %}
+    	{% set url = '/assets/images/users/t/user_'~app.session.get('logged_user').id~'.jpg' %}
+		{% endif %}
+		{% if not file_exists('.'~url) %}
+			{% set url = '/assets/images/interface/default-user.png' %}
+		{% endif %}
+		<img src="{{ url }}" alt="avatar" />
 	</div>
 	<div class="text">
 		<span class="name">
