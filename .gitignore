@@ -35,3 +35,5 @@ Apache-PHP-7-x64_vhost.conf
 LICENSE
 phpunit.xml.dist
 README.md
+/.idea/
+/.vscode/
