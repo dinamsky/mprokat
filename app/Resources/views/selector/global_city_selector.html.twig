@@ -1,12 +1,51 @@
 
 {% if city is defined  %}
 
-<div uk-toggle="target: #city_popular" class="cursor-pointer {{ hide_cityname is defined ? 'mobile_top_button' }} {{ main_city is defined ? 'uk-h2' : 'sticky_top_city_selector' }}">
-    <i class="fa fa-map-marker"></i>
+<div class="city-select">
+	<a href="#cityModal" class="city-select-link" data-toggle="modal">
+		<span class="icon">
+			<svg
+				width="14"
+				height="20"
+				viewBox="0 0 14 20"
+				fill="none"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<path
+					d="M6.99871 0C3.32277 0 0.332031 2.99074 0.332031 6.66668C0.332031 7.7702 0.60793 8.86434 1.13242 9.8348L6.63414 19.7852C6.70738 19.9178 6.84695 20 6.99871 20C7.15047 20 7.29004 19.9178 7.36328 19.7852L12.867 9.83152C13.3895 8.86434 13.6654 7.77016 13.6654 6.66664C13.6654 2.99074 10.6746 0 6.99871 0ZM6.99871 10C5.16074 10 3.66539 8.50465 3.66539 6.66668C3.66539 4.82871 5.16074 3.33336 6.99871 3.33336C8.83668 3.33336 10.332 4.82871 10.332 6.66668C10.332 8.50465 8.83668 10 6.99871 10Z"
+					fill="#FAFAFA"
+				/>
+			</svg>
+		</span>
+		<div class="text">
+			<span class="title">{{ city.header }}</span>
+			<span class="dropdown-icon">
+				<svg
+					width="10"
+					height="6"
+					viewBox="0 0 10 6"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg"
+				>
+					<path
+						d="M1 1L5 5L9 1"
+						stroke="#FAFAFA"
+						stroke-linecap="round"
+					/>
+				</svg>
+			</span>
+		</div>
+	</a>
+</div>
+
+{# Modal in auth_modals #}
+
+{# <div uk-toggle="target: #city_popular" class="cursor-pointer {{ hide_cityname is defined ? 'mobile_top_button' }} {{ main_city is defined ? 'uk-h2' : 'sticky_top_city_selector' }}">
+    <i class="fa fa-map-marker"></i> #}
     {#<span class="city_selector">{{ city.header }}#}
 
         {#{{ app.session.has('city')[0] ? app.session.get('city')[0].header }}#}
-    {% if hide_cityname is not defined %}
+    {# {% if hide_cityname is not defined %}
         {{  app.session.has('city')  ? app.session.get('city').header : city.header }}
     {% endif %}
     </span>
@@ -25,9 +64,9 @@
             {% trans %}или начните вводить наименование города{% endtrans %}: <input name="input_city" class="uk-input uk-width-1-5@s">
         </div>
         <hr>
-        <div class="uk-column-1-1 uk-column-1-5@s">
+        <div class="uk-column-1-1 uk-column-1-5@s"> #}
             {#<div class="city_block uk-margin-bottom" data-id="0" data-url="rus" data-header="Россия">Россия</div>#}
-            {% for city in t3_new.popularCities if city.total >= 10 %}
+            {# {% for city in t3_new.popularCities if city.total >= 10 %}
                 <div class="city_block" data-id="{{ city.id }}" data-url="{{ city.url }}" data-header="{{ city.header }}">{{ city.header }}</div>
             {% endfor %}
         </div>
@@ -41,6 +80,6 @@
             </div>
         </div>
     </div>
-</div>
+</div> #}
 
 {% endif %}

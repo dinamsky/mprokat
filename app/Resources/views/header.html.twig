@@ -8,40 +8,9 @@
 	<div class="header-top">
 		<div class="container">
 			<div class="inner">
-				<div class="city-select">
-					<span class="icon">
-						<svg
-							width="14"
-							height="20"
-							viewBox="0 0 14 20"
-							fill="none"
-							xmlns="http://www.w3.org/2000/svg"
-						>
-							<path
-								d="M6.99871 0C3.32277 0 0.332031 2.99074 0.332031 6.66668C0.332031 7.7702 0.60793 8.86434 1.13242 9.8348L6.63414 19.7852C6.70738 19.9178 6.84695 20 6.99871 20C7.15047 20 7.29004 19.9178 7.36328 19.7852L12.867 9.83152C13.3895 8.86434 13.6654 7.77016 13.6654 6.66664C13.6654 2.99074 10.6746 0 6.99871 0ZM6.99871 10C5.16074 10 3.66539 8.50465 3.66539 6.66668C3.66539 4.82871 5.16074 3.33336 6.99871 3.33336C8.83668 3.33336 10.332 4.82871 10.332 6.66668C10.332 8.50465 8.83668 10 6.99871 10Z"
-								fill="#FAFAFA"
-							/>
-						</svg>
-					</span>
-					<div class="text">
-						<span class="title">Москва</span>
-						<span class="dropdown-icon">
-							<svg
-								width="10"
-								height="6"
-								viewBox="0 0 10 6"
-								fill="none"
-								xmlns="http://www.w3.org/2000/svg"
-							>
-								<path
-									d="M1 1L5 5L9 1"
-									stroke="#FAFAFA"
-									stroke-linecap="round"
-								/>
-							</svg>
-						</span>
-					</div>
-				</div>
+				{% if not is_mobile() %}
+					{{ include('selector/global_city_selector.html.twig') }}
+				{% endif %}
 				<div class="how-it-works">
 					<a href="/faq">Как это работает?</a>
 				</div>
