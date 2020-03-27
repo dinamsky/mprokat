@@ -28,6 +28,11 @@ multiprokat-redesign-stage:
   stage: stage
   script:
     - echo "Deploy to staging server https://dev.multiprokat.com"
+    - eval $(ssh-agent -s)
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - echo "$AGENT_PRIVATE_SSH_KEY" | ssh-add -
+    - ssh gitlab@95.216.203.131
   environment:
     name: staging
     url: https://dev.multiprokat.com
