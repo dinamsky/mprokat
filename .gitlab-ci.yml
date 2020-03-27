@@ -25,7 +25,7 @@ before_script:
 stages:
   - stage
   - production
-test002:
+multiprokat-redesign-stage:
   stage: stage
   script:
     - echo "Deploy to staging server https://dev.multiprokat.com"
@@ -37,7 +37,7 @@ test002:
   only:
     - develop
     - /^feature.*/
-production:
+multiprokat-redesign-production:
   stage: production
   script:
     - echo "Deploy to production server https://dev.multiprokat.com"
@@ -45,7 +45,7 @@ production:
     name: production
     url: https://dev.multiprokat.com
   tags:
-    - runner.bqtstuff.com
+    - multiprokat-redesign
   only:
     - master
     - /^release\-\d+\.\d+\.\d+.*/
