@@ -33,7 +33,7 @@ multiprokat-redesign-stage:
     name: staging
     url: https://dev.multiprokat.com
   tags:
-    - https://runner.multiprokat.com
+    - multiprokat-redesign
   only:
     - develop
     - /^feature.*/
