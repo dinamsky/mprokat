@@ -32,6 +32,9 @@ before_script:
   - npm install -g npm
   - npm i -g pm2 typescript ts-node
   - curl -L "https://github.com/docker/compose/releases/download/1.25.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  - chmod +x /usr/local/bin/docker-compose
+  - ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+  - docker-compose --version
   - echo "$REGISTRY_DEPLOY_KEY" | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
 cache:
   paths:
