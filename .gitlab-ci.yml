@@ -32,6 +32,7 @@ cache:
 stages:
   - install
   - build
+  - deploy
 install:
   stage: install
   script:
@@ -48,15 +49,21 @@ install:
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - echo "$AGENT_PRIVATE_SSH_KEY" | ssh-add -
-    - ssh gitlab@95.216.203.131
   tags:
     - multiprokat-redesign
 build:
   stage: build
   script:
     - echo "Deploy to production server https://dev.multiprokat.com"
+    - ssh gitlab@95.216.203.131
   environment:
     name: production
     url: https://dev.multiprokat.com
+  tags:
+    - multiprokat-redesign
+stage:
+  stage: deploy
+  script:
+    - echo "DEPLOY to Stage
   tags:
     - multiprokat-redesign
