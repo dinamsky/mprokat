@@ -29,10 +29,9 @@ before_script:
   - apk update && apk add -u yarn
   - echo "Install node js"
   - apk add --update nodejs nodejs-npm
-  - echo "Install composer."
-  - php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer
   - npm install -g npm
   - npm i -g pm2 typescript ts-node
+  - curl -L "https://github.com/docker/compose/releases/download/1.25.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
   - echo "$REGISTRY_DEPLOY_KEY" | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
 cache:
   paths:
