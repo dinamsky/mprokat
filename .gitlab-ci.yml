@@ -21,7 +21,7 @@ before_script:
   #  - php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer
   #  - npm install -g npm
   #  - npm i -g pm2 typescript ts-node
-  - apk-add openssh
+  - apk add openssh
 stages:
   - stage
   - production
