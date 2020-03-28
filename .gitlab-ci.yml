@@ -3,7 +3,7 @@ variables:
   GIT_SSL_NO_VERIFY: "true"
 
 before_script:
-  - apk add --no-cache docker openssh freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev
+  - apk add --no-cache docker openssh freetype wget libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev
   - docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-png-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1)
   - docker-php-ext-install -j${NPROC} gd
   - apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev
@@ -24,34 +24,34 @@ before_script:
   - php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer
   - npm install -g npm
   - npm i -g pm2 typescript ts-node
+  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
 cache:
   paths:
     - vendor/
     - none_modules/
 stages:
-  - stage
-  - production
-multiprokat-redesign-stage:
-  stage: stage
+  - install
+  - build
+install:
+  stage: install
   script:
-    - echo "Deploy to staging server https://dev.multiprokat.com"
-    - php composer install
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    # Install composer dependencies
+    - wget https://composer.github.io/installer.sig -O - -q | tr -d '\n' > installer.sig
+    - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    - php -r "if (hash_file('SHA384', 'composer-setup.php') === file_get_contents('installer.sig')) { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+    - php composer-setup.php
+    - php -r "unlink('composer-setup.php'); unlink('installer.sig');"
+    - php composer.phar install
+
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - echo "$AGENT_PRIVATE_SSH_KEY" | ssh-add -
     - ssh gitlab@95.216.203.131
-  environment:
-    name: staging
-    url: https://dev.multiprokat.com
   tags:
     - multiprokat-redesign
-  only:
-    - develop
-    - /^feature.*/
-multiprokat-redesign-production:
-  stage: production
+build:
+  stage: build
   script:
     - echo "Deploy to production server https://dev.multiprokat.com"
   environment:
@@ -59,6 +59,3 @@ multiprokat-redesign-production:
     url: https://dev.multiprokat.com
   tags:
     - multiprokat-redesign
-  only:
-    - master
-    - /^release\-\d+\.\d+\.\d+.*/
