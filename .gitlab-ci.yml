@@ -35,7 +35,7 @@ before_script:
   - chmod +x /usr/local/bin/docker-compose
   - ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
   - docker-compose --version
-  - echo "$REGISTRY_DEPLOY_KEY" | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+  - echo "$CI_REGISTRY_PASSWORD" | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
 cache:
   paths:
     - vendor/
