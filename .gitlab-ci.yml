@@ -1,6 +1,15 @@
 image: php:7.3-fpm-alpine
 variables:
+  # Configure mysql environment variables (https://hub.docker.com/_/mysql/)
+  APP_ENV: prod
+  MYSQL_ROOT_PASSWORD: root
+  MYSQL_USER: admin
+  MYSQL_PASSWORD: secret
+  MYSQL_DATABASE: multiprokat-redesign
+  DATABASE_URL: mysql://admin:secret@mysql:3306/multiprokat-redesign
   GIT_SSL_NO_VERIFY: "true"
+services:
+  - mysql:latest
 
 before_script:
   - apk add --no-cache docker openssh freetype wget libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev
@@ -30,11 +39,10 @@ cache:
     - vendor/
     - none_modules/
 stages:
-  - install
   - build
   - deploy
-install:
-  stage: install
+build:
+  stage: build
   script:
     - echo "Install all dependencies"
     - echo "Install composer dependencies"
@@ -51,19 +59,10 @@ install:
     - echo "$AGENT_PRIVATE_SSH_KEY" | ssh-add -
   tags:
     - multiprokat-redesign
-build:
-  stage: build
-  script:
-    - echo "Deploy to production server https://dev.multiprokat.com"
-    - ssh gitlab@95.216.203.131
-  environment:
-    name: production
-    url: https://dev.multiprokat.com
-  tags:
-    - multiprokat-redesign
 stage:
   stage: deploy
   script:
     - echo "DEPLOY to Stage
+    - ssh gitlab@95.216.203.131
   tags:
     - multiprokat-redesign
