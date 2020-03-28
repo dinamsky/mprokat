@@ -1,4 +1,7 @@
 image: php:7.3-fpm-alpine
+variables:
+  GIT_SSL_NO_VERIFY: "true"
+
 before_script:
   #  - apk add --no-cache docker freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev
   #  - docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-png-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1)
