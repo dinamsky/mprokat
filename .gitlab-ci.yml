@@ -20,9 +20,7 @@ before_script:
   - echo "Install composer."
   - php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer
   - npm install -g npm
-  - npm i -g pm2 ts-node
-  - rc-update add docker boot
-  - service docker start
+  - npm i -g pm2 typescript ts-node
 stages:
   - stage
   - production
