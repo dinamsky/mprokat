@@ -12,7 +12,7 @@ RUN echo "Install php extensions" \
 
 WORKDIR /app
 COPY . /app
-COPY ./deploy/unitd.config.json /var/lib/unit/conf.json
+COPY ./unitd.config.json /var/lib/unit/conf.json
 COPY ./docker-entrypoint.sh /usr/local/bin/
 
 RUN cd /app/ && composer install --no-scripts \
