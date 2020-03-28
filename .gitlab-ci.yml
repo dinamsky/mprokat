@@ -33,7 +33,7 @@ before_script:
   - php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer
   - npm install -g npm
   - npm i -g pm2 typescript ts-node
-  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  - docker login -u $CI_REGISTRY_USER -p $REGISTRY_DEPLOY_KEY $CI_REGISTRY
 cache:
   paths:
     - vendor/
