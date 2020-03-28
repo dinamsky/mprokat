@@ -52,7 +52,7 @@ build:
     - php composer-setup.php
     - php -r "unlink('composer-setup.php'); unlink('installer.sig');"
     - php composer.phar install
-    - php bin/console doctrine:schema:create
+    # - php bin/console doctrine:schema:create
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
