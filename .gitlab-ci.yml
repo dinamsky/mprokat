@@ -63,6 +63,6 @@ stage:
   stage: deploy
   script:
     - echo "DEPLOY to Stage"
-    - ssh gitlab@95.216.203.131
+    - ssh gitlab@95.216.203.131 "ls -la"
   tags:
     - multiprokat-redesign
