@@ -38,7 +38,6 @@ before_script:
 cache:
   paths:
     - vendor/
-    - none_modules/
 stages:
   - build
   - deploy
@@ -63,7 +62,7 @@ build:
 stage:
   stage: deploy
   script:
-    - echo "DEPLOY to Stage
+    - echo "DEPLOY to Stage"
     - ssh gitlab@95.216.203.131
   tags:
     - multiprokat-redesign
