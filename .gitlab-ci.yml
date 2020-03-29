@@ -35,6 +35,7 @@ before_script:
   - pip install docker-compose
   - docker-compose --version
   - echo "$CI_REGISTRY_PASSWORD" | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+  - docker version
 cache:
   paths:
     - vendor/
