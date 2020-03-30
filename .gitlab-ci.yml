@@ -68,6 +68,7 @@ stage:
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - echo "$AGENT_PRIVATE_SSH_KEY" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
     - ssh gitlab@95.216.140.107 "sudo mkdir -p /var/www/multiprokat-redesign-temp"
     - scp -r * gitlab@95.216.140.107:/var/www/multiprokat-redesign-temp
   tags:
