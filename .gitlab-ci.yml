@@ -55,7 +55,7 @@ build:
     # - php bin/console doctrine:schema:create
   tags:
     - multiprokat-redesign
-stage:
+95.216.140.107:
   artifacts:
     paths:
       - build/
@@ -64,7 +64,7 @@ stage:
     - /^feature.*/
   stage: deploy
   script:
-    - echo "DEPLOY to Stage"
+    - echo "DEPLOY to Stage Multiprokat-test"
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
