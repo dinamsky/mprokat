@@ -69,6 +69,6 @@ stage:
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - echo "$AGENT_PRIVATE_SSH_KEY" | ssh-add -
     - ssh gitlab@95.216.203.131 "mkdir _tmp"
-    - scp -r build/* gitlab@95.216.203.131:_tmp
+    - scp -r * gitlab@95.216.203.131:_tmp
   tags:
     - multiprokat-redesign
