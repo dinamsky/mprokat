@@ -64,7 +64,7 @@ stages:
     - scp -r * gitlab@95.216.140.107:/var/www/multiprokat-redesign-temp
     - ssh gitlab@95.216.140.107 "cp /var/www/environment/parameters.yml /var/www/multiprokat-redesign-temp/app/config/parameters.yml"
     - ssh gitlab@95.216.140.107 "mv /var/www/multiprokat-redesign /var/www/multiprokat-redesign_previous && mv /var/www/multiprokat-redesign-temp /var/www/multiprokat-redesign"
-    - ssh gitlab@95.216.140.107 "rm -rf /var/www/multiprokat-redesign-temp"
+    - ssh gitlab@95.216.140.107 "sudo chown -R gitlab /var/www/multiprokat-redesign_previous && rm -rf /var/www/multiprokat-redesign_previous && rm -rf /var/www/multiprokat-redesign-temp"
     - ssh gitlab@95.216.140.107 "sudo service nginx restart"
   tags:
     - multiprokat-redesign
