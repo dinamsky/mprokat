@@ -228,6 +228,132 @@
         </div>
     </div>
 
+
+
+	{% set x_uri = app.request.pathinfo|split('/') %}
+
+	{% if bodyTypes and model.id == null %}
+			{% set body_url = '/rent/'~x_uri[2]~'/'~x_uri[3]~'/'~x_uri[4] %}
+			{% if mark.id != null %}
+					{% set body_url = '/rent/'~x_uri[2]~'/'~x_uri[3]~'/'~x_uri[4]~'/'~x_uri[5] %}
+			{% endif %}
+	{% endif %}
+
+	<section class="categories-city">
+		<div class="container">
+			{% if custom_seo and custom_seo.h1 != ''%}
+					<h2>{% include(template_from_string(custom_seo.h1)) %}</h2>
+			{% else %}
+					<h2>{% include 'seo_templates/c_h1.html.twig' %}</h2>
+			{% endif %}
+			<ul class="categories-list with-count">
+				<li class="item">
+					<a href="#">Легковые автомобили</a> <sup>254</sup>
+				</li>
+				<li class="item">
+					<a href="#">Грузовые автомобили</a> <sup>254</sup>
+				</li>
+				<li class="item">
+					<a href="#">Свадебные автомобили</a> <sup>254</sup>
+				</li>
+				<li class="item">
+					<a href="#">Детские электроциклы</a> <sup>254</sup>
+				</li>
+				<li class="item"><a href="#">Автодом</a> <sup>254</sup></li>
+				<li class="item"><a href="#">Снегоходы</a> <sup>254</sup></li>
+				<li class="item"><a href="#">Лимузины</a> <sup>254</sup></li>
+			</ul>
+			{{ include('search/search_form.html.twig',{'top':true}) }}
+		</div>
+	</section>
+
+	<section class="cards">
+		<div class="container">
+			<div class="cards-header">
+				{% if total_cards > 0 %}
+						<p class="results">{% trans %}Найдено{% endtrans %}: {{ total_cards }} {% trans %}транспорта{% endtrans %}</p>
+				{% else %}
+						<p class="results">{% trans %}Транспорт не найден{% endtrans %}</p>
+				{% endif %}
+				<div class="sort">
+					<p>Сортировка:</p>
+					<select name="sort" id="sort" class="sort-select">
+						<option value="1">сначала дешевле</option>
+						<option value="1">сначала дороже</option>
+					</select>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-3 col-6">
+					<div class="card">
+						<div
+							class="image"
+							style="background-image: url(img/card-image.jpg);"
+						></div>
+						<div class="content">
+							<h3><a href="#">Mercedes-Benz E-Class</a></h3>
+							<p class="owner">Владелец: <a href="#">RentaCAR26</a></p>
+							<p class="price">1 610 ₽ час</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-6">
+					<div class="card">
+						<div
+							class="image"
+							style="background-image: url(img/card-image.jpg);"
+						></div>
+						<div class="content">
+							<h3><a href="#">Mercedes-Benz E-Class</a></h3>
+							<p class="owner">Владелец: <a href="#">RentaCAR26</a></p>
+							<p class="price">1 610 ₽ час</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-6">
+					<div class="card">
+						<div
+							class="image"
+							style="background-image: url(img/card-image.jpg);"
+						></div>
+						<div class="content">
+							<h3><a href="#">Mercedes-Benz E-Class</a></h3>
+							<p class="owner">Владелец: <a href="#">RentaCAR26</a></p>
+							<p class="price">1 610 ₽ час</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-6">
+					<div class="card">
+						<div
+							class="image"
+							style="background-image: url(img/card-image.jpg);"
+						></div>
+						<div class="content">
+							<h3><a href="#">Mercedes-Benz E-Class</a></h3>
+							<p class="owner">Владелец: <a href="#">RentaCAR26</a></p>
+							<p class="price">1 610 ₽ час</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="show-more">
+				<button class="btn btn-outline">Показать больше</button>
+			</div>
+		</div>
+	</section>
+
+	<section class="alert">
+		<div class="container">
+			<h2>Примите участие в улучшении сервиса</h2>
+			<p>
+				Поделитесь своими впечатлениями от пользования платформой, это
+				поможет нам в улучшении.
+			</p>
+			<a href="#" class="btn btn-solid">Оставить отзыв</a>
+		</div>
+	</section>
+
 {% endblock %}
 
 
