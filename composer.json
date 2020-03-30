@@ -11,19 +11,11 @@
       "InfoBundle\\": "src/InfoBundle",
       "MarkBundle\\": "src/MarkBundle"
     },
-    "classmap": [
-      "app/AppKernel.php",
-      "app/AppCache.php"
-    ]
+    "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
   },
   "autoload-dev": {
-    "psr-4": {
-      "Tests\\": "tests/"
-    },
-<<<<<<< HEAD
-    "files": [
-      "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php"
-    ]
+    "psr-4": { "Tests\\": "tests/" },
+    "files": [ "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php" ]
   },
   "require": {
     "php": ">=5.5.9",
@@ -38,7 +30,7 @@
     "symfony/monolog-bundle": "^3.1.0",
     "symfony/polyfill-apcu": "^1.0",
     "symfony/swiftmailer-bundle": "^2.3.10",
-    "symfony/symfony": "3.3.*",
+    "symfony/symfony": "3.4.*",
     "twig/twig": "^1.0||^2.0"
   },
   "require-dev": {
@@ -64,23 +56,6 @@
   "config": {
     "platform": {
       "php": "5.5.9"
-=======
-    "require": {
-        "php": ">=5.5.9",
-        "beberlei/DoctrineExtensions": "^1.0",
-        "doctrine/doctrine-bundle": "^1.6",
-        "doctrine/orm": "^2.5",
-        "incenteev/composer-parameter-handler": "^2.0",
-        "sensio/distribution-bundle": "^5.0.19",
-        "sensio/framework-extra-bundle": "^3.0.2",
-        "stof/doctrine-extensions-bundle": "^1.2",
-        "suncat/mobile-detect-bundle": "^1.0",
-        "symfony/monolog-bundle": "^3.1.0",
-        "symfony/polyfill-apcu": "^1.0",
-        "symfony/swiftmailer-bundle": "^2.3.10",
-        "symfony/symfony": "3.4.*",
-        "twig/twig": "^1.0||^2.0"
->>>>>>> 4ca00cd56ff463c3340e3e7c4deb31646af33e8d
     },
     "sort-packages": true
   },

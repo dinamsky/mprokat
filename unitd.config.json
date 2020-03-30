@@ -1,0 +1,33 @@
+{
+  "listeners": {
+    "*:9000": {
+      "application": "api"
+    }
+  },
+
+  "applications": {
+    "api": {
+      "type": "php 7.0",
+      "processes": {
+        "max": 20,
+        "spare": 4,
+        "idle_timeout": 20
+      },
+      "root": "/app/web",
+      "script": "app_dev.php",
+      "user": "root",
+      "group": "root",
+      "options": {
+        "file": "/etc/php.ini",
+        "admin": {
+          "memory_limit": "256M",
+          "variables_order": "EGPCS",
+          "expose_php": "0"
+        },
+        "user": {
+          "display_errors": "0"
+        }
+      }
+    }
+  }
+}
