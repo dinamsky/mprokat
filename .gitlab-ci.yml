@@ -53,10 +53,6 @@ build:
     - php -r "unlink('composer-setup.php'); unlink('installer.sig');"
     - php composer.phar install
     # - php bin/console doctrine:schema:create
-    - eval $(ssh-agent -s)
-    - mkdir -p ~/.ssh
-    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - echo "$AGENT_PRIVATE_SSH_KEY" | ssh-add -
   tags:
     - multiprokat-redesign
 stage:
@@ -68,6 +64,10 @@ stage:
   stage: deploy
   script:
     - echo "DEPLOY to Stage"
+    - eval $(ssh-agent -s)
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - echo "$AGENT_PRIVATE_SSH_KEY" | ssh-add -
     - ssh gitlab@95.216.203.131 "mkdir _tmp"
     - scp -r build/* gitlab@95.216.203.131:_tmp
   tags:
