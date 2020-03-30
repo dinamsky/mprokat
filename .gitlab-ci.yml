@@ -60,9 +60,15 @@ build:
   tags:
     - multiprokat-redesign
 stage:
+  artifacts:
+    paths:
+      - build/
+  only:
+    - develop
   stage: deploy
   script:
     - echo "DEPLOY to Stage"
-    - ssh gitlab@95.216.203.131 "ls -la"
+    - ssh gitlab@95.216.203.131 "mkdir _tmp"
+    - scp -r build/* gitlab@95.216.203.131:_tmp
   tags:
     - multiprokat-redesign
