@@ -56,9 +56,6 @@ build:
   tags:
     - multiprokat-redesign
 95.216.140.107:
-  artifacts:
-    paths:
-      - build/
   only:
     - develop
     - /^feature.*/
