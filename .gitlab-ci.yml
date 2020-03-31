@@ -60,6 +60,7 @@ stages:
     - chmod 600 ~/.ssh/id_rsa
     - ssh gitlab@95.216.140.107 "mkdir -p /var/www/multiprokat-redesign-temp"
     - scp -r * gitlab@95.216.140.107:/var/www/multiprokat-redesign-temp
+    - ssh gitlab@95.216.140.107 "cp -r /var/www/assets /var/www/multiprokat-redesign-temp/web/assets"
     - ssh gitlab@95.216.140.107 "cp /var/www/environment/parameters.yml /var/www/multiprokat-redesign-temp/app/config/parameters.yml"
     - ssh gitlab@95.216.140.107 "mv /var/www/multiprokat-redesign /var/www/multiprokat-redesign_previous && mv /var/www/multiprokat-redesign-temp /var/www/multiprokat-redesign"
     - ssh gitlab@95.216.140.107 "sudo chown -R gitlab /var/www/multiprokat-redesign_previous && sudo chmod -R 777 /var/www/multiprokat-redesign/var/cache && rm -rf /var/www/multiprokat-redesign_previous && rm -rf /var/www/multiprokat-redesign-temp"
