@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html {% block htmlblock %}{% endblock %}>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru" lang="ru" prefix="og: http://ogp.me/ns#">
     <head>
         {% if app.session.has('city') and app.session.get('city').country != 'RUS' %}
         <meta name="robots" content="noindex">
@@ -23,6 +23,7 @@
         {% block openGraph %}
         {% endblock %}
 
+      
         {% block metaTags %}
         {% endblock %}
 

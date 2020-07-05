@@ -24,13 +24,22 @@
 
 
 {% endblock %}
-
-{% block metaTags %}
+{% block openGraph %}
     {{ parent() }}
-    {% if custom_seo and custom_seo.description != ''%}
-        <meta name="description" content="{% include(template_from_string(custom_seo.description)) %}">
-    {% endif %}
-{% endblock %}
+   	<link rel="shortcut icon" type="image/ico" href="/assets/favicon.ico" />
+			<link rel="icon" type="image/ico" href="/assets/favicon.ico" />
+			<link rel="canonical" href="https://multiprokat.com/" />
+			<link rel="apple-touch-icon" href="https://multiprokat.com/apple-touch-icon.png">
+			<link rel="shortcut icon" href="https://multiprokat.com/apple-touch-icon.png">
+			<meta name="description" content="Мультипрокат: аренда и прокат мотоциклов, автомобилей, катеров, яхт в 230 городах от владельцев транспорта. 4600 единиц транспорта в одном месте"  />
+			<meta name="twitter:card" content="summary_large_image">
+<meta property="og:type" content="website">
+
+<meta property="og:url" content="https://multiprokat.com">
+<meta property="og:title" content="Мультипрокат: аренда и прокат транспорта от владельцев.">
+<meta property="og:description" content="Мультипрокат: аренда и прокат мотоциклов, автомобилей, катеров, яхт в 230 городах от владельцев. 4600 единиц транспорта в одном месте">
+<meta property="og:image" content="https://multiprokat.com/assets/images/interface/ducati.png">{% endblock %}
+
 
 {% block title %}
     {% if custom_seo and custom_seo.title != ''%}
@@ -257,3 +266,6 @@
     <hr>
     <div class="standard_wide">{{ seo_text }}</div>
 {% endif %}{% endblock %}
+
+
+
