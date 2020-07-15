@@ -2,32 +2,21 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link href="{{ asset('assets/css/auto-complete.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/select2.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/auto-complete.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/select2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/datepicker.min.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-
-    {#<script src="{{ asset('assets/js/jquery-ui.min.js') }}"></script>#}
-    {#<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>#}
-
-    <script src="{{ asset('assets/tinymce/jquery.tinymce.min.js') }}"></script>
-    <script src="{{ asset('assets/tinymce/tinymce.min.js') }}"></script>
-    <script src="{{ asset('assets/js/visual_editor.js') }}"></script>
-    <script src="{{ asset('assets/js/new_card_validate.js') }}"></script>
-    <script src="{{ asset('assets/js/auto-complete.min.js') }}"></script>
-    <script src="{{ asset('assets/js/form_autocomplete.js') }}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWdm1zrblFjsdUfi1-6fsPvj30ACCiCxk"></script>
-    <script src="{{ asset('assets/js/new_card_settings.js') }}"></script>
-    <script src="{{ asset('assets/js/newCardForm.js') }}"></script>
-    <script src="{{ asset('assets/js/tariff_selector.js') }}"></script>
     <script src="{{ asset('assets/js/image_upload_preview.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.maskedinput.js') }}"></script>
-    <script src="{{ asset('assets/js/phone_validate.js') }}"></script>
-    <script src="{{ asset('assets/js/select2.min.js') }}"></script>
-    <script src="{{ asset('assets/js/select_combo.js') }}"></script>
-    <script src="{{ asset('assets/js/signup_validate.js') }}"></script>
+    <script src="{{ asset('assets/js/datepicker.min.js') }}"></script>
+    <script src="{{ asset('assets/js/alex/address_change.js') }}"></script>
+    <script src="{{ asset('assets/js/alex/transport_change.js') }}"></script>
+    <script src="{{ asset('assets/js/alex/tariff_change.js') }}"></script>
+    <script src="{{ asset('assets/js/alex/images_upload.js') }}"></script>
+    <script src="{{ asset('assets/js/alex/card-new_validate.js') }}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWdm1zrblFjsdUfi1-6fsPvj30ACCiCxk"></script>
 {% endblock %}
 
 {% block bodyVars %}data-lang="{{ lang }}"{% endblock %}
@@ -37,188 +26,128 @@
 
 
 {% block content %}
-
-    <div class="standard_wide uk-margin-top">
-        {% if gt_url != '' %}
-            <h1>Сдать в прокат/аренду {{ gt_url.headerSingular|lower }} в {{ city.gde }}</h1>
-        {% else %}
-            <h1>{% trans %}Новый транспорт{% endtrans %}</h1>
+    <div class="uk-container">
+        {% if not admin and not user %}
+            {{ include('user/step_auth.html.twig') }}
         {% endif %}
 
-        <div>{% trans %}Разместите свой транспорт и будьте готовы принимать звонки и email-сообщения от клиентов.{% endtrans %}</div>
-        <hr>
-    </div>
+        <h2 class="uk-margin-medium-bottom">Сдача транспорта в аренду</h2>
 
-    {% if not admin and not user %}
-        {{ include('user/step_auth.html.twig') }}
-    {% endif %}
+        <ul uk-switcher="connect: .js-step-new-form; swiping: false;" hidden>
+            <li><a href="javascript:;">1</a></li>
+            <li><a href="javascript:;" class="js-step-two-link">2</a></li>
+            <li><a href="javascript:;">3</a></li>
+            <li><a href="javascript:;">4</a></li>
+            <li><a href="javascript:;">5</a></li>
+            <li><a href="javascript:;">6</a></li>
+        </ul>
 
-    <form id="new_card_form" action="/card/new" method="POST" enctype="multipart/form-data" onsubmit="return new_card_validate();" class="standard_wide uk-margin-top {{ not phone ? 'no_phone' }} {% if not admin and not user %}unknown{% endif %}">
-
-
-        {% if app.session.has('admin') and app.session.get('admin').role == 'superadmin'%}
-            {{ include('AdminBundle::admin_card_new.html.twig') }}
-        {% endif %}
-        {% if app.session.has('admin') and app.session.get('admin').role == 'cardmaster'%}
-            {{ include('AdminBundle::admin_cardmaster_new.html.twig') }}
-        {% endif %}
-
-
-
-        <div uk-grid>
-
-            <div class="uk-width-1-1@s">
-                {% if not phone %}
-                <div class="uk-margin-bottom uk-position-relative">
-                    <input type="text" name="phone" id="phone" placeholder="{% trans %}Заполните номер телефона{% endtrans %}" class="uk-input phone_validate">
-                    <div class="uk-position-absolute uk-position-top-left" style="left:5px;"><span class="red_star">*</span></div>
+        <form action="/card/new" method="POST" enctype="multipart/form-data" {% if not admin and not user %}hidden{% endif %}>
+        <ul id="js-control" class="uk-switcher uk-margin js-step-new-form">
+            <!-- Step 1/6 -->
+            <li  class="js-step-one">
+                <div class="uk-margin-small-bottom">{% trans %}Шаг{% endtrans %} 1 <span class="uk-text-muted">{% trans %}из{% endtrans %} 6</span></div>
+                <div class="uk-hr uk-align uk-margin-remove-top"></div>
+                {{ include('card/card_new_elements/new_type.html.twig') }}
+                <div class="uk-padding uk-padding-remove-horizontal uk-padding-remove-bottom">
+                    <button type="button" class="uk-button button button-primary button-lg uk-width-1-1 uk-width-1-5@m" uk-switcher-item="next">{% trans %}Далее{% endtrans %}</button>
                 </div>
-                {% endif %}
+            </li>
+            <!-- /Step 1/6 -->
 
-                <div class="">{{ include('card/card_new_elements/new_type.html.twig') }}
-                    <div class="uk-text-center uk-margin">
-                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_address">{% trans %}Продолжить{% endtrans %}</button>
-                    </div>
-                </div>
+            <!-- Step 2/6 -->
+            <li class="js-step-two">
+                <div class="uk-margin-small-bottom">{% trans %}Шаг{% endtrans %} 2 <span class="uk-text-muted">{% trans %}из{% endtrans %} 6</span></div>
+                <div class="uk-hr uk-align uk-margin-remove-top"></div>
 
-                <div class="uk-hidden uk-margin-medium-top" id="new_address">
-                    {#<div class="uk-flex uk-flex-center"><hr class="uk-width-3-5"></div>#}
-                    {{ include('card/card_new_elements/new_address.html.twig') }}
-                    <div class="uk-text-center uk-margin">
-                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_general">{% trans %}Продолжить{% endtrans %}</button>
-                    </div>
-                </div>
+                {{ include('card/card_new_elements/new_address.html.twig') }}
 
-                <div class="uk-hidden uk-margin-medium-top" id="new_general">
-                    {#<div class="uk-flex uk-flex-center"><hr class="uk-width-3-5"></div>#}
-                    {{ include('card/card_new_elements/new_general.html.twig') }}
-                    <div class="uk-text-center uk-margin">
-                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_mark">{% trans %}Продолжить{% endtrans %}</button>
-                    </div>
-                </div>
-
-                <div class="uk-hidden uk-margin-medium-top" id="new_mark">
-                    {#<hr>#}
-                    {{ include('card/card_new_elements/new_mark.html.twig') }}
-                    <div class="uk-text-center uk-margin">
-                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_foto">{% trans %}Продолжить{% endtrans %}</button>
-                    </div>
-                </div>
-
-                <div class="uk-hidden uk-margin-medium-top" id="new_foto">
-                    {#<hr>#}
-                    {{ include('card/card_new_elements/new_foto.html.twig') }}
-                    <div class="uk-text-center uk-margin">
-                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_prices">{% trans %}Продолжить{% endtrans %}</button>
-                    </div>
-                </div>
-
-                <div class="uk-hidden uk-margin-medium-top" id="new_prices">
-                    {#<hr>#}
-                    {{ include('card/card_new_elements/new_prices.html.twig') }}
-                    <div class="uk-text-center uk-margin">
-                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_description">{% trans %}Продолжить{% endtrans %}</button>
-                    </div>
-                </div>
-
-                <div class="uk-hidden uk-margin-medium-top" id="new_description">
-                    {#<hr>#}
-                    {{ include('card/card_new_elements/new_description.html.twig') }}
-                    <div class="uk-text-center uk-margin">
-                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_dops_switcher">{% trans %}Продолжить{% endtrans %}</button>
-                    </div>
-                </div>
-
-
-                <div uk-grid class="uk-hidden uk-margin-medium-top" id="new_dops_switcher">
-                    <div class="uk-width-1-1"><hr></div>
-                    <div class="uk-width-1-5"></div>
-                    <div class="uk-width-4-5">
-                        {% trans %}Можно{% endtrans %} <a id="fill_dop_button">{% trans %}заполнить дополнительную информацию{% endtrans %}</a>, {% trans %}но не обязательно{% endtrans %}
-                    </div>
-
-
-                    <div id="dop_fields" class="uk-width-1-1@s" hidden>
-                        {{ include('card/card_new_elements/new_all_dops.html.twig') }}
-                    </div>
-
-                    <div class="uk-text-center uk-margin uk-width-1-1">
-                        <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="{{ not admin and not user ? 'new_password' : 'new_tariffs' }}">{% trans %}Продолжить{% endtrans %}</button>
-                    </div>
-                </div>
-
-
-                {% if not admin and not user %}
-                    <div class="uk-hidden uk-margin-medium-top" id="new_password" uk-grid>
-                        <div class="uk-width-1-5">{% trans %}Регистрация{% endtrans %} <span class="red_star">*</span></div>
-                        <div class="uk-width-4-5">
-
-                            <div class=""><input type="text" form="new_card_form"  name="r_email" class="uk-input uk-width-1-2" placeholder="Email" ><span class="uk-text-small c_grey"> - {% trans %}ваш email не будет показан на сайте{% endtrans %}</span></div>
-                            <div class="uk-margin-top"><input  type="text" form="new_card_form"  name="r_header" class="uk-input uk-width-1-2" placeholder="{% trans %}Введите название компании или ваше имя{% endtrans %}" ><span class="uk-text-small c_grey"> - {% trans %}необходимо, чтобы клиенты могли обращаться к вам{% endtrans %}</span></div>
-                            <div class="uk-margin-top"><input  type="text" form="new_card_form"  name="r_phone" class="uk-input uk-width-1-2 phone_validate" placeholder="{% trans %}Телефон{% endtrans %}" ><span class="uk-text-small c_grey"> - {% trans %}необходим для связи с вами{% endtrans %}</span></div>
-                            <input type="password" form="new_card_form"  name="r_password" placeholder="{% trans %}Пароль{% endtrans %}" class="uk-input uk-width-1-3 uk-margin-top">
+                <div class="uk-padding uk-padding-remove-horizontal uk-padding-remove-bottom">
+                    <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-5@m" uk-grid>
+                        <div class="uk-flex-last@m">
+                            <button type="button" class="uk-button button button-primary button-lg uk-width-1-1 js-next-step">{% trans %}Далее{% endtrans %}</button>
                         </div>
-                        <div class="uk-margin-bottom"><label><input type="checkbox" name="oferta2"> Я ознакомлен и согласен с условиями <a target="_blanc" class="underline" uk-tooltip="title:откроется в новом окне" href="/assets/docs/oferta.pdf">оферты</a></label></div>
-                        <div class="uk-text-center uk-margin uk-width-1-1">
-                            <button type="button" class="uk-button uk-button-primary uk-button-small newcard_continue" data-id="new_tariffs" disabled>{% trans %}Продолжить{% endtrans %}</button>
+                        <div>
+                            <button type="button" class="uk-button button button-outline-primary button-lg uk-width-1-1 js-prev-step">{% trans %}Назад{% endtrans %}</button>
                         </div>
                     </div>
-                {% endif %}
+                </div>
+            </li>
+            <!-- Step 2/6 -->
 
-                <div class="uk-hidden uk-margin-medium-top" id="new_tariffs">
-                    <h3>{% trans %}Выберите тариф размещения{% endtrans %}</h3>
-                    {{ include(':card:tariff_selector.html.twig', {'tariffId':0}) }}
-                    <div class="uk-margin-top">
-                        {% trans %}После выбора тарифа на ваш email будет отправлено письмо. Перейдите по ссылке в письме для завершения регистрации.{% endtrans %}<br>
-                        <input type="checkbox" name="subscriber" checked> {% trans %}Получать новости и спецпредложения{% endtrans %}
+            <!-- Step 3/6 -->
+            <li class="js-step-three">
+                <div class="uk-margin-small-bottom">{% trans %}Шаг{% endtrans %} 3 <span class="uk-text-muted">{% trans %}из{% endtrans %} 6</span></div>
+                <div class="uk-hr uk-align uk-margin-remove-top"></div>
+                {{ include('card/card_new_elements/new_general.html.twig') }}
+
+                {{ include('card/card_new_elements/new_mark.html.twig') }}
+
+                <div class="uk-padding uk-padding-remove-horizontal uk-padding-remove-bottom">
+                    <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-5@m" uk-grid>
+                        <div class="uk-flex-last@m">
+                            <button type="button" class="uk-button button button-primary button-lg uk-width-1-1 js-next-step">{% trans %}Далее{% endtrans %}</button>
+                        </div>
+                        <div>
+                            <button type="button" class="uk-button button button-outline-primary button-lg uk-width-1-1 js-prev-step">{% trans %}Назад{% endtrans %}</button>
+                        </div>
                     </div>
                 </div>
+            </li>
+            <!-- Step 3/6 -->
 
-            </div>
+            <!-- Step 4/6 -->
+            <li class="js-step-four">
+                <div class="uk-margin-small-bottom">{% trans %}Шаг{% endtrans %} 4 <span class="uk-text-muted">{% trans %}из{% endtrans %} 6</span></div>
+                <div class="uk-hr uk-align uk-margin-remove-top"></div>
+                {{ include('card/card_new_elements/new_foto.html.twig') }}
 
+                {{ include('card/card_new_elements/new_description.html.twig') }}
 
-
-
-
-
-        </div>
-
-
-
-
-
-
-        <input type="hidden" name="tariffId" value="3">
-
-        {#<hr>#}
-        {#<button class="uk-button uk-button-primary">Готово</button>#}
-
-    </form>
-
-    {%  if random != '' %}
-
-        <div class="standard_wide uk-margin-top">
-            <h3>{% trans %}Похожие предложения в{% endtrans %} {{ city.gde }}</h3>
-            <div uk-grid class="uk-grid-small uk-grid-match">
-                {% for card in random %}
-                    <div class="uk-width-1-6@s">
-                        {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}
+                <div class="uk-padding uk-padding-remove-horizontal uk-padding-remove-bottom">
+                    <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-5@m" uk-grid>
+                        <div class="uk-flex-last@m">
+                            <button type="button" class="uk-button button button-primary button-lg uk-width-1-1 js-next-step">{% trans %}Далее{% endtrans %}</button>
+                        </div>
+                        <div>
+                            <button type="button" class="uk-button button button-outline-primary button-lg uk-width-1-1 js-prev-step">{% trans %}Назад{% endtrans %}</button>
+                        </div>
                     </div>
-                {% endfor %}
-            </div>
-        </div>
-    {% endif %}
+                </div>
+            </li>
+            <!-- Step 4/6 -->
 
+            <!-- Step 5/6 -->
+            <li class="js-step-five">
+                <div class="uk-margin-small-bottom">{% trans %}Шаг{% endtrans %} 5 <span class="uk-text-muted">{% trans %}из{% endtrans %} 6</span></div>
+                <div class="uk-hr uk-align uk-margin-remove-top"></div>
+                {{ include('card/card_new_elements/new_prices.html.twig') }}
 
-    <div id="new_card_alert" uk-modal>
-        <div class="uk-modal-dialog c_red">
-            <button class="uk-modal-close-default" type="button" uk-close></button>
-            <div class="uk-modal-header">
-                <h2 class="uk-modal-title c_red">{% trans %}Заполните поля{% endtrans %}</h2>
-            </div>
-            <div class="uk-modal-body" id="alert_content"></div>
-        </div>
+                {{ include('card/card_new_elements/new_all_dops.html.twig') }}
+
+                <div class="uk-padding uk-padding-remove-horizontal uk-padding-remove-bottom">
+                    <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-5@m" uk-grid>
+                        <div class="uk-flex-last@m">
+                            <button type="button" class="uk-button button button-primary button-lg uk-width-1-1 js-next-step">{% trans %}Далее{% endtrans %}</button>
+                        </div>
+                        <div>
+                            <button type="button" class="uk-button button button-outline-primary button-lg uk-width-1-1 js-prev-step">{% trans %}Назад{% endtrans %}</button>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <!-- Step 5/6 -->
+
+            <!-- Step 6/6 -->
+            <li data-step="6" class="js-step-six">
+                <div class="uk-margin-small-bottom">{% trans %}Шаг{% endtrans %} 6 <span class="uk-text-muted">{% trans %}из{% endtrans %} 6</span></div>
+                <div class="uk-hr uk-align uk-margin-remove-top"></div>
+                <h3 class="uk-margin-small-bottom theme-required">{% trans %}Выберите тариф размещения{% endtrans %}</h3>
+                {{ include(':card:tariff_selector.html.twig', {'tariffId':0}) }}
+            </li>
+            <!-- Step 6/6 -->
+        </ul>
+        </form>
+
     </div>
-
-
 {% endblock %}

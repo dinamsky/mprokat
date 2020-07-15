@@ -40,37 +40,5 @@ $( document ).ready(function() {
     $('#search_popup').on('click', function (e) {
         e.stopPropagation();
     });
-
-    var top_carousel = $('.top_pop_carousel');
-
-    top_carousel.on({
-        'initialized.owl.carousel': function () {
-             top_carousel.find('.owl-item div').css('display','block');
-        }
-    }).owlCarousel({
-        'nav': true,
-        'margin' : 5,
-        'slideBy' : 4,
-        'navText': ['<i uk-icon="icon:chevron-left"></i>', '<i uk-icon="icon:chevron-right"></i>'],
-        // 'autoHeight': true,
-        //'dots': dots,
-        'items':4,
-        responsive:{
-            0:{
-
-            },
-            600:{
-
-            },
-            1000:{
-
-            },
-            2000:{
-
-            }
-        }
-
-    });
-
-
+    
 });

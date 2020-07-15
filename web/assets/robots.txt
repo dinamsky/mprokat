@@ -1,4 +1,4 @@
 User-agent: *
-Allow: /
+Disallow: /
 
-Host: https://multiprokat.com
+Host: https://redesign.multiprokat.com

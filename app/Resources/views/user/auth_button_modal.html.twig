@@ -74,10 +74,10 @@
 </a>
 
 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="headerProfileMenu">
-	<a href="/profile" class="dropdown-item" type="button">{% trans %}Профиль{% endtrans %}</a>
-	<a href="/user/cards" class="dropdown-item" type="button">{% trans %}Мой транспорт{% endtrans %}</a>
-	<a href="/user/transport_orders" class="dropdown-item" type="button">Заявки</a>
-	<a href="/userLogout" class="dropdown-item" type="button">Выход</a>
+	<a href="/profile" class="dropdown-item">{% trans %}Профиль{% endtrans %}</a>
+	<a href="/user/cards" class="dropdown-item">{% trans %}Мой транспорт{% endtrans %}</a>
+	<a href="/user/transport_orders" class="dropdown-item">Заявки</a>
+	<a href="/userLogout" class="dropdown-item">Выход</a>
 </div>
 
 {% elseif app.session.get('admin').email is defined %}

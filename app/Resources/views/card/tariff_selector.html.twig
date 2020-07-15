@@ -1,93 +1,72 @@
-
-<h3 id="tariff_section">Возможности продвижения транспорта</h3>
-
-<div uk-grid class="tariff_selector uk-grid-small">
-    <div class="uk-width-1-3" ><div class="selector_item t_3 {{ tariffId == 3  ? 'active' : '' }}" data-id="3">{% trans %}Премиум размещение{% endtrans %} 890 руб.</div></div>
-    <div class="uk-width-1-3" ><div class="selector_item t_2 {{ tariffId == 2 or tariffId == 0 ? 'active' : '' }}" data-id="2">{% trans %}Экспресс продвижение{% endtrans %} 350 руб.</div></div>
-    <div class="uk-width-1-3" ><div class="selector_item t_1 {{ tariffId == 1 ? 'active' : '' }}" data-id="1">{% trans %}Обычная публикация{% endtrans %} &nbsp;&nbsp;&nbsp;</div></div>
+<div class="uk-overflow-auto">
+    <table class="uk-table theme-table uk-table-justify uk-table-middle uk-table-divider uk-text-center">
+        <thead>
+        <tr>
+            <th class="uk-table-expand"></th>
+            <th class="uk-width-1-6 uk-text-center uk-text-nowrap">
+                <label>
+                    <div class="js-tariff-name">Обычное размещение</div>
+                    <div class="uk-text-primary uk-margin-small-bottom js-tariff-price">Бесплатно</div>
+                    <input class="uk-radio theme-radio js-tariff-selector" type="radio" name="tariffId" value="1">
+                </label>
+            </th>
+            <th class="uk-width-1-4 uk-text-center uk-text-nowrap">
+                <label>
+                    <div class="js-tariff-name">Экспресс размещение</div>
+                    <div class="uk-text-primary uk-margin-small-bottom js-tariff-price">350 ₽</div>
+                    <input class="uk-radio theme-radio js-tariff-selector" type="radio" name="tariffId" value="2" {{ tariffId == 2 or tariffId == 0 ? 'checked' : '' }}>
+                </label>
+            </th>
+            <th class="uk-width-1-6 uk-text-center uk-text-nowrap">
+                <label>
+                    <div class="js-tariff-name">Премиум размещение</div>
+                    <div class="uk-text-primary uk-margin-small-bottom js-tariff-price">890 ₽</div>
+                    <input class="uk-radio theme-radio js-tariff-selector" type="radio" name="tariffId" value="3" {{ tariffId == 3  ? 'checked' : '' }}>
+                </label>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="uk-text-left">{% trans %}Транспорт на заметном месте{% endtrans %}</td>
+            <td><span uk-icon="minus"></span></td>
+            <td><span class="uk-text-primary" uk-icon="check"></span></td>
+            <td><span class="uk-text-primary" uk-icon="check"></span></td>
+        </tr>
+        <tr>
+            <td class="uk-text-left">{% trans %}Размещение на год{% endtrans %}</td>
+            <td><span class="uk-text-primary" uk-icon="check"></span></td>
+            <td><span class="uk-text-primary" uk-icon="check"></span></td>
+            <td><span class="uk-text-primary" uk-icon="check"></span></td>
+        </tr>
+        <tr>
+            <td class="uk-text-left">{% trans %}Размещение в карточках похожего транспорта{% endtrans %}</td>
+            <td><span uk-icon="minus"></span></td>
+            <td><span class="uk-text-primary" uk-icon="check"></span></td>
+            <td><span class="uk-text-primary" uk-icon="check"></span></td>
+        </tr>
+        <tr>
+            <td class="uk-text-left uk-text-primary">+1000 {% trans %}просмотров{% endtrans %}</td>
+            <td><span uk-icon="minus"></span></td>
+            <td><span uk-icon="minus"></span></td>s
+            <td><span class="uk-text-primary" uk-icon="check"></span></td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <div class="uk-grid-medium uk-text-left" uk-grid>
+                    <div class="uk-width-expand">
+                        <div>Вы выбрали: <span class="uk-text-primary js-current-tariff-name">Обычное размещение</span></div>
+                        <div>Сумма к оплате: <span class="uk-text-primary js-current-tariff-price">0 ₽</span></div>
+                    </div>
+                    <div class="uk-width-1-5">
+                        <button type="button" class="uk-button button button-outline-primary button-lg uk-width-1-1" uk-switcher-item="previous">Назад</button>
+                    </div>
+                    <div class="uk-width-1-4">
+                        <button name="change_tariff" class="uk-button button button-primary button-lg uk-width-1-1 uk-padding-remove-horizontal" uk-switcher-item="next">Выбрать и разместить</button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
-
-
-<div id="tariff_3" class="tariff_block {{ tariffId == 3 ? 'active' : '' }}">
-    <div class="tariff_block_inner">
-    <h3>{% trans %}Премиум размещение{% endtrans %} <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
-        {% if card.tariffId is defined and card.tariffId == 3 %}
-            - <span class="current_tariff_pointer">{% trans %}ваш текущий тариф{% endtrans %}</span>
-        {% endif %}
-    </h3>
-    <div uk-grid>
-        <div class="uk-width-1-2@s">
-            {% trans %}Ваш транспорт на самом заметном месте сайта: на главной странице, на первом месте в выбранной вами категории.<br>Премиум размещение дает плюс 1000 просмотров.<br>Размещение вашего транспорта на главной странице сайта привлекает больше просмотров, вы повысите количество клиентов за короткий срок.{% endtrans %}
-        {#<div class="uk-margin-top"><img src="{{ asset('assets/images/interface/premium.png') }}" alt=""></div>#}
-        </div>
-
-        {% if promoted is defined %}
-        <div class="uk-width-1-2@s uk-text-center">
-            <div class="uk-margin-small-bottom">Они уже продвигаются на сайте:</div>
-            <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-items="3" data-dots="0">
-                {% for card in promoted %}
-                    {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px', 'in_edit':true}) }}
-                {% endfor %}
-            </div>
-        </div>
-        {% endif %}
-
-    </div>
-    </div>
-    <button class="uk-button pay_tariff_button" name="change_tariff">Разместить и оплатить 890 руб.</button>
-</div>
-
-{#{% if edit is not defined %}#}
-{#<button class="uk-button pay_tariff_button temp_button" name="change_tariff">{% trans %}Разместить и оплатить{% endtrans %} 350 руб.</button>#}
-{#{% endif %}#}
-
-
-<div id="tariff_2" class="tariff_block {{ tariffId == 2 or tariffId == 0 ? 'active' : '' }}">
-    <div class="tariff_block_inner">
-    <h3>{% trans %}Экспресс продвижение{% endtrans %} <i class="fa fa-star"></i> <i class="fa fa-star"></i>
-    {% if card.tariffId is defined and card.tariffId == 2 %}
-            - <span class="current_tariff_pointer">{% trans %}ваш текущий тариф{% endtrans %}</span>
-        {% endif %}
-    </h3>
-    <div uk-grid>
-        <div class="uk-width-1-2@s">
-            {% trans %}Разместите ваш транспорт в разделе «Многим нравится».<br>Ваш транспорт в течении 7-ми дней будет размещено в карточках похожего транспорта выбранного региона.<br>Будьте лидером в своем регионе!{% endtrans %}
-
-        </div>
-        {% if promoted is defined %}
-        <div class="uk-width-1-2@s uk-text-center">
-            <div class="uk-margin-small-bottom">Они уже продвигаются на сайте:</div>
-            <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-items="3" data-dots="0">
-                {% for card in promoted %}
-                    {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'130px', 'in_edit':true}) }}
-                {% endfor %}
-            </div>
-        </div>
-        {% endif %}
-    </div>
-    </div>
-    <button class="uk-button pay_tariff_button" name="change_tariff">{% trans %}Разместить и оплатить{% endtrans %} 350 руб.</button>
-</div>
-
-
-
-<div id="tariff_1" class="tariff_block {{ tariffId == 1 ? 'active' : '' }}">
-    <div class="tariff_block_inner">
-    <h3>{% trans %}Обычная публикация{% endtrans %}
-
-        {% if card.tariffId is defined and card.tariffId == 1 %}
-            - <span class="current_tariff_pointer">{% trans %}ваш текущий тариф{% endtrans %}</span>
-        {% endif %}
-    </h3>
-    <div uk-grid>
-        <div class="uk-width-1-2@s">
-            {% trans %}Бесплатное размещение вашего транспорта на 365 дней<br>Размещенный транспорт вытесняется другими, не участвует в продвижении на сайте.<br>Нужно больше клиентов в вашем городе?<br>Воспользуйтесь тарифами{% endtrans %} <a class="selector_item" data-id="3">«{% trans %}Премиум размещение{% endtrans %}»</a> {% trans %}или{% endtrans %} <a class="selector_item" data-id="2">«{% trans %}Экспресс продвижение{% endtrans %}»</a>
-        </div>
-        <div class="uk-width-1-2@s"></div>
-    </div>
-    </div>
-    <button class="uk-button pay_tariff_button" name="change_tariff">{% trans %}Разместить бесплатно{% endtrans %}</button>
-</div>
-
-
-

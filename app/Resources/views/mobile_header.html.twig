@@ -7,7 +7,7 @@
 		<div class="inner">
 			<div class="logo">
 				<a href="#">
-					<img src="img/logo.png" alt="logo" />
+					<img src="/assets/images/interface/logo.png" alt="logo" />
 				</a>
 			</div>
 			<div class="icons">
@@ -66,6 +66,7 @@
 					</span>
 				</div>
 				<div class="burger">
+					<a href="#burger-menu" uk-toggle>
 					<svg
 						width="30"
 						height="19"
@@ -77,11 +78,40 @@
 						<rect y="8" width="30" height="3" rx="1.5" fill="#1D1A1A" />
 						<rect y="16" width="30" height="3" rx="1.5" fill="#1D1A1A" />
 					</svg>
+					</a>
 				</div>
 			</div>
 		</div>
 	</div>
 </section>
+
+
+<div id="burger-menu" uk-offcanvas="overlay: true">
+	<div class="uk-offcanvas-bar uk-width-1-1">
+
+		<div class="uk-flex uk-flex-between uk-flex-middle">
+			<div><a href="#signIn" data-toggle="modal">Вход</a></div>
+
+			<div>
+				<span class="uk-margin-small-right">
+					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M14.2857 12.5714H13.3714L13.0286 12.2286C14.1715 10.9714 14.8572 9.25714 14.8572 7.42857C14.8571 3.31429 11.5429 0 7.42857 0C3.31429 0 0 3.31429 0 7.42857C0 11.5429 3.31429 14.8571 7.42857 14.8571C9.25714 14.8571 10.9714 14.1714 12.2286 13.0286L12.5714 13.3714V14.2857L18.2857 20L20 18.2857L14.2857 12.5714ZM7.42857 12.5714C4.57143 12.5714 2.28571 10.2857 2.28571 7.42857C2.28571 4.57143 4.57143 2.28571 7.42857 2.28571C10.2857 2.28571 12.5714 4.57143 12.5714 7.42857C12.5714 10.2857 10.2857 12.5714 7.42857 12.5714Z" fill="#fff"></path>
+					</svg>
+				</span>
+				<span>
+					 <button class="uk-offcanvas-close" type="button" style="position: relative; color: #fff" uk-close></button>
+				</span>
+			</div>
+		</div>
+
+		<ul class="uk-nav uk-nav-default">
+			<li class="uk-active"><a href="/card/new">Сдать в аренду</a></li>
+			<li class="uk-active"><a href="/faq">Как это работает?</a></li>
+			<li class="uk-active"><a href="#">Категории транспорта</a></li>
+		</ul>
+
+	</div>
+</div>
 
     {# <div class="uk-sticky " uk-sticky="sel-target: .uk-navbar-container">
         <nav class="uk-navbar uk-navbar-container bg_blue mp-drop-menu-main" style=" background: #06a7ea;">

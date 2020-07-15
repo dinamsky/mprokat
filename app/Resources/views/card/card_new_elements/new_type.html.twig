@@ -1,22 +1,7 @@
-<div uk-grid class="uk-flex uk-flex-middle">
-    <div class="uk-width-1-5">
-        {% trans %}Тип транспорта{% endtrans %} <span class="red_star">*</span>
-        <div class="uk-text-center help_text">{% trans %}Сдаете в прокат или в аренду?{% endtrans %}</div>
-    </div>
-    <div class="uk-width-3-5">
-        <div uk-grid class="service_selector">
-            <div class="">
-                <button type="button" class="uk-button uk-width-1-1" value="1">{% trans %}Прокат{% endtrans %}</button>
-            </div>
-            <div class="">
-                <button type="button" class="uk-button uk-button-default uk-width-1-1" value="2">{% trans %}Аренда{% endtrans %}</button>
-            </div>
-            <div class="">
-                <button type="button" class="uk-button uk-button-default uk-width-1-1" value="3">{% trans %}Аренда с правом выкупа{% endtrans %}</button>
-            </div>
-            <input type="hidden" name="serviceTypeId" value="1">
-        </div>
-    </div>
-    <div class="uk-width-1-5">
-    </div>
-</div>
+<h3 class="uk-align theme-required">{% trans %}Вы сдаете в прокат или в аренду?{% endtrans %}</h3>
+<ul class="uk-list uk-margin-bottom theme-radio-list">
+    <li><label><input class="uk-radio theme-radio" type="radio" name="serviceTypeId" value="1" checked><span>{% trans %}Прокат{% endtrans %}</span></label></li>
+    <li><label><input class="uk-radio theme-radio" type="radio" name="serviceTypeId" value="2"><span>{% trans %}Аренда{% endtrans %}</span></label></li>
+    <li><label><input class="uk-radio theme-radio" type="radio" name="serviceTypeId" value="3"><span>{% trans %}Аренда с правом выкупа{% endtrans %}</span></label></li>
+    <li><label><input class="uk-radio theme-radio" type="radio" name="serviceTypeId" disabled><span>{% trans %}Аренда с водителем{% endtrans %}</span></label></li>
+</ul>

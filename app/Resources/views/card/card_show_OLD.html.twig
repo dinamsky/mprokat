@@ -1,0 +1,1273 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+{{ parent() }}
+<link href="{{ asset('assets/css/slick.min.css') }}" rel="stylesheet" />
+<link href="{{ asset('assets/css/owl.carousel.min.css') }}" rel="stylesheet"/>
+<link href="{{ asset('assets/css/owl.theme.default.css') }}" rel="stylesheet"/>
+<link href="{{ asset('assets/css/auto-complete.css') }}" rel="stylesheet" />
+<link href="{{ asset('assets/css/datepicker.min.css') }}" rel="stylesheet" />
+<link href="{{ asset('assets/css/card-alex.css') }}" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<script src="{{ asset('assets/js/slick.min.js') }}"></script>
+<script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
+<script src="{{ asset('assets/js/city_general_mark_selector.js') }}"></script>
+<script src="{{ asset('assets/js/showCard.js') }}"></script>
+<script src="{{ asset('assets/js/sliderSettings.js') }}"></script>
+<script src="{{ asset('assets/js/auto-complete.min.js') }}"></script>
+<script src="{{ asset('assets/js/mark_autocomplete.js') }}"></script>
+<script src="{{ asset('assets/js/form_city_autocomplete.js') }}"></script>
+<script src="{{ asset('assets/js/recaptcha_settings.js') }}"></script>
+<script src="{{ asset('assets/js/recapthcha_validate.js') }}"></script>
+<script src="{{ asset('assets/js/datepicker.min.js') }}"></script>
+<script src="{{ asset('assets/js/chat.js') }}"></script>
+<!--<script src="{{ asset('assets/js/jquery.maskedinput.js') }}"></script>
+<script src="{{ asset('assets/js/phone_validate.js') }}"></script>-->
+<script src="{{ asset('assets/js/inputmask.min.js') }}"></script>
+<script src="{{ asset('assets/js/country.js') }}"></script>
+<script src="{{ asset('assets/js/card-alex.js') }}"></script>
+{% endblock %}
+{% block socialScripts %}
+<!-- VK -->
+{#<script type="text/javascript" src="//vk.com/js/api/openapi.js?149"></script>#}
+{#<script type="text/javascript">VK.init({apiId: 6213461, onlyWidgets: true});</script>#}
+{#<script type="text/javascript" src="https://vk.com/js/api/share.js?95" charset="windows-1251"></script>#}
+<!-- VK -->
+{#<script src='https://www.google.com/recaptcha/api.js'></script>#}
+{% endblock %}
+{% block openGraph %}
+{{ parent() }}
+<meta property="og:type" content="website">
+<meta property="og:image" content="{{ app.request.getSchemeAndHttpHost() ~ mainFoto }}">
+<meta property="og:title" content="{{ include(':seo_templates:p_h1.html.twig') }}">
+<meta property="og:url" content="{{ app.request.schemeAndHttpHost ~ app.request.requestUri }}">
+{% endblock %}
+{% block metaTags %}
+{{ parent() }}
+<meta name="description" content="{% include ':seo_templates:p_description.html.twig' %}">
+{% endblock %}
+{% block htmlblock %}
+prefix="og: http://ogp.me/ns#"
+{% endblock %}
+{% block title %}{{ include(':seo_templates:p_title.html.twig') }}{% endblock %}
+{% block content %}
+<script>var cardId = {{ card.id }};</script>
+<!-- FB -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/ru_RU/sdk.js#xfbml=1&version=v2.10&appId=1747516202216504";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<!-- FB -->
+{% if app.session.has('share') %}
+{{ app.session.remove('share') }}
+{% endif %}
+
+
+<div class="uk-container uk-container-expand m-container">
+    <!-- Breadcrumbs -->
+    <ul class="uk-breadcrumb uk-margin-bottom breadcrumb">
+        <li><a href="/">{% trans %}Главная{% endtrans %}</a></li>
+        <li><a href="/rent/{{ card.city.url }}">{{ card.city.header }}</a></li>
+        <li><a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}">{{ lang == 'ru' ? card.generalType.header : card.generalType.url }}</a></li>
+        {% if bodyType %}
+        <li>
+            <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ bodyType.url }}">{{ lang == 'ru' ? bodyType.header : bodyType.url }}</a>
+        </li>
+        {% endif %}
+        {% if card.modelId != 20991 %}
+        <li>
+            <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ card.markModel.mark.header }}">{{ card.serviceTypeId == 1 ? 'Прокат'|trans : 'Аренда'|trans }} {{ card.markModel.mark.header }} в {{ card.city.gde }}</a>
+        </li>
+        <li>
+            <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ card.markModel.mark.header }}/{{ card.markModel.header }}">{{ card.markModel.mark.header }} {{ card.markModel.header }}</a>
+        </li>
+        {% endif %}
+    </ul>
+    <!-- /Breadcrumbs -->
+
+    <!-- Entry Title -->
+    <div class="entry-header">
+        <h1 class="entry-header__title">{{ include(':seo_templates:p_h1.html.twig') }}</h1>
+    </div>
+    <!-- /Entry Title -->
+
+    <!-- First Grid: gallery; aside with author, price list, book & feedback buttons -->
+    <div uk-grid>
+
+        <!-- First Grid--First Column: thumbnails, preview -->
+        <div class="uk-width-1-1@s uk-width-2-3@m uk-width-3-4@l">
+            <div class="uk-position-relative">
+                <div class="uk-position-absolute entry-like">
+                    <div class="uk-grid-medium uk-grid-match" uk-grid>
+                        <div class="uk-width-1-4@s uk-width-1-4@l"></div>
+                        <div class="uk-width-3-4@s uk-width-3-4@l">
+                            <div class="uk-text-center@s">
+                                <a href="javascript:;" class="entry-like__button{% if (app.session.has('likes')) and (app.session.get('likes')[card.id] is defined) %} entry-like__button_active{% endif %} js-like-button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
+                                        <path d="M21.5329 31.7722L20 33.3051L18.4671 31.7722L18.4455 31.7506L18.4226 31.7303C14.2458 28.0354 10.8719 25.0106 8.53254 22.1643C6.20458 19.332 5 16.7921 5 14.0793C5 9.67158 8.39228 6.2793 12.8 6.2793C15.2211 6.2793 17.6635 7.42614 19.2366 9.28524L20 10.1874L20.7634 9.28524C22.3365 7.42614 24.7789 6.2793 27.2 6.2793C31.6077 6.2793 35 9.67158 35 14.0793C35 16.7921 33.7954 19.332 31.4675 22.1643C29.1281 25.0106 25.7542 28.0354 21.5774 31.7303L21.5545 31.7506L21.5329 31.7722Z" stroke="#EA1D1D" stroke-width="2"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="uk-grid-medium uk-grid-match" uk-grid>
+                    <div class="uk-width-1-4@s uk-width-1-4@m uk-width-1-4@l uk-visible@s">
+                        <div class="entry-thumbs">
+                            <div class="entry-thumbs__slider{% if card.getFotos|length < 5 %} entry-thumbs__slider_fix{% endif %} js-entry-thumbs-slider">
+                                {% for k, foto in card.getFotos %}
+                                <div class="entry-thumbs__slide">
+                                    <div class="entry-thumbs__item">
+                                        <div class="entry-thumbs__figure">
+                                            <div class="entry-thumbs__image" style="background-image: url('/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg');"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="uk-width-3-4@s uk-width-3-4@m uk-width-3-4@l">
+                        <div class="entry-preview">
+                            <div class="entry-preview__slider slider-preview js-entry-preview-slider" uk-lightbox>
+                                {% for k, foto in card.getFotos %}
+                                <div class="entry-preview__slide">
+                                    <a class="entry-preview__link" href="/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg">
+                                        <div class="entry-preview__item">
+                                            <div class="entry-preview__figure">
+                                                <div class="entry-preview__image" style="background-image: url('/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg');"></div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- First Grid--Second Column: author, price list, buttons -->
+        <div class="uk-width-1-1@s uk-width-1-3@m uk-width-1-4@l">
+
+            <div class="uk-card uk-card-default uk-width-1-1 uk-flex uk-flex-column uk-flex-between entry-aside">
+                <!-- Second Column/author information: avatar, status, name, rating -->
+                <div class="entry-aside__author author-aside">
+                    <div class="uk-grid-small" uk-grid>
+                        {% if (user_foto is not null) and (user_foto is not empty) %}
+                        <div class="uk-width-auto">
+                            <a class="uk-display-block" href="/user/{{ card.user.id }}">
+                                <div class="uk-border-circle uk-background-cover author-aside__image" style="background-image: url('{{ user_foto }}');"></div>
+                            </a>
+                        </div>
+                        {% endif %}
+                        <div class="uk-width-expand">
+                            <p class="author-aside__status">{% trans %}Владелец{% endtrans %}</p>
+                            <h3 class="author-aside__name"><a class="author-aside__link" href="/user/{{ card.user.id }}">{{ card.user.header }}</a></h3>
+                            <div class="author-aside__rating rating-author uk-width-1-1">
+                                <div class="rating-list">
+                                    <div class="rating-list__item"><span class="rating-list__icon{% if (opinions >= 1) %} rating-list__icon_active{% endif %}"></span></div>
+                                    <div class="rating-list__item"><span class="rating-list__icon{% if (opinions >= 2) %} rating-list__icon_active{% endif %}"></span></div>
+                                    <div class="rating-list__item"><span class="rating-list__icon{% if (opinions >= 3) %} rating-list__icon_active{% endif %}"></span></div>
+                                    <div class="rating-list__item"><span class="rating-list__icon{% if (opinions >= 4) %} rating-list__icon_active{% endif %}"></span></div>
+                                    <div class="rating-list__item"><span class="rating-list__icon{% if (opinions == 5) %} rating-list__icon_active{% endif %}"></span></div>
+                                </div>
+                                <span class="rating-author__value">({{ total_opinions }})</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Second Column/price list -->
+                <div class="entry-aside__price price-entry">
+                    <h4 class="price-entry__title">Стоимость аренды</h4>
+                    {% set servicePercent = card.generalType.servicePercent %}
+                    {% if card.currency == 'RUB' %}
+                    {% set currency = 'ruble' %}
+                    {% elseif card.currency == 'USD' %}
+                    {% set currency = 'dollar' %}
+                    {% else %}
+                    {% set currency = 'euro' %}
+                    {% endif %}
+                    <ul class="price-entry__list">
+                        {% for price in card.getCardPrices if price.value != '' and price.value != '0.00' and price.priceId != 10 %}
+                        <li class="price-entry__item">
+                            <span class="price-entry__time">{{ price.getPrice.header|trans }}</span>
+                            <span class="price-entry__price">
+                                        {% set c_price = price.value + (price.value/100*servicePercent)|round(0,'ceil') %}
+                                        {{ c_price|number_format(0,'.','&nbsp;')|raw }}&nbsp;
+                                        <i class="fa fa-{{ currency }}"></i>
+                                    </span>
+                        </li>
+                        {% endfor %}
+                        {% for price in card.getCardPrices if price.value != '' and price.value != '0.00' and price.priceId == 10 %}
+                        <li class="price-entry__item price-entry__item_pledge">
+                            <span class="price-entry__time">Залог</span>
+                            <span class="price-entry__price">
+                                        {{ price.value|number_format(0,'.','&nbsp;')|raw }}&nbsp;
+                                        <i class="fa fa-{{ currency }}"></i>
+                                    </span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <!-- Second Column/buttons -->
+                <div class="entry-aside__actions actions-entry">
+                    <button class="uk-button button button-primary button-lg uk-width-1-1 uk-margin-small actions-entry__button" uk-toggle="target: {{ app.session.has('logged_user') ? '#user_book_form' : '#nonreged_user_book_form' }}">{{ card.user.adminId ? 'Забронировать' : 'Забронировать' }}</button>
+                    <div class="uk-flex uk-flex-middle">
+                        <button class="uk-button button button-outline-primary button-lg actions-entry__button uk-width-1-1 uk-padding-remove-horizontal uk-margin-right">Отправить сообщение</button>
+                        <a href="javascript:;">
+                            <span class="icon-whatsapp"></span>
+                        </a>
+                    </div>
+                    <p class="actions-entry__text">Среднее время ответа на заявку 10 мин.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- /First Grid: gallery; aside with author, price list, book & feedback buttons -->
+
+    <!-- Second Grid: information; characteristics; reviews; share section; best offers -->
+    <div uk-grid>
+
+        <!-- Second Grid--First Column: information, characteristics, reviews, share section -->
+        <div class="uk-width-1-1@s uk-width-2-3@m uk-width-3-4@l">
+
+            <!-- First Column/tabs: information, characteristics -->
+            <div class="uk-width-1-1 entry-body">
+                <ul class="entry-body__tab tab-entry" uk-tab>
+                    <li><a href="javascript:;">{% trans %}Информация{% endtrans %}</a></li>
+                    {% if (card.getCardFeatures is not null) and (card.getCardFeatures is not empty) %}
+                    <li><a href="javascript:;">{% trans %}Характеристики{% endtrans %}</a></li>
+                    {% endif %}
+                </ul>
+
+                <ul class="uk-switcher">
+                    <li>
+                        <div class="entry-information">
+                            <div class="entry-information__description">{{ card.content|striptags('<br><p><b><ul><li><strong>')|raw }}</div>
+
+                            <div class="entry-information__list uk-grid-row-collapse uk-child-width-1-1 uk-child-width-1-2@m" uk-grid>
+                                {% if card.prodYear != 0 %}
+                                <div>
+                                    <div class="entry-information__item">
+                                        <span class="entry-information__name">{% trans %}Год выпуска{% endtrans %}:</span>
+                                        <span class="entry-information__value">{{ card.prodYear }}</span>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                <div>
+                                    <div class="entry-information__item">
+                                        <span class="entry-information__name">{% trans %}Состояние{% endtrans %}:</span>
+                                        <span class="entry-information__value">{{ card.getCondition.header }}</span>
+                                    </div>
+                                </div>
+                                {% if card.getColor != null %}
+                                <div>
+                                    <div class="entry-information__item">
+                                        <span class="entry-information__name">{% trans %}Цвет{% endtrans %}:</span>
+                                        <span class="entry-information__value">{{ card.getColor.header }}</span>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% for subfield in sub_fields if subfield.value is not null %}
+                                {% if subfield.type == 'subfield' %}
+                                <div>
+                                    <div class="entry-information__item">
+                                        <span class="entry-information__name">{{ subfield.label }}:</span>
+                                        <span class="entry-information__value">
+                                                        {{ subfield.value.getHeader }}
+                                                    </span>
+                                    </div>
+                                </div>
+                                {% elseif subfield.value.getValue != 0 and subfield.value.getValue != '' %}
+                                <div>
+                                    <div class="entry-information__item">
+                                        <span class="entry-information__name">{{ subfield.label }}:</span>
+                                        <span class="entry-information__value">
+                                                        {{ subfield.label }}: {{ subfield.value.getValue }}
+                                                    </span>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                                <div>
+                                    <div class="entry-information__item">
+                                        <span class="entry-information__name">Доставка:</span>
+                                        <span class="entry-information__value">
+                                                {{ card.deliveryStatus == 0 ? 'Нет, клиент забирает транспорт самостоятельно' }}
+                                                {{ card.deliveryStatus == 1 ? 'Да, мы доставляем транспорт' }}
+                                                {{ card.deliveryStatus == 2 ? 'Возможна, по согласованию' }}
+                                            </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div uk-grid>
+                                <div class="uk-flex uk-flex-middle uk-text-meta"><span class="uk-margin-small-right" uk-icon="icon: calendar"></span>Опубликовано {{ card.dateCreate|date('d.m.Y') }}</div>
+                                <div class="uk-flex uk-flex-middle uk-text-meta "><span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('/assets/images/icons/eye.svg');"></span>{{ card.views }}</div>
+                            </div>
+                        </div>
+                    </li>
+
+                    {% if (card.getCardFeatures is not null) and (card.getCardFeatures is not empty) %}
+                    <li>
+                        <div class="entry-information__list uk-grid-row-small uk-child-width-1-1 uk-child-width-1-2@m" uk-grid>
+                            {% for feature in card.getCardFeatures %}
+                            <div class="uk-flex uk-flex-middle">
+                                <span class="uk-icon uk-icon-image uk-margin-small-right icon-check"></span>{{ feature.getFeature.header }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </li>
+                    {% endif %}
+                </ul>
+                <div class="uk-hr entry-information__hr"></div>
+            </div>
+            <!-- /First Column/tabs: information, characteristics -->
+
+            <!-- First Column/review -->
+            <div class="uk-width-1-1 entry-reviews">
+                <div class="entry-reviews__header">
+                    <h3 class="entry-reviews__title">{% trans %}Отзывы{% endtrans %}</h3>
+                    {% if card.opinions is not empty %}<a class="entry-reviews__link" href="#">Все отзывы ({{ card.opinions|length }})</a>{% endif %}
+                </div>
+                <div class="entry-reviews__body">
+                    {% if card.opinions is not empty %}
+                    <ul class="uk-comment-list uk-margin-remove comment-list">
+                        {% for opinion in card.opinions %}
+                        <li>
+                            <article class="uk-comment comment">
+                                <header class="uk-comment-header comment__header header-comment">
+                                    <h4 class="uk-comment-title uk-margin-remove header-comment__title">{{ opinion.user.header }}</h4>
+                                </header>
+                                <div class="uk-comment-body comment__body">
+                                    {{ opinion.content }}
+                                </div>
+                                <footer class="uk-comment-footer comment__footer">
+                                    <div class="uk-flex uk-flex-between uk-comment-meta comment__actions">
+
+                                        <div>{{ opinion.dateCreate|date('d.m.Y H:i') }}</div>
+
+                                        <div class="rating-list">
+                                            {{ comment.stars }}
+                                            <div class="rating-list__item"><span class="rating-list__icon{% if (opinion.stars >= 1) %} rating-list__icon_active{% endif %}"></span></div>
+                                            <div class="rating-list__item"><span class="rating-list__icon{% if (opinion.stars >= 2) %} rating-list__icon_active{% endif %}"></span></div>
+                                            <div class="rating-list__item"><span class="rating-list__icon{% if (opinion.stars >= 3) %} rating-list__icon_active{% endif %}"></span></div>
+                                            <div class="rating-list__item"><span class="rating-list__icon{% if (opinion.stars >= 4) %} rating-list__icon_active{% endif %}"></span></div>
+                                            <div class="rating-list__item"><span class="rating-list__icon{% if (opinion.stars == 5) %} rating-list__icon_active{% endif %}"></span></div>
+                                        </div>
+
+                                    </div>
+                                </footer>
+                            </article>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+            </div>
+            <!-- /First Column/review -->
+
+            <!-- First Column/share -->
+            <div class="uk-width-1-1">
+                <div class="entry-share uk-width-1-1@s uk-width-5-6@l">
+                    <div class="uk-grid-collapse uk-flex-nowrap" uk-grid>
+                        <div class="uk-width-auto">
+                            <span class="uk-icon uk-icon-image icon-giftbox"></span>
+                        </div>
+                        <div class="uk-width-auto@s uk-width-2-3@m uk-width-3-5@l uk-grid-margin uk-first-column">
+                            <h3 class="entry-share__title">Поделитесь записью и зарабатайте 500 рублей на аренду транспорта</h3>
+                            <div class="entry-share__body">Поделитесь с друзьями этой записью и мы подарим вам 500 рублей на аренду транспорта</div>
+                            <div class="entry-share__actions"><button type="button" class="uk-button button button-primary button-lg entry-share__button">Поделиться</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /First Column/share -->
+        </div>
+
+        <div class="uk-width-1-1@s uk-width-1-3@m uk-width-1-4@l">
+            <div class="best-offers">
+                <div class="best-offers__header">
+                    <h3 class="best-offers__title">{% trans %}Лучшие предложения{% endtrans %}</h3>
+                </div>
+                <div class="best-offers__content">
+                    <div class="uk-child-width-1-2 uk-child-width-1-1@m best-offers__list" uk-grid>
+                        {% for card in t3_new.getTop3 %}
+                        {{ include('search/one_grid_view_alex.html.twig', {'card':card, 'height':'150px'}) }}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Second Grid: information; characteristics; reviews; share section; best offers -->
+
+</div>
+
+
+<div class="standard_wide uk-margin-top">
+    <div uk-grid itemscope itemtype="http://schema.org/Product">
+        <div class="uk-width-3-4@s">
+            <div class=" uk-margin-bottom">
+                <div class="standard_wide breadcrumbs">
+                    <a href="/">{% trans %}Главная{% endtrans %}</a>
+                    <i uk-icon="icon:chevron-right"></i>
+                    <a href="/rent/{{ card.city.url }}">{{ card.city.header }}</a>
+                    <i uk-icon="icon:chevron-right"></i>
+                    <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}">{{ lang == 'ru' ? card.generalType.header : card.generalType.url }}</a>
+                    {% if bodyType %}
+                    <i uk-icon="icon:chevron-right"></i>
+                    <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ bodyType.url }}">{{ lang == 'ru' ? bodyType.header : bodyType.url }}</a>
+                    {% endif %}
+                    {% if card.modelId != 20991 %}
+                    <i uk-icon="icon:chevron-right"></i>
+                    <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ card.markModel.mark.header }}">{{ card.serviceTypeId == 1 ? 'Прокат'|trans : 'Аренда'|trans }} {{ card.markModel.mark.header }} в {{ card.city.gde }}</a>
+                    <i uk-icon="icon:chevron-right"></i>
+                    <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ card.markModel.mark.header }}/{{ card.markModel.header }}">{{ card.markModel.mark.header }} {{ card.markModel.header }}</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="">
+                <h1 itemprop="name" class="card_h1 test_h1">{{ include(':seo_templates:p_h1.html.twig') }}</h1>
+            </div>
+            <!--
+            {% if card.address != '' %}
+                <i class="fa fa-map-marker"></i> {{ card.address }}
+            {% else %}
+                <i class="fa fa-map-marker"></i> {{ card.getCity.header }}, {{ card.getCity.getParent.header }}, {{ card.getCity.country }}
+            {% endif %}
+            -->
+
+            <!--<div><i class="fa fa-calendar"></i> {{ card.dateCreate|date("d.m.Y") }} <i class="fa fa-eye"></i> {{ card.views }}</div>-->
+            <div class="uk-position-relative">
+                <div class="likes" data-card_id="{{ card.id }}">
+                    {% if app.session.has('likes') and app.session.get('likes')[card.id] is defined %}
+                    <i class="fa fa-heart c_red"></i>
+                    {% else %}
+                    <i class="fa fa-heart-o c_white t_shadowed"></i>
+                    {% endif %}
+                </div>
+                <div uk-grid class="uk-grid-small uk-grid-match uk-grid transport-gallery">
+                    <div class="uk-width-1-6@s">
+                        <div id="page_slider_pre" class="owl-carousel owl-carousel-all owl-theme" data-items="4" data-full="4">
+                            {% for k,foto in card.getFotos %}
+                            <div data-idph="{{ k }}">
+                                <a onclick="" class="slide uk-width-1-1" style="background:url('/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg') center center;background-size: cover;display: block;height: {% if is_mobile() %}185px{% else %}500px{% endif %};"
+                                   {% if k == 0 %}
+                                   title="{{ card.serviceTypeId == 1 ? 'Прокат' : 'Аренда' }} {% if card.generalType.chegoSingular is defined %}{{ card.generalType.chegoSingular }}{% else %}{% endif %} {{ card.markModel.Mark.header }} {{ card.markModel.header }} в {{ card.city.gde }}"
+                                   {% endif %}
+                                >
+                                    {% if k == 0 %}
+                                    <img src="https://multiprokat.com/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg" alt="" style="visibility: hidden; height: 0;width: 0;" itemprop="image">
+                                    {% endif %}
+                                    {#<img src="/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg" alt="" style="max-height:auto;">#}
+                                </a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="uk-width-5-6@s">
+                        <div id="page_slider" class="owl-carousel owl-carousel-all owl-theme" data-items="1" data-full="1" uk-lightbox>
+                            {% for k,foto in card.getFotos %}
+                            <div  data-idph="{{ k }}">
+                                <a href="/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg" class="slide uk-width-1-1" style="background:url('/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg') center center;background-size: cover;display: block;height: {% if is_mobile() %}185px{% else %}500px{% endif %};"
+                                   {% if k == 0 %}
+                                   title="{{ card.serviceTypeId == 1 ? 'Прокат' : 'Аренда' }} {% if card.generalType.chegoSingular is defined %}{{ card.generalType.chegoSingular }}{% else %}{% endif %} {{ card.markModel.Mark.header }} {{ card.markModel.header }} в {{ card.city.gde }}"
+                                   {% endif %}
+                                >
+                                    {% if k == 0 %}
+                                    <img src="https://multiprokat.com/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg" alt="" style="visibility: hidden; height: 0;width: 0;" itemprop="image">
+                                    {% endif %}
+                                    {#<img src="/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg" alt="" style="max-height: auto">#}
+                                </a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% if reserved %}
+                <div class="page_reserved">Бронь до {{ card.dateRentFinish|date("d.m.Y") }}</div>
+                {% endif %}
+            </div>
+            {% if not is_mobile() %}
+            <!--<div class="uk-text-right">
+                <button type="button" class="uk-button uk-button-default" uk-toggle="target: #user_abuse">{% trans %}Пожаловаться{% endtrans %}</button>
+            </div>-->
+            {% endif %}
+            {% if is_mobile() %}
+            <div class="uk-margin-bottom card_blanc2 uk-margin-top">
+                {% for price in card.getCardPrices if price.value != '' and price.priceId != 10%}
+                <div class="uk-text-center {{ price.priceId == 2 ? 'price_highlighted' : ''}}">
+                    {% set serv_perc = card.generalType.servicePercent %}
+                    {% set c_price = price.value + (price.value/100*serv_perc)|round(0,'ceil') %}
+
+                    <span class="price_value">{{ c_price|number_format(0,'.','<span class="thousand_separator"></span>')|raw }}</span>
+                    {% if card.currency == 'RUB' %}
+                    {% set currency = 'ruble' %}
+                    {% endif %}
+                    {% if card.currency == 'EUR' %}
+                    {% set currency = 'euro' %}
+                    {% endif %}
+                    {% if card.currency == 'USD' %}
+                    {% set currency = 'dollar' %}
+                    {% endif %}
+                    <span class="price_descriptor uk-text-truncate"> <i class="fa fa-{{ currency }}"></i> / {{ price.getPrice.header|trans }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% set btn_name = 'Забронировать' %}
+            {% if card.user.adminId is null %}
+            {% set btn_name = 'Забронировать' %}
+            {% endif %}
+            {% set btm = 0 %}
+            {#{% if card.user.isNew != 1%}#}
+            {#{% set btm = 52 %}#}
+            {#{% endif %}#}
+            {% if is_mobile() and card.user.id != app.session.get('logged_user').id  %}
+            <div class="" style="position: fixed;bottom:{{ btm }}px;left:0;width:100%;z-index:2;background: white">
+                <div class="cursor-pointer uk-text-center" style="background: #25b45b;color: white;margin: 10px;padding: 10px;border-radius: 5px;" uk-toggle="target: {{ app.session.has('logged_user') ? '#user_book_form' : '#nonreged_user_book_form' }}">{{ btn_name }}</div>
+            </div>
+            {% endif %}
+            {% if not reserved and is_mobile() and card.user.isNew != 1%}
+            {#<div class="uk-margin-bottom card_page_phone">#}
+            {#<div uk-grid class="uk-grid-collapse uk-grid-match b_shadowed">#}
+                {#<div class="phone_block uk-width-1-1">#}
+                    {#{% if app.session.get('phone')[card.user.id] is not defined %}#}
+                    {#<div class="hidden_phone show_phone uk-text-center c_white" data-card_id="{{ card.id }}" data-profile="0" style="background: lightgrey">#}
+                        {#<div class="uk-text-center">{% trans %}Показать телефон{% endtrans %}</div>#}
+                        {#<i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue|slice(0,5) }} XXX-XX-XX{% endfor %}#}
+                        {#</div>#}
+                    {#{% else %}#}
+                    {#<a class="opened_phone c_white uk-text-center" href="tel:{% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}">#}
+                        {#<i class="fa fa-phone"></i> {% for info in card.user.information if info.uiKey == 'phone' %}{{ info.uiValue }}{% endfor %}#}
+                        {#</a>#}
+                    {#{% endif %}#}
+                    {#</div>#}
+                {#</div>#}
+            {#</div>#}
+            {% endif %}
+            <style>
+                .whatsapp-icon {
+                    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAJCUlEQVR4Xt1ba5AU1RX+Ts8usKCoRATUiiGVEBWNKPgIwsyuj7LKVKwAtRgKpntYYHogoYiJMWoEUYuUBJMUCSXTHVh2epZQEZKNlpWXULvd4CMUIT6WtUhVAhEqKRCTBeWxj+mTurPLZneZx+2eh6u3an7Nd75z7tf3dt977rmEEreFzsKxw7h7JhNNJuYvETCJQWMBXNz7ExF8KH4Efp+BvzHRQWI+0EkVu7cEt7xfyhCpFOR6c3gaAjQPzPcCdAMAv34Y4FYQvYIUbzNqkvuKHa/fwC6IY1lz7UXdygidoNQBfH2xA+3hozaGW1/hnjOer9n+UTF8FCxA9JXoJVR5dgWIVgAYU4ygJDj+A+b13FW13rzXPCmBzwrxLwCDYrvDGjOtBXBFIUEUYHucgUfMoGWBwH54fAmwdHfd513uToAxw4/TotsQ9ihUoW2cWf8Pr9yeBYg52hxmdzNAl3h1Vlo8i6lQZ4SSv/HiR14ABkV3a88S8yNeHJQby0Q/MmcmHpWdElICRPdFK+mjc/UgLCh3h/z5Y2uCe2TR6pqW7nz2eQVId/70uSYAX81HNpT+Z+ClK9335uQTIbcADNJtVbxhPyFPfvAjYMsIJiO5pkNOAaKOtnaoz3mJUbfWCFmPZsNlFUC3w7MB+rWEgyEPIcbseLUlpvEFLaMAi+3wxABoP4BLh3zv5AJsJ1e5OV7TcHgwPKMAuq3aAIJy3H2owwS8y8ApANcAuBVAwCNHKeGOEbJCeQWI2qpGQIOHSI6CeZkRSr7c/2Wj29rDAK/zwFMGKGlGKGH1dzRgBESaI5cOV9yDHtb2p90A3f6LGYkDg6OvfaE2cNm4qncIuK4MPZN1cZw7R0zqv4EaIIDeEl4Foqdk2Zh5rlmd3J4NH3PUbzHj57J85cAxYZUZtJ4576tPALGfTylV/5Td0jIhaQYtNVfQy9+YP7qzI/AvAKPK0TlJHx+cOcfXJO9Lnhb4PgFijvYQM/9EkgRw+VaZDI1uaxsBjknzlgFIRN+JBxM/HSCA3qK2gjBZyj/jgFFtiVRX3ha1IzcS3LfzAssJ6Bd/egQs3a1NdV32km97wQhZD8rGrNuaA/BMWXw5cEzuVDPYuD8tQMzWnmPwd6UdM9YZ1Zb0tjjmhL/BTNuk+csAJNCP46HEw2kBorb6FgFf9uD320bIWi+Lrz1QO2zMiapjQ2plyXjLqLamULR53uWkVB73krom8BPxUHKNrAAQu0pHFcvQz0rblB7IFV0YS7EWdRYTvKWRGJvi1dYS2RhjtjafwY2y+HLhxCaJoo66khhPe3HKwLtmyJLK/S+zw9elQG8AGO3FR3mwtJJ0O9wI0HyvDt0A3ZBpCdyfJ7ZLvYor8NoQG/r/D5HRSDE7vJdBYufmqTGwwQxZy3MZ6ba6E8DdnojLC94rUl6HAHzOh99TAffsVbmOqArg9hGOL5NDQoATAD7jx5wIP4wHrR9ksx2K3/9BsZ4QAnQAGOZHAABdoNQUI7i1LaN9z+dvB4DZPvlLbdYpBOgCUFGAJ8cIWtXZMq+Ld84bF6isfBPA+AJ8lMpUCBBuL8IxV86V4ZLmyBRFcZ1+BRGl6pBX3vQUOALgaq+Wg/ApgO4yQgnRyYwt2qLWEOEPBUy3AkPMaJ5+Cf4ZwG1FYD+eclNTN9VsPZpdhHAtEf3Ky7K7CHHlothLUTu8g0BziuRob4erhBpqGs7l+DJEmMkEUOnBZ7OoDgFEyQ0mebDLDRULId3RngLzqqKRgjYbwcSSXMdReov6FRDEocuEfH4ZqP/vsbPR7XO3p9KJ1itGzCaixwDcnM82//+0UqwE72LQrvxgeQQBsXjIMnJZRJ0FE8BKnIAHcuD+2uEq0y8YUeLz2hK5Dwo/XkiiJb0Zeui12qozXVXtRX45dQP8oEyxwlJbe8AFPwfgi4OEOMXddIt5d+LvOYVsDs8ghVb7WHL3bIcFuW6rewDcKf+MpZDSIoihPWZ81Swwvg9gGsAnQaQZQetFKU+iXsnRahm8GcBFkjY9CREBjjnqGmY8LmXoDdRNzHXx6mRSyoxBi15fdBm73FU/o14UT3pquq2+DuAOGaOBKTFnwS3Eyl9kDP1gGLTmyuDEVatptevHXtZGt1WRd7hdBj8gKdo7DaTVk3FwAYaxo4OVJQ01DeJ9U/S2/HfLh3eOOikKpYZLkLcaIetGges7GNEddQEYckNVwkMWyFExys1Q4k/+KTJb9n5aRfIlb8t4MCIU7Bp18ggDopC5pI0BQ6ngVfE7kyIZW5Sm29oGgL8pQZb5aEwYxlrUp5mwUoKkGJAzTLQBqc51Zs02kZPw3ZY2R+5wFfdVAEo+kqyHo8Iw/MfwqJEjxJKzrOnr0wxsCSjUsHFGYr9sfd/5jup2+H4gvb+Q+fzlPh4XpHpL+GsgeimfkiX6vxWgBFNqqxls/HcuHz0JV3GUzwtlnnwPV54CiT5VW7QmEH+9RJ2UoRWFz28CZDOlbCIcou6KkxRwR7PLNzHRLAD3S77xz/uTK5ER6MXN868OKAFReOxlxybTsY8L461IqvcwI3Oe7+PqQgF+mdxZZrDxt5koMlaJRW31SQLEBuPT0LwXSnoqlhjSEvkoldWd+deDAxdUfQ3pfmYIznexdMxWVzPw5Cetw/3jJSAx3n1vcb5K8fSHcXBHdVs7ULpbX2WRda0RtB6TXVANEGDJHm2ykuLWsoRZfCftxKjLVhSdzd3AQkn5BOlZAKKm8Nri98MHI2FPilndFEqKg15PbYAAUVtty17amr6U9DKR0uSOHP57c5p5JmZrcxn8LICJnrwWD3wcoO8Nrv/1Qt8nQOZ6PjoGuC/CDTTxxcN2mdNMcY44oKW30SPbVzCJlFrZbpJ9wIT16Bjxs6JdnNTt8DMAPQHgMDM3BcBN40JfeFU2jSVKbV2lai6ARQxM9/IU5LHUBubNAT5rFv3qbMwJR1zw26J4UD6gzMhoc+RaUtwIA/cQcFMBp8/MwDtE2KkQ/XLjzETR85Z5b40VLMa+6Ejlw87bXHKnE6VrES/vLcgQRRniJ47mxSULcX3+BDMdBNFBwG1jt9spNFmSL/7/AQPXb+gbw5gBAAAAAElFTkSuQmCC');
+                    display: inline-block;
+                    vertical-align: middle;
+                    background-size: 20px;
+                    height: 20px;
+                    width: 20px;
+                }
+                .mobile .whatsapp-icon{
+                    background-size: 28px;
+                    height: 28px;
+                    width: 28px;
+                }
+                .whatsapp-button {
+                    float: right;
+                    margin: 25px 10px 0 0;
+                    font-size: 14px;
+                }
+                .whatsapp-button,
+                .whatsapp-button:visited {
+                    color: #666;
+                }
+                .whatsapp-button:hover {
+                    color: #333;
+                    text-decoration: none;
+                }
+                .mobile .whatsapp-button {
+                    margin: 0 10px;
+                }
+                .mobile .whatsapp-button span {
+                    display: none;
+                }
+            </style>
+            <!--<a href="https://wa.me/79164559808" target="blank" class="whatsapp-button">
+                <span>НАПИСАТЬ</span>
+                <i class="whatsapp-icon"></i>
+                </a>
+            </a>-->
+            <ul id="tt" uk-tab>
+                <li>
+                    <a href="#">{% trans %}Информация{% endtrans %}</a>
+                </li>
+                {% if card.getCardFeatures is not empty%}
+                <li>
+                    <a href="#">{% trans %}Характеристики{% endtrans %}</a>
+                </li>
+                {% endif %}
+                <!--<li><a href="#">{% trans %}Отзывы{% endtrans %} ({{ total_opinions }})</a></li>
+                {% if streetView %}
+                    <li><a href="#">{% trans %}Местность{% endtrans %}</a></li>
+                {% endif %}
+                {% if video %}
+                    <li><a href="#">{% trans %}Видео{% endtrans %}</a></li>
+                {% endif %}-->
+            </ul>
+            <ul id="cardTabs" class="uk-switcher uk-margin">
+                <li class="card_blanc">
+                    <div uk-grid>
+                        <div class="uk-width-1-2@s">
+                            <ul class="uk-list uk-list-striped">
+                                {% if card.prodYear != 0 %}<li>{% trans %}Год выпуска{% endtrans %}: {{ card.prodYear }}</li>{% endif %}
+                                <li>{% trans %}Состояние{% endtrans %}: {{ card.getCondition.header }}</li>
+                                <li>{{ card.getColor != null ? 'Цвет'|trans~': '~card.getColor.header }}</li>
+                                {% for subfield in sub_fields if subfield.value is not null %}
+                                {% if subfield.type == 'subfield' %}
+                                <li>
+                                    {{ subfield.label }}: {{ subfield.value.getHeader }}
+                                </li>
+                                {% elseif subfield.value.getValue != 0 and subfield.value.getValue != '' %}
+                                <li>
+                                    {{ subfield.label }}: {{ subfield.value.getValue }}
+                                </li>
+                                {% endif %}
+                                {% endfor %}
+                                <li>Доставка до клиента:
+                                    {{ card.deliveryStatus == 0 ? 'нет, клиент забирает транспорт самостоятельно' }}
+                                    {{ card.deliveryStatus == 1 ? 'да, мы доставляем транспорт' }}
+                                    {{ card.deliveryStatus == 2 ? 'возможна, по согласованию' }}
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="uk-width-1-2@s">
+                            <div id="card_content" itemprop="description">{{ card.content|striptags('<br><p>')|raw }}</div>
+                            {% if card.content|length>300 %}
+                            <div class="uk-text-small uk-text-center uk-margin-top show_full_content cursor-pointer">{% trans %}показать полностью{% endtrans %}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </li>
+                {% if card.coords != NULL and card.coords != ''%}
+                <li id="card_tab" class="card_blanc">
+                    <!--{% set coords = card.coords|split(',') %}
+                    <div id="map" data-lat="{{ coords[0] }}" data-lng="{{ coords[1] }}"></div>
+                    <script async defer
+                            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWdm1zrblFjsdUfi1-6fsPvj30ACCiCxk">
+                    </script>-->
+                    {% if card.getCardFeatures is not empty%}
+                    <!--<h2 class="pf_style_header"><span>{% trans %}Характеристики{% endtrans %}</span>{{ is_mobile() ? '<a class="toggle_chars" uk-toggle="target: #car_chars">Развернуть</a>' }}</h2>-->
+                    <div id="car_chars" class="card_blanc" {{ is_mobile() ? 'hidden' }}>
+                    <div uk-grid>
+                        {% for feature in card.getCardFeatures %}
+                        <div class="">
+											<span class="check_icon"
+                                                  uk-icon="icon:check; ratio: 1"></span>{{ feature.getFeature.header }}
+                        </div>
+                        {% endfor %}
+                    </div>
+        </div>
+        {% endif %}
+        </li>
+        {% endif %}
+        <!--
+        {% if streetView and card.coords != NULL %}
+            <li class="card_blanc">
+                <iframe
+                        width="100%"
+                        height="400"
+                        frameborder="0" style="border:0"
+                        src="https://www.google.com/maps/embed/v1/streetview?key=AIzaSyDWdm1zrblFjsdUfi1-6fsPvj30ACCiCxk&location={{ coords[0] }},{{ coords[1] }}&heading={{ streetView.heading }}&pitch={{ streetView.pitch }}&fov=35"
+                        allowfullscreen>
+                </iframe>
+            </li>
+        {% endif %}
+        -->
+        <!--
+        {% if video %}
+            <li class="card_blanc">
+                <iframe width="100%" height="400"
+                        src="https://www.youtube.com/embed/{{ video }}?feature=oembed" frameborder="0"
+                        allowfullscreen></iframe>
+            </li>
+        {% endif %}
+        -->
+        </ul>
+        <h2 style="font-family: Montserrat;font-style: normal;font-weight: bold;font-size: 24px;line-height: 29px;color: #1D1A1A;">Отзывы</h2>
+        <div class="card_blanc">
+            {% if card.opinions is not empty %}
+            <hr>
+            <div class="uk-margin-top">
+                {% for opinion in card.opinions %}
+                <div class="uk-width-5-6@s">
+                    <div class="uk-margin-bottom">
+                        <p style="font-family: Montserrat;font-style: normal;font-weight: 600;font-size: 15px;line-height: 26px;color: #1D1A1A;">{{ opinion.user.header }}</p>
+                    </div>
+                    <div class="uk-margin-bottom">
+                        <p style="font-family: Montserrat;font-style: normal;font-weight: 500;font-size: 15px;line-height: 22px;color: #474747;">{{ opinion.content }}</p>
+                    </div>
+                    <div class="uk-margin-bottom">
+                        <p style="font-family: Montserrat;font-style: normal;font-weight: 500;font-size: 12px;line-height: 15px;align-items: center;color: #AAAAAA;">{{ opinion.dateCreate|date('d.m.Y H:i') }}</p>
+                    </div>
+                </div>
+                <div class="uk-width-1-6@s">
+                    <div class="uk-margin-bottom">
+                        <p>{{ opinion.stars }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% if app.session.has('logged_user') %}
+            <form action="/userAddOpinion" method="POST">
+                <div class="stars uk-margin-bottom">
+                    {% for i in 1..5 %}
+                    <span class="star {{ i == 1 ? 'active' }}" data-star="{{ i }}"><i class="fa fa-star"></i></span>
+                    {% endfor %}
+                    <span id="stars">1</span>
+                </div>
+                <textarea name="content" class="uk-textarea" placeholder="{% trans %}Ваш отзыв{% endtrans %}" required></textarea>
+                <input type="hidden" name="stars" value="1">
+                <input type="hidden" name="user_id" value="{{ app.session.get('logged_user').id }}">
+                <input type="hidden" name="card_id" value="{{ card.id }}">
+                <input type="hidden" name="return" value="{{ app.request.requestUri }}">
+                <button class="uk-button uk-button-default uk-margin-top">{% trans %}Отправить{% endtrans %}</button>
+            </form>
+            {% else %}
+            <div>
+                <a uk-toggle="target: #sign_in">{% trans %}Войдите{% endtrans %}</a> {% trans %}или{% endtrans %} <a uk-toggle="target: #sign_up">{% trans %}зарегистрируйтесь{% endtrans %}</a>, {% trans %}чтобы оставить отзыв{% endtrans %}.
+            </div>
+            {% endif %}
+        </div>
+        <div class="uk-width-5-6@s">
+            <div style="border: 2px solid #4629D3;box-sizing: border-box;border-radius: 3px;padding: 15px;margin: 30px 0;">
+                <svg width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg" style="float: left;">
+                    <path d="M54.1803 59.2H15.8193C15.3976 59.2 15 58.8373 15 58.3195V29H55V58.3195C55 58.8371 54.6023 59.2 54.1803 59.2Z" stroke="url(#paint0_linear)" stroke-width="2"/>
+                    <path d="M14 28H56V35H14V28Z" fill="#EFB025"/>
+                    <path d="M60.2008 21.1611V29.2381C60.2008 30.1008 59.5286 30.7996 58.7004 30.7996H11.3C10.4718 30.7996 9.80078 30.1008 9.80078 29.2381V21.1611C9.80078 20.2985 10.4718 19.5996 11.3 19.5996H58.7004C59.5286 19.5996 60.2008 20.2985 60.2008 21.1611Z" fill="#FFC73B"/>
+                    <path d="M33.5992 23.9188C33.2687 24.2835 32.9445 24.6534 32.628 25.0274C31.4486 26.4183 30.3691 27.8758 29.3932 29.3885C29.093 29.8537 28.8033 30.3237 28.5222 30.7992H18.1992C18.8023 29.5022 19.4636 28.2291 20.1801 26.9847C21.4794 24.727 22.9621 22.5607 24.6187 20.5062C25.0144 20.0156 25.4194 19.5308 25.8346 19.0535C26.0831 18.7657 26.3359 18.4819 26.5922 18.1992C27.5343 18.9685 28.4756 19.737 29.4181 20.5062C29.5641 20.6247 29.7101 20.7447 29.8557 20.8636C30.9679 21.7712 32.0801 22.6785 33.1919 23.5872C33.3282 23.6969 33.4633 23.8084 33.5992 23.9188Z" fill="#EFB025"/>
+                    <path d="M36.4008 23.9188C36.7313 24.2835 37.0555 24.6534 37.372 25.0274C38.5514 26.4183 39.6309 27.8758 40.6068 29.3885C40.907 29.8537 41.1967 30.3237 41.4778 30.7992H51.8008C51.1977 29.5022 50.5364 28.2291 49.8199 26.9847C48.5206 24.727 47.0379 22.5607 45.3813 20.5062C44.9856 20.0156 44.5806 19.5308 44.1654 19.0535C43.9169 18.7657 43.6641 18.4819 43.4078 18.1992C42.4657 18.9685 41.5244 19.737 40.5819 20.5062C40.4359 20.6247 40.2899 20.7447 40.1443 20.8636C39.0321 21.7712 37.9199 22.6785 36.8081 23.5872C36.6718 23.6969 36.5367 23.8084 36.4008 23.9188Z" fill="#EFB025"/>
+                    <path d="M49.0016 30.7992H38.6794C38.3994 30.3237 38.1086 29.8537 37.8085 29.3885C36.8328 27.8758 35.7522 26.4183 34.5742 25.0274C34.2566 24.6534 33.9324 24.2835 33.6016 23.9188C33.7378 23.8084 33.873 23.6976 34.0092 23.5872C35.122 22.6785 36.234 21.7701 37.3457 20.8636C37.4917 20.7447 37.6376 20.6247 37.7836 20.5062C38.7256 19.737 39.6679 18.9685 40.6091 18.1992C40.8653 18.4811 41.1181 18.7657 41.3666 19.0527C41.7824 19.5308 42.1878 20.0156 42.5823 20.5062C44.2386 22.5607 45.7211 24.727 47.021 26.9847C47.7373 28.2291 48.3986 29.5022 49.0016 30.7992Z" fill="#EFB025"/>
+                    <path d="M35.0001 23.7532C34.6724 24.1339 34.3514 24.5203 34.038 24.911C32.8706 26.3641 31.8012 27.8868 30.8349 29.4676C27.7672 34.4821 25.7296 40.0838 24.8702 45.947C23.5786 44.234 22.3866 42.3806 21.3142 40.3987C19.4277 41.6292 17.5839 43.0366 15.8086 44.62C16.7203 38.4008 18.729 32.423 21.7125 26.9559C23.306 24.0343 25.1786 21.2584 27.3112 18.6698C27.5573 18.3691 27.8076 18.073 28.0614 17.7773C29.1388 18.7052 30.2155 19.633 31.2933 20.5609C32.3942 21.5091 33.4954 22.457 34.5967 23.4064C34.7313 23.5209 34.8651 23.6375 35.0001 23.7532Z" fill="#4629D3"/>
+                    <path d="M54.1922 44.62C52.4169 43.0366 50.5731 41.6292 48.6867 40.3987C47.6142 42.3806 46.4222 44.234 45.1306 45.947C44.2712 40.0838 42.234 34.4821 39.1659 29.4676C38.1996 27.8868 37.1295 26.3641 35.9628 24.911C35.6483 24.5203 35.3272 24.1339 35 23.7532C35.1346 23.6375 35.2684 23.5217 35.4034 23.4064C36.5054 22.457 37.6067 21.508 38.7079 20.5609C39.7854 19.6319 40.8632 18.7052 41.9395 17.7773C42.1932 18.0719 42.4436 18.3691 42.6897 18.669C44.8226 21.2576 46.6952 24.0335 48.2894 26.9559C51.2722 32.423 53.2805 38.4008 54.1922 44.62Z" fill="#4629D3"/>
+                    <path d="M30.9883 23.7539H39.0136V30.9414H30.9883V23.7539Z" fill="#7C65F4"/>
+                    <path d="M47.6 26.7941L38.9498 29.3992C38.0336 27.7597 37.019 26.1804 35.9129 24.6732L35.3824 23.1127L35 21.9872L38.5156 20.1614L42.2907 18.1992C44.313 20.8841 46.0885 23.7631 47.6 26.7941Z" fill="#4629D3"/>
+                    <path d="M34.9984 21.9867L34.6159 23.1122L34.0861 24.6729C32.9791 26.1801 31.9651 27.7596 31.0488 29.3992L22.3984 26.794C23.9094 23.7635 25.6852 20.8843 27.7074 18.1992L31.4834 20.1607L34.9984 21.9867Z" fill="#4629D3"/>
+                    <path d="M49.5748 10.1639L35 17.366L37.7997 25.2008L53.3564 20.7453C55.3909 20.1626 56.5087 17.8906 55.7731 15.8325L54.4891 12.2401C53.754 10.182 51.4812 9.22199 49.5748 10.1639Z" fill="#4629D3"/>
+                    <path d="M20.4249 10.1639L35 17.366L32.2002 25.2008L16.6437 20.7453C14.6091 20.1626 13.4913 17.8906 14.2269 15.8325L15.5105 12.2401C16.2461 10.182 18.5185 9.22199 20.4249 10.1639Z" fill="#4629D3"/>
+                    <path d="M38.6325 19.6C38.3586 19.6 38.0899 19.4712 37.9319 19.2353C37.6847 18.8675 37.7973 18.3789 38.1838 18.1437C38.2981 18.0744 41.013 16.4307 44.13 15.2312C48.6235 13.5019 51.6242 13.5947 53.0477 15.507C53.3132 15.8633 53.2245 16.3568 52.8499 16.6091C52.4753 16.8613 51.957 16.7772 51.6919 16.4209C49.762 13.8288 41.7379 17.8593 39.0791 19.4758C38.9406 19.5599 38.7857 19.6 38.6325 19.6Z" fill="#FFC73B"/>
+                    <path d="M31.369 19.6C31.2157 19.6 31.0609 19.5599 30.9223 19.4758C28.2636 17.8593 20.2396 13.8288 18.3097 16.4209C18.0442 16.7772 17.5259 16.8613 17.1513 16.6091C16.7771 16.3565 16.6883 15.8633 16.9539 15.507C18.3774 13.5947 21.3777 13.5019 25.8716 15.2312C28.9885 16.4303 31.7034 18.0744 31.8176 18.1437C32.2041 18.3789 32.3168 18.8675 32.07 19.2353C31.9112 19.4712 31.6429 19.6 31.369 19.6Z" fill="#FFC73B"/>
+                    <path d="M37.1102 14H32.8914C31.7368 14 30.8008 15.0168 30.8008 16.2713V22.9287C30.8008 24.1832 31.7368 25.2 32.8914 25.2H37.1102C38.2647 25.2 39.2008 24.1832 39.2008 22.9287V16.2713C39.2008 15.0168 38.2647 14 37.1102 14Z" fill="#7C65F4"/>
+                    <path d="M30.8008 30.8008H39.2008V60.2008H30.8008V30.8008Z" fill="#4629D3"/>
+                    <path d="M30.8008 30.8008H39.2008V35.0008H30.8008V30.8008Z" fill="#4629D3"/>
+                    <path d="M8.39922 11.8992L4.19922 7.69922" stroke="#4629D3" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M61.6008 11.8992L65.8008 7.69922" stroke="#4629D3" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M35 8.40078V2.80078" stroke="#4629D3" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M62.9989 24.4417L68.7109 26.0703" stroke="#4629D3" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M7.1105 24.4417L1.39844 26.0703" stroke="#4629D3" stroke-width="2" stroke-linecap="round"/>
+                    <defs>
+                        <linearGradient id="paint0_linear" x1="35" y1="28" x2="35" y2="60.2" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#EFB025"/>
+                            <stop offset="1" stop-color="#FFB800"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+
+                <h3 style="font-family: Montserrat;font-style: normal;font-weight: bold;font-size: 18px;line-height: 26px;color: #141313;float: left;max-width: calc(100% - 200px);margin: 10px;">Поделитесь записью и зарабатайте 500 рублей на аренду транспорта<br/><span style="font-family: Montserrat;font-style: normal;font-weight: 500;font-size: 15px;line-height: 22px;color: #AAAAAA;margin-top: 20px;display: block;">Поделитесь с друзьями этой записью и мы подарим вам 500 рублей на аренду транспорта</span><br/><a href="#" style="background: #4629D3;border-radius: 3px;color:#fff;font-family: Montserrat;font-style: normal;font-weight: 600;font-size: 15px;line-height: 18px;align-items: center;text-align: center;padding: 20px 50px;margin-bottom: 15px;display: inline-block;">Поделиться</a></h3>
+                <div style="clear:both;"></div>
+            </div>
+        </div>
+        {% if is_mobile() %}
+        <div class="user_block uk-text-center uk-margin-bottom">
+            <div uk-grid class="uk-grid-small">
+                {% if user_foto %}
+                <div class="uk-width-auto">
+                    <a href="/user/{{ card.user.id }}" style="background: url('{{ user_foto }}') center center no-repeat;
+										background-size: contain;
+										width: 50px;
+										height: 50px;
+										display: inline-block;
+										">
+                    </a>
+                </div>
+                {% else %}
+                {% endif %}
+                <div class="uk-width-expand">
+                    <div class="uk-text-small">{% trans %}Собственник{% endtrans %}</div>
+                    <h3 class="uk-margin-remove uk-text-truncate" style="line-height: 31px;"><a href="/user/{{ card.user.id }}" class="uk-text-truncate">{{ card.user.header }}</a></h3>
+                </div>
+            </div>
+            <div class="">
+                {% for info in card.user.information %}
+                {% if info.uiKey == 'vk' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_vk"><i class="fa fa-vk"></i></a>{% endif %}
+                {% if info.uiKey == 'fb' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_fb"><i class="fa fa-facebook"></i></a>{% endif %}
+                {% if info.uiKey == 'ok' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_ok"><i class="fa fa-odnoklassniki"></i></a>{% endif %}
+                {% if info.uiKey == 'tw' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_tw"><i class="fa fa-twitter"></i></a>{% endif %}
+                {% if info.uiKey == 'gp' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_gp"><i class="fa fa-google-plus"></i></a>{% endif %}
+                {% if info.uiKey == 'ig' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_ig"><i class="fa fa-instagram"></i></a>{% endif %}
+                {% if info.uiKey == 'yt' and info.uiValue != '' %}<a rel="nofollow" href="{{ info.uiValue }}" class="card_soc_icon s_yt"><i class="fa fa-youtube"></i></a>{% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% if not is_admin_card %}
+        {#<div class="uk-margin-bottom card_blanc ">#}
+        {#<div class="cursor-pointer uk-text-center" uk-toggle="target: #user_message_form"><i class="fa fa-commenting"></i> {% trans %}Написать сообщение{% endtrans %}</div>#}
+        {#</div>#}
+        {% endif %}
+        <div class="uk-margin-bottom card_blanc">
+            <div><i class="fa fa-eye c_green"></i> {{ card.views }} <span class="uk-text-small c_grey">{% trans %}просмотров{% endtrans %}</span></div>
+            <div><i class="fa fa-heart c_red"></i> <span id="card_likes">{{ card.likes }}</span> <span class="uk-text-small c_grey">{% trans %}лайков{% endtrans %}</span></div>
+            <div>
+                <i class="fa fa-star c_gold"></i> {{ opinions }}/5 <span class="uk-text-small c_grey">{% trans %}звезд из{% endtrans %}</span> {{ total_opinions }}
+                <span class="uk-text-small c_grey">{% trans %}отзывов{% endtrans %}</span>
+            </div>
+            <hr>
+            <div class="uk-text-center"><a href="/user/{{ card.user.id }}">{% trans %}Весь транспорт{% endtrans %}<br>{% trans %}пользователя{% endtrans %} ({{ card.user.cards|length }})</a></div>
+        </div>
+        {% endif %}
+        {# {% if not app.session.has('first_card') %}
+        {% if is_mobile() %}
+        <button class="uk-button uk-button-default uk-width-1-1" uk-toggle="target: #coms_opins">{% trans %}Комментарии и отзывы{% endtrans %}</button>
+        {% endif %}
+        <div uk-grid class="uk-margin-top" {{ is_mobile() ? 'id="coms_opins" hidden' }}>
+        <div class="uk-width-1-2@s uk-hidden">
+            <h2 class="pf_style_header"><span>{% trans %}Комментарии{% endtrans %}</span></h2>
+            <div class="card_blanc">
+                {% if app.session.has('logged_user') %}
+                <form action="/userAddComment" method="POST">
+                    <textarea name="comment" class="uk-textarea" placeholder="{% trans %}Ваш комментарий{% endtrans %}" required></textarea>
+                    <input type="hidden" name="user_id" value="{{ app.session.get('logged_user').id }}">
+                    <input type="hidden" name="card_id" value="{{ card.id }}">
+                    <input type="hidden" name="return" value="{{ app.request.requestUri }}">
+                    <button class="uk-button uk-button-default uk-margin-top">{% trans %}Отправить{% endtrans %}</button>
+                </form>
+                {% else %}
+                <div>
+                    <a uk-toggle="target: #sign_in">{% trans %}Войдите{% endtrans %}</a> {% trans %}или{% endtrans %} <a uk-toggle="target: #sign_up">{% trans %}зарегистрируйтесь{% endtrans %}</a>, {% trans %}чтобы написать комментарий{% endtrans %}.
+                </div>
+                {% endif %}
+                {% if card.comments is not empty %}
+                <hr>
+                <div class="uk-margin-top">
+                    {% for comment in card.comments %}
+                    <div class="uk-margin-bottom">
+                        <i class="fa fa-calendar"></i> {{ comment.dateCreate|date('d.m.Y H:i') }}
+                        <i class="fa fa-user"></i> {{ comment.user.header }}
+                        <div><i class="fa fa-comment-o"></i> {{ comment.content }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="uk-width-1-2@s uk-hidden">
+            <h2 class="pf_style_header"><span>{% trans %}Отзывы{% endtrans %}</span></h2>
+            <div class="card_blanc">
+                {% if app.session.has('logged_user') %}
+                <form action="/userAddOpinion" method="POST">
+                    <div class="stars uk-margin-bottom">
+                        {% for i in 1..5 %}
+                        <span class="star {{ i == 1 ? 'active' }}" data-star="{{ i }}"><i class="fa fa-star"></i></span>
+                        {% endfor %}
+                        <span id="stars">1</span>
+                    </div>
+                    <textarea name="content" class="uk-textarea" placeholder="{% trans %}Ваш отзыв{% endtrans %}" required></textarea>
+                    <input type="hidden" name="stars" value="1">
+                    <input type="hidden" name="user_id" value="{{ app.session.get('logged_user').id }}">
+                    <input type="hidden" name="card_id" value="{{ card.id }}">
+                    <input type="hidden" name="return" value="{{ app.request.requestUri }}">
+                    <button class="uk-button uk-button-default uk-margin-top">{% trans %}Отправить{% endtrans %}</button>
+                </form>
+                {% else %}
+                <div>
+                    <a uk-toggle="target: #sign_in">{% trans %}Войдите{% endtrans %}</a> {% trans %}или{% endtrans %} <a uk-toggle="target: #sign_up">{% trans %}зарегистрируйтесь{% endtrans %}</a>, {% trans %}чтобы оставить отзыв{% endtrans %}.
+                </div>
+                {% endif %}
+                {% if card.opinions is not empty %}
+                <hr>
+                <div class="uk-margin-top">
+                    {% for opinion in card.opinions %}
+                    <div class="uk-margin-bottom">
+                        <i class="fa fa-calendar"></i> {{ opinion.dateCreate|date('d.m.Y H:i') }}
+                        <i class="fa fa-user"></i> {{ opinion.user.header }}
+                        <i class="fa fa-star c_gold"></i> {{ opinion.stars }}
+                        <div><i class="fa fa-comment-o"></i> {{ opinion.content }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <a href="/card/new" class="uk-button uk-button-success uk-width-1-1 uk-margin-top">{% trans %}Разместить еще транспорт{% endtrans %}</a>
+    {% endif %} #}
+    {% if app.session.has('admin') or ( app.session.has('logged_user') and card.user.id == app.session.get('logged_user').id ) %}
+    <hr>
+    <a class="uk-button uk-button-primary" href="/user/edit/card/{{ card.id }}">{% trans %}Редактировать{% endtrans %}</a>
+    {% endif %}
+</div>
+{# -----------------------------------------------------------  This is right block !  ----------------------------------------------- #}
+<div class="uk-width-1-4@s">
+    <div style="border: 1px solid #E4E3E3;box-sizing: border-box;border-radius: 3px;">
+        {% if not is_mobile() %}
+        <div class="uk-text-center uk-margin-bottom" style="padding:15px;padding-bottom:0;">
+            <div uk-grid class="uk-grid-small">
+                {% if user_foto %}
+                <div class="uk-width-auto">
+                    <a href="/user/{{ card.user.id }}">
+                        <div style="
+											background: url('{{ user_foto }}') center center no-repeat;
+											background-size: cover;
+											width: 50px;
+											height: 50px;
+											display: inline-block;
+											border-radius:50%;
+											"></div>
+                    </a>
+                </div>
+                {% else %}
+                {% endif %}
+                <div class="uk-width-expand">
+                    <div class="uk-text-small" style="color:#aaaaa;font-family: Montserrat;font-style: normal;font-weight:500;font-size:12px;line-height:26px;text-align:left;">{% trans %}Владелец{% endtrans %}</div>
+                    <h3 class="uk-margin-remove uk-text-truncate" style="font-family: Montserrat;font-style: normal;font-weight: 600;font-size: 15px;line-height:26px;color:#1D1A1A;text-align:left;"><a href="/user/{{ card.user.id }}" class="uk-text-truncate">{{ card.user.header }}</a></h3>
+                    <!--<div><i class="fa fa-eye c_green"></i> {{ card.views }} <span class="uk-text-small c_grey">{% trans %}просмотров{% endtrans %}</span></div>
+                    <div><i class="fa fa-heart c_red"></i> <span id="card_likes">{{ card.likes }}</span> <span class="uk-text-small c_grey">{% trans %}лайков{% endtrans %}</span></div>
+                    <div>
+                        <i class="fa fa-star c_gold"></i> {{ opinions }}/5 <span class="uk-text-small c_grey">{% trans %}звезд из{% endtrans %}</span> {{ total_opinions }}
+                        <span class="uk-text-small c_grey">{% trans %}отзывов{% endtrans %}</span>
+                    </div>-->
+                    <div style="text-align:left;">
+                        {% if opinions == 0 %}
+                        <i class="fa fa-star-o" style="color:#FFB800;"></i>
+                        <i class="fa fa-star-o" style="color:#FFB800;"></i>
+                        <i class="fa fa-star-o" style="color:#FFB800;"></i>
+                        <i class="fa fa-star-o" style="color:#FFB800;"></i>
+                        <i class="fa fa-star-o" style="color:#FFB800;"></i>
+                        {% endif %}
+                        {% if opinions == 1 %}
+                        <i class="fa fa-star" style="color:#FFB800;"></i>
+                        <i class="fa fa-star-o" style="color:#FFB800;"></i>
+                        <i class="fa fa-star-o" style="color:#FFB800;"></i>
+                        <i class="fa fa-star-o" style="color:#FFB800;"></i>
+                        <i class="fa fa-star-o" style="color:#FFB800;"></i>
+                        {% endif %}
+                        {% if opinions == 2 %}
+                        <i class="fa fa-star" style="color:#FFB800;"></i>
+                        <i class="fa fa-star" style="color:#FFB800;"></i>
+                        <i class="fa fa-star-o" style="color:#FFB800;"></i>
+                        <i class="fa fa-star-o" style="color:#FFB800;"></i>
+                        <i class="fa fa-star-o" style="color:#FFB800;"></i>
+                        {% endif %}
+                        {% if opinions == 3 %}
+                        <i class="fa fa-star" style="color:#FFB800;"></i>
+                        <i class="fa fa-star" style="color:#FFB800;"></i>
+                        <i class="fa fa-star" style="color:#FFB800;"></i>
+                        <i class="fa fa-star-o" style="color:#FFB800;"></i>
+                        <i class="fa fa-star-o" style="color:#FFB800;"></i>
+                        {% endif %}
+                        {% if opinions == 4 %}
+                        <i class="fa fa-star" style="color:#FFB800;"></i>
+                        <i class="fa fa-star" style="color:#FFB800;"></i>
+                        <i class="fa fa-star" style="color:#FFB800;"></i>
+                        <i class="fa fa-star" style="color:#FFB800;"></i>
+                        <i class="fa fa-star-o" style="color:#FFB800;"></i>
+                        {% endif %}
+                        {% if opinions == 5 %}
+                        <i class="fa fa-star" style="color:#FFB800;"></i>
+                        <i class="fa fa-star" style="color:#FFB800;"></i>
+                        <i class="fa fa-star" style="color:#FFB800;"></i>
+                        <i class="fa fa-star" style="color:#FFB800;"></i>
+                        <i class="fa fa-star" style="color:#FFB800;"></i>
+                        {% endif %}
+                        <span class="uk-text-small c_grey">({{ total_opinions }})</span>
+                        <!--<hr>
+                        <div class="uk-text-center"><a href="/user/{{ card.user.id }}">{% trans %}Весь транспорт{% endtrans %}<br>{% trans %}пользователя{% endtrans %} ({{ card.user.cards|length }})</a></div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if not reserved and card.user.isNew != 1%}
+
+        {% endif %}
+        {% endif %}
+        {% if not is_mobile() %}
+        <div class="uk-margin-bottom card_blanc3" style="padding:15px;" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+            <p style="font-family: Montserrat;font-style: normal;font-weight: 600;font-size: 15px;line-height: 26px;color:#1D1A1A;margin:0 5px;">Стоимость аренды</p>
+            {% for price in card.getCardPrices if price.value != '' and price.value != '0.00' %}
+            {% if price.priceId == 10 %}
+
+            <div class="uk-text-right " style="margin:5px;">
+                <span style="font-family: Montserrat;font-style: normal;font-weight: 500;font-size: 15px;line-height: 26px;float:left;color: #AAAAAA;">Залог</span>
+                <span class="price_value"  style="font-family: Montserrat;font-style: normal;font-weight: 600;font-size: 15px;line-height:26px;color: #565656;"> {{ price.value|number_format(0,'.','<span class="thousand_separator"></span>')|raw }}</span>
+                {% if card.currency == 'RUB' %}
+                {% set currency = 'ruble' %}
+                {% endif %}
+                {% if card.currency == 'EUR' %}
+                {% set currency = 'euro' %}
+                {% endif %}
+                {% if card.currency == 'USD' %}
+                {% set currency = 'dollar' %}
+                {% endif %}
+                <span class="price_descriptor uk-text-truncate"> <i class="fa fa-{{ currency }}"></i> </span>
+            </div>
+            {% else %}
+            <div class="uk-text-right {{ price.priceId == 2 ? 'price_highlighted' : ''}}" style="margin:5px;">
+                <span style="font-family: Montserrat;font-style: normal;font-weight: 500;font-size: 15px;line-height: 26px;float:left;color: #AAAAAA;">{{ price.getPrice.header|trans }}</span>
+                {% set serv_perc = card.generalType.servicePercent %}
+                {% set c_price = price.value + (price.value/100*serv_perc)|round(0,'ceil') %}
+                <span class="price_value"  style="font-family: Montserrat;font-style: normal;font-weight: 600;font-size: 15px;line-height:26px;color: #565656;">
+								{{ c_price|number_format(0,'.','<span class="thousand_separator"></span>')|raw }}
+							{% if card.currency == 'RUB' %}
+								{% set currency = 'ruble' %}
+							{% endif %}
+							{% if card.currency == 'EUR' %}
+								{% set currency = 'euro' %}
+							{% endif %}
+							{% if card.currency == 'USD' %}
+								{% set currency = 'dollar' %}
+							{% endif %}
+							{% if price.priceId == 2%}
+								<span itemprop="price" style="visibility: hidden;height: 0;width: 0;display: none;">{{ c_price }}</span>
+								<span itemprop="priceCurrency" style="visibility: hidden;height: 0;width: 0;display: none;">{{ card.currency }}</span>
+							{% endif %}
+								<span> <i class="fa fa-{{ currency }}"></i></span>
+							</span>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% if not is_mobile() and card.user.id != app.session.get('logged_user').id %}
+        <!--<div class="uk-margin-bottom" uk-sticky="offset:135" style="z-index: 100">-->
+        <div class="" uk-toggle="target: {{ app.session.has('logged_user') ? '#user_book_form' : '#nonreged_user_book_form' }}">
+            <div data-id="{{ card.id }}" style="background: #4629D3;border-radius: 3px;padding: 15px;margin: 15px;color: white;" class="nbinner cursor-pointer uk-text-center " >{{ btn_name }}</div>
+        </div>
+        <div style="padding:0 15px;">
+            <div class="uk-width-3-4@s" style="float:left;">
+                <a class="btn btn-outline" style="padding:5px;">Отправить сообщение</a>
+            </div>
+            <div class="uk-width-1-4@s" style="float:right;">
+                <a href="https://wa.me/79164559808" target="blank" class="whatsapp-button" style="text-align:center;width:100%;margin:30% 0;">
+                    <i class="whatsapp-icon"></i>
+                </a>
+            </div>
+        </div>
+        <div style="clear:both;"></div>
+        <p style="font-family: Montserrat;font-style: normal;font-weight: 500;font-size: 14px;line-height:18px;text-align: center;color: #474747;padding: 15px;padding-bottom: 0;">Среднее время ответа на заявку 10 мин.</p>
+        <div style="clear:both;"></div>
+        <!--<div style="background: #f9f9f9;text-align: center">Пока вы ни за что не платите</div>-->
+        <!--</div>-->
+        {% endif %}
+    </div>
+    <!--<button uk-toggle="target: #howtopay" type="button" style="padding: 10px;
+            width: 100%;
+            margin-bottom: 20px;
+            background: #ffffff;
+            color: #1976d2;
+            border: 1px solid #1976d2;">Как это работает?</button>-->
+
+
+    {#<div id="user_message_form" uk-modal>#}
+    {#<div class="uk-modal-dialog uk-modal-body">#}
+        {#<h2 class="uk-modal-title">{% trans %}Сообщение пользователю{% endtrans %}</h2>#}
+        {#<button class="uk-modal-close-default" type="button" uk-close></button>#}
+        {#<form action="/user/sendMessage" uk-grid class="uk-grid-small" method="POST" >#}
+            {#<div class="uk-width-1-1"><input type="text" name="name" class="uk-input" placeholder="{% trans %}Имя{% endtrans %}"></div>#}
+            {#<div class="uk-width-1-1"><input type="text" name="phone" class="uk-input uk-width-1-1" placeholder="{% trans %}Телефон{% endtrans %}"></div>#}
+            {#<div class="uk-width-1-1"><input type="text" name="email" class="uk-input" placeholder="Email" required></div>#}
+            {#<div class="uk-width-1-1"><textarea name="message" class="uk-width-1-1 short_textarea" placeholder="{% trans %}Сообщение{% endtrans %}" required></textarea>#}
+                {#</div>#}
+            {#<input type="hidden" name="card_id" value="{{ card.id }}">#}
+            {#<div class="uk-width-1-1">#}
+                {#<button class="uk-button uk-button-default uk-width-1-1">{% trans %}Отправить{% endtrans %}</button>#}
+                {#</div>#}
+            {#<div id="recap_1" class="g-recaptcha"#}
+                   {#data-callback="capcha_filled"#}
+                   {#data-expired-callback="capcha_expired"#}
+                   {#data-sitekey="6LcGCzUUAAAAADpeaCQhkXWZqdhnB6_ZEGRm7Z2m"></div>#}
+            {#<input type="hidden" name="g-recaptcha-response">#}
+            {#<div id="recap1"></div>#}
+            {#</form>#}
+        {#</div>#}
+    {#</div>#}
+    {% if card.user.isNew == 1 %}
+    {{ include('card/order_forms/new_order_form.html.twig') }}
+    {% else %}
+    {{ include('card/order_forms/old_order_form.html.twig') }}
+    {% endif %}
+    <div id="user_phone_form" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+            <div class="modal_name">
+                Владелец:<br>
+                <i class="fa fa-user"></i> {{ card.user.header }}, <a class="modal_phone uk-display-block" href=""></a>
+            </div>
+            <div class="modal_text">
+                {% trans %}Не забудьте сообщить владельцу, что звоните с сайта Мультипрокат и спросить скидку!{% endtrans %}
+            </div>
+            <hr>
+            <div class="uk-margin">
+                <div class="uk-margin-bottom uk-text-center" style="font-weight: bold; color: black;">
+                    Оценить:
+                </div>
+                <form id="rate_form" action="/rate_handler" method="POST">
+                    <div class="uk-grid uk-grid-collapse">
+                        <div class="uk-width-1-4 uk-text-center">
+                            <label>
+                                <input type="radio" name="r_rate" value="0" class="uk-hidden">
+                                <img src="/assets/images/interface/r_bad.png" alt="" style="width: 50px">
+                            </label>
+                            <div {{ is_mobile() ? 'style="font-size:10px"'}}>Ужас</div>
+                    </div>
+                    <div class="uk-width-1-4 uk-text-center">
+                        <label>
+                            <input type="radio" name="r_rate" value="1" class="uk-hidden">
+                            <img src="/assets/images/interface/r_mid.png" alt="" style="width: 50px">
+                        </label>
+                        <div {{ is_mobile() ? 'style="font-size:10px"'}}>Не отвечает</div>
+            </div>
+            <div class="uk-width-1-4 uk-text-center">
+                <label class="">
+                    <input type="radio" name="r_rate" value="2" class="uk-hidden">
+                    <img src="/assets/images/interface/r_norm.png" alt="" style="width: 50px">
+                </label>
+                <div {{ is_mobile() ? 'style="font-size:10px"'}}>Хорошо</div>
+        </div>
+        <div class="uk-width-1-4 uk-text-center">
+            <label>
+                <input type="radio" name="r_rate" value="3" class="uk-hidden">
+                <img src="/assets/images/interface/r_good.png" alt="" style="width: 50px">
+            </label>
+            <div {{ is_mobile() ? 'style="font-size:10px"'}}>Супер</div>
+    </div>
+</div>
+<div class="uk-margin-top uk-margin-bottom uk-hidden">
+    <textarea name="r_text" class="uk-textarea" style="min-height: 80px" placeholder="Ваш комментарий звонка (попадет в поддержку сайта)"></textarea>
+</div>
+<input type="hidden" name="card_id" value="{{ card.id }}">
+<div class="uk-text-center uk-hidden"><button class="uk-button uk-button-primary">Отправить</button></div>
+</form>
+<div class="uk-margin-top">
+    Пожалуйста, оцените отзывчивость этого владельца и актуальность его транспорта
+</div>
+</div>
+</div>
+</div>
+{#<div uk-toggle="target: #share_butons" class="share_button uk-margin-bottom"><i uk-icon="icon:social"></i> {% trans %}Поделиться{% endtrans %}</div>#}
+<div id="share_butons" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+        <h2 class="uk-modal-title">{% trans %}Расскажи всем!{% endtrans %}</h2>
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div class="">
+            {#<div class="">#}
+            {#<div uk-grid class="uk-flex uk-flex-center uk-grid-small">#}
+                {#<div><!-- VK like -->#}
+                    {#<div id="vk_like"></div>#}
+                    {#<script type="text/javascript">VK.Widgets.Like("vk_like", {type: "button"});</script>#}
+                    {#</div>#}
+                {#<div class="  vk_share"><!-- VK share -->#}
+                    {#<script type="text/javascript">document.write(VK.Share.button(false,{type: "round", text: "Поделиться"}));</script>#}
+                    {#</div>#}
+                {#<div class="uk-width-2-3">#}
+                    {#<div class="fb-like" data-href="{{ app.request.schemeAndHttpHost ~ app.request.requestUri }}" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>#}
+                    {#</div>#}
+                {#<div>#}
+                    {#<script src="https://apis.google.com/js/platform.js" async defer></script>#}
+                    {#<g:plusone></g:plusone>#}
+                    {#<div class="g-plus" data-action="share" data-height="24"></div>#}
+                    {#</div>#}
+                {#</div>#}
+            {#</div>#}
+        </div>
+    </div>
+</div>
+<div class="uk-visible@s">
+    <!--<h3 class="pf_style_header"><span>{% trans %}Поиск{% endtrans %}</span></h3>
+    {{ include('search/search_form.html.twig') }}-->
+    <h3 class="pf_style_header mt-se r-hed"><span>{% trans %}Лучшие предложения{% endtrans %}</span></h3>
+    {% for card in t3_new.getTop3 %}
+    {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}
+    <hr>
+    {% endfor %}
+    <div class="uk-text-center">
+        {% if app.session.has('logged_user') %}
+        <a href="/card/new" class="" title="Хотите сюда?<br>Разместите транспорт!" uk-tooltip>{% trans %}Разместить в ТОП{% endtrans %}</a>
+        {% else %}
+        <a class="" title="Хотите сюда?<br>Разместите транспорт!" uk-tooltip uk-toggle="target: #sign_in_or_up">{% trans %}Разместить в ТОП{% endtrans %}</a>
+        {% endif %}
+    </div>
+</div>
+</div>
+</div>
+<!---------------------------------->
+<h2 class="pf_style_header_b"><span>{% trans %}Многим нравится{% endtrans %}</span></h2>
+<div uk-grid class="uk-grid-small uk-grid-match">
+    {% for card in similar %}
+    <div class="uk-width-1-3@s">
+        {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}
+    </div>
+    {% endfor %}
+</div>
+{% if is_mobile() %}
+<div class="uk-margin-top">
+    {{ include('search/search_form.html.twig') }}
+</div>
+{% endif %}
+</div>
+</div>
+{% if is_mobile() %}
+<div class="uk-width-1-1 uk-text-center">
+    <button type="button" class="uk-button uk-button-default uk-width-1-1" uk-toggle="target: #user_abuse">{% trans %}Пожаловаться{% endtrans %}</button>
+</div>
+{% endif %}
+<div class="uk-margin-large">
+</div>
+</div>
+{% if app.session.has('first_card') %}
+{{ app.session.remove('first_card') }}
+{% endif %}
+<div id="user_abuse" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+        <h2 class="uk-modal-title">{% trans %}Жалоба{% endtrans %}</h2>
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <form action="/user/sendAbuse" uk-grid class="uk-grid-small" method="POST" >
+            <div class="uk-width-1-1">
+                <label><input type="checkbox" name="abuse[]" value="Телефон не отвечает">{% trans %}Телефон не отвечает{% endtrans %}</label>
+            </div>
+            <div class="uk-width-1-1">
+                <label><input type="checkbox" name="abuse[]" value="Транспорт больше не актуален">{% trans %}Транспорт больше не актуален{% endtrans %}</label>
+            </div>
+            <div class="uk-width-1-1">
+                <label><input type="checkbox" name="abuse[]" value="Ворованные фото">{% trans %}Ворованные фото{% endtrans %}</label>
+            </div>
+            <div class="uk-width-1-1">
+                <label><input type="checkbox" name="abuse[]" value="Грубый владелец">{% trans %}Грубый владелец{% endtrans %}</label>
+            </div>
+            <input type="hidden" name="card_id" value="{{ card.id }}">
+            <div class="uk-width-1-1">
+                <button class="uk-button uk-button-default uk-width-1-1">{% trans %}Отправить{% endtrans %}</button>
+            </div>
+            {#<div id="recap_2" class="g-recaptcha"#}
+                   {#data-callback="capcha_filled"#}
+                   {#data-expired-callback="capcha_expired"#}
+                   {#data-sitekey="6LcGCzUUAAAAADpeaCQhkXWZqdhnB6_ZEGRm7Z2m"></div>#}
+            <div id="recap2"></div>
+            <input type="hidden" name="g-recaptcha-response">
+        </form>
+    </div>
+</div>
+<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+        async defer>
+</script>
+{{ include('card/order_forms/nonreged_form.html.twig') }}
+{% endblock %}
+{% block jivosite %}
+{#<!-- BEGIN JIVOSITE CODE {literal} -->#}
+{#<script type='text/javascript'>#}
+{#(function(){ var widget_id = 'pFfFoRqpXP';var d=document;var w=window;function l(){var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;s.src = '//code.jivosite.com/script/widget/'+widget_id; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);}if(d.readyState=='complete'){l();}else{if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();#}
+{#</script>#}
+{#<!-- {/literal} END JIVOSITE CODE -->#}
+{% endblock %}

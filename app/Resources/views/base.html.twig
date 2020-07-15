@@ -6,20 +6,22 @@
         {% endif %}
 
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, shrink-to-fit=no">
+
         {% block stylesheets %}
-            <link href="{{ asset('assets/css/uikit.css') }}" rel="stylesheet" />
-            <link href="{{ asset('assets/css/owl.carousel.min.css') }}" rel="stylesheet"/>
-            <link href="{{ asset('assets/css/owl.theme.default.css') }}" rel="stylesheet"/>
-            <link href="{{ asset('assets/css/base.css') }}" rel="stylesheet" />
-            <link href="{{ asset('assets/css/font-awesome.min.css') }}" rel="stylesheet" />
-            <link href="{{ asset('assets/css/colors.css') }}" rel="stylesheet" />
-            <link href="{{ asset('assets/css/typo.css') }}" rel="stylesheet" />
-            <link href="{{ asset('assets/css/base-responsive.css') }}" rel="stylesheet" />
-            <link href="{{ asset('assets/css/auto-complete.css') }}" rel="stylesheet" />
-            <link href="{{ asset('assets/css/list-tree.css') }}" rel="stylesheet" />
-            <link href="{{ asset('assets/css/selectric.css') }}" rel="stylesheet" />
-            <link href="{{ asset('assets/css/styles.min.css') }}" rel="stylesheet" />
+            <link href="{{ asset('assets/css/uikit.css') }}" rel="stylesheet">
+            <link href="{{ asset('assets/css/owl.carousel.min.css') }}" rel="stylesheet">
+            <link href="{{ asset('assets/css/owl.theme.default.css') }}" rel="stylesheet">
+            <link href="{{ asset('assets/css/base.css') }}" rel="stylesheet">
+            <link href="{{ asset('assets/css/font-awesome.min.css') }}" rel="stylesheet">
+            <link href="{{ asset('assets/css/colors.css') }}" rel="stylesheet">
+            <link href="{{ asset('assets/css/typo.css') }}" rel="stylesheet">
+            <link href="{{ asset('assets/css/base-responsive.css') }}" rel="stylesheet">
+            <link href="{{ asset('assets/css/auto-complete.css') }}" rel="stylesheet">
+            <link href="{{ asset('assets/css/list-tree.css') }}" rel="stylesheet">
+            <link href="{{ asset('assets/css/selectric-default.css') }}" rel="stylesheet">
+            <link href="{{ asset('assets/css/styles.min.css') }}" rel="stylesheet">
+            <link href="{{ asset('assets/css/alex/common.css') }}" rel="stylesheet">
         {% endblock %}
 
         {% block openGraph %}
@@ -40,7 +42,7 @@
     </head>
     <body {% block bodyVars %}{% endblock %} class="{{ is_mobile() ? 'mobile' : 'desktop' }} {% block bodyClass %}{% endblock %}">
         {{ include('header.html.twig') }}
-        
+
         <div id="content">
             {% for label, messages in app.flashes %}
                 {% for message in messages %}
@@ -86,10 +88,11 @@
             <script src="{{ asset('assets/js/top_autocomplete.js') }}"></script>
             <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
             <script src="{{ asset('assets/js/search_popup.js') }}"></script>
-						<script src="{{ asset('assets/js/scripts.min.js') }}"></script>
+            <script src="{{ asset('assets/js/scripts.min.js') }}"></script>
+            <script src="{{ asset('assets/css/alex/common.js') }}"></script>
 
             {% if app.session.has('logged_user') %}
-            <script src="{{ asset('assets/js/user_notify.js') }}"></script>
+                <script src="{{ asset('assets/js/user_notify.js') }}"></script>
             {% endif %}
 
         {% endblock %}

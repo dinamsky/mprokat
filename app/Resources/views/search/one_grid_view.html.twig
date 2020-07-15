@@ -152,10 +152,12 @@
 			'EUR': '<i class="fa fa-euro"></i>',
 			'USD': '<i class="fa fa-dollar"></i>'
 	} %}
+	<a href="/card/{{ card.id }}">
 	<div
 		class="image"
 		style="background-image: url({{ img_src }});"
 	></div>
+	</a>
 	{% set c_price = '' %}
 	{% set c_ed = '' %}
 

@@ -1,3 +1,18 @@
+<header class="page-header">
+    <div class="page-header__top">
+        <div class="uk-child-width-1-2" uk-grid>
+            <div>
+
+            </div>
+            <div>
+
+            </div>
+        </div>
+    </div>
+
+</header>
+
+
 {% if is_mobile() %}
 	{{ include('mobile_header.html.twig') }}
 
@@ -28,7 +43,7 @@
 					</a>
 				</div>
 				<div class="search">
-					<a href="#" class="icon">
+					<a class="search_popup_trigger" class="icon">
 						<svg
 							width="20"
 							height="20"
@@ -42,6 +57,7 @@
 							/>
 						</svg>
 					</a>
+					{{ include('search_popup.html.twig') }}
 				</div>
 				<a href="/card/new" class="btn btn-outline">Сдать в аренду</a>
 			</div>

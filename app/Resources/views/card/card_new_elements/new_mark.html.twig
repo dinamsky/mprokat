@@ -1,55 +1,77 @@
-<div uk-grid>
-    <div class="uk-width-1-5">
-        {% trans %}Марка и модель{% endtrans %} <span class="red_star">*</span>
-        <div class="help_text">{% trans %}Выберите марку и модель транспорта{% endtrans %}</div>
-    </div>
-    <div class="uk-width-3-5">
-        <div uk-grid class="uk-grid-small">
+<h3 class="uk-margin-bottom uk-margin-small-top theme-required">{% trans %}Марка и модель вашего транспорта{% endtrans %}</h3>
 
-            <input type="hidden" name="groupName" value="cars">
-
-            <div class="uk-hidden">
-                <div class="uk-text-small">Группа</div>
-                <select name="groupName" id="markGroupName" class="uk-select">
-                    {{ include( 'common/ajax_edit_options.html.twig', { 'options': mark_groups, 'id': 1 }) }}
-                </select>
-            </div>
-
-            <div class="uk-width-1-2 mark_placeholder">
-                <div class="uk-text-small">{% trans %}Марка{% endtrans %}</div>
-
-                <select name="mark" id="markId" class="uk-select sel_combo">
+<div class="uk-grid-medium uk-width-1-1 uk-width-2-3@m uk-child-width-1-1 uk-child-width-1-2@m" uk-grid>
+    <div>
+        <div class="uk-form-stacked">
+            <label class="uk-form-label">{% trans %}Марка вашего транспорта{% endtrans %}</label>
+            <div class="uk-form-controls">
+                <select name="mark" class="uk-select select-border-bottom js-transport-mark-select">
                     {{ include( 'common/ajax_edit_options.html.twig', { 'options': marks, 'id': 0 }) }}
                 </select>
+            </div>
+        </div>
 
+        <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-bottom uk-text-danger uk-text-small theme-d-none js-transport-mark-select-error js-step-three-error">
+            {% trans %}Выберите значение!{% endtrans %}
+        </div>
+
+        <div class="uk-padding-small uk-padding-remove-horizontal">
+            <label class="uk-flex-inline uk-flex-middle">
+                <input class="uk-checkbox switch js-mark-checkbox" type="checkbox" name="noMark">
+                <span>{% trans %}Марки нет в списке{% endtrans %}</span>
+            </label>
+        </div>
+
+        <div class="uk-hidden js-mark-collapse">
+            <div class="uk-form-stacked">
+                <div class="theme-form-group">
+                    <label class="uk-form-label">{% trans %}Введите марку вашего транспорта{% endtrans %}</label>
+                    <input class="uk-input js-transport-mark-input" name="ownMark" type="text">
+                </div>
             </div>
 
-            <div class="uk-width-1-2 model_placeholder">
-                <div class="uk-text-small">{% trans %}Модель{% endtrans %}</div>
-                <select name="modelId" id="markModelId" class="uk-select sel_combo"></select>
+            <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-bottom uk-text-danger uk-text-small theme-d-none js-transport-mark-input-error js-step-three-error">
+                {% trans %}Введите значение!{% endtrans %}
+            </div>
+        </div>
+
+    </div>
+
+    <div>
+        <div class="uk-form-stacked">
+            <label class="uk-form-label">{% trans %}Модель вашего транспорта{% endtrans %}</label>
+            <div class="uk-form-controls">
+                <select name="modelId" class="uk-select select-border-bottom js-transport-model-select">
+                </select>
+            </div>
+        </div>
+
+        <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-bottom uk-text-danger uk-text-small theme-d-none js-transport-model-select-error js-step-three-error">
+            {% trans %}Выберите значение!{% endtrans %}
+        </div>
+
+        <div class="uk-padding-small uk-padding-remove-horizontal">
+            <label class="uk-flex-inline uk-flex-middle">
+                <input class="uk-checkbox switch js-model-checkbox" type="checkbox" name="noModel">
+                <span>{% trans %}Модели нет в списке{% endtrans %}</span>
+            </label>
+        </div>
+
+        <div class="js-model-collapse uk-hidden">
+
+            <div class="uk-form-stacked">
+                <div class="theme-form-group">
+                    <label class="uk-form-label">{% trans %}Введите модель вашего транспорта{% endtrans %}</label>
+                    <input class="uk-input js-transport-model-input" name="ownModel" type="text">
+                </div>
             </div>
 
-            <div class="uk-width-1-1 help_text">{% trans %}Если не нашли свою марку/модель - поставьте галочку и укажите требуемое{% endtrans %}</div>
-
-            <div class="uk-width-1-3">
-                <label><input type="checkbox" name="noMark"> {% trans %}Марки нет в списке{% endtrans %}</label>
-            </div>
-
-            <div class="uk-width-2-3">
-                <input name="ownMark" class="uk-input uk-hidden" placeholder="{% trans %}впишите свою марку{% endtrans %}">
-            </div>
-
-            <div class="uk-width-1-3">
-                <label><input type="checkbox" name="noModel"> {% trans %}Модели нет в списке{% endtrans %}</label>
-            </div>
-
-            <div class="uk-width-2-3">
-                <input name="ownModel" class="uk-input uk-hidden" placeholder="{% trans %}впишите свою модель{% endtrans %}">
+            <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-bottom uk-text-danger uk-text-small theme-d-none js-transport-model-input-error js-step-three-error">
+                {% trans %}Введите значение!{% endtrans %}
             </div>
 
         </div>
-    </div>
-    <div class="uk-width-1-5">
 
     </div>
+
 </div>
