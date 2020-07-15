@@ -111,7 +111,15 @@
 		</div>
 
 		<ul class="uk-nav uk-nav-default">
-			<li class="uk-active"><a href="/card/new">Сдать в аренду</a></li>
+			<li>
+				{% if app.session.has('logged_user') %}
+					<a href="/card/new">Сдать в аренду</a>
+				{% elseif app.session.has('admin') %}
+					<a href="/card/new">Сдать в аренду</a>
+				{% else %}
+					<a uk-toggle="target: #sign_in">Сдать в аренду</a>
+				{% endif %}
+			</li>
 			<li class="uk-active"><a href="/faq">Как это работает?</a></li>
 			<li class="uk-active"><a href="#">Категории транспорта</a></li>
 		</ul>

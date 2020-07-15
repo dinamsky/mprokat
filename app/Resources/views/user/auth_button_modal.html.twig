@@ -1,5 +1,6 @@
 {% if app.session.has('logged_user') %}
 <div class="notifications">
+	{% if t3_new.getNotify|length > 0 %}
 	<span class="icon">
 		<svg
 			width="20"
@@ -33,7 +34,7 @@
 			</defs>
 		</svg>
 	</span>
-	{% if t3_new.getNotify|length > 0 %}
+
 	<span class="count">
 		{{ t3_new.getNotify|length }}
 	</span>
