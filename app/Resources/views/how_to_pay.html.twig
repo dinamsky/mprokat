@@ -24,9 +24,15 @@
         </div>
 
         <div class="uk-text-center uk-margin-top">
-            <a href="/article/how_it_works" class="">Больше информации</a>
+            <a href="/faq" class="">Больше информации</a>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="/card/new" class="">Хочу сам сдавать</a>
+            {% if app.session.has('logged_user') %}
+                <a href="/card/new" >Сдать в аренду</a>
+            {% elseif app.session.has('admin') %}
+                <a href="/card/new" >Сдать в аренду</a>
+            {% else %}
+                <a  data-toggle="modal" href="#signUp">Хочу сам сдавать!</a>
+            {% endif %}
         </div>
     </div>
 </div>

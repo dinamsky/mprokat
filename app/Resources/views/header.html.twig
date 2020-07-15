@@ -27,7 +27,7 @@
 					{{ include('selector/global_city_selector.html.twig') }}
 				{% endif %}
 				<div class="how-it-works">
-					<a href="/faq">Как это работает?</a>
+					<a  uk-toggle="target: #howtopay">Как это работает?</a>
 				</div>
 				{{ include('user/auth_button_modal.html.twig') }}
 				<div id="search_block" hidden>{{ include('search/top_search.html.twig') }}</div>
@@ -60,11 +60,11 @@
 					{{ include('search_popup.html.twig') }}
 				</div>
 				{% if app.session.has('logged_user') %}
-					<a href="/card/new" class="btn btn-outline">Сдать в аренду</a>
+					<a href="/card/new" ">Сдать в аренду</a>
 				{% elseif app.session.has('admin') %}
-					<a href="/card/new" class="btn btn-outline">Сдать в аренду</a>
+					<a href="/card/new" >Сдать в аренду</a>
 				{% else %}
-					<a class="btn btn-outline" data-toggle="modal" href="#signUp">Сдать в аренду</a>
+					<a  data-toggle="modal" href="#signUp">Хочу сдавать!</a>
 				{% endif %}
 			</div>
 		</div>
