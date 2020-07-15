@@ -60,11 +60,11 @@
 					{{ include('search_popup.html.twig') }}
 				</div>
 				{% if app.session.has('logged_user') %}
-					<a href="/card/new" ">Сдать в аренду</a>
+					<a href="/card/new" class="btn btn-outline">Сдать в аренду</a>
 				{% elseif app.session.has('admin') %}
-					<a href="/card/new" >Сдать в аренду</a>
+					<a href="/card/new" class="btn btn-outline">Сдать в аренду</a>
 				{% else %}
-					<a  data-toggle="modal" href="#signUp">Хочу сдавать!</a>
+					<a class="btn btn-outline" data-toggle="modal" href="#signUp">Сдать в аренду</a>
 				{% endif %}
 			</div>
 		</div>
