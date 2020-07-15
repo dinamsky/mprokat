@@ -25,7 +25,7 @@
 
         <div class="uk-text-center uk-margin-top">
             <a href="/faq" class="">Больше информации</a>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;<br>
             {% if app.session.has('logged_user') %}
                 <a href="/card/new" >Сдать в аренду</a>
             {% elseif app.session.has('admin') %}
