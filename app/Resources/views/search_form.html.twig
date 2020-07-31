@@ -43,7 +43,7 @@
 <form class="form-inline" id="ms_search_form" method="POST" action="#">
 	<div class="input-group">
 		<div class="form-item">
-			<select name="ms_car_type_in" required form="ms_search_form">
+			<select class="uk-select select-main-search" name="ms_car_type_in" required form="ms_search_form">
 				{% for gt in t3_new.getGt if gt.carTypeIds%}
 						<option value="{{ gt.url }}">{{ gt.header }}</option>
 				{% endfor %}

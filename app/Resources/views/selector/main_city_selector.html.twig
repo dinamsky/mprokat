@@ -27,8 +27,8 @@
             {% endfor %}
         </div>
         <hr>
-        <button uk-toggle="target: #more_cities" type="button" class="more_cities_button">{% trans %}показать все города{% endtrans %}</button>
-        <div id="more_cities" hidden>
+        <button uk-toggle="target: #more_cities" type="button" class="uk-button uk-button-primary more_cities_button">{% trans %}показать все города{% endtrans %}</button>
+        <div id="more_cities" class="uk-margin-top" hidden>
             <div class="uk-column-1-1 uk-column-1-5@s">
                 {% for city in t3_new.popularCities if city.total < 10 %}
                     <div class="city_block_main" data-id="{{ city.id }}" data-url="{{ city.url }}" data-header="{{ city.header }}">{{ city.header }}</div>

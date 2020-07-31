@@ -12,11 +12,11 @@
             <link href="{{ asset('assets/css/uikit.css') }}" rel="stylesheet">
             <link href="{{ asset('assets/css/owl.carousel.min.css') }}" rel="stylesheet">
             <link href="{{ asset('assets/css/owl.theme.default.css') }}" rel="stylesheet">
-            <link href="{{ asset('assets/css/base.css') }}" rel="stylesheet">
+
             <link href="{{ asset('assets/css/font-awesome.min.css') }}" rel="stylesheet">
             <link href="{{ asset('assets/css/colors.css') }}" rel="stylesheet">
             <link href="{{ asset('assets/css/typo.css') }}" rel="stylesheet">
-            <link href="{{ asset('assets/css/base-responsive.css') }}" rel="stylesheet">
+
             <link href="{{ asset('assets/css/auto-complete.css') }}" rel="stylesheet">
             <link href="{{ asset('assets/css/list-tree.css') }}" rel="stylesheet">
             <link href="{{ asset('assets/css/selectric-default.css') }}" rel="stylesheet">
@@ -35,49 +35,30 @@
 
         <link rel="icon" type="image/x-icon" href="{{ asset('assets/favicon.ico') }}" />
 
-
-
         <title>{% block title %}Мультипрокат{% endblock %}</title>
         <meta name="yandex-verification" content="a2d59e156f2bd014" />
     </head>
     <body {% block bodyVars %}{% endblock %} class="{{ is_mobile() ? 'mobile' : 'desktop' }} {% block bodyClass %}{% endblock %}">
+
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+            <div class="js-main-alert" uk-modal>
+                <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+                    <button class="uk-modal-close-default uk-flex-top" type="button" uk-close></button>
+                    <div class="flash-{{ label }}">{{ message|raw }}</div>
+                </div>
+            </div>
+            {% endfor %}
+        {% endfor %}
+
         {{ include('header.html.twig') }}
 
         <div id="content">
-            {% for label, messages in app.flashes %}
-                {% for message in messages %}
-                    <div id="main_message" uk-alert class="uk-position-absolute uk-position-center uk-width-1-3@s">
-                        <a class="uk-alert-close" uk-close></a>
-                        <div class="flash-{{ label }}">
-                            {{ message|raw }}
-                        </div>
-                    </div>
-                    <script>
-                        document.addEventListener("DOMContentLoaded", function(event) {
-                          setTimeout(function() {
-                            UIkit.alert('#main_message').close();
-                          }, 3000);
-                        });
-                    </script>
-                {% endfor %}
-            {% endfor %}
-
-
-            {#<div id="main_message" uk-alert="duration:500" class="uk-position-absolute uk-position-center uk-width-1-3@s">#}
-                        {#<a class="uk-alert-close" uk-close></a>#}
-                        {#<div class="flash-notice">#}
-                            {#Отправляйте заявки и другим владельцам, чтобы воспользоваться самым лучшим предложением#}
-                        {#</div>#}
-                    {#</div>#}
-
-
-
-						<div class="page">
-            	{% block content %}{% endblock %}
-						</div>
-
+            <div class="page">{% block content %}{% endblock %}</div>
         </div>
+
         {{ include('footer.html.twig') }}
+
         {% block javascripts %}
             <script src="{{ asset('assets/js/jquery-3.2.1.min.js') }}"></script>
             <script src="{{ asset('assets/js/uikit.min.js') }}"></script>
@@ -89,19 +70,19 @@
             <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
             <script src="{{ asset('assets/js/search_popup.js') }}"></script>
             <script src="{{ asset('assets/js/scripts.min.js') }}"></script>
-            <script src="{{ asset('assets/css/alex/common.js') }}"></script>
+            <script src="{{ asset('assets/js/alex/common.js') }}"></script>
 
             {% if app.session.has('logged_user') %}
                 <script src="{{ asset('assets/js/user_notify.js') }}"></script>
             {% endif %}
 
         {% endblock %}
-        {{ include('yandex_metrica.html.twig') }}
+
+        {# {{ include('yandex_metrica.html.twig') }} #}
         {{ include('counters.html.twig') }}
         {{ include('user/auth_modals.html.twig') }}
 
         {% block jivosite %}
         {% endblock %}
-
     </body>
 </html>

@@ -1,0 +1,100 @@
+<div class="card-item">
+
+    {% set main_foto = main_foto(card.getFotos) %}
+
+    {% set img_src = '/assets/images/interface/no_image.jpg' %}
+    {% set img_src_error = '/assets/images/interface/no_image.jpg' %}
+
+    {% if main_foto  %}
+    {% set img_src = '/assets/images/cards/'~main_foto.folder~'/t/'~main_foto.id~'.jpg' %}
+    {% elseif card.fotos[0] is defined %}
+    {% set img_src = '/assets/images/cards/'~card.fotos[0].folder~'/t/'~card.fotos[0].id~'.jpg' %}
+    {% else %}
+    {% set img_src = '/assets/images/interface/no_image.jpg' %}
+    {% endif %}
+
+
+    {% set serviceType = 'Прокат' %}
+    {% if card.serviceTypeId == 2  %}
+    {% set serviceType = 'Аренда' %}
+    {% endif %}
+
+    {% if card.currency == 'RUB' %}
+    {% set currency = 'ruble' %}
+    {% endif %}
+    {% if card.currency == 'EUR' %}
+    {% set currency = 'euro' %}
+    {% endif %}
+    {% if card.currency == 'USD' %}
+    {% set currency = 'dollar' %}
+    {% endif %}
+
+
+        <div class="card-item__figure">
+            <a href="/card/{{ card.id }}" class="card-item__image" style="background-image: url('{{ img_src }}')"></a>
+            <div class="uk-position-top-left uk-padding-small">
+                <div class="uk-inline">
+                    <button class="uk-button uk-button-link card-item__settings-button" type="button">
+                        <i class="fa fa-cog uk-margin-small-right"></i>
+                        <span uk-icon="icon: triangle-down; ratio: .5"></span>
+                    </button>
+                    <div class="theme-dropdown theme-dropdown-tip" uk-dropdown="mode: click">
+                        <ul class="uk-nav uk-dropdown-nav theme-dropdown-nav uk-flex uk-flex-column">
+                            {% if share is defined %}
+                            <li><a href="/card_share/{{ card.id }}">Поделиться</a></li>
+                            <li><a href="/promote_card/{{ card.id }}">Продвинуть</a></li>
+                            {% endif %}
+
+                            {% if (
+                            ( app.session.has('admin') and card.adminId == app.session.get('admin').id )
+                            or ( app.session.has('admin') and app.session.get('admin').role == 'superadmin' )
+                            or ( app.session.has('logged_user') and card.user.id == app.session.get('logged_user').id )
+                            ) %}
+                            {% if in_edit is not defined %}
+                            <li class="uk-flex-first"><a href="/user/edit/card/{{ card.id }}">Редактировать</a></li>
+                            <li class="uk-flex-last"><a href="javascript:;" class="js-delete-card" data-returnUrl="{{ app.request.requestUri }}" data-cardId="{{ card.id }}">Удалить</a></li>
+                            {% endif %}
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    {% set c_price = '' %}
+    {% set c_ed = '' %}
+
+    {% for price in card.cardPrices if price.priceId == 2 %}
+    {% set c_price = price.value %}
+    {% set c_ed = 'день'|trans %}
+    {% endfor %}
+
+    {% for price in card.cardPrices if price.priceId == 1 and c_price == '' %}
+    {% set c_price = price.value %}
+    {% set c_ed = 'час'|trans %}
+    {% endfor %}
+
+    {% for price in card.cardPrices if price.priceId == 6 and c_price == '' %}
+    {% set c_price = price.value %}
+    {% set c_ed = '' %}
+    {% endfor %}
+
+    <div class="card-item__header header-card-item">
+        <h3 class="header-card-item__title">
+            <a class="header-card-item__link" href="/card/{{ card.id }}">{{ card.markModel.Mark.header }} {{ card.markModel.header }}</a>
+        </h3>
+    </div>
+
+    {% if c_price != '' %}
+    {% set serv_perc = card.generalType.servicePercent %}
+    {% set c_price = c_price + (c_price/100*serv_perc)|round(0,'ceil') %}
+
+    <div class="card-item__price">
+        {{ c_price|number_format(0,'.','&nbsp;')|raw }}
+        &nbsp;<i class="fa fa-{{ currency }}"></i>&nbsp;
+        {{ c_ed }}
+    </div>
+    {% endif %}
+
+</div>

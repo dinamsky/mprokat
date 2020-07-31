@@ -22,8 +22,8 @@ const tariffChange = (function($) {
             $selectedName = $label.find(ui.selectedName),
             $selectedPrice = $label.find(ui.selectedPrice);
 
-        ui.$currentName.text(selectedName.text());
-        ui.$currentPrice.text(selectedPrice.text());
+        ui.$currentName.text($selectedName.text());
+        ui.$currentPrice.text($selectedPrice.text());
     }
 
     return {

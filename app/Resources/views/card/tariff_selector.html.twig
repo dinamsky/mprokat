@@ -1,72 +1,132 @@
-<div class="uk-overflow-auto">
-    <table class="uk-table theme-table uk-table-justify uk-table-middle uk-table-divider uk-text-center">
-        <thead>
-        <tr>
-            <th class="uk-table-expand"></th>
-            <th class="uk-width-1-6 uk-text-center uk-text-nowrap">
-                <label>
+<div class="uk-grid-collapse uk-child-width-1-1" uk-grid>
+    <!-- first -->
+    <div>
+        <div class="uk-grid-medium theme-tariff-grid" uk-grid>
+            <div class="uk-visible@m uk-width-expand theme-text-600"></div>
+            <div class="uk-width-1-3 uk-width-1-4@m uk-text-center">
+                <label class="theme-tariff-label">
                     <div class="js-tariff-name">Обычное размещение</div>
                     <div class="uk-text-primary uk-margin-small-bottom js-tariff-price">Бесплатно</div>
                     <input class="uk-radio theme-radio js-tariff-selector" type="radio" name="tariffId" value="1">
                 </label>
-            </th>
-            <th class="uk-width-1-4 uk-text-center uk-text-nowrap">
-                <label>
+            </div>
+            <div class="uk-width-1-3 uk-width-1-4@m uk-text-center">
+                <label class="theme-tariff-label">
                     <div class="js-tariff-name">Экспресс размещение</div>
                     <div class="uk-text-primary uk-margin-small-bottom js-tariff-price">350 ₽</div>
                     <input class="uk-radio theme-radio js-tariff-selector" type="radio" name="tariffId" value="2" {{ tariffId == 2 or tariffId == 0 ? 'checked' : '' }}>
                 </label>
-            </th>
-            <th class="uk-width-1-6 uk-text-center uk-text-nowrap">
-                <label>
+            </div>
+            <div class="uk-width-1-3 uk-width-1-4@m uk-text-center">
+                <label class="theme-tariff-label">
                     <div class="js-tariff-name">Премиум размещение</div>
                     <div class="uk-text-primary uk-margin-small-bottom js-tariff-price">890 ₽</div>
                     <input class="uk-radio theme-radio js-tariff-selector" type="radio" name="tariffId" value="3" {{ tariffId == 3  ? 'checked' : '' }}>
                 </label>
-            </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td class="uk-text-left">{% trans %}Транспорт на заметном месте{% endtrans %}</td>
-            <td><span uk-icon="minus"></span></td>
-            <td><span class="uk-text-primary" uk-icon="check"></span></td>
-            <td><span class="uk-text-primary" uk-icon="check"></span></td>
-        </tr>
-        <tr>
-            <td class="uk-text-left">{% trans %}Размещение на год{% endtrans %}</td>
-            <td><span class="uk-text-primary" uk-icon="check"></span></td>
-            <td><span class="uk-text-primary" uk-icon="check"></span></td>
-            <td><span class="uk-text-primary" uk-icon="check"></span></td>
-        </tr>
-        <tr>
-            <td class="uk-text-left">{% trans %}Размещение в карточках похожего транспорта{% endtrans %}</td>
-            <td><span uk-icon="minus"></span></td>
-            <td><span class="uk-text-primary" uk-icon="check"></span></td>
-            <td><span class="uk-text-primary" uk-icon="check"></span></td>
-        </tr>
-        <tr>
-            <td class="uk-text-left uk-text-primary">+1000 {% trans %}просмотров{% endtrans %}</td>
-            <td><span uk-icon="minus"></span></td>
-            <td><span uk-icon="minus"></span></td>s
-            <td><span class="uk-text-primary" uk-icon="check"></span></td>
-        </tr>
-        <tr>
-            <td colspan="4">
-                <div class="uk-grid-medium uk-text-left" uk-grid>
-                    <div class="uk-width-expand">
-                        <div>Вы выбрали: <span class="uk-text-primary js-current-tariff-name">Обычное размещение</span></div>
-                        <div>Сумма к оплате: <span class="uk-text-primary js-current-tariff-price">0 ₽</span></div>
-                    </div>
-                    <div class="uk-width-1-5">
-                        <button type="button" class="uk-button button button-outline-primary button-lg uk-width-1-1" uk-switcher-item="previous">Назад</button>
-                    </div>
-                    <div class="uk-width-1-4">
-                        <button name="change_tariff" class="uk-button button button-primary button-lg uk-width-1-1 uk-padding-remove-horizontal" uk-switcher-item="next">Выбрать и разместить</button>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- second -->
+    <div>
+        <div class="uk-grid-medium theme-tariff-grid" uk-grid>
+            <div class="uk-visible@m uk-width-expand theme-text-600">
+                {% trans %}Транспорт на заметном месте{% endtrans %}
+            </div>
+            <div class="uk-width-1-3 uk-width-1-4@m uk-text-center">
+                <span uk-icon="minus"></span>
+                <p class="theme-tariff-desc">{% trans %}Транспорт на заметном месте{% endtrans %}</p>
+            </div>
+            <div class="uk-width-1-3 uk-width-1-4@m uk-text-center">
+                <span class="uk-text-primary" uk-icon="check"></span>
+                <p class="theme-tariff-desc">{% trans %}Транспорт на заметном месте{% endtrans %}</p>
+            </div>
+            <div class="uk-width-1-3 uk-width-1-4@m uk-text-center">
+                <span class="uk-text-primary" uk-icon="check"></span>
+                <p class="theme-tariff-desc">{% trans %}Транспорт на заметном месте{% endtrans %}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3 -->
+    <div>
+        <div class="uk-grid-medium theme-tariff-grid" uk-grid>
+            <div class="uk-visible@m uk-width-expand theme-text-600">
+                {% trans %}Размещение на год{% endtrans %}
+            </div>
+            <div class="uk-width-1-3 uk-width-1-4@m uk-text-center">
+                <span class="uk-text-primary" uk-icon="check"></span>
+                <p class="theme-tariff-desc">{% trans %}Размещение на год{% endtrans %}</p>
+            </div>
+            <div class="uk-width-1-3 uk-width-1-4@m uk-text-center">
+                <span class="uk-text-primary" uk-icon="check"></span>
+                <p class="theme-tariff-desc">{% trans %}Размещение на год{% endtrans %}</p>
+            </div>
+            <div class="uk-width-1-3 uk-width-1-4@m uk-text-center">
+                <span class="uk-text-primary" uk-icon="check"></span>
+                <p class="theme-tariff-desc">{% trans %}Размещение на год{% endtrans %}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4 -->
+    <div>
+        <div class="uk-grid-medium theme-tariff-grid" uk-grid>
+            <div class="uk-visible@m uk-width-expand theme-text-600">
+                {% trans %}Размещение в карточках похожего транспорта{% endtrans %}
+            </div>
+            <div class="uk-width-1-3 uk-width-1-4@m uk-text-center">
+                <span uk-icon="minus"></span>
+                <p class="theme-tariff-desc">{% trans %}Размещение в карточках похожего транспорта{% endtrans %}</p>
+            </div>
+            <div class="uk-width-1-3 uk-width-1-4@m uk-text-center">
+                <span class="uk-text-primary" uk-icon="check"></span>
+                <p class="theme-tariff-desc">{% trans %}Размещение в карточках похожего транспорта{% endtrans %}</p>
+            </div>
+            <div class="uk-width-1-3 uk-width-1-4@m uk-text-center">
+                <span class="uk-text-primary" uk-icon="check"></span>
+                <p class="theme-tariff-desc">{% trans %}Размещение в карточках похожего транспорта{% endtrans %}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5 -->
+    <div>
+        <div class="uk-grid-medium theme-tariff-grid" uk-grid>
+            <div class="uk-visible@m uk-width-expand theme-text-600 uk-text-primary">
+                +1000 {% trans %}просмотров{% endtrans %}
+            </div>
+            <div class="uk-width-1-3 uk-width-1-4@m uk-text-center">
+                <span uk-icon="minus"></span>
+                <p class="theme-tariff-desc uk-text-primary">+1000 {% trans %}просмотров{% endtrans %}</p>
+            </div>
+            <div class="uk-width-1-3 uk-width-1-4@m uk-text-center">
+                <span uk-icon="minus"></span>
+                <p class="theme-tariff-desc uk-text-primary">+1000 {% trans %}просмотров{% endtrans %}</p>
+            </div>
+            <div class="uk-width-1-3 uk-width-1-4@m uk-text-center">
+                <span class="uk-text-primary" uk-icon="check"></span>
+                <p class="theme-tariff-desc uk-text-primary">+1000 {% trans %}просмотров{% endtrans %}</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="uk-grid-medium uk-flex uk-flex-middle" uk-grid>
+    <div class="uk-width-1-1 uk-width-3-5@m theme-text-600">
+        <div>Вы выбрали: <span class="uk-text-primary js-current-tariff-name">Экспресс размещение</span></div>
+        <div>Сумма к оплате: <span class="uk-text-primary js-current-tariff-price">350 ₽</span></div>
+    </div>
+
+    <div class="uk-width-1-1 uk-width-2-5@m">
+        <div class="uk-grid-small uk-child-width-1-1 uk-child-width-1-2@m" uk-grid>
+            <div class="uk-flex-last@m">
+                <button name="change_tariff" class="uk-button button button-primary button-lg uk-width-1-1 uk-padding-remove-horizontal">Выбрать и разместить</button>
+            </div>
+            <div>
+                <button type="button" class="uk-button button button-outline-primary button-lg uk-width-1-1 js-prev-step">{% trans %}Назад{% endtrans %}</button>
+            </div>
+        </div>
+    </div>
 </div>

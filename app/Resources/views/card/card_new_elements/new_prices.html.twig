@@ -1,66 +1,105 @@
-<div uk-grid>
-    <div class="uk-width-1-5">
-        {% trans %}Цены{% endtrans %} <span class="red_star">*</span>
-        <div class="help_text">{% trans %}Укажите свои расценки по периодам{% endtrans %}</div>
-    </div>
-    <div class="uk-width-3-5">
+<h3 class="uk-align theme-required">Укажите свои расценки по периодам</h3>
+<div class="uk-width-1-1 uk-width-1-2@m">
 
-        <div class="uk-margin-bottom">
-            <select name="currency" class="uk-width-1-5 uk-select">
-                <option value="EUR">EUR</option>
-                <option value="USD" {{ city.country == 'USA' or city.country == 'CAN' ? 'selected' }}>USD</option>
-                <option value="RUB" {{ city.country == 'RUS' or city.country == 'RUS' ? 'selected' }}>RUB</option>
-            </select>
+    <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-2@m" uk-grid>
+        <div>
+            <div class="uk-form-stacked">
+                <label class="uk-form-label">{% trans %}Валюта{% endtrans %}</label>
+                <div class="uk-form-controls">
+                    <select name="currency" class="uk-select select-border-bottom">
+                        <option value="EUR">EUR</option>
+                        <option value="USD" {{ city.country == 'USA' or city.country == 'CAN' ? 'selected' }}>USD</option>
+                        <option value="RUB" {{ city.country == 'RUS' or city.country == 'RUS' ? 'selected' }}>RUB</option>
+                    </select>
+                </div>
+            </div>
         </div>
+    </div>
 
+    <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-2@m" uk-grid>
+        <div>
+            <!-- За час -->
+            {% for price in prices if price.id == 1%}
+            <div class="uk-form-stacked uk-align">
+                <label class="uk-form-label">{{ price.header|trans }}</label>
+                <div class="uk-inline uk-width-1-1">
+                    <span class="uk-form-icon uk-flex-right@m uk-form-icon-flip"><i class="fa fa-rub"></i></span>
+                    <input type="text"
+                           class="uk-input js-pay-per-hour"
+                           name="price[{{ price.id }}]"
+                           value="{% for cardPrice in card.getCardPrices if cardPrice.priceId == price.id %}{{ cardPrice.value }}{% endfor %}">
 
-
-
-        <div class="non_plane">
-            <div uk-grid>
-                <div class="uk-width-1-2">
-                    <div class="">
-                        <div class="">
-                            {% for price in prices if price.id < 3 %}
-                                <div class="uk-margin-small-bottom">
-                                    <input type="number" name="price[{{ price.id }}]" class="uk-input uk-width-1-3 one_of"> / <span>{{ price.header|trans }}</span>
-                                </div>
-                            {% endfor %}
-                        </div>
-                        <div class="uk-text-small"><span class="red_star">*</span> {% trans %}Одна из расценок: в час/в день обязательна!{% endtrans %}</div>
-                        <div class="uk-text-small"><span class="red_star">*</span> Указывая стоимость, учитывайте сервисный сбор системы - 15% <span uk-icon="info" uk-toggle="target: #price_info" ></span></div>
-                    </div>
-                </div>
-                <div class="uk-width-1-2">
-                    <div id="counted_prices"></div>
                 </div>
             </div>
+            {% endfor %}
+            <!-- За час -->
 
-            <div class="uk-margin-top">
-                <span class="expander_button" uk-toggle="target: #price_selector">{% trans %}Еще расценки{% endtrans %} <i uk-icon="icon:chevron-down"></i></span>
+            <!-- За день -->
+            {% for price in prices if price.id == 2%}
+            <div class="uk-form-stacked uk-align">
+                <label class="uk-form-label">{{ price.header|trans }}</label>
+                <div class="uk-inline uk-width-1-1">
+                    <span class="uk-form-icon uk-flex-right@m uk-form-icon-flip"><i class="fa fa-rub"></i></span>
+                    <input type="text"
+                           class="uk-input js-pay-per-day"
+                           name="price[{{ price.id }}]"
+                           value="{% for cardPrice in card.getCardPrices if cardPrice.priceId == price.id %}{{ cardPrice.value }}{% endfor %}">
+
+                </div>
             </div>
-            <div class="expandable_block uk-margin-top" id="price_selector" hidden>
-                {% for price in prices if price.id > 2 and price.id != 6 and price.id < 7%}
-                    <div>
-                        <input type="number" name="price[{{ price.id }}]" class="uk-input uk-width-1-3"> / <span>{{ price.header|trans }} </span>
+            {% endfor %}
+            <!-- За день -->
+
+            <!-- Error Alert -->
+            <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-top uk-text-danger uk-text-small theme-d-none js-step-five-error">
+                Укажите одну из расценок: в час/в день!</div>
+            <!-- /Error Alert -->
+
+            <div class="js-price-list-toggle uk-align uk-margin-top uk-text-right">
+                <a class="link-underline" href="javascript:;" uk-toggle="target: .js-price-list-toggle; animation: uk-animation-fade; queued: true; duration: 300">Добавить расценку</a>
+            </div>
+
+            <div class="js-price-list-toggle" hidden>
+                {% for price in prices if price.id > 2 and price.id < 7 %}
+                <div class="uk-form-stacked uk-align">
+                    <label class="uk-form-label">{{ price.header|trans }}</label>
+                    <div class="uk-inline uk-width-1-1">
+                        <span class="uk-form-icon uk-flex-right@m uk-form-icon-flip"><i class="fa fa-rub"></i></span>
+                        <input type="text"
+                               class="uk-input"
+                               name="price[{{ price.id }}]"
+                               value="{% for cardPrice in card.getCardPrices if cardPrice.priceId == price.id %}{{ cardPrice.value }}{% endfor %}">
+
                     </div>
+                </div>
                 {% endfor %}
             </div>
 
-            <div class="uk-margin-top">
-                Залог <input type="number" name="price[10]" class="uk-input uk-width-1-3 one_of" value="0"> ₽ - <span> (укажите, если необходимо) </span>
+        </div>
+        <div class="uk-margin-remove">
+            <p class="uk-text-muted">{% trans %}Одна из расценок в час или в день обязательна{% endtrans %}</p>
+            <p class="uk-text-muted uk-visible@m">{% trans %}Платформа Мультипрокат добавляет от{% endtrans %} <a style="color: var(--purple-color);" href="#price_info" uk-toggle>10 {% trans %}до{% endtrans %} 20 %</a> {% trans %}к вашей стоимости{% endtrans %}</p>
+            <p class="uk-text-muted uk-hidden@m">{% trans %}Указывая добавление стоимости{% endtrans %} <a style="color: var(--purple-color);" href="#price_info" uk-toggle>{% trans %}забронирования{% endtrans %}</a>, {% trans %}учитывайте сервисный сбор системы{% endtrans %} - 15%</p>
+        </div>
+    </div>
+
+    <div class="uk-flex-bottom uk-grid-medium uk-grid-row-small uk-child-width-1-1 uk-child-width-1-2@m" uk-grid>
+        <div>
+            <div class="uk-form-stacked uk-align">
+                <label class="uk-form-label">{% trans %}Залог{% endtrans %}</label>
+                <div class="uk-inline uk-width-1-1">
+                    <span class="uk-form-icon uk-flex-right@m uk-form-icon-flip"><i class="fa fa-rub"></i></span>
+                    <input type="text"
+                           class="uk-input"
+                           name="price[10]"
+                           value="{% for cardPrice in card.getCardPrices if cardPrice.priceId == 10 %}{{ cardPrice.value }}{% endfor %}">
+
+                </div>
             </div>
-
         </div>
-        <div class="plane" style="display: none">
-            <input type="number" name="price[6]" class="uk-input uk-width-1-3 one_of"> ₽ - <span>{% trans %}Ориентировочная{% endtrans %}</span>
-        </div>
-
-
+        <div><p class="uk-text-muted uk-margin-small-bottom">{% trans %}Укажите, если это необходимо{% endtrans %}.</p></div>
     </div>
-    <div class="uk-width-1-5">
 
-    </div>
 </div>
 
 <div id="price_info" uk-modal>

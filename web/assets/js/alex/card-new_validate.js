@@ -13,6 +13,7 @@ const cardNewValidate = (function($) {
         $stepFive: $('.js-step-five'),
         $stepSix: $('.js-step-six'),
 
+
         // Step Two Required Fields
         $countrySelect: $('.js-address-country-select'),
         $regionSelect: $('.js-address-region-select'),
@@ -26,6 +27,7 @@ const cardNewValidate = (function($) {
         $citySelectError: $('.js-address-city-select-error'),
         $addressTextareaError: $('.js-address-textarea-error'),
 
+
         // Step Three Required Fields
         $typeSelect: $('.js-transport-type-select'),
         $groupSelect: $('.js-transport-group-select'),
@@ -38,13 +40,26 @@ const cardNewValidate = (function($) {
 
         // Step Three Error Alerts
         $stepThreeError: $('.js-step-three-error'),
-
         $typeSelectError: $('.js-transport-type-select-error'),
         $groupSelectError: $('.js-transport-group-select-error'),
         $modelSelectError: $('.js-transport-model-select-error'),
         $markSelectError: $('.js-transport-mark-select-error'),
         $modelInputError: $('.js-transport-model-input-error'),
         $markInputError: $('.js-transport-mark-input-error'),
+
+
+        // Step Four Error Alerts
+        $stepFourError: $('.js-step-four-error'),
+        $previewPhotosError: $('.js-preview-photos-error'),
+        $rentTermsError: $('.js-rent-terms-error'),
+
+
+        // Step Five Required Fields
+        $payPerHour: $('.js-pay-per-hour'),
+        $payPerDay: $('.js-pay-per-day'),
+
+        // Step Five Error Alerts
+        $stepFiveError: $('.js-step-five-error'),
 
     };
 
@@ -62,6 +77,16 @@ const cardNewValidate = (function($) {
         model: false
     }
 
+    let stepFourErrors = {
+        photos: false,
+        terms: false
+    }
+
+    let stepFiveErrors = {
+        payHour: false,
+        payDay: false,
+    }
+
     function init() {
         _bindHandlers();
     }
@@ -73,27 +98,82 @@ const cardNewValidate = (function($) {
 
         // Step Two - Next
         ui.$stepTwo.on('click', '.js-next-step', function(e){
-            //if (!_validateStepTwo()) return false;
+            if (!_validateStepTwo()) return false;
             _nextStep();
         });
 
         // Step Three - Next
         ui.$stepThree.on('click', '.js-next-step', function(e){
-            //if (!_validateStepThree()) return false;
+            if (!_validateStepThree()) return false;
             _nextStep();
         });
 
         // Step Four - Next
         ui.$stepFour.on('click', '.js-next-step', function(e){
-            //if (!_validateStepFour()) return false;
+            if (!_validateStepFour()) return false;
             _nextStep();
         });
 
         // Step Five - Next
         ui.$stepFive.on('click', '.js-next-step', function(e){
-            //if (!_validateStepFive()) return false;
+            if (!_validateStepFive()) return false;
             _nextStep();
         });
+
+    }
+
+    // Валидация Пятого шага
+    function _validateStepFive() {
+
+        ui.$stepFiveError.hide();
+
+        for (let error in stepFiveErrors) {
+            stepFiveErrors[error] = false;
+        }
+
+        let perDayVal = ui.$payPerDay.val(),
+            perHourVal = ui.$payPerHour.val();
+
+        if (!perHourVal.length) stepFiveErrors.payHour = true;
+        if (!perDayVal.length) stepFiveErrors.payDay = true;
+
+        if(!perHourVal.length && !perDayVal.length) ui.$stepFiveError.show();
+
+        if (!stepFiveErrors.payHour || !stepFiveErrors.payDay) {
+            return true;
+        }
+
+        return false;
+    }
+
+    // Валидация Четвертого шага
+    function _validateStepFour() {
+
+        ui.$stepFourError.hide();
+
+        for (let error in stepFourErrors) {
+            stepFourErrors[error] = false;
+        }
+
+        let $previewPhotos = $('.js-photo-preview'),
+            $rentTerms = $('.js-rent-terms'),
+            rentTermsVal = $rentTerms.val();
+
+        if (!$previewPhotos.length) {
+            stepFourErrors.photos = true;
+            ui.$previewPhotosError.show();
+        }
+
+        if (!rentTermsVal.length) {
+            stepFourErrors.terms = true;
+            ui.$rentTermsError.show();
+        }
+
+        if (!stepFourErrors.photos && !stepFourErrors.terms) {
+            return true;
+        }
+
+        return false;
 
     }
 

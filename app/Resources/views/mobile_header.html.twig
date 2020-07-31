@@ -3,125 +3,133 @@
 {% if no_header is not defined %}
 
 <section class="mobile-header">
-	<div class="container">
-		<div class="inner">
+	<div class="uk-container">
+		<div class="inner uk-flex uk-flex-between uk-flex-middle uk-width-1-1">
+
 			<div class="logo">
-				<a href="#">
-					<img src="/assets/images/interface/logo.png" alt="logo" />
+				<a class="logo__link" href="/">
+					<span class="logo__title logo__title_mobile">Мультипрокат</span>
+					<span class="logo__subtitle logo__subtitle_mobile">Прокат и аренда транспорта</span>
 				</a>
 			</div>
-			<div class="icons">
-				<div class="city-select">
-					<a href="#cityModal" class="city-select-link" data-toggle="modal">
-					<span class="icon">
-						<svg
-							width="14"
-							height="20"
-							viewBox="0 0 14 20"
-							fill="none"
-							xmlns="http://www.w3.org/2000/svg"
-						>
-							<path
-								d="M6.99871 0C3.32277 0 0.332031 2.99074 0.332031 6.66668C0.332031 7.7702 0.60793 8.86434 1.13242 9.8348L6.63414 19.7852C6.70738 19.9178 6.84695 20 6.99871 20C7.15047 20 7.29004 19.9178 7.36328 19.7852L12.867 9.83152C13.3895 8.86434 13.6654 7.77016 13.6654 6.66664C13.6654 2.99074 10.6746 0 6.99871 0ZM6.99871 10C5.16074 10 3.66539 8.50465 3.66539 6.66668C3.66539 4.82871 5.16074 3.33336 6.99871 3.33336C8.83668 3.33336 10.332 4.82871 10.332 6.66668C10.332 8.50465 8.83668 10 6.99871 10Z"
-								fill="#333"
-							/>
-						</svg>
-					</span>
+
+			<div class="icons uk-flex uk-flex-middle">
+
+				<div class="city-select uk-flex-inline uk-flex-middle">
+					<a href="#cityModal" class="city-select-link uk-flex-inline" data-toggle="modal">
+						<span class="uk-icon uk-icon-image" style="background-image: url('/assets/images/icons/city-choice-icon_mobile.svg'); width: 25px; height: 25px"></span>
 					</a>
 				</div>
+
 				{% if app.session.has('logged_user') %}
-				<div class="notifications">
-	<span class="icon">
-		<svg
-				width="20"
-				height="20"
-				viewBox="0 0 20 20"
-				fill="none"
-				xmlns="http://www.w3.org/2000/svg"
-		>
-			<g clip-path="url(#clip0)">
-				<path
-						d="M10.0017 12.8571L7.52741 10.6914L0.453125 16.7557C0.710268 16.9943 1.05741 17.1428 1.44027 17.1428H18.5631C18.9446 17.1428 19.2903 16.9943 19.546 16.7557L12.476 10.6914L10.0017 12.8571Z"
-						fill="#FAFAFA"
-				/>
-				<path
-						d="M19.5474 3.24456C19.2903 3.00456 18.9446 2.85742 18.5603 2.85742H1.43741C1.05598 2.85742 0.710268 3.00599 0.453125 3.24742L9.99884 11.4289L19.5474 3.24456Z"
-						fill="#FAFAFA"
-				/>
-				<path
-						d="M0 4.11133V15.9799L6.90429 10.1128L0 4.11133Z"
-						fill="#FAFAFA"
-				/>
-				<path
-						d="M13.0977 10.1131L20.0019 15.9803V4.10742L13.0977 10.1131Z"
-						fill="#FAFAFA"
-				/>
-			</g>
-			<defs>
-				<clipPath id="clip0">
-					<rect width="20" height="20" fill="white" />
-				</clipPath>
-			</defs>
-		</svg>
-	</span>
+				<div class="notifications uk-flex-inline uk-flex-middle">
+					<span class="uk-icon uk-icon-image" style="background-image: url('/assets/images/icons/close-envelope-icon_mobile.svg'); width: 25px; height: 25px"></span>
 					{% if t3_new.getNotify|length > 0 %}
-						<span class="count">
-		{{ t3_new.getNotify|length }}
-	</span>
+						<span class="count">{{ t3_new.getNotify|length }}</span>
 					{% endif %}
 				</div>
 				{% endif %}
-				<div class="burger">
-					<a href="#burger-menu" uk-toggle>
-					<svg
-						width="30"
-						height="19"
-						viewBox="0 0 30 19"
-						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<rect width="30" height="3" rx="1.5" fill="#1D1A1A" />
-						<rect y="8" width="30" height="3" rx="1.5" fill="#1D1A1A" />
-						<rect y="16" width="30" height="3" rx="1.5" fill="#1D1A1A" />
-					</svg>
+
+				<div class="burger uk-flex-inline uk-flex-middle">
+					<a class="uk-flex" href="#burger-main-menu" uk-toggle>
+						<span class="uk-icon uk-icon-image" style="background-image: url('/assets/images/icons/burger-icon_mobile.svg'); width: 30px; height: 19px"></span>
 					</a>
 				</div>
 			</div>
+
 		</div>
 	</div>
 </section>
 
 
-<div id="burger-menu" uk-offcanvas="overlay: true">
-	<div class="uk-offcanvas-bar uk-width-1-1">
+<div id="burger-main-menu" uk-offcanvas="overlay: true">
+	<div class="uk-offcanvas-bar burger-menu-main uk-width-1-1 uk-padding">
+		{% if app.session.get('logged_user') %}
+			{% set avatar_url = '/assets/images/users/t/user_'~app.session.get('logged_user').id~'.jpg' %}
+		{% endif %}
+		{% if not file_exists('.'~url) %}
+			{% set avatar_url = '/assets/images/interface/default-user.png' %}
+		{% endif %}
 
-		<div class="uk-flex uk-flex-between uk-flex-middle">
-			<div><a href="#signIn" data-toggle="modal">Вход</a></div>
+		<!-- Part 1 -->
+		<div class="uk-grid-small uk-flex uk-flex-middle uk-margin-medium-bottom" uk-grid>
+			<div class="uk-width-3-4 uk-flex uk-flex-middle">
+				{% if app.session.has('logged_user') %}
+					<div class="uk-background-cover uk-background-center-center uk-border-circle" style="background-image:url('{{ avatar_url }}'); width: 40px; height: 40px; flex: 0 0 40px;"></div>
+					<span class="uk-text-truncate uk-margin-small-left text-white">{{ app.session.get('logged_user').header }}</span>
+				{% else %}
+					<span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('/assets/images/icons/login-icon_mobile.svg');"></span>
+					<a href="#signIn" data-toggle="modal">Войти</a>
+				{% endif %}
+			</div>
 
-			<div>
-				<span class="uk-margin-small-right">
-					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<path d="M14.2857 12.5714H13.3714L13.0286 12.2286C14.1715 10.9714 14.8572 9.25714 14.8572 7.42857C14.8571 3.31429 11.5429 0 7.42857 0C3.31429 0 0 3.31429 0 7.42857C0 11.5429 3.31429 14.8571 7.42857 14.8571C9.25714 14.8571 10.9714 14.1714 12.2286 13.0286L12.5714 13.3714V14.2857L18.2857 20L20 18.2857L14.2857 12.5714ZM7.42857 12.5714C4.57143 12.5714 2.28571 10.2857 2.28571 7.42857C2.28571 4.57143 4.57143 2.28571 7.42857 2.28571C10.2857 2.28571 12.5714 4.57143 12.5714 7.42857C12.5714 10.2857 10.2857 12.5714 7.42857 12.5714Z" fill="#fff"></path>
-					</svg>
-				</span>
-				<span>
-					 <button class="uk-offcanvas-close" type="button" style="position: relative; color: #fff" uk-close></button>
-				</span>
+			<div class="uk-width-1-4 uk-flex uk-flex-middle uk-flex-between">
+				<a class="text-white" href="javascript:;">
+					<span class="uk-icon uk-icon-image" style="background-image: url('/assets/images/icons/search-icon_mobile.svg')"></span>
+				</a>
+
+				<button class="uk-offcanvas-close uk-padding-remove burger-menu-close" type="button" uk-close></button>
 			</div>
 		</div>
 
-		<ul class="uk-nav uk-nav-default">
+		<!-- Part 2: Rent Button -->
+		<ul class="uk-nav uk-nav-default burger-nav">
 			<li>
 				{% if app.session.has('logged_user') %}
-					<a href="/card/new">Сдать в аренду</a>
+					<a class="uk-padding-remove" href="/card/new">
+						<span class="uk-icon-button" uk-icon="plus" style="color: #fff; background: #4629D3; width: 32px; height: 32px;"></span>
+						<span class="uk-margin-small-left">Сдать в аренду</span>
+					</a>
 				{% elseif app.session.has('admin') %}
-					<a href="/card/new">Сдать в аренду</a>
+					<a class="uk-padding-remove" href="/card/new">
+						<span class="uk-icon-button" uk-icon="plus" style="color: #fff; background: #4629D3; width: 32px; height: 32px;"></span>
+						<span class="uk-margin-small-left">Сдать в аренду</span>
+					</a>
 				{% else %}
-					<a uk-toggle="target: #sign_in">Сдать в аренду</a>
+					<a class="uk-padding-remove" href="#signIn" data-toggle="modal">
+						<span class="uk-icon-button" uk-icon="plus" style="color: #fff; background: #4629D3; width: 32px; height: 32px;"></span>
+						<span class="uk-margin-small-left">Сдать в аренду</span>
+					</a>
 				{% endif %}
 			</li>
-			<li class="uk-active"><a href="/faq">Как это работает?</a></li>
-			<li class="uk-active"><a href="#">Категории транспорта</a></li>
+		</ul>
+
+		<!-- Part 3: Logined Buttons -->
+		{% if app.session.has('logged_user') %}
+		<ul class="uk-nav uk-nav-default burger-nav">
+			<li><a href="/profile">Мой профиль</a></li>
+			<li><a href="/user/cards">Мой транспорт</a></li>
+			<li>
+				<a href="/user/transport_orders"><span class="uk-margin-small-right">Мои сообщения</span>{% if t3_new.getNotify|length > 0 %}<span class="uk-badge notification-badge">{{ t3_new.getNotify|length }}</span>{% endif %}
+				</a>
+			</li>
+			<li><a href="/userLogout">Выход</a></li>
+			{% if app.session.get('admin').email is defined %}
+				<li><a href="/admin">{{ app.session.get('admin').email }}</a></li>
+				<li><a href="/adminLogout">Выход</a></li>
+			{% endif %}
+		</ul>
+		{% endif %}
+
+		<!-- Part 4: Nav List -->
+		<ul class="uk-nav uk-nav-default burger-nav burger-nav-pt">
+			<li><a href="javascript:;">Как это работает?</a></li>
+			<li><a href="javascript:;">Категории транспорта</a></li>
+		</ul>
+
+		<!-- Part 5: FAQ -->
+		<ul class="uk-nav uk-nav-default burger-nav burger-nav-pt burger-nav-pb">
+			<li><a href="/faq">Часто задаваемые вопросы</a></li>
+		</ul>
+
+		<!-- Part 6: Social Media -->
+		<ul class="burger-nav__social-media">
+			<li><a href="https://www.youtube.com/channel/UCj-igu9KFIbzdzVCezy1qFg" targer="_blank" uk-icon="youtube"></a></li>
+			<li><a href="https://twitter.com/multiprokat" targer="_blank" uk-icon="twitter"></a></li>
+			<li><a href="https://www.instagram.com/multiprokat/" target="_blank"><span class="uk-icon uk-icon-image" style="background-image: url('/assets/images/icons/instagram-icon_white.svg');"></span></a></li>
+			<li><a href="https://plus.google.com/u/1/102220936243060868002" target="_blank"><span class="uk-icon uk-icon-image" style="background-image: url('/assets/images/icons/google-plus-icon_white.svg');"></span></a></li>
+			<li><a href="https://www.facebook.com/multiprokatcom/" targer="_blank" uk-icon="facebook"></a></li>
+			<li><a href="https://vk.com/multiprokatcom" target="_blank"><span class="uk-icon uk-icon-image" style="background-image: url('/assets/images/icons/vk-icon_white.svg');"></span></a></li>
 		</ul>
 
 	</div>

@@ -9,10 +9,12 @@ const transportChange = (function($) {
         $markCheckbox: $('.js-mark-checkbox'),
         $markCollapse: $('.js-mark-collapse'),
         $modelCheckbox: $('.js-model-checkbox'),
-        $modelCollapse: $('.js-model-collapse')
+        $modelCollapse: $('.js-model-collapse'),
+        $subfieldsArea: $('.js-subfields-area'),
+        $subfieldsSelect: $('.js-subfields-area select')
     };
 
-    let allSubFields, carType;
+    let subFields, carType;
 
     function init() {
         _bindHandlers();
@@ -20,6 +22,7 @@ const transportChange = (function($) {
 
     function _bindHandlers() {
         _initModel();
+        _initSubfields();
         ui.$typeSelect.on('change', _changeType);
         ui.$groupSelect.on('change', _changeGroup);
         ui.$markSelect.on('change', _changeMark);
@@ -29,17 +32,28 @@ const transportChange = (function($) {
     }
 
     function _initModel() {
-        console.log('model init!');
         let markVal = ui.$markSelect.val();
         if(!markVal) ui.$modelSelect.prop('disabled', true).selectric('refresh');
+    }
+
+    function _initSubfields() {
+        _getData('getAllSubFields', {generalTypeId:2}).done(function(response) {
+            ui.$subfieldsArea.html(response);
+            ui.$subfieldsArea.find('select').selectric({
+                maxHeight: 200
+            });
+        });
+
+
     }
 
     function _toggleNewMark() {
 
         ui.$markCollapse.toggleClass('uk-hidden');
 
-        let isCheckboxActive = ui.$markCheckbox.prop('checked');
+        //let isCheckboxActive = ui.$markCheckbox.prop('checked');
 
+        /*
         if(isCheckboxActive) {
             ui.$markSelect.prop('disabled', true).selectric('refresh');
             ui.$modelSelect.prop('disabled', true).selectric('refresh');
@@ -51,6 +65,7 @@ const transportChange = (function($) {
             ui.$modelCheckbox.prop('checked', false).removeAttr('disabled');
             ui.$modelCollapse.addClass('uk-hidden');
         }
+         */
 
         _initModel();
 
@@ -61,21 +76,23 @@ const transportChange = (function($) {
         ui.$modelCollapse.toggleClass('uk-hidden');
 
         let isCheckboxActive = ui.$modelCheckbox.prop('checked');
+
+        /*
         if(isCheckboxActive) {
             ui.$modelSelect.prop('disabled', true).selectric('refresh');
         } else {
             ui.$modelSelect.removeAttr('disabled').selectric('refresh');
         }
+         */
 
         _initModel();
     }
 
     function _changeType() {
-        carType = null;
+        //carType = null;
 
         let $this = $(this),
             currentVal = $this.val() - 0;
-
 
         $.when(
             _getData('getGeneralTypeSecondLevel', {generalTypeTopLevelId: currentVal}),
@@ -84,9 +101,8 @@ const transportChange = (function($) {
 
         ).done(function(responseGroups, responseCarType, allSubFields) {
 
-            console.log(allSubFields);
-            $('.categories').html(allSubFields[0]);
-            $('.categories').find('select').selectric();
+            //$('.categories').html(allSubFields[0]);
+            //$('.categories').find('select').selectric();
 
             ui.$groupSelect
                 .html(responseGroups[0])
@@ -98,12 +114,22 @@ const transportChange = (function($) {
 
             carType = responseCarType[0];
 
+            subFields = allSubFields[0];
+
+            ui.$subfieldsArea.html(subFields).find('select').selectric({
+                maxHeight: 200
+            });
+
+            /*
             if(!responseCarType[0].length) {
                 ui.$groupSelect.find('option[value="0"]').remove();
                 ui.$groupSelect.selectric('refresh');
             }
+             */
 
         });
+
+
 
     }
 
@@ -127,7 +153,6 @@ const transportChange = (function($) {
 
         _getData('getCarType', {gt: currentVal}).done(function (groupId) {
             _getData('getMarks', {groupId: groupId}).done(function(response) {
-                console.log(response);
                 ui.$markSelect
                     .html(response)
                     .prop('selectedIndex', 0)
@@ -135,6 +160,15 @@ const transportChange = (function($) {
                     .selectric('refresh');
             });
         });
+
+        _getData('getAllSubFields', {generalTypeId: currentVal}).done(function(response) {
+            subFields = response;
+            ui.$subfieldsArea.html(subFields).find('select').selectric({
+                maxHeight: 200
+            });
+        });
+
+        ui.$modelSelect.prop('selectedIndex', 0).prop('disabled', true).selectric('refresh');
 
     }
 
@@ -145,18 +179,21 @@ const transportChange = (function($) {
             currentVal = $this.val() - 0;
 
         _getData('getModels', {markId: currentVal}).done(function(response) {
-            console.log(response);
             ui.$modelSelect
                 .html(response)
                 .prop('selectedIndex', 0)
                 .prop('disabled', false)
                 .selectric('refresh');
         });
+
     }
 
-
     function _changeModel() {
-
+        let $this = $(this),
+            currentVal = $this.val() - 0;
+        _getData('getPrices', {modelId: currentVal}).done(function(response) {
+            console.log(response);
+        });
     }
 
     function _getData(method, data) {

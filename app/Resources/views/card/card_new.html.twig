@@ -5,6 +5,7 @@
     <link href="{{ asset('assets/css/auto-complete.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/select2.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/datepicker.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/alex/card/card_new.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block javascripts %}
@@ -42,7 +43,7 @@
             <li><a href="javascript:;">6</a></li>
         </ul>
 
-        <form action="/card/new" method="POST" enctype="multipart/form-data" {% if not admin and not user %}hidden{% endif %}>
+        <form action="/card/new" method="POST" enctype="multipart/form-data" class="js-card-new-form" {% if not admin and not user %}hidden{% endif %}>
         <ul id="js-control" class="uk-switcher uk-margin js-step-new-form">
             <!-- Step 1/6 -->
             <li  class="js-step-one">
@@ -63,7 +64,7 @@
                 {{ include('card/card_new_elements/new_address.html.twig') }}
 
                 <div class="uk-padding uk-padding-remove-horizontal uk-padding-remove-bottom">
-                    <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-5@m" uk-grid>
+                    <div class="uk-grid-small uk-child-width-1-1 uk-child-width-1-5@m" uk-grid>
                         <div class="uk-flex-last@m">
                             <button type="button" class="uk-button button button-primary button-lg uk-width-1-1 js-next-step">{% trans %}Далее{% endtrans %}</button>
                         </div>
@@ -84,7 +85,7 @@
                 {{ include('card/card_new_elements/new_mark.html.twig') }}
 
                 <div class="uk-padding uk-padding-remove-horizontal uk-padding-remove-bottom">
-                    <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-5@m" uk-grid>
+                    <div class="uk-grid-small uk-child-width-1-1 uk-child-width-1-5@m" uk-grid>
                         <div class="uk-flex-last@m">
                             <button type="button" class="uk-button button button-primary button-lg uk-width-1-1 js-next-step">{% trans %}Далее{% endtrans %}</button>
                         </div>
@@ -98,6 +99,9 @@
 
             <!-- Step 4/6 -->
             <li class="js-step-four">
+                <div class="uk-align uk-hidden@m">
+                    <p class="uk-margin-remove">{% trans %}Качественные фотографии вашего транспорта, привлекают  больше внимания и помогают получить больше заявок от арендаторов, тем самым увеличивая ваш заработок.{% endtrans %}</p>
+                </div>
                 <div class="uk-margin-small-bottom">{% trans %}Шаг{% endtrans %} 4 <span class="uk-text-muted">{% trans %}из{% endtrans %} 6</span></div>
                 <div class="uk-hr uk-align uk-margin-remove-top"></div>
                 {{ include('card/card_new_elements/new_foto.html.twig') }}
@@ -105,7 +109,7 @@
                 {{ include('card/card_new_elements/new_description.html.twig') }}
 
                 <div class="uk-padding uk-padding-remove-horizontal uk-padding-remove-bottom">
-                    <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-5@m" uk-grid>
+                    <div class="uk-grid-small uk-child-width-1-1 uk-child-width-1-5@m" uk-grid>
                         <div class="uk-flex-last@m">
                             <button type="button" class="uk-button button button-primary button-lg uk-width-1-1 js-next-step">{% trans %}Далее{% endtrans %}</button>
                         </div>
@@ -126,7 +130,7 @@
                 {{ include('card/card_new_elements/new_all_dops.html.twig') }}
 
                 <div class="uk-padding uk-padding-remove-horizontal uk-padding-remove-bottom">
-                    <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-5@m" uk-grid>
+                    <div class="uk-grid-small uk-child-width-1-1 uk-child-width-1-5@m" uk-grid>
                         <div class="uk-flex-last@m">
                             <button type="button" class="uk-button button button-primary button-lg uk-width-1-1 js-next-step">{% trans %}Далее{% endtrans %}</button>
                         </div>

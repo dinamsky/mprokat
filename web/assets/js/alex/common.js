@@ -1,5 +1,9 @@
 const commonAlex = (function($) {
 
+    let ui = {
+        $mainAlert: $('.js-main-alert')
+    }
+
     let countriesList = {
         ru: {
             placeholder: '+7 (000) 000-00-00',
@@ -24,6 +28,7 @@ const commonAlex = (function($) {
     }
 
     function init() {
+        if(ui.$mainAlert.length) _checkMainAlerts();
         _bindHandlers();
     }
 
@@ -31,6 +36,11 @@ const commonAlex = (function($) {
         $('.js-form-group').on('focus', '.js-form-control', _formControlFocus);
         $('.js-form-group').on('blur', '.js-form-control', _formControlBlur);
         $('.js-select-lang').on('click', 'a', _changeTelMask)
+    }
+
+    function _checkMainAlerts() {
+        UIkit.modal(ui.$mainAlert).show();
+        setTimeout(() => UIkit.modal(ui.$mainAlert).hide(), 3000);
     }
 
     function _changeTelMask(e) {

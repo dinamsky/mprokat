@@ -1,5 +1,5 @@
 <select name="subField[{{ options[0].fieldId }}]" data-id="{{ options[0].fieldId }}"
-        class="sub_field_field subFieldSelect {{ options[0].getChildren is empty ? 'is_last' : '' }} uk-select">
+        class="sub_field_field subFieldSelect {{ options[0].getChildren is empty ? 'is_last' : '' }} uk-select select-border-bottom">
     <option value="0">{% trans %}Все{% endtrans %}</option>
     {% for option in options %}
         <option value="{{ option.id }}">
