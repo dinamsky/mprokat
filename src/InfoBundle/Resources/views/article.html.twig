@@ -2,8 +2,14 @@
 
 
 {% block content %}
-    <div class="standard_wide">
-        <h1>{{ article.header }}</h1>
+    <div class="page">
+    <div class="container">
+    <div class="row">
+    <div class="col-12 col-md-6">
+        <h2>{{ article.header }}</h2>
         <div>{{ article.content|raw }}</div>
+    </div>
+    </div>
+    </div>
     </div>
 {% endblock %}

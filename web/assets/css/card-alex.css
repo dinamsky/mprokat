@@ -426,9 +426,9 @@ hr, .uk-hr {
 ------------------*/
 .entry-aside {
     padding: 20px 20px 20px;
-    border: 1px solid #E4E3E3;
-    border-radius: 3px;
-    box-shadow: none;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow:  31px 31px 61px #c9c9c9,
     color: inherit;
 }
 
@@ -670,12 +670,12 @@ hr, .uk-hr {
 }
 
 .entry-information__list {
-    margin-bottom: 40px;
+    margin: 0 0 40px;
 }
 
 @media(min-width: 960px) {
     .entry-information__list {
-        margin-bottom: 50px;
+        margin: 0 0 50px;
     }
 }
 
@@ -741,6 +741,7 @@ hr, .uk-hr {
     line-height: 1.2;
     padding: 20px 0 0;
     margin: 0;
+
 }
 
 @media(min-width: 960px) {
@@ -926,6 +927,10 @@ hr, .uk-hr {
     border: 2px solid #E4E3E3;
     border-radius: 3px;
     padding: 35px 13px 40px;
+    border-radius: 20px;
+    background: #f9f9fb;
+    box-shadow:  10px 10px 19px #c5c5c6,
+    -10px -10px 19px #ffffff;
 }
 
 @media(min-width: 960px) {
@@ -951,6 +956,10 @@ hr, .uk-hr {
 
 .entry-share__button {
     min-width: 220px;
+    border-radius: 20px;
+    
+    box-shadow:  10px 10px 19px #c5c5c6,
+    -10px -10px 19px #ffffff;
 }
 
 /*-----------------

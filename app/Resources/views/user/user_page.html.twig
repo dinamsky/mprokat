@@ -1,13 +1,10 @@
 {% extends 'base.html.twig' %}
 
-
 {% block stylesheets %}
     {{ parent() }}
-
-    <link href="{{ asset('assets/css/auto-complete.css') }}" rel="stylesheet" />
-
+    <link href="{{ asset('assets/css/auto-complete.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/alex/profile/profile-main.css') }}" rel="stylesheet">
 {% endblock %}
-
 
 {% block javascripts %}
     {{ parent() }}
@@ -20,11 +17,189 @@
 {% endblock %}
 
 {% block socialScripts %}
-    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
 {% endblock %}
 
 {% block content %}
-    <div class="user_page_top_line_1">
+<div class="uk-container uk-margin-large-bottom">
+
+    <!-- Avatar && User Info -->
+    <div class="uk-grid-medium" uk-grid>
+        <div class="uk-width-1-1 uk-width-auto@m">
+            <div class="uk-margin-auto uk-panel uk-background-cover uk-background-norepeat uk-overflow-hidden uk-border-circle avatar-profile"
+                style="border: 1px solid #ededed; background-image: url('{% if user_foto %}{{ user_foto }}{% else %}/assets/images/icons/user.svg{% endif %}');"></div>
+        </div>
+
+        <!-- User Info -->
+        <div class="uk-width-1-1 uk-width-expand@m">
+
+            <!-- Name, Rating, Registration Date -->
+            <div class="uk-grid-small uk-flex uk-flex-middle" uk-grid>
+
+                <div class="uk-width-1-1 uk-width-auto@m uk-flex uk-flex-center uk-flex-left@m">
+                    <h2 class="uk-margin-remove-bottom">{{ user.header }}</h2>
+                    {% if user.accountTypeId == 0 and app.session.has('admin') %}
+                    <button class="uk-button uk-button-danger uk-button-small uk-margin-small-left go_pro" data-id="{{ user.id }}">Перевести в PRO</button>
+                    {% endif %}
+                </div>
+
+                <div class="uk-width-1-1 uk-width-auto@m">
+                    <div class="rating uk-flex uk-flex-center">
+                        <div class="rating-list">
+                            <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
+                            <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
+                            <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
+                            <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
+                            <div class="rating-item"><span class="rating-icon"></span></div>
+                        </div>
+                        <span class="uk-text-muted uk-margin-small-left">(27)</span>
+                    </div>
+                </div>
+
+                <div class="uk-width-1-1 uk-width-expand@m uk-text-center uk-text-right@m">
+                    <span class="uk-text-muted">Зарегистрирован 20 мая, 2018</span>
+                </div>
+            </div>
+
+
+
+            <div class="uk-grid-row-small uk-grid-column-medium" uk-grid>
+                <div class="uk-width-1-1 uk-visible@m">
+                    <div class="uk-hr uk-margin-remove-top"></div>
+                </div>
+
+                <div class="uk-width-1-1 uk-width-1-2@m">
+                    <ul class="uk-grid-small uk-flex-middle uk-flex-center uk-margin-remove-bottom" uk-grid>
+                        {% for info in user.information %}
+                        {% if info.uiKey == 'vk' and info.uiValue != '' %}<li><a href="{{ info.uiValue }}" class="uk-icon-button"><i class="fa fa-vk"></i></a></li>{% endif %}
+                        {% if info.uiKey == 'fb' and info.uiValue != '' %}<li><a href="{{ info.uiValue }}" class="uk-icon-button"><i class="fa fa-facebook"></i></a></li>{% endif %}
+                        {% if info.uiKey == 'ok' and info.uiValue != '' %}<li><a href="{{ info.uiValue }}" class="uk-icon-button"><i class="fa fa-odnoklassniki"></i></a></li>{% endif %}
+                        {% if info.uiKey == 'tw' and info.uiValue != '' %}<li><a href="{{ info.uiValue }}" class="uk-icon-button"><i class="fa fa-twitter"></i></a></li>{% endif %}
+                        {% if info.uiKey == 'gp' and info.uiValue != '' %}<li><a href="{{ info.uiValue }}" class="uk-icon-button"><i class="fa fa-google-plus"></i></a></li>{% endif %}
+                        {% if info.uiKey == 'ig' and info.uiValue != '' %}<li><a href="{{ info.uiValue }}" class="uk-icon-button"><i class="fa fa-instagram"></i></a></li>{% endif %}
+                        {% if info.uiKey == 'yt' and info.uiValue != '' %}<li><a href="{{ info.uiValue }}" class="uk-icon-button"><i class="fa fa-youtube"></i></a></li>{% endif %}
+                        {% endfor %}
+                    </ul>
+
+                </div>
+
+                <div class="uk-width-1-1 uk-width-1-2@m uk-flex uk-flex-right@m uk-flex-middle uk-text-left uk-text-right@m">
+                    <ul class="uk-list uk-margin-remove-bottom">
+                        <li class="uk-link"><span class="uk-margin-small-right" uk-icon="check"></span>Пользователь верифицирован</li>
+                        <li class="uk-link"><span class="uk-margin-small-right" uk-icon="check"></span>Проверенный владелец</li>
+                        {% if app.session.has('admin') %}<li class="uk-link"><span class="uk-margin-small-right" uk-icon="mail"></span>{{ user.email }}</li>{% endif %}
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <!-- /User Info -->
+        <div class="uk-width-1-1 uk-hidden@m"><div class="uk-hr"></div></div>
+    </div>
+    <!-- /Avatar && User Info -->
+
+    <div class="uk-grid-medium uk-child-width-1-1" uk-grid>
+
+        <!-- User Transport -->
+        <div>
+            <div class="uk-child-width-1-1 uk-grid uk-grid-medium" uk-grid>
+                <div>
+                    <div class="uk-flex uk-flex-between uk-flex-middle uk-margin-small-bottom uk-card-header uk-padding-remove-horizontal">
+                        <h2 class="uk-margin-remove">Транспорт пользователя</h2>
+                        <div class="uk-visible@m"><a href="javascript:;" class="uk-link link-underline">Весь транспорт</a></div>
+                    </div>
+
+                    <div class="uk-child-width-1-2 uk-child-width-1-4@m uk-grid-medium" uk-grid>
+                        <!-- Cards list -->
+                        {% for card in user.cards %}
+                            <div>{{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}</div>
+                        {% endfor %}
+                        <!-- /Cards list -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /User Transport -->
+
+        <!-- User Reviews -->
+        <div class="uk-flex-first@m">
+
+            <!-- Загловок: Отзывы -->
+            <div uk-grid class="edit-toggle">
+                <div class="uk-width-1-1">
+                    <div class="uk-flex uk-flex-between uk-flex-middle uk-card-header uk-padding-remove-horizontal">
+                        <h2 class="uk-margin-remove">Отзывы о пользователе <span class="uk-hidden@m"> 7</span></h2>
+                        <div class="uk-visible@m"><a href="#" class="uk-link link-underline">Все отзывы (6)</a></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Список: Отзывы -->
+            <div class="uk-grid-medium edit-toggle" uk-grid>
+                <div class="uk-width-1-1">
+                    <ul class="uk-comment-list uk-margin-remove review-list review-list__user-page">
+                        <li>
+                            <article class="uk-comment review">
+                                <header class="uk-comment-header review-header">
+                                    <h4 class="uk-comment-title uk-margin-remove review-title"><a class="review-link" href="#">Иван Иванов</a></h4>
+                                </header>
+                                <div class="uk-comment-body review-body uk-width-1-1 uk-width-1-2@m">
+                                    <p>Все четко, быстрая коммуникация с владельцем авто, будем пользоваться снова</p>
+                                </div>
+                                <footer class="uk-comment-footer review-footer">
+                                    <div class="uk-flex uk-flex-between uk-comment-meta uk-flex-middle">
+                                        <div class="rating">
+                                            <div class="rating-list">
+                                                <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
+                                                <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
+                                                <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
+                                                <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
+                                                <div class="rating-item"><span class="rating-icon"></span></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="uk-flex-first@m">21.03.2018</div>
+                                    </div>
+                                </footer>
+                            </article>
+                        </li>
+                        <li>
+                            <article class="uk-comment review">
+                                <header class="uk-comment-header review-header">
+                                    <h4 class="uk-comment-title uk-margin-remove review-title"><a class="review-link" href="#">Сергей</a></h4>
+                                </header>
+                                <div class="uk-comment-body review-body uk-width-1-1 uk-width-1-2@m">
+                                    <p>Все четко, быстрая коммуникация с владельцем авто, будем пользоваться снова</p>
+                                </div>
+                                <footer class="uk-comment-footer review-footer">
+                                    <div class="uk-flex uk-flex-between uk-comment-meta uk-flex-middle">
+                                        <div class="rating">
+                                            <div class="rating-list">
+                                                <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
+                                                <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
+                                                <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
+                                                <div class="rating-item"><span class="rating-icon"></span></div>
+                                                <div class="rating-item"><span class="rating-icon"></span></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="uk-flex-first@m">21.03.2018</div>
+                                    </div>
+                                </footer>
+                            </article>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <!-- /User Reviews -->
+
+    </div>
+
+</div>
+
+    <div class="user_page_top_line_1" hidden>
         <div class="standard_wide">
             {% if is_mobile() %}
                 <div class="uk-width-1-1 uk-width-1-5@s">
@@ -71,7 +246,8 @@
             </div>
         </div>
     </div>
-    <div class="user_page_top_line_2">
+
+    <div class="user_page_top_line_2" hidden>
         <div class="standard_wide">
             <div uk-grid>
                 {% if not is_mobile() %}
@@ -198,7 +374,7 @@
         </div>
     </div>
 
-    <div class="standard_wide uk-margin-large">
+    <div class="standard_wide uk-margin-large" hidden>
         <h2 class="pf_style_header"><span>Транспорт пользователя: {{ user.cards|length }}</span></h2>
         <div uk-grid class="uk-grid-small uk-grid-match uk-margin-large-bottom">
             {% for card in user.cards %}
@@ -208,7 +384,5 @@
             {% endfor %}
         </div>
     </div>
-
-
 
 {% endblock %}

@@ -146,6 +146,12 @@ hr, .uk-hr {
     -webkit-border-radius: 3px;
 }
 
+.uk-button-small {
+    padding: 0 15px;
+    line-height: 28px;
+    font-size: 0.875rem;
+}
+
 /*
  * Default
  */
@@ -758,10 +764,22 @@ hr, .uk-hr {
 /*-----------------
     comments
 ------------------*/
-.review-list>:nth-child(n+2) {
+.review-list > :nth-child(n+2) {
     margin: 20px 0 0;
     padding: 30px 0 0;
     border-top: 1px solid #E4E3E3;
+}
+
+.review-list__user-page > :nth-child(n+1),
+.review-list__user-page > :nth-child(n+2)  {
+    margin: 0 0 20px;
+    padding: 0 0 30px;
+    border-top: 0;
+    border-bottom: 1px solid #E4E3E3;
+}
+
+.review-list__user-page > :last-child {
+    margin-bottom: 0;
 }
 
 .review-header {

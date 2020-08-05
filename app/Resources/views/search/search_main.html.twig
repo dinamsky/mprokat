@@ -62,7 +62,7 @@
 				{{ include('search/model_block.html.twig') }}
 			{% endif %}
 
-			{{ include('search/search_form.html.twig',{'top':true}) }}
+{#			{{ include('search/search_form.html.twig',{'top':true}) }}#}
 		</div>
 	</section>
 
@@ -91,17 +91,17 @@
 						<a uk-toggle="target: #sign_in" class="uk-button uk-button-success zero_button">{% trans %}Разместить транспорт!{% endtrans %}</a>
 					{% endif %}
 
-					{% if similar %}
-						<h2 class="pf_style_header"><span>{% trans %}Многим нравится{% endtrans %}</span></h2>
+{#					{% if similar %}#}
+{#						<h2 class="pf_style_header"><span>{% trans %}Многим нравится{% endtrans %}</span></h2>#}
 
-						<div uk-grid class="uk-grid-small uk-grid-match uk-margin-top">
-							{% for card in similar %}
-								<div class="uk-width-1-3@s">
-									{{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}
-								</div>
-							{% endfor %}
-						</div>
-					{% endif %}
+{#						<div uk-grid class="uk-grid-small uk-grid-match uk-margin-top">#}
+{#							{% for card in similar %}#}
+{#								<div class="uk-width-1-3@s">#}
+{#									{{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}#}
+{#								</div>#}
+{#							{% endfor %}#}
+{#						</div>#}
+{#					{% endif %}#}
 
 
 				{% endif %}
