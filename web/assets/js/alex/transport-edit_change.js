@@ -1,4 +1,4 @@
-const transportChange = (function($) {
+const transportEditChange = (function($) {
 
     let ui = {
         $typeSelect: $('.js-transport-type-select'),
@@ -213,4 +213,4 @@ const transportChange = (function($) {
 
 })(jQuery);
 
-jQuery(document).ready(transportChange.init);
+jQuery(document).ready(transportEditChange.init);

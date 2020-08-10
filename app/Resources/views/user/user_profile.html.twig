@@ -1,16 +1,17 @@
 {% extends 'user/user_base.html.twig' %}
+
 {% block stylesheets %}
-    {{ parent() }}
+{{ parent() }}
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
-    <script src="{{ asset('assets/js/image_upload_preview.js') }}"></script>
-    {# <script src="{{ asset('assets/js/jquery.maskedinput.js') }}"></script>
-    <script src="{{ asset('assets/js/phone_validate.js') }}"></script> #}
-    <script src="{{ asset('assets/js/common.js') }}"></script>
-    <script src="{{ asset('assets/js/inputmask.min.js') }}"></script>
-    <script src="{{ asset('assets/js/country.js') }}"></script>
+{{ parent() }}
+<script src="{{ asset('assets/js/image_upload_preview.js') }}"></script>
+{# <script src="{{ asset('assets/js/jquery.maskedinput.js') }}"></script>
+<script src="{{ asset('assets/js/phone_validate.js') }}"></script> #}
+<script src="{{ asset('assets/js/common.js') }}"></script>
+<script src="{{ asset('assets/js/inputmask.min.js') }}"></script>
+<script src="{{ asset('assets/js/country.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -40,7 +41,6 @@
     <button class="uk-button uk-button-primary">Перейти</button>
 </form>
 {% endif %}
-
 
 {% set phone = '' %}
 {% set website = '' %}
@@ -93,371 +93,329 @@
 
 {% endfor %}
 
-<div class="uk-container">
-<!-- new profile -->
-    <div class="uk-grid-medium uk-child-width-1-1" uk-grid>
-        <div>
-            <h1 class="uk-h2">{{ app.session.get('logged_user').whois == 'new_renter' ? 'Заполните профиль!' : 'Мой профиль' }}</h1>
+<div class="uk-container uk-margin-large-bottom">
+
+    {% if user.isNew == 0 %}
+    <form action="/user_go_new" class="uk-margin-large-bottom padding20 bg_white bordered" method="POST">
+        <div class="uk-margin-bottom">
+            Мультипрокат предлагает вам перейти на новую систему заказов,<br>
+            а также получить  PRO аккаунт - Бесплатно!<br>
+            PRO аккаунт подтверждает вашу деятельность и дает больше клиентов.<br><br>
+
+            PRO аккаунт действует бессрочно и дает больше возможностей, в том числе: размещать больше транспорта и получать больше звонков от клиентов
         </div>
-    </div>
+
+        <div class="uk-margin-bottom">
+            <label>Я ознакомлен и согласен с условиями
+                <a class="underline" href="/assets/docs/oferta.pdf" target="_blanc" uk-tooltip="title:откроется в новом окне">оферты</a>
+                <input checked name="oferta_check" type="checkbox">
+            </label>
+        </div>
+        <div class="uk-margin-bottom">
+            <label>Активировать бесплатно PRO аккаунт
+                <input checked name="pro_check" type="checkbox">
+            </label>
+        </div>
+        <input type="hidden" name="id" value="{{ user.id }}">
+        <button class="uk-button uk-button-primary">Перейти</button>
+    </form>
+    {% endif %}
+
     <div class="uk-grid-medium" uk-grid>
+        <div class="uk-width-1-1 uk-width-1-4@m">
+            {% if app.session.get('logged_user').accountTypeId == 0 %}
+            <div class="uk-h4">{% trans %}Ваш аккаунт{% endtrans %}: <span class="uk-text-danger">{% trans %}стандартный{% endtrans %}</span></div>
+            <p class="uk-text-muted">{% trans %}Вы можете разместить не более 2-х транспортов{% endtrans %}</p>
+            <a href="/userPayPro/{{ app.session.get('logged_user').id }}" class="uk-button button button-outline-primary button-lg uk-width-1-1 uk-padding-remove-horizontal">
+                <span class="uk-icon uk-icon-image" style="background-image: url('/assets/images/icons/medal-pro-icon.svg'); width: 24px; height: 24px"></span>
+                <span>{% trans %}Купить PRO аккаунт{% endtrans %}</span>
+            </a>
 
-        <div class="uk-width-1-1 uk-width-auto@m">
-
-            <div class="uk-margin-auto uk-panel uk-background-cover uk-background-norepeat uk-overflow-hidden uk-border-circle avatar-profile"
-                 style="{% if foto|length %}background-image: url('/assets/images/users/t/{{ foto }}.jpg');{% else %}background-image: url('/assets/images/icons/user.svg'); border: 1px solid #cecece;{% endif %}">
-                <a href="#modal-avatar-upload" class="edit-toggle uk-position-cover uk-overlay-default uk-flex uk-flex-column uk-flex-center uk-flex-middle uk-text-center uk-border-circle edit-avatar" hidden uk-toggle>
-                    <span class="uk-icon uk-icon-image edit-avatar__icon" style="background-image: url('/assets/images/icons/camera.svg');"></span>
-                    <span class="uk-margin-small-top uk-visible@m">{% trans %}Изменить фото{% endtrans %}</span>
-                </a>
+            <div class="uk-margin-top">
+                {% trans %}PRO аккаунт действует бессрочно и дает возможность сдавать больше транспорта в аренду{% endtrans %}
             </div>
-        </div>
-
-        <div class="uk-width-1-1 uk-width-expand@m">
-            <h2 class="uk-margin-small-bottom uk-text-center uk-text-left@m">{{ user.header }}</h2>
-
-            <div class="uk-flex uk-flex-between uk-flex-middle uk-margin-bottom">
-                <div class="rating">
-                    <div class="rating-list">
-                        <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
-                        <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
-                        <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
-                        <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
-                        <div class="rating-item"><span class="rating-icon"></span></div>
-                    </div>
-                    <span class="uk-text-muted uk-margin-small-left">(7)</span>
-                </div>
-                <div class="uk-text-muted">Баланс: 0 ₽</div>
-            </div>
-
-            <div class="uk-hr"></div>
-
-            <div class="uk-flex uk-flex-wrap uk-flex-between uk-flex-top edit-toggle">
-
-                <div class="uk-width-1-1 uk-width-2-3@m uk-width-1-2@l">
-                    <ul class="uk-list uk-list-large uk-margin-remove uk-column-1-1 uk-column-1-2@m">
-                        <li class="uk-flex uk-flex-between uk-flex-left@m"><span class="uk-text-muted">{% trans %}Телефон{% endtrans %}<span class="uk-visible@m">:</span></span>&nbsp;{{ phone }}</li>
-                        <li class="uk-flex uk-flex-between uk-flex-left@m"><span class="uk-text-muted">{% trans %}E-Mail{% endtrans %}<span class="uk-visible@m">:</span></span>&nbsp;{{ user.email }}</li>
-                        <li class="uk-flex uk-flex-between uk-flex-left@m"><span class="uk-text-muted">{% trans %}Город{% endtrans %}<span class="uk-visible@m">:</span></span>&nbsp;{% trans %}Москва{% endtrans %}</li>
-                    </ul>
-                </div>
-
-                <div class="uk-width-auto uk-visible@m">
-                    <a href="javascript:;" class="uk-link uk-flex-inline uk-flex-middle" uk-toggle="target: .edit-toggle">
-                        <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('/assets/images/icons/edit.svg'); width: 22px; height: 22px;"></span>
-                        {% trans %}Редактировать профиль{% endtrans %}
-                    </a>
-                </div>
-
-                <div class="uk-width-1-1 uk-padding uk-padding-remove-horizontal uk-padding-remove-bottom uk-hidden@m">
-                    <a href="javascript:;" class="uk-button button button-outline-primary button-lg uk-width-1-1 uk-padding-remove-horizontal" uk-toggle="target: .edit-toggle">
-                        <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('/assets/images/icons/edit.svg'); width: 22px; height: 22px;"></span>
-                        {% trans %}Редактировать профиль{% endtrans %}
-                    </a>
-                </div>
-
-            </div>
-
-
-            <!-- edit -->
-            <form action="/profile/save" class="uk-form-stacked uk-flex uk-flex-between uk-flex-top edit-toggle" id="save_profile" method="post" hidden>
-                <div class="uk-width-3-5">
-                    <div class="uk-child-width-1-2" uk-grid>
-                        <div>
-                            <div class="uk-margin-medium theme-form-group{% if user.header|length %} theme-form-group-active{% endif %} js-form-group">
-                                <label class="theme-form-label" for="form-profile-name">{% trans %}Имя{% endtrans %}</label>
-                                <input class="theme-form-control" id="form-profile-name" name="header" type="text" value="{{ user.header }}" required>
-                            </div>
-
-                            <div class="uk-margin-medium theme-form-group{% if user.email|length %} theme-form-group-active{% endif %} js-form-group">
-                                <label class="theme-form-label" for="form-profile-email">E-mail</label>
-                                <input class="theme-form-control" id="form-profile-email" name="email" type="email" value="{{ user.email }}" required>
-                            </div>
-                        </div>
-
-                        <div>
-                            <div class="uk-margin-medium theme-form-group theme-form-group-active">
-                                <label class="theme-form-label" for="form-profile-tel">{% trans %}Телефон{% endtrans %}</label>
-                                <input class="theme-form-control" id="form-profile-tel" name="phone" type="tel" value="{{ phone }}" required>
-                            </div>
-
-                            <div class="uk-margin-medium theme-form-group">
-                                <label class="uk-form-label">{% trans %}Телефон{% endtrans %}</label>
-                                <div class="uk-inline uk-form-controls uk-width-1-1">
-                                    <a class="uk-form-icon" href="#modal-phone-edit" uk-icon="icon: pencil" uk-toggle></a>
-                                    <input class="uk-input" type="text" value="{{ phone }}" disabled>
-                                </div>
-                            </div>
-
-                            <div class="uk-inline theme-form-group theme-form-group-active">
-                                <label class="theme-form-label">{% trans %}Телефон{% endtrans %}</label>
-                                <a class="uk-form-icon" href="javascript:;">
-                                    <span class="uk-icon uk-icon-image js-flag-chosen" style="background-image: url('/assets/images/interface/russia.svg');"></span>
-                                    <span class="uk-icon uk-icon-image"
-                                          style="background-image: url('/assets/images/icons/arrow-bottom.svg'); width: 8px; height: 4px; margin-left: 5px;"
-                                    ></span>
-                                </a>
-                                <div class="theme-countries-dropdown js-countries-dropdown" uk-dropdown="mode: click; delay-hide: 0; offset: 16">
-                                    <ul class="uk-nav uk-nav-language js-select-lang">
-                                        <li class="uk-active">
-                                            <a href="javascript:;" data-country="ru"><span class="uk-icon uk-icon-image uk-margin-small-right js-flag" style="background-image: url('/assets/images/interface/russia.svg');"></span>Россия</a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;" data-country="abh"><span class="uk-icon uk-icon-image uk-margin-small-right js-flag" style="background-image: url('/assets/images/interface/abkhazia.svg');"></span>Абхазия</a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;" data-country="kaz"><span class="uk-icon uk-icon-image uk-margin-small-right js-flag" style="background-image: url('/assets/images/interface/kazakhstan.svg');"></span>Казахстан</a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;" data-country="ua"><span class="uk-icon uk-icon-image uk-margin-small-right js-flag" style="background-image: url('/assets/images/interface/ukraine.svg"');"></span>Украина</a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;" data-country="usa"><span class="uk-icon uk-icon-image uk-margin-small-right js-flag" style="background-image: url('/assets/images/interface/usa.svg"');"></span>США</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <input class="uk-input theme-form-control js-tel-mask-country" type="text" value="{{ phone }}">
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-
-                <div>
-                    <button class="uk-button uk-button-link uk-link uk-text-capitalize uk-flex-inline uk-flex-middle">
-                        <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('/assets/images/icons/edit.svg'); width: 22px; height: 22px;"></span>
-                        {% trans %}Сохранить{% endtrans %}
-                    </button>
-                </div>
-
-                <input type="hidden" name="back_url" value="{{ user.tempPassword }}">
-            </form>
-            <!-- /edit -->
-
-        </div>
-    </div>
-
-    <div class="edit-toggle" uk-grid hidden>
-        <div class="uk-width-1-1">
-            <div class="uk-margin">
-                <h3 class="uk-heading-divider uk-card-header uk-padding-remove-horizontal uk-margin-remove">{% trans %}Настройки{% endtrans %}</h3>
-            </div>
-
-            <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-2@m uk-child-width-1-3@l" uk-grid>
-
-                <div>
-                    <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-top">
-                        <label class="uk-flex-inline uk-flex-middle">
-                            <input class="uk-checkbox switch" type="checkbox" name="notifications" checked>
-                            <span>{% trans %}Уведомления от пользоватей{% endtrans %}</span>
-                        </label>
-                    </div>
-                    <p class="uk-text-muted uk-margin-remove">{% trans %}Уведомления помогут вам узнать когда пришла заявка на аренду вашего транспорта{% endtrans %}</p>
-                </div>
-
-                <div>
-                    <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-top">
-                        <label class="uk-flex-inline uk-flex-middle">
-                            <input class="uk-checkbox switch" type="checkbox" name="newsletter">
-                            <span>{% trans %}Рассылка{% endtrans %}</span>
-                        </label>
-                    </div>
-                    <p class="uk-text-muted uk-margin-remove">{% trans %}Оставаться в курсе эксклюзивных предложений и последних новостей{% endtrans %}</p>
-                </div>
-
-
-            </div>
-        </div>
-    </div>
-
-    <div class="uk-grid-medium uk-child-width-1-1" uk-grid>
-
-        <!-- Мой транспорт -->
-        <div>
-
-            <div class="uk-child-width-1-1 uk-grid uk-grid-medium" uk-grid>
-                <div>
-                    <div class="uk-flex uk-flex-between uk-flex-middle uk-margin-small-bottom uk-card-header uk-padding-remove-horizontal">
-                        <h2 class="uk-margin-remove">{% trans %}Мой транспорт{% endtrans %}</h2>
-                        <div class="uk-visible@m"><a href="/user/cards" class="uk-link link-underline">{% trans %}Весь транспорт{% endtrans %}</a></div>
-                    </div>
-                    <div class="uk-child-width-1-2 uk-child-width-1-4@m uk-grid-medium" uk-grid>
-                        {% for card in user.cards %}
-                        {{ include('search/one_grid_view_alex.html.twig', {'card':card, 'height':'150px'}) }}
-                        {% endfor %}
-                    </div>
-                    <div class="uk-child-width-1-1 uk-hidden@m" uk-grid>
-                        <div>
-                            <a href="/user/cards" class="uk-button button button-outline-primary button-lg uk-width-1-1 uk-padding-remove-horizontal">{% trans %}Показать больше{% endtrans %}</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <!-- /Мой транспорт -->
-
-        <!-- Отзывы -->
-        <div class="uk-flex-first@m">
-
-            <!-- Загловок: Отзывы -->
-            <div uk-grid class="edit-toggle">
-                <div class="uk-width-1-1">
-                    <div class="uk-flex uk-flex-between uk-flex-middle uk-card-header uk-padding-remove-horizontal">
-                        <h2 class="uk-margin-remove">{% trans %}Отзывы{% endtrans %}<span class="uk-hidden@m"> 7</span><span class="uk-visible@m"> обо мне</span></h2>
-                        <div class="uk-visible@m"><a href="#" class="uk-link link-underline">{% trans %}Все отзывы (6){% endtrans %}</a></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Список: Отзывы -->
-            <div class="uk-grid-medium edit-toggle" uk-grid>
-                <div class="uk-width-1-1">
-                    <ul class="uk-comment-list uk-margin-remove review-list">
-                        <li>
-                            <article class="uk-comment review">
-                                <header class="uk-comment-header review-header">
-                                    <h4 class="uk-comment-title uk-margin-remove review-title"><a class="review-link" href="#">Иван Иванов</a></h4>
-                                </header>
-                                <div class="uk-comment-body review-body uk-width-1-1 uk-width-1-2@m">
-                                    <p>Все четко, быстрая коммуникация с владельцем авто, будем пользоваться снова</p>
-                                </div>
-                                <footer class="uk-comment-footer review-footer">
-                                    <div class="uk-flex uk-flex-between uk-comment-meta uk-flex-middle">
-                                        <div class="rating">
-                                            <div class="rating-list">
-                                                <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
-                                                <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
-                                                <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
-                                                <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
-                                                <div class="rating-item"><span class="rating-icon"></span></div>
-                                            </div>
-                                        </div>
-
-                                        <div class="uk-flex-first@m">21.03.2018</div>
-                                    </div>
-                                </footer>
-                            </article>
-                        </li>
-                        <li>
-                            <article class="uk-comment review">
-                                <header class="uk-comment-header review-header">
-                                    <h4 class="uk-comment-title uk-margin-remove review-title"><a class="review-link" href="#">Сергей</a></h4>
-                                </header>
-                                <div class="uk-comment-body review-body uk-width-1-1 uk-width-1-2@m">
-                                    <p>Все четко, быстрая коммуникация с владельцем авто, будем пользоваться снова</p>
-                                </div>
-                                <footer class="uk-comment-footer review-footer">
-                                    <div class="uk-flex uk-flex-between uk-comment-meta uk-flex-middle">
-                                        <div class="rating">
-                                            <div class="rating-list">
-                                                <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
-                                                <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
-                                                <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
-                                                <div class="rating-item"><span class="rating-icon"></span></div>
-                                                <div class="rating-item"><span class="rating-icon"></span></div>
-                                            </div>
-                                        </div>
-
-                                        <div class="uk-flex-first@m">21.03.2018</div>
-                                    </div>
-                                </footer>
-                            </article>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-        </div>
-        <!-- ///Отзывы -->
-
-    </div>
-
-</div>
-<!-- /new profile -->
-</div>
-
-<div>
-    <div uk-grid>
-        <div class="uk-width-2-3@s">
-
-            {% if user.header=='' or user.email=='' or phone == '' %}
-            <div style="background: white;padding: 20px;margin-bottom: 30px">
-                <span style="color:red;font-weight: bold">Пожалуйста</span>
-                заполните имя, email, и мобильный номер.<br>
-                Это нужно для автоматических уведомлений от сайта.<br>
-                Данные не предоставляются третьим лицам.
-            </div>
+            {% else %}
+            {% trans %}Ваш аккаунт{% endtrans %}: <img src="/assets/images/interface/fb3.svg" alt="" style="width: 16px"><span class="c_red uk-text-bold">PRO</span>
+            <div class="uk-margin-top">{% trans %}Вы можете разместить неограниченное количество транспорта{% endtrans %}</div>
             {% endif %}
-
-            <form action="/profile/save" class="uk-form-stacked" id="save_profile" method="POST">
-                <fieldset class="uk-fieldset">
-
-                    <div class="uk-margin">
-                        <label class="uk-form-label" for="form-stacked-text">{% trans %}Имя{% endtrans %}</label>
-                        <div class="uk-form-controls uk-width-1-1">
-                            <input name="header" value="{{ user.header }}" class="uk-input" type="text" required>
-                        </div>
-                    </div>
-
-                    {# <div>{% trans %}Имя{% endtrans %}: <input name="header" value="{{ user.header }}" class="uk-input"></div> #}
-                    <div class="uk-margin">
-                        <label class="uk-form-label" for="form-stacked-text">Email</label>
-                        <div class="uk-form-controls uk-width-1-1">
-                            <input name="email" value="{{ user.email }}" class="uk-input" type="text" required>
-                        </div>
-                    </div>
-                    {# <div>Email: <input name="email" value="{{ user.email }}" class="uk-input"></div> #}
-                    <div class="uk-margin">
-                        <label class="uk-form-label" for="form-stacked-text">{% trans %}Телефон{% endtrans %}</label>
-                        <div class="uk-inline uk-form-controls uk-width-1-1">
-                            <a class="uk-form-icon" href="#modal-phone-edit" uk-icon="icon: pencil" uk-toggle></a>
-                            <input class="uk-input" type="text" value="{{ phone }}" disabled>
-                        </div>
-                    </div>
-                    {#<div>Website: <input name="info[website]" value="{{ website }}" class="uk-input"></div>#}
-                    {#<div>{% trans %}Кратко о себе/компании{% endtrans %}: <textarea name="info[about]" class="uk-textarea">{{ about }}</textarea></div>#}
-
-
-                    <div class="uk-hidden">
-                        <h2>{% trans %}Ссылки на соцсети{% endtrans %}</h2>
-
-                        <div>Вконтакте:
-                            <input name="info[vk]" value="{{ vk }}" class="uk-input"></div>
-                        <div>Facebook:
-                            <input name="info[fb]" value="{{ fb }}" class="uk-input"></div>
-                        <div>Instagram:
-                            <input name="info[ig]" value="{{ ig }}" class="uk-input"></div>
-                        <div>Одноклассники:
-                            <input name="info[ok]" value="{{ ok }}" class="uk-input"></div>
-                        <div>Twitter:
-                            <input name="info[tw]" value="{{ tw }}" class="uk-input"></div>
-                        <div>Google+:
-                            <input name="info[gp]" value="{{ gp }}" class="uk-input"></div>
-                        <div>Youtube:
-                            <input name="info[yt]" value="{{ yt }}" class="uk-input"></div>
-                    </div>
-                    <input type="hidden" name="back_url" value="{{ user.tempPassword }}">
-                    <button class="uk-button uk-button-primary uk-margin-top">{% trans %}Сохранить{% endtrans %}</button>
-                </fieldset>
-            </form>
         </div>
 
+        <div class="uk-width-1-1 uk-width-3-4@m">
+            <!-- new profile -->
+            <div class="uk-grid-medium uk-child-width-1-1" uk-grid>
+                <div>
+                    <h1 class="uk-h2">{{ app.session.get('logged_user').whois == 'new_renter' ? 'Заполните профиль!' : 'Мой профиль' }}</h1>
+                </div>
+            </div>
+            <div class="uk-grid-medium" uk-grid>
+
+                <div class="uk-width-1-1 uk-width-auto@m">
+
+                    <div class="uk-margin-auto uk-panel uk-background-cover uk-background-norepeat uk-overflow-hidden uk-border-circle avatar-profile"
+                         style="{% if foto|length %}background-image: url('/assets/images/users/t/{{ foto }}.jpg');{% else %}background-image: url('/assets/images/icons/user.svg'); border: 1px solid #cecece;{% endif %}">
+                        <a href="#modal-avatar-upload" class="edit-toggle uk-position-cover uk-overlay-default uk-flex uk-flex-column uk-flex-center uk-flex-middle uk-text-center uk-border-circle edit-avatar" hidden uk-toggle>
+                            <span class="uk-icon uk-icon-image edit-avatar__icon" style="background-image: url('/assets/images/icons/camera.svg');"></span>
+                            <span class="uk-margin-small-top uk-visible@m">{% trans %}Изменить фото{% endtrans %}</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="uk-width-1-1 uk-width-expand@m">
+                    <h2 class="uk-margin-small-bottom uk-text-center uk-text-left@m">{{ user.header }}</h2>
+
+                    <div class="uk-grid-small uk-child-width-1-1 uk-child-width-auto@m uk-flex uk-flex-between uk-flex-middle uk-margin-bottom" uk-grid>
+                        <div class="rating uk-flex-center uk-flex-left@m">
+                            <div class="rating-list">
+                                <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
+                                <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
+                                <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
+                                <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
+                                <div class="rating-item"><span class="rating-icon"></span></div>
+                            </div>
+                            <span class="uk-text-muted uk-margin-small-left">(7)</span>
+                        </div>
+                        <div class="uk-text-muted uk-text-center uk-text-right@m">Баланс: 0 ₽</div>
+                    </div>
+
+                    <div class="uk-hr"></div>
+
+                    <div class="uk-flex uk-flex-wrap uk-flex-between uk-flex-top edit-toggle">
+
+                        <div class="uk-width-1-1 uk-width-2-3@m uk-width-1-2@l">
+                            <ul class="uk-list uk-list-small uk-margin-remove uk-column-1-1">
+                                <li class="uk-flex uk-flex-between uk-flex-left@m"><span class="uk-text-muted">{% trans %}Телефон{% endtrans %}<span class="uk-visible@m">:</span></span>&nbsp;{{ phone }}</li>
+                                <li class="uk-flex uk-flex-between uk-flex-left@m"><span class="uk-text-muted">{% trans %}E-Mail{% endtrans %}<span class="uk-visible@m">:</span></span>&nbsp;{{ user.email }}</li>
+                                <li class="uk-flex uk-flex-between uk-flex-left@m"><span class="uk-text-muted">{% trans %}Город{% endtrans %}<span class="uk-visible@m">:</span></span>&nbsp;{% trans %}Москва{% endtrans %}</li>
+                            </ul>
+                        </div>
+
+                        <div class="uk-width-auto uk-visible@m">
+                            <a href="javascript:;" class="uk-link uk-flex-inline uk-flex-middle" uk-toggle="target: .edit-toggle">
+                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('/assets/images/icons/edit.svg'); width: 22px; height: 22px;"></span>
+                                {% trans %}Редактировать профиль{% endtrans %}
+                            </a>
+                        </div>
+
+                        <div class="uk-width-1-1 uk-padding uk-padding-remove-horizontal uk-padding-remove-bottom uk-hidden@m">
+                            <a href="javascript:;" class="uk-button button button-outline-primary button-lg uk-width-1-1 uk-padding-remove-horizontal" uk-toggle="target: .edit-toggle">
+                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('/assets/images/icons/edit.svg'); width: 22px; height: 22px;"></span>
+                                {% trans %}Редактировать профиль{% endtrans %}
+                            </a>
+                        </div>
+
+                    </div>
 
 
+                    <!-- edit -->
+                    <form action="/profile/save" class="uk-form-stacked uk-flex uk-flex-between uk-flex-top edit-toggle" id="save_profile" method="post" hidden>
+                        <div class="uk-grid-row-collapse" uk-grid>
+                        <div class="uk-width-1-1 uk-width-3-5@m">
+                            <div class="uk-grid-row-collapse  uk-child-width-1-1" uk-grid>
+
+                                <div>
+                                    <div class="mat-group {% if user.header|length %}is-completed{% endif %}">
+                                        <label class="mat-label">{% trans %}Имя{% endtrans %}</label>
+                                        <input class="mat-input" id="form-profile-name" name="header" type="text" value="{{ user.header }}" required>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="mat-group {% if user.email|length %}is-completed{% endif %}">
+                                        <label class="mat-label">E-mail</label>
+                                        <input class="mat-input" id="form-profile-email" name="email" type="email" value="{{ user.email }}" required>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="uk-form-stacked mat-group">
+                                        <label class="uk-form-label">{% trans %}Телефон{% endtrans %}</label>
+                                        <div class="uk-inline uk-width-1-1">
+                                            <a class="uk-form-icon uk-link" href="#modal-phone-edit" uk-icon="pencil" uk-toggle></a>
+                                            <input class="uk-input" type="text" value="{{ phone }}" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="uk-width-1-1 uk-width-2-5@m uk-text-center uk-text-right@m">
+
+                            <button class="uk-visible@m uk-button uk-button-link uk-link uk-text-capitalize uk-flex-inline uk-flex-middle">
+                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('/assets/images/icons/edit.svg'); width: 22px; height: 22px;"></span>
+                                {% trans %}Сохранить{% endtrans %}
+                            </button>
+
+                            <button class="uk-hidden@m uk-width-1-1 uk-margin-medium-top uk-margin-small-bottom uk-button uk-button-default uk-link uk-text-capitalize uk-flex-inline uk-flex-center uk-flex-middle">
+                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('/assets/images/icons/edit.svg'); width: 22px; height: 22px;"></span>
+                                {% trans %}Сохранить{% endtrans %}
+                            </button>
+                            <a href="javascript:;" class="uk-hidden@m uk-button uk-button-primary uk-width-1-1 uk-text-center" uk-toggle="target: .edit-toggle">
+                                {% trans %}Отменить редактирование{% endtrans %}
+                            </a>
+                            <br>
+                            <a href="javascript:;" class="uk-visible@m uk-link" uk-toggle="target: .edit-toggle">
+                                {% trans %}Отменить редактирование{% endtrans %}
+                            </a>
+                        </div>
+
+                        </div>
+
+                        <input type="hidden" name="back_url" value="{{ user.tempPassword }}">
+                    </form>
+                    <!-- /edit -->
+
+                </div>
+            </div>
+
+            <div class="edit-toggle" uk-grid hidden>
+                <div class="uk-width-1-1">
+                    <div class="uk-margin">
+                        <h3 class="uk-heading-divider uk-card-header uk-padding-remove-horizontal uk-margin-remove">{% trans %}Настройки{% endtrans %}</h3>
+                    </div>
+
+                    <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-2@m" uk-grid>
+
+                        <div>
+                            <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-top">
+                                <label class="uk-flex-inline uk-flex-middle">
+                                    <input class="uk-checkbox switch" type="checkbox" name="notifications" checked>
+                                    <span>{% trans %}Уведомления от пользоватей{% endtrans %}</span>
+                                </label>
+                            </div>
+                            <p class="uk-text-muted uk-margin-remove">{% trans %}Уведомления помогут вам узнать когда пришла заявка на аренду вашего транспорта{% endtrans %}</p>
+                        </div>
+
+                        <div>
+                            <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-top">
+                                <label class="uk-flex-inline uk-flex-middle">
+                                    <input class="uk-checkbox switch" type="checkbox" name="newsletter">
+                                    <span>{% trans %}Рассылка{% endtrans %}</span>
+                                </label>
+                            </div>
+                            <p class="uk-text-muted uk-margin-remove">{% trans %}Оставаться в курсе эксклюзивных предложений и последних новостей{% endtrans %}</p>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="uk-grid-medium uk-child-width-1-1" uk-grid>
+
+                <!-- Мой транспорт -->
+                <div>
+
+                    <div class="uk-child-width-1-1 uk-grid uk-grid-medium" uk-grid>
+                        <div>
+                            <div class="uk-flex uk-flex-between uk-flex-middle uk-margin-small-bottom uk-card-header uk-padding-remove-horizontal">
+                                <h2 class="uk-margin-remove">{% trans %}Мой транспорт{% endtrans %}</h2>
+                                <div class="uk-visible@m"><a href="/user/cards" class="uk-link link-underline">{% trans %}Весь транспорт{% endtrans %}</a></div>
+                            </div>
+                            <div class="uk-child-width-1-2 uk-child-width-1-4@m uk-grid-medium" uk-grid>
+                                {% for card in user.cards %}
+                                {{ include('search/one_grid_view_alex.html.twig', {'card':card, 'height':'150px'}) }}
+                                {% endfor %}
+                            </div>
+                            <div class="uk-child-width-1-1 uk-hidden@m" uk-grid>
+                                <div>
+                                    <a href="/user/cards" class="uk-button button button-outline-primary button-lg uk-width-1-1 uk-padding-remove-horizontal">{% trans %}Показать больше{% endtrans %}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /Мой транспорт -->
+
+                <!-- Отзывы -->
+                <div class="uk-flex-first@m">
+
+                    <!-- Загловок: Отзывы -->
+                    <div uk-grid class="edit-toggle">
+                        <div class="uk-width-1-1">
+                            <div class="uk-flex uk-flex-between uk-flex-middle uk-card-header uk-padding-remove-horizontal">
+                                <h2 class="uk-margin-remove">{% trans %}Отзывы{% endtrans %}<span class="uk-hidden@m"> 7</span><span class="uk-visible@m"> обо мне</span></h2>
+                                <div class="uk-visible@m"><a href="#" class="uk-link link-underline">{% trans %}Все отзывы (6){% endtrans %}</a></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Список: Отзывы -->
+                    <div class="uk-grid-medium edit-toggle" uk-grid>
+                        <div class="uk-width-1-1">
+                            <ul class="uk-comment-list uk-margin-remove review-list">
+                                <li>
+                                    <article class="uk-comment review">
+                                        <header class="uk-comment-header review-header">
+                                            <h4 class="uk-comment-title uk-margin-remove review-title"><a class="review-link" href="#">Иван Иванов</a></h4>
+                                        </header>
+                                        <div class="uk-comment-body review-body uk-width-1-1 uk-width-1-2@m">
+                                            <p>Все четко, быстрая коммуникация с владельцем авто, будем пользоваться снова</p>
+                                        </div>
+                                        <footer class="uk-comment-footer review-footer">
+                                            <div class="uk-flex uk-flex-between uk-comment-meta uk-flex-middle">
+                                                <div class="rating">
+                                                    <div class="rating-list">
+                                                        <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
+                                                        <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
+                                                        <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
+                                                        <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
+                                                        <div class="rating-item"><span class="rating-icon"></span></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="uk-flex-first@m">21.03.2018</div>
+                                            </div>
+                                        </footer>
+                                    </article>
+                                </li>
+                                <li>
+                                    <article class="uk-comment review">
+                                        <header class="uk-comment-header review-header">
+                                            <h4 class="uk-comment-title uk-margin-remove review-title"><a class="review-link" href="#">Сергей</a></h4>
+                                        </header>
+                                        <div class="uk-comment-body review-body uk-width-1-1 uk-width-1-2@m">
+                                            <p>Все четко, быстрая коммуникация с владельцем авто, будем пользоваться снова</p>
+                                        </div>
+                                        <footer class="uk-comment-footer review-footer">
+                                            <div class="uk-flex uk-flex-between uk-comment-meta uk-flex-middle">
+                                                <div class="rating">
+                                                    <div class="rating-list">
+                                                        <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
+                                                        <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
+                                                        <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
+                                                        <div class="rating-item"><span class="rating-icon"></span></div>
+                                                        <div class="rating-item"><span class="rating-icon"></span></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="uk-flex-first@m">21.03.2018</div>
+                                            </div>
+                                        </footer>
+                                    </article>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- ///Отзывы -->
+            </div>
+
+            <!-- /new profile -->
+        </div>
     </div>
+
 </div>
 
-
-<!-- Модальное окно -->
+<!-- Modal: Avatar Upload -->
 <div id="modal-avatar-upload" uk-modal>
-    <div class="uk-modal-dialog uk-modal-body uk-border-rounded uk-width-1-1 uk-width-1-2@s uk-width-2-5@l">
-        <h2 class="uk-modal-title uk-margin-bottom">{% trans %}Загрузка новой фотографии{% endtrans %}</h2>
+    <div class="uk-modal-dialog uk-modal-body uk-width-1-1 uk-width-1-2@s uk-width-2-5@l">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <h2 class="uk-modal-title uk-text-center">{% trans %}Загрузка новой фотографии{% endtrans %}</h2>
         <p>Друзьям будет проще узнать Вас, если Вы загрузите свою настоящую фотографию.<br>
             Вы можете загрузить изображение в формате JPG, GIF или PNG.</p>
-
-
 
         <div class="uk-width-1-1">
             <div class="uk-position-relative">
@@ -467,79 +425,70 @@
                     <i class="fa fa-close"></i>
                 </button>
                 {% endif %}
-
             </div>
+
             <form action="/profile/saveFoto" enctype="multipart/form-data" id="profile_foto_upload" method="POST">
-                {% trans %}Фото{% endtrans %}:
-                <input id="foto_upload" name="foto" type="file">
-                <div class="uk-grid-small" id="foto_list_view" uk-grid></div>
-                <input type="hidden" name="user_id" value="{{ user.id }}">
-                <button class="uk-button uk-button-primary uk-margin-top">{% trans %}Сохранить{% endtrans %}</button>
+                <div class="uk-margin-medium-bottom">
+                    {% trans %}Фото{% endtrans %}:
+                    <input id="foto_upload" name="foto" type="file">
+                    <div class="uk-grid-small" id="foto_list_view" uk-grid></div>
+                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                </div>
+                <div class="uk-text-center">
+                    <button class="uk-button uk-button-primary">{% trans %}Сохранить{% endtrans %}</button>
+                </div>
             </form>
         </div>
 
-        <p class="uk-text-right">
-            <button class="uk-button uk-button-default uk-modal-close" type="button">Закрыть</button>
-            <button class="uk-button uk-button-primary" type="button">Сохранить</button>
-        </p>
+
     </div>
 </div>
 
-
-<div id="modal-phone-edit" uk-modal="bg-close:false">
+<!-- Modal: Phone Edit -->
+<div id="modal-phone-edit" uk-modal="bg-close: false">
     <div class="uk-modal-dialog uk-modal-body">
         <button class="uk-modal-close-default" type="button" uk-close></button>
-        <h2 class="uk-modal-title">Новый номер телефона</h2>
-        <form >
-
-            <div class="uk-grid" uk-grid>
-                <div class=" uk-width-1-1 uk-width-auto@s uk-inline">
-                    <div uk-form-custom="target: > * > span:last-child">
-                        <select class="country-select" name="country">
-                            <option data-code="+7" data-filter="(999) 999-99-99" data-pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{2}$" data-plshold="(###)###-##-##" selected value="RU">Россия</option>
-                            {# {% for countr in country %}
-                            <option value="2">Абхазия</option>
-                            {% endfor %} #}
-
-                            <option data-code="+7 840" data-filter="999-99-99" data-pattern="^\d{3}[-]\d{2}[-]\d{2}$" data-plshold="###-##-##" value="AB">Абхазия</option>
-                            <option data-code="+7" data-filter="(999) 999-99-99" data-pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{2}$" data-plshold="(###)###-##-##" value="KZ">Казахстан</option>
-                            <option data-code="+380" data-filter="(99) 999-99-99" data-pattern="^\(\d{2}\)\s\d{3}[-]\d{2}[-]\d{2}$" data-plshold="(##)###-##-##" value="UK">Украина</option>
-                            <option data-code="+1" data-filter="(999) 999-99-999" data-pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{3}$" data-plshold="(###)###-##-###" value="US">США</option>
-                        </select>
-                        <span class="uk-link">
-                                    <span uk-icon="icon: pencil"></span>
-                                    <span></span>
-                                </span>
-                    </div>
+        <h2 class="uk-modal-title uk-text-center">Новый номер телефона</h2>
+        <form>
+            <div class="uk-grid uk-grid-column-collapse uk-margin-medium-bottom" uk-grid>
+                <div class="uk-width-auto">
+                    <select class="uk-select select-border-bottom" id="phoneSelect">
+                        <option value="russia"></option>
+                        <option value="abkhazia"></option>
+                        <option value="kazakhstan"></option>
+                        <option value="ukraine"></option>
+                        <option value="usa"></option>
+                    </select>
                 </div>
-                <div class=" uk-width-1-1 uk-width-expand@s">
-                    <div class="uk-inline uk-width-expand">
-                        <span class="uk-form-icon mp-country-code mp-form-span">+7</span>
-                        <input class="uk-input mp-country-phone" name="phone" pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{2}$" placeholder="(###)###-##-##" required type="tel">
-                    </div>
+
+                <div class="uk-width-expand">
+                    <input type="text" name="phone" class="uk-input phone-input" id="phoneInput" required>
                 </div>
             </div>
 
-            <div class="uk-margin-top">
+            <div class="uk-text-center">
                 <button class="uk-button uk-button-primary" id="btn-pes-1">Отправить СМС с кодом</button>
             </div>
         </form>
     </div>
 </div>
 
-<div id="modal-phone-edit_code" class="uk-modal" uk-modal bg-close="false">
+<!-- Modal: Phone Edit / Confirmation Code -->
+<div id="modal-phone-edit_code" uk-modal="bg-close: false">
     <div class="uk-modal-dialog uk-modal-body">
         <button class="uk-modal-close-default" type="button" uk-close></button>
-        <h2 class="uk-modal-title">Подтверждение</h2>
-        <form >
-            <div>
-                <input type="text" name="regcode" class="uk-input" placeholder="пароль из СМС">
+        <h2 class="uk-modal-title uk-text-center uk-margin-remove-bottom">Подтверждение</h2>
+
+        <form>
+            <div class="mat-group uk-margin-medium-bottom">
+                <label class="mat-label">Код активации</label>
+                <input type="text" name="regcode" class="mat-input">
             </div>
-            <div class="uk-margin-top">
+            <div class="uk-text-center">
                 <button class="uk-button uk-button-primary" id="btn-pes-2">Подтвердить смену телефона</button>
             </div>
         </form>
     </div>
 </div>
 
-</div>{% endblock %}
+{% endblock %}

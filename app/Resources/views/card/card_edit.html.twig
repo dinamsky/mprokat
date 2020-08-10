@@ -5,16 +5,24 @@
     <link href="{{ asset('assets/css/auto-complete.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/select2.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/datepicker.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/alex/card/card_new.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/alex/card/card_edit.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('assets/js/image_upload_preview.js') }}"></script>
     <script src="{{ asset('assets/js/datepicker.min.js') }}"></script>
+
+    <script>var isSubfieldsEmpty = {% if not subfields %}true {% else %}false{% endif %};</script>
+
+    <script src="{{ asset('assets/js/alex/images_upload.js') }}"></script>
     <script src="{{ asset('assets/js/alex/address_change.js') }}"></script>
-    <script src="{{ asset('assets/js/alex/transport_change.js') }}"></script>
-    {% if not subfields %}<script src="{{ asset('assets/js/get_new_subfields.js') }}"></script>{% endif %}
-    {% if app.session.has('promote') %}
+    <script src="{{ asset('assets/js/alex/tariff_change.js') }}"></script>
+    <script src="{{ asset('assets/js/alex/transport-edit_change.js') }}"></script>
+    <script src="{{ asset('assets/js/alex/card-edit_validate.js') }}"></script>
+
+     {% if app.session.has('promote') %}
         <script src="{{ asset('assets/js/promote.js') }}"></script>
         {{ app.session.remove('promote') }}
     {% endif %}
@@ -24,14 +32,58 @@
 {% block bodyVars %}data-lang="{{ lang }}"{% endblock %}
 
 {% block content %}
-    <div class="uk-container">
+<div class="uk-container">
 
+    <h2 class="uk-margin-medium-bottom">Редактирование транспорта</h2>
+    <div class="uk-hr uk-align uk-margin-remove-top"></div>
+    <form id="edit_card_form" action="/card/update" method="POST" enctype="multipart/form-data" class="js-card-edit-form">
         <!-- 1 section -->
+        <h3 class="uk-margin-bottom">Фотографии транспорта</h3>
 
+        <div class="uk-child-width-1-1 uk-grid-medium" uk-grid>
+            <div>
+                <div class="template-photo-grid">
+                    {% for foto in card.getFotos %}
+                    <div class="template-photo-grid__item js-photo-grid-item" data-id="{{ foto.id }}">
+                        <div class="template-photo-grid__photo" style="background-image: url('/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg');">
+                        </div>
+
+                        <button type="button" class="uk-button-danger delete_foto_button" uk-close data-id="{{ foto.id }}"
+                                style="position:absolute;top:0;right:0;color: white;">
+                        </button>
+
+                        <button type="button" class="{{ foto.isMain ? 'uk-button-primary' : 'not_first' }} main_foto_button" data-id="{{ foto.id }}"
+                                style="position:absolute;top:0;left:0;color: white;">1
+                        </button>
+
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="uk-grid-medium" uk-grid>
+
+            <div class="uk-width-1-1 uk-width-3-5@m">
+                <div uk-form-custom>
+                    <input class="js-upload-photo" name="fotos[]" type="file" accept="image/x-png,image/gif,image/jpeg" multiple>
+                    <button class="uk-flex uk-flex-column uk-flex-middle uk-flex-center uk-padding uk-placeholder uk-margin-remove theme-image-uploader" type="button" tabindex="-1">
+                        <span class="uk-icon uk-icon-image uk-margin-small-bottom" style="background-image: url('/assets/images/icons/image-upload-icon.svg'); width: 120px; height: 40px;"></span>
+                        <span class="uk-padding-small uk-padding-remove-vertical ">{% trans %}Нажмите, чтобы загрузить фотографии{% endtrans %}</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="uk-width-1-1 uk-width-2-5@m">
+                <div class="uk-text-muted">{% trans %}До 5 фотографий одновременно{% endtrans %}</div>
+            </div>
+
+        </div>
+        <ul class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-5@m uk-text-center js-upload-area uk-padding uk-padding-remove-horizontal uk-padding-remove-top uk-margin-small-bottom" uk-grid uk-sortable></ul>
         <!-- /1 section -->
 
         <!-- 2 section -->
-        <div class="uk-grid-medium uk-child-width-1-2" uk-grid>
+        <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-2@m" uk-grid>
             <div>
                 <h3 class="uk-margin-bottom">{% trans %}Измнение типа аренды или проката{% endtrans %}</h3>
                 <ul class="uk-list theme-radio-list">
@@ -42,7 +94,7 @@
                 </ul>
             </div>
             <div>
-                <div class="uk-h4 uk-margin-bottom">{% trans %}Доставка транспорта клиенту{% endtrans %}</div>
+                <h3 class="uk-margin-bottom">{% trans %}Доставка транспорта клиенту{% endtrans %}</h3>
                 <ul class="uk-list theme-radio-list">
                     <li><label><input class="uk-radio theme-radio" type="radio" name="deliveryStatus" value="1" {{ card.deliveryStatus == 1 ? 'checked' }}><span>{% trans %}Да с доставкой{% endtrans %}</span></label></li>
                     <li><label><input class="uk-radio theme-radio" type="radio" name="deliveryStatus" value="2" {{ card.deliveryStatus == 2 ? 'checked' }}><span>{% trans %}Возможно{% endtrans %}</span></label></li>
@@ -55,11 +107,13 @@
         <!-- ///2 section -->
 
         <!-- 3 section -->
-        <div class="uk-grid-medium uk-child-width-1-2" uk-grid>
+        <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-2@m" uk-grid>
             <div>
                 <h3 class="uk-margin-bottom">{% trans %}Изменение типа и группы{% endtrans %}</h3>
-                <div class="uk-grid-medium uk-child-width-1-2" uk-grid>
-                    <div class="uk-form-stacked">
+                <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-2@m" uk-grid>
+
+                    <div>
+                        <div class="uk-form-stacked">
                         <label class="uk-form-label">{% trans %}Тип транспорта{% endtrans %}</label>
                         <div class="uk-form-controls">
                             <select name="generalTypeTopLevelId" class="uk-select select-border-bottom js-transport-type-select">
@@ -67,7 +121,12 @@
                             </select>
                         </div>
                     </div>
-                    <div class="uk-form-stacked">
+                        <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-bottom uk-text-danger uk-text-small theme-d-none js-transport-type-select-error js-error-alert">
+                        Выберите значение!</div>
+                    </div>
+
+                    <div>
+                        <div class="uk-form-stacked">
                         <label class="uk-form-label">{% trans %}Группа транспорта{% endtrans %}</label>
                         <div class="uk-form-controls">
                             <select name="generalTypeId" class="uk-select select-border-bottom js-transport-group-select">
@@ -75,13 +134,17 @@
                             </select>
                         </div>
                     </div>
+                        <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-bottom uk-text-danger uk-text-small theme-d-none js-transport-group-select-error js-error-alert">
+                        Выберите значение!</div>
+                    </div>
                 </div>
             </div>
 
             <div>
                 <h3 class="uk-margin-bottom">{% trans %}Изменение марки и модели{% endtrans %}</h3>
-                <div class="uk-grid-medium uk-child-width-1-2" uk-grid>
-                    <div class="uk-form-stacked">
+                <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-2@m" uk-grid>
+                    <div>
+                        <div class="uk-form-stacked">
                         <label class="uk-form-label">{% trans %}Марка{% endtrans %}</label>
                         <div class="uk-form-controls">
                             <select name="mark" class="uk-select select-border-bottom js-transport-mark-select">
@@ -89,13 +152,20 @@
                             </select>
                         </div>
                     </div>
-                    <div class="uk-form-stacked">
+                        <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-bottom uk-text-danger uk-text-small theme-d-none js-transport-mark-select-error js-error-alert">
+                            Выберите значение!</div>
+                    </div>
+                    <div>
+                        <div class="uk-form-stacked">
                         <label class="uk-form-label">{% trans %}Модель{% endtrans %}</label>
                         <div class="uk-form-controls">
                             <select name="modelId" class="uk-select select-border-bottom js-transport-model-select">
                                 {{ include( 'common/ajax_edit_options.html.twig', { 'options': models, 'id': model.id }) }}
                             </select>
                         </div>
+                    </div>
+                        <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-bottom uk-text-danger uk-text-small theme-d-none js-transport-model-select-error js-error-alert">
+                            Выберите значение!</div>
                     </div>
                 </div>
             </div>
@@ -110,9 +180,9 @@
                 <h3 class="uk-margin-bottom">{% trans %}Измнение расценок{% endtrans %}</h3>
             </div>
 
-            <div class="uk-width-1-2">
+            <div class="uk-width-1-1 uk-width-1-2@m">
 
-                <div class="uk-grid-medium uk-child-width-1-2" uk-grid>
+                <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-2@m" uk-grid>
                     <div>
                         <div class="uk-form-stacked">
                             <label class="uk-form-label">{% trans %}Валюта{% endtrans %}</label>
@@ -127,16 +197,16 @@
                     </div>
                 </div>
 
-                <div class="uk-grid-medium uk-child-width-1-2" uk-grid>
+                <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-2@m" uk-grid>
                     <div>
                         <!-- За час -->
                         {% for price in prices if price.id == 1%}
                         <div class="uk-form-stacked uk-align">
                             <label class="uk-form-label">{{ price.header|trans }}</label>
                             <div class="uk-inline uk-width-1-1">
-                                <span class="uk-form-icon uk-flex-right uk-form-icon-flip"><i class="fa fa-rub"></i></span>
+                                <span class="uk-form-icon uk-flex-right@m uk-form-icon-flip"><i class="fa fa-rub"></i></span>
                                 <input type="text"
-                                       class="uk-input"
+                                       class="uk-input js-pay-per-hour"
                                        name="price[{{ price.id }}]"
                                        value="{% for cardPrice in card.getCardPrices if cardPrice.priceId == price.id %}{{ cardPrice.value }}{% endfor %}">
 
@@ -150,9 +220,9 @@
                         <div class="uk-form-stacked uk-align">
                             <label class="uk-form-label">{{ price.header|trans }}</label>
                             <div class="uk-inline uk-width-1-1">
-                                <span class="uk-form-icon uk-flex-right uk-form-icon-flip"><i class="fa fa-rub"></i></span>
+                                <span class="uk-form-icon uk-flex-right@m uk-form-icon-flip"><i class="fa fa-rub"></i></span>
                                 <input type="text"
-                                       class="uk-input"
+                                       class="uk-input js-pay-per-day"
                                        name="price[{{ price.id }}]"
                                        value="{% for cardPrice in card.getCardPrices if cardPrice.priceId == price.id %}{{ cardPrice.value }}{% endfor %}">
 
@@ -160,6 +230,11 @@
                         </div>
                         {% endfor %}
                         <!-- За день -->
+
+                        <!-- error -->
+                        <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-top uk-text-danger uk-text-small theme-d-none js-pay-error js-error-alert">
+                            Укажите одну из расценок: в час/в день!</div>
+                        <!-- /error -->
 
                         <div class="js-price-list-toggle uk-align uk-margin-top uk-text-right">
                             <a class="link-underline" href="javascript:;" uk-toggle="target: .js-price-list-toggle; animation: uk-animation-fade; queued: true; duration: 300">Добавить расценку</a>
@@ -170,7 +245,7 @@
                             <div class="uk-form-stacked uk-align">
                                 <label class="uk-form-label">{{ price.header|trans }}</label>
                                 <div class="uk-inline uk-width-1-1">
-                                    <span class="uk-form-icon uk-flex-right uk-form-icon-flip"><i class="fa fa-rub"></i></span>
+                                    <span class="uk-form-icon uk-flex-right@m uk-form-icon-flip"><i class="fa fa-rub"></i></span>
                                     <input type="text"
                                            class="uk-input"
                                            name="price[{{ price.id }}]"
@@ -184,16 +259,17 @@
                     </div>
                     <div>
                         <p class="uk-text-muted uk-margin-top">{% trans %}Одна из расценок в час или в день обязательна{% endtrans %}</p>
-                        <p class="uk-text-muted">{% trans %}Платформа Мультипрокат добавляет от{% endtrans %} <strong style="color: var(--purple-color);">10 {% trans %}до{% endtrans %} 20 %</strong> {% trans %}к вашей стоимости{% endtrans %}</p>
+                        <p class="uk-text-muted uk-visible@m">Платформа Мультипрокат добавляет от <a style="color: var(--purple-color);" href="#price_info" uk-toggle>10 до 20 %</a> к вашей стоимости</p>
+                        <p class="uk-text-muted uk-hidden@m">Указывая добавление стоимости <a style="color: var(--purple-color);" href="#price_info" uk-toggle>забронирования</a>, учитывайте сервисный сбор системы - 15%</p>
                     </div>
                 </div>
 
-                <div class="uk-flex-bottom uk-grid-medium uk-margin-remove-top uk-child-width-1-2" uk-grid>
+                <div class="uk-flex-bottom uk-grid-medium uk-child-width-1-1 uk-child-width-1-2@m" uk-grid>
                     <div>
                         <div class="uk-form-stacked uk-align">
                             <label class="uk-form-label">{% trans %}Залог{% endtrans %}</label>
                             <div class="uk-inline uk-width-1-1">
-                                <span class="uk-form-icon uk-flex-right uk-form-icon-flip"><i class="fa fa-rub"></i></span>
+                                <span class="uk-form-icon uk-flex-right@m uk-form-icon-flip"><i class="fa fa-rub"></i></span>
                                 <input type="text"
                                        class="uk-input"
                                        name="price[10]"
@@ -207,10 +283,10 @@
 
             </div>
 
-            <div class="uk-width-1-2">
+            <div class="uk-width-1-1 uk-width-1-2@m">
                 <div class="uk-text-small">{% trans %}Видео{% endtrans %}:</div>
                 <input name="video" class="uk-input" value="{{ card.video }}">
-                <iframe src="https://www.youtube-nocookie.com/embed/YE7VzlLtp-4?autoplay=0&amp;showinfo=0&amp;rel=0&amp;modestbranding=1&amp;playsinline=1" width="560" height="315" frameborder="0" allowfullscreen uk-responsive uk-video="automute: true"></iframe>
+                <iframe src="{{ card.video }}" width="560" height="315" frameborder="0" allowfullscreen uk-responsive uk-video="automute: true"></iframe>
             </div>
         </div>
         <div class="uk-sortable-empty"></div>
@@ -219,7 +295,7 @@
 
 
         <!-- 5 section -->
-        <div class="uk-grid-medium uk-child-width-1-2" uk-grid>
+        <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-2@m" uk-grid>
             <div>
                 <h3 class="uk-margin-bottom">{% trans %}Изменение адреса размещения вашего транспорта{% endtrans %}</h3>
                 <div class="uk-grid-medium uk-child-width-1-2" uk-grid>
@@ -241,6 +317,8 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-bottom uk-text-danger uk-text-small theme-d-none js-address-country-select-error js-error-alert">
+                            Выберите значение!</div>
                     </div>
                     <div>
                         <div class="uk-form-stacked">
@@ -251,6 +329,8 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-bottom uk-text-danger uk-text-small theme-d-none js-address-region-select-error js-error-alert">
+                            Выберите значение!</div>
                     </div>
                     <div>
                         <div class="uk-form-stacked">
@@ -261,6 +341,19 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-bottom uk-text-danger uk-text-small theme-d-none js-address-city-select-error js-error-alert">
+                            Выберите значение!</div>
+                    </div>
+                    <div class="uk-width-1-1">
+                        <div class="uk-form-stacked">
+                            <label class="uk-form-label">Адрес</label>
+                            <div class="uk-form-controls">
+                                <textarea name="address" rows="2" class="uk-textarea js-address-textarea">{{ card.address }}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-bottom uk-text-danger uk-text-small theme-d-none js-address-textarea-error js-error-alert">
+                            Введите адрес!        </div>
                     </div>
                 </div>
             </div>
@@ -270,56 +363,165 @@
                 <textarea
                         rows="7"
                         name="content"
-                        class="uk-textarea"
+                        class="uk-textarea js-rent-terms"
                         placeholder="{% trans %}Тут можно указать условия аренды или проката{% endtrans %}"
                 >{{ card.content }}</textarea>
+
+                <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-bottom uk-text-danger uk-text-small theme-d-none js-rent-terms-error js-error-alert">
+                    Поле не заполнено!</div>
             </div>
         </div>
         <!-- ///5 section -->
 
         <!-- 6 section -->
-        <h3 class="uk-margin-bottom uk-margin-large-top">Дополнительная информация 1</h3>
-        <div class="uk-grid-medium uk-child-width-1-3" uk-grid>
-            subf length : {{ subfields|length }}
-            {% for item in subfields %}
-            {{ item.label }}
-            {% endfor %}
+        <h3 class="uk-margin-bottom uk-margin-large-top">Дополнительная информация</h3>
 
-            {% if subfields %}
-                {% for item in subfields %}
-                <div>
-                    <div class="uk-form-stacked">
-                        <label class="uk-form-label">{{ item.label }}</label>
-                        <div class="uk-form-controls">
-                            {% if item.subfield_last is defined %}
-
-                            {{ include('common/ajax_select_edit.html.twig', {
-                            'data': item.data,
-                            'subfield_last':item.subfield_last,
-                            'subfield_first':item.subfield_first,
-                            'first':item.first,
-                            'level':item.level,
-                            'field_id': item.field_id
-                            }) }}
-
-                            {% else %}
-
-                            {{ include(item.template, {
-                            'options': item.value,
-                            'data': item.data,
-                            'subfield':item.subfield,
-                            }) }}
-
-                            {% endif %}
-                        </div>
+        <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-3@m" uk-grid>
+            <div>
+                <div class="uk-form-stacked">
+                    <label class="uk-form-label">Состояние</label>
+                    <div class="uk-form-controls">
+                        <select name="conditionId" class="uk-select select-border-bottom">
+                            {% for condition in conditions %}
+                            <option value="{{ condition.id }}" {{ condition.id == card.conditionId ? 'selected' : '' }}>{{ condition.header }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                 </div>
+            </div>
+
+            <div>
+                <div class="uk-form-stacked">
+                    <label class="uk-form-label">Цвет</label>
+                    <div class="uk-form-controls">
+                        <select name="colorId" class="uk-select select-border-bottom">
+                            <option value="0" hidden disabled selected>{% trans %}Значение не выбрано{% endtrans %}</option>
+                            {% for color in colors %}
+                            <option value="{{ color.id }}" {{ color.id == card.colorId ? 'selected' : '' }}>{{ color.header }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="uk-form-stacked">
+                    <label class="uk-form-label">Год выпуска</label>
+                    <div class="uk-form-controls">
+                        <select name="prodYear" class="uk-select select-border-bottom">
+                            <option value="0" hidden disabled selected>{% trans %}Значение не выбрано{% endtrans %}</option>
+                            {% for year in 'now'|date('Y')..1950 %}
+                            <option value="{{ year }}" {{  year == card.prodYear  ? 'selected'}}>{{ year }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="uk-grid-medium uk-child-width-1-1">
+            <div><a href="javascript:;" uk-toggle="target: #features_selector" class="uk-button uk-button-link">Указать характеристики</a></div>
+            <div>
+                <div class="expandable_block uk-card uk-background-muted uk-card-body uk-padding-small uk-margin-small-bottom" id="features_selector" hidden>
+            <ul class="uk-list uk-list-divider">
+                {% set setFeatures = [] %}
+                {% for cardFeature in card.getCardFeatures %}
+                {% set setFeatures = setFeatures|merge([cardFeature.featureId]) %}
                 {% endfor %}
+
+                {% for feature in features %}
+                <li>
+                    <h5 class="uk-heading-bullet">{{ feature.header }}</h5>
+                    <div>
+                        {% for item in feature.getChildren %}
+                        <div>
+                            <label>
+                                <input class="feature_item" type="checkbox" name="feature[{{ item.id }}]" value="{{  item.id in setFeatures ? '1' : '0' }}"
+                                       {{  item.id in setFeatures ? 'checked' : '0' }}
+                                > {{ item.header }}
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </li>
+                {% endfor %}
+
+            </ul>
+        </div>
+            </div>
+        </div>
+
+        <div class="js-subfields-area uk-grid-medium uk-child-width-1-1 uk-child-width-1-3@m" id="subfields" uk-grid>
+
+            {% if subfields %}
+            {% for item in subfields %}
+            <div>
+                <div class="uk-form-stacked">
+                    <label class="uk-form-label">{{ item.label }}</label>
+                    <div class="uk-form-controls">
+                        {% if item.subfield_last is defined %}
+
+                        {{ include('common/ajax_select_edit.html.twig', {
+                        'data': item.data,
+                        'subfield_last':item.subfield_last,
+                        'subfield_first':item.subfield_first,
+                        'first':item.first,
+                        'level':item.level,
+                        'field_id': item.field_id
+                        }) }}
+
+                        {% else %}
+
+                        {{ include(item.template, {
+                        'options': item.value,
+                        'data': item.data,
+                        'subfield':item.subfield,
+                        }) }}
+
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
             {% endif %}
         </div>
         <!-- /6 section -->
+        <div class="uk-align uk-margin-remove-bottom">
+            <button class="uk-button button button-primary button-lg uk-width-1-1 uk-width-1-3@m uk-padding-remove-horizontal" name="update">{% trans %}Сохранить изменения{% endtrans %}</button>
+        </div>
 
+
+        <!-- 7 section -->
+        <h3 class="uk-margin-bottom uk-margin-large-top">Выберите тариф размещения</h3>
+        <div class="uk-width-1-1">
+            {{ include(':card:tariff_selector.html.twig', {'tariffId':card.tariff.id, 'edit':true}) }}
+        </div>
+        <!-- /7 section -->
+
+        <input type="hidden" name="cardId" value="{{ card.id }}">
+    </form>
+
+</div>
+
+<div id="price_info" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+        <h2 class="uk-modal-title">Сервисный сбор</h2>
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div>
+            На что идет сервисный сбор?<br>
+            <br>
+            Реклама вашего транспорта в интернете.<br>
+            Мы привлекаем дополнительный рекламный трафик из внешних источников именно на ваш транспорт  <br>
+            Вы зарабатываете больше денег.<br>
+            <br>
+            Владельцы, чей транспорт бронируется через нашу платформу, автоматически получают аккаунт PRO<br>
+            <br>
+            В сервисный сбор также входят: расходы на банковские переводы и обслуживание платежей.<br>
+            Также вы как владелец транспорта сможете проверить арендатора по нашей базе «безопасных арендаторов» и запросить
+            дополнительную информацию о безопасности сделки.
+        </div>
     </div>
+</div>
 {% endblock %}
 
 

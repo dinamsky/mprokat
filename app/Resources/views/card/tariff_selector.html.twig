@@ -7,7 +7,7 @@
                 <label class="theme-tariff-label">
                     <div class="js-tariff-name">Обычное размещение</div>
                     <div class="uk-text-primary uk-margin-small-bottom js-tariff-price">Бесплатно</div>
-                    <input class="uk-radio theme-radio js-tariff-selector" type="radio" name="tariffId" value="1">
+                    <input class="uk-radio theme-radio js-tariff-selector" type="radio" name="tariffId" value="1" {{ tariffId == 1 ? 'checked' : '' }}>
                 </label>
             </div>
             <div class="uk-width-1-3 uk-width-1-4@m uk-text-center">
