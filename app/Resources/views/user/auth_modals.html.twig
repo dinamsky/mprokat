@@ -1,208 +1,109 @@
 {% if not app.session.has('logged_user') and not app.session.has('admin')%}
 
-<div class="modal fade" id="signIn" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <form action="/userSignIn" method="POST">
-                    <h2 class="modal-title">{% trans %}Вход{% endtrans %}</h2>
-                    <div class="mat-form">
+
+<!-- Modal: Sign In -->
+<div id="signIn" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-width-1-1 uk-width-large@m">
+        <button class="uk-modal-close-default uk-hidden@m" type="button" uk-close></button>
+        <h2 class="uk-modal-title uk-text-left uk-text-center@m">{% trans %}Вход{% endtrans %}</h2>
+
+        <form action="/userSignIn" method="POST">
+            <div class="mat-form">
+                <div class="mat-group">
+                    <label class="mat-label">Ваш e-mail</label>
+                    <input type="email" name="email" class="mat-input" id="email">
+                </div>
+                <div class="mat-group">
+                    <label for="password" class="mat-label">Ваш пароль</label>
+                    <input type="password" name="password" class="mat-input password-input">
+                    <a href="javascript:;" class="password-control"></a>
+                </div>
+                <input type="hidden" name="return" value="{{ app.request.requestUri }}">
+            </div>
+            <div class="text-right">
+                <a href="#pass_recover" class="link-underline small" uk-toggle>Забыли пароль?</a>
+            </div>
+            <div class="modal-buttons">
+                <button type="submit" class="btn btn-solid">Войти</button>
+                <button class="btn btn-outline" uk-toggle="target: #signUp" type="button" uk-toggle>Зарегистрироваться</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<!-- Modal: Sign Up -->
+<div id="signUp" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-width-1-1 uk-width-1-2@m">
+        <button class="uk-modal-close-default uk-hidden@m" type="button" uk-close></button>
+        <h2 class="uk-modal-title uk-text-left uk-text-center@m">{% trans %}Регистрация{% endtrans %}</h2>
+
+        <form id="signUpForm" action="/userSignUp" method="POST" onsubmit="return signup_validate();">
+            <div class="mat-form">
+                <div class="uk-grid-medium" uk-grid>
+                    <div class="uk-width-1-1">
                         <div class="mat-group">
-                            <label for="text" class="mat-label">Ваш e-mail</label>
+                            <label for="name" class="mat-label">{% trans %}Введите название компании или ваше имя{% endtrans %}</label>
+                            <input type="text" name="header" class="mat-input" id="name" required />
+                        </div>
+                    </div>
+
+                    <div class="uk-width-1-1 uk-width-1-2@m">
+                        <div class="mat-group">
+                            <label for="email" class="mat-label">Ваш e-mail</label>
                             <input type="email" name="email" class="mat-input" id="email" />
                         </div>
+                    </div>
+
+                    <div class="uk-width-1-1 uk-width-1-2@m">
                         <div class="mat-group">
-                            <label for="password" class="mat-label">Ваш пароль</label>
-                            <input
-                                    type="password"
-                                    name="password"
-                                    class="mat-input password-input"
-                                    id="password"
-                            />
+                            <label for="phoneInput" class="mat-label phone-label">Номер телефона</label>
+                            <select class="phone-select" id="phoneSelect">
+                                <option value="russia"></option>
+                                <option value="abkhazia"></option>
+                                <option value="kazakhstan"></option>
+                                <option value="ukraine"></option>
+                                <option value="usa"></option>
+                            </select>
+                            <input type="text" name="phone" class="mat-input phone-input" id="phoneInput" required>
+                        </div>
+                    </div>
+
+                    <div class="uk-width-1-1">
+                        <div class="mat-group">
+                            <label for="password-signUp" class="mat-label">Ваш пароль</label>
+                            <input type="password" name="password" class="mat-input" id="password-signUp">
                             <a href="#" class="password-control"></a>
                         </div>
-                        <input type="hidden" name="return" value="{{ app.request.requestUri }}">
                     </div>
-                    <div class="text-right">
-                        <a
-                                href="#pass_recover"
-                                class="link-underline small"
-                                data-toggle="modal"
-                                data-dismiss="modal"
-                        >Забыли пароль?</a
-                        >
-                    </div>
-                    <div class="modal-buttons">
-                        <button type="submit" class="btn btn-solid">Войти</button>
-                        <button class="btn btn-outline" href="#signUp" data-toggle="modal" data-dismiss="modal">
-                            Зарегистрироваться
-                        </button>
-                    </div>
-                </form>
+
+                </div>
             </div>
-        </div>
+
+            <div class="checkbox-link">
+                <label class="checkbox">
+                    <input type="checkbox" name="oferta">
+                    <span class="checkmark"></span>
+                </label>
+
+                <a target="_blanc" href="/assets/docs/oferta.pdf" class="link-underline small">Я ознакомился с условиями оферты</a>
+            </div>
+
+            <div class="modal-buttons">
+                <button class="btn btn-solid" disabled>Зарегистрироваться</button>
+                <p class="text-gray small">У меня уже есть аккаунт, <a href="#signIn" class="link" uk-toggle>войти</a></p>
+            </div>
+        </form>
+
     </div>
 </div>
 
-{# <div id="sign_in" class="uk-modal" uk-modal bg-close="false">
-    <div class="uk-modal-dialog uk-modal-body">
-        <button class="uk-modal-close-default" type="button" uk-close></button>
-        <h2 class="uk-modal-title">{% trans %}Вход{% endtrans %}</h2>
-        <form action="/userSignIn" method="POST">
-            <input type="text" name="email" placeholder="Email или номер телефона" class="uk-input uk-margin-bottom" >
-            <input type="password" name="password" placeholder="{% trans %}Пароль{% endtrans %}" class="uk-input uk-margin-bottom">
-            <input type="hidden" name="return" value="{{ app.request.requestUri }}">
-            <div class="uk-clearfix">
-                <div class="uk-float-left"><button class="uk-button uk-button-primary">{% trans %}Войти{% endtrans %}</button></div>
-                <div class="uk-float-right"><a uk-toggle="target: #pass_recover">{% trans %}Забыли пароль?{% endtrans %}</a></div>
-            </div>
-        </form>
-        <hr>
-        <div uk-grid class="reg_in_signin_block">
-            <div class="uk-width-1-2" style="font-size: 21px;">{% trans %}Нет аккаунта?{% endtrans %}</div>
-            <div class="uk-width-1-2 uk-text-right"><button  uk-toggle="target: #sign_up" class="uk-button uk-button-success "><span uk-icon="icon:lock"></span>{% trans %}Регистрация{% endtrans %}</button></div>
-        </div>
-    </div>
-</div> #}
-
-<div class="modal fade" id="signUp" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document" style="max-width: 690px;">
-        <div class="modal-content">
-            <div class="modal-body">
-                <form id="signUpForm" action="/userSignUp" method="POST" onsubmit="return signup_validate();">
-                    <h2 class="modal-title">Регистрация</h2>
-                    <div class="mat-form">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="mat-group">
-                                    <label for="name" class="mat-label"
-                                    >{% trans %}Введите название компании или ваше имя{% endtrans %}</label
-                                    >
-                                    <input type="text" name="header" class="mat-input" id="name" required />
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="mat-group">
-                                    <label for="email" class="mat-label">Ваш e-mail</label>
-                                    <input type="email" name="email" class="mat-input" id="email" />
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="mat-group">
-                                    <label for="phoneInput" class="mat-label phone-label"
-                                    >Номер телефона</label
-                                    >
-                                    <select class="phone-select" id="phoneSelect">
-                                        <option value="russia"></option>
-                                        <option value="abkhazia"></option>
-                                        <option value="kazakhstan"></option>
-                                        <option value="ukraine"></option>
-                                        <option value="usa"></option>
-                                    </select>
-                                    <input
-                                            type="text"
-                                            name="phone"
-                                            class="mat-input phone-input"
-                                            id="phoneInput"
-                                            required
-                                    />
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="mat-group">
-                                    <label for="password" class="mat-label">Ваш пароль</label>
-                                    <input type="password" name="password" class="mat-input" id="password" />
-                                    <a href="#" class="password-control"></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="checkbox-link">
-                        <label class="checkbox">
-                            <input type="checkbox" name="oferta" />
-                            <span class="checkmark"></span>
-                        </label>
-                        <a target="_blanc" href="/assets/docs/oferta.pdf" class="link-underline small"
-                        >Я ознакомился с условиями оферты</a
-                        >
-                    </div>
-                    <div class="modal-buttons">
-                        <button class="btn btn-solid" disabled>
-                            Зарегистрироваться
-                        </button>
-                        <p class="text-gray small ">
-                            У меня уже есть аккаунт,
-                            <a
-                                    href="#signIn"
-                                    data-toggle="modal"
-                                    data-dismiss="modal"
-                                    class="link"
-                            >войти</a
-                            >
-                        </p>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-{# <div id="sign_up" class="uk-modal" uk-modal bg-close="false">
-    <div class="uk-modal-dialog uk-modal-body">
-        <button class="uk-modal-close-default" type="button" uk-close></button>
-        <h2 class="uk-modal-title">{% trans %}Регистрация{% endtrans %}</h2>
-        <form id="signUpForm" action="/userSignUp" method="POST" onsubmit="return signup_validate();">
-            <input type="text" name="header" placeholder="{% trans %}Введите название компании или ваше имя{% endtrans %}" class="uk-input uk-margin-bottom" required>
-            <div class="uk-grid uk-margin-bottom" uk-grid>
-                <div class=" uk-width-1-1 uk-width-auto@s uk-inline">
-                    <div uk-form-custom="target: > * > span:last-child">
-                        <select class="country-select" name="country">
-                            <option value="RU" data-code="+7" data-pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{2}$" data-filter="(999) 999-99-99" data-plshold="(###)###-##-##" selected>Россия</option> #}
-                            {# {% for countr in country %}
-                            <option value="2">Абхазия</option>
-                            {% endfor %} #}
-
-                            {# <option value="AB" data-code="+7 840" data-pattern="^\d{3}[-]\d{2}[-]\d{2}$"  data-filter="999-99-99" data-plshold="###-##-##">Абхазия</option>
-                            <option value="KZ" data-code="+7" data-pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{2}$"  data-filter="(999) 999-99-99" data-plshold="(###)###-##-##">Казахстан</option>
-                            <option value="UK" data-code="+380" data-pattern="^\(\d{2}\)\s\d{3}[-]\d{2}[-]\d{2}$"  data-filter="(99) 999-99-99" data-plshold="(##)###-##-##">Украина</option>
-                            <option value="US" data-code="+1" data-pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{3}$"  data-filter="(999) 999-99-999" data-plshold="(###)###-##-###">США</option>
-                        </select>
-                        <span class="uk-link">
-                                <span uk-icon="icon: pencil"></span>
-                                <span></span>
-                            </span>
-                    </div>
-                </div>
-                <div class=" uk-width-1-1 uk-width-expand@s">
-                    <div class="uk-inline uk-width-expand">
-                        <span class="uk-form-icon mp-country-code mp-form-span">+7</span>
-                        <input type="tel" name="phone" class="uk-input mp-country-phone" placeholder="(###)###-##-##" pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{2}$"  required>
-                    </div>
-                </div>
-            </div>
-            <input type="mail" name="email" placeholder="Email" required class="uk-input uk-margin-bottom"> #}
-
-            {# <div class="uk-margin-top uk-width-1-1 uk-inline">
-            <span class="uk-form-icon">+7</span>
-            <input type="tel" name="phone" placeholder="Телефон в формате 79001234567" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required class="uk-input uk-margin-bottom">
-        </div> #}
-
-            {# <input type="password" name="password" placeholder="{% trans %}Пароль{% endtrans %}" required class="uk-input uk-margin-bottom">
-            <div class="uk-margin-bottom"><label><input type="checkbox" name="oferta"> Я ознакомлен и согласен с условиями <a target="_blanc" class="underline" uk-tooltip="title:откроется в новом окне" href="/assets/docs/oferta.pdf">оферты</a></label></div>
-            <button class="uk-button uk-button-primary" disabled>{% trans %}Зарегистрироваться{% endtrans %}</button>
-        </form>
-        <hr>
-        <div uk-grid class="reg_in_signin_block">
-            <div class="uk-width-1-2" style="font-size: 21px;">Есть аккаунт?</div>
-            <div class="uk-width-1-2 uk-text-right"><button  uk-toggle="target: #sign_in" class="uk-button uk-button-success "><span uk-icon="icon:lock"></span>{% trans %}Войти{% endtrans %}</button></div>
-        </div>
-    </div>
-</div> #}
-
+<!-- Modal: Pass Recover -->
 <div id="pass_recover" class="uk-modal" uk-modal bg-close="false">
     <div class="uk-modal-dialog uk-modal-body">
         <button class="uk-modal-close-default" type="button" uk-close></button>
-        <h2 class="uk-modal-title">{% trans %}Смена пароля{% endtrans %}</h2>
+        <h2 class="uk-modal-title uk-text-left uk-text-center@m">{% trans %}Смена пароля{% endtrans %}</h2>
+
         <form action="/userRecover" method="POST">
             <input type="mail" name="email" placeholder="Введите email" class="uk-input uk-margin-bottom">
             <input type="password" name="password1" placeholder="{% trans %}Придумайте новый пароль{% endtrans %}" class="uk-input uk-margin-bottom" required>
@@ -210,12 +111,14 @@
             <input type="hidden" name="return" value="{{ app.request.requestUri }}">
             <div class="uk-clearfix">
                 <div class="uk-float-left"><button class="uk-button uk-button-primary">{% trans %}Сменить пароль{% endtrans %}</button></div>
-                <div class="uk-float-right"><a uk-toggle="target: #pass_recover_tel">{% trans %}Сменить через телефон{% endtrans %}</a></div>
+                <div class="uk-float-right"><a href="#pass_recover_tel" uk-toggle>{% trans %}Сменить через телефон{% endtrans %}</a></div>
             </div>
         </form>
+
     </div>
 </div>
 
+<!-- Modal: Pass Recover Tel -->
 <div id="pass_recover_tel" class="uk-modal" uk-modal bg-close="false">
     <div class="uk-modal-dialog uk-modal-body">
         <button class="uk-modal-close-default" type="button" uk-close></button>
@@ -260,6 +163,7 @@
     </div>
 </div>
 
+<!-- Modal: Pass Recover Tel Code -->
 <div id="pass_recover_tel_code" class="uk-modal" uk-modal bg-close="false">
     <div class="uk-modal-dialog uk-modal-body">
         <button class="uk-modal-close-default" type="button" uk-close></button>

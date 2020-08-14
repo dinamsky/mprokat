@@ -59,7 +59,7 @@
 					<span class="uk-text-truncate uk-margin-small-left text-white">{{ app.session.get('logged_user').header }}</span>
 				{% else %}
 					<span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('/assets/images/icons/login-icon_mobile.svg');"></span>
-					<a href="#signIn" data-toggle="modal">Войти</a>
+					<a href="#signIn" uk-toggle>Войти</a>
 				{% endif %}
 			</div>
 
@@ -86,7 +86,7 @@
 						<span class="uk-margin-small-left">Сдать в аренду</span>
 					</a>
 				{% else %}
-					<a class="uk-padding-remove" href="#signIn" data-toggle="modal">
+					<a class="uk-padding-remove" href="#signIn" uk-toggle>
 						<span class="uk-icon-button" uk-icon="plus" style="color: #fff; background: #4629D3; width: 32px; height: 32px;"></span>
 						<span class="uk-margin-small-left">Сдать в аренду</span>
 					</a>

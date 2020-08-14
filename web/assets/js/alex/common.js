@@ -27,15 +27,44 @@ const commonAlex = (function($) {
         }
     }
 
+    let _bestOwnersSwiperSettings = {
+        direction: "horizontal",
+        loop: true,
+        centeredSlides: true,
+        spaceBetween: 30,
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev"
+        },
+        breakpoints: {
+            320: {
+                centeredSlides: true,
+                slidesPerView: "auto",
+                spaceBetween: 10
+            },
+            768: {
+                centeredSlides: true,
+                slidesPerView: 2,
+                spaceBetween: 30
+            },
+            900: {
+                centeredSlides: true,
+                slidesPerView: 4,
+                spaceBetween: 30
+            }
+        }
+    };
+
     function init() {
         if(ui.$mainAlert.length) _checkMainAlerts();
         _bindHandlers();
     }
 
     function _bindHandlers() {
+        let bestOwnersSwiper = new Swiper('.js-best-owners-swiper-container', _bestOwnersSwiperSettings);
         $('.js-form-group').on('focus', '.js-form-control', _formControlFocus);
         $('.js-form-group').on('blur', '.js-form-control', _formControlBlur);
-        $('.js-select-lang').on('click', 'a', _changeTelMask)
+        $('.js-select-lang').on('click', 'a', _changeTelMask);
     }
 
     function _checkMainAlerts() {
