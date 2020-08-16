@@ -1519,6 +1519,44 @@ hr, .uk-hr {
 /*------------------
     ///Main Page / Section: Best Owners
 -------------------*/
+.city-search-input {
+    display: flex;
+    align-items: center;
+    height: 60px;
+    width: 100%;
+    outline: 0;
+    padding: 19px;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 22px;
+    /* identical to box height, or 110% */
+
+    box-shadow: none;
+    /* Серый цвет */
+    margin: 0 0 15px;
+    color: #AAAAAA;
+    border: 1px solid #E4E3E3;
+    box-sizing: border-box;
+    border-radius: 3px;
+}
+
+
+.theme-city-search-list {
+    display: flex;
+    flex-direction: column;
+    margin: 0 -30px;
+    padding: 0;
+}
+
+.theme-city-search-list > li {
+    display: flex;
+    align-items: center;
+    padding: 15px 30px;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 22px;
+    color: #474747;
+}
 
 .cards-slide .swiper-container {
     padding-right: 25%;

@@ -31,7 +31,7 @@
     <div class="uk-container">
         {% if not admin and not user %}
             {{ include('user/step_auth.html.twig') }}
-        {% endif %}
+        {% else %}
 
         <h2 class="uk-margin-medium-bottom">Сдача транспорта в аренду</h2>
 
@@ -153,6 +153,7 @@
             <!-- Step 6/6 -->
         </ul>
         </form>
+        {% endif %}
 
     </div>
 {% endblock %}

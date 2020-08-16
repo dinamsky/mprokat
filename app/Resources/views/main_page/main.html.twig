@@ -204,7 +204,7 @@
 {# begin блок слайдера ТОП ?? #}
 {# {{ dump(top13_10Slider) }}  #}
 
-<section class="cards cards-slide">
+<section class="cards cards-slide uk-margin-medium-bottom">
     <div class="uk-container">
         <div class="swiper-container">
             <div class="swiper-wrapper">
@@ -276,19 +276,13 @@
 </div> #}
 {# end блок слайдера ТОП новых бесплатных #}
 
-
-
-
 {{ include('waytosuccess.html.twig') }}
 
-
 {# {{ dump(positionCars) }} #}
-
 
 {% for kPosC, posC in positionCars %}
 {{ include('grid_view_tops.html.twig', {'in_city':in_city, 'header':positionHeader[kPosC], 'posC':posC, 'cards':blockCars[kPosC], 'height':'250px', 'keyC':kPosC}) }}
 {% endfor %}
-
 
 {# begin блок лучших арендаторов #}
 {{ include('owners_top.html.twig') }}
@@ -368,7 +362,6 @@
     </div>
 </div> #}
 
-
 {% set seo_text = '' %}
 {% if custom_seo and custom_seo.seoText != ''%}
 {% set seo_text = custom_seo.seoText %}
@@ -376,4 +369,6 @@
 {% if seo_text != '' %}
 <hr>
 <div class="standard_wide">{{ seo_text }}</div>
-{% endif %}{% endblock %}
+{% endif %}
+
+{% endblock %}

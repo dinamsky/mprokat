@@ -1,6 +1,8 @@
 $(document).ready(function() {
   var my_city_autoComplete = new autoComplete({
     selector: 'input[name="input_city"]',
+    minChars: 1,
+    offsetTop: 16,
     source: function(term, response) {
       $.ajax({
         url: "/ajax/getCityByInput",

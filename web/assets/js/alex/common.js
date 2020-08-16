@@ -1,8 +1,10 @@
 const commonAlex = (function($) {
 
     let ui = {
-        $mainAlert: $('.js-main-alert')
-    }
+        $mainAlert: $('.js-main-alert'),
+        $citySearchInput: $('.js-city-search-input'),
+        $citySearchList: $('.js-city-search-list')
+    };
 
     let countriesList = {
         ru: {
@@ -25,34 +27,6 @@ const commonAlex = (function($) {
             placeholder: '+1 (000) 000-00-00',
             val: '+1 ('
         }
-    }
-
-    let _bestOwnersSwiperSettings = {
-        direction: "horizontal",
-        loop: true,
-        centeredSlides: true,
-        spaceBetween: 30,
-        navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev"
-        },
-        breakpoints: {
-            320: {
-                centeredSlides: true,
-                slidesPerView: "auto",
-                spaceBetween: 10
-            },
-            768: {
-                centeredSlides: true,
-                slidesPerView: 2,
-                spaceBetween: 30
-            },
-            900: {
-                centeredSlides: true,
-                slidesPerView: 4,
-                spaceBetween: 30
-            }
-        }
     };
 
     function init() {
@@ -61,10 +35,44 @@ const commonAlex = (function($) {
     }
 
     function _bindHandlers() {
-        let bestOwnersSwiper = new Swiper('.js-best-owners-swiper-container', _bestOwnersSwiperSettings);
+        $('.js-city-search-input').on('input', _searchCity);
+
         $('.js-form-group').on('focus', '.js-form-control', _formControlFocus);
         $('.js-form-group').on('blur', '.js-form-control', _formControlBlur);
         $('.js-select-lang').on('click', 'a', _changeTelMask);
+    }
+    
+    function _searchCity(e) {
+        let buffVal = '';
+
+        let $this = $(this),
+            currentVal = $this.val(),
+            clearVal = currentVal.replace(/\s+/g, ' ').trim(),
+            lengthVal = clearVal.length;
+
+        buffVal = clearVal;
+
+        if(lengthVal > 0) {
+            console.log(clearVal + ' Запрос отправлен');
+            $.ajax({
+                url: '/ajax/getCityByInput',
+                type: "POST",
+                dataType: "json",
+                data: { q: clearVal },
+                success: function(response) {
+                    $('.js-city-search-list').empty();
+
+                    let cityList = response;
+                    let cityListMapped = cityList.map((city) => '<li class="city_block" data-header="' + city.split('|')[0] + '" data-url="' + city.split('|')[2] + '" data-id="' + city.split('|')[1] + '" data-val="' + city.split('|')[1] + '">' + city.split('|')[0] + '</li>')
+
+                    cityListMapped.forEach(function(entry) {
+                        $('.js-city-search-list').append(entry);
+                    });
+                    
+                    console.log(cityList.length);
+                }
+            });
+        }
     }
 
     function _checkMainAlerts() {

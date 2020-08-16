@@ -10,12 +10,12 @@
         <form action="/userSignIn" method="POST">
             <div class="mat-form">
                 <div class="mat-group">
-                    <label class="mat-label">Ваш e-mail</label>
-                    <input type="email" name="email" class="mat-input" id="email">
+                    <label class="mat-label" for="email-signIn">Ваш e-mail</label>
+                    <input type="email" name="email" class="mat-input" id="email-signIn">
                 </div>
                 <div class="mat-group">
-                    <label for="password" class="mat-label">Ваш пароль</label>
-                    <input type="password" name="password" class="mat-input password-input">
+                    <label for="password-signIp" class="mat-label">Ваш пароль</label>
+                    <input type="password" name="password" id="password-signIp" class="mat-input password-input">
                     <a href="javascript:;" class="password-control"></a>
                 </div>
                 <input type="hidden" name="return" value="{{ app.request.requestUri }}">
@@ -40,18 +40,18 @@
 
         <form id="signUpForm" action="/userSignUp" method="POST" onsubmit="return signup_validate();">
             <div class="mat-form">
-                <div class="uk-grid-medium" uk-grid>
+                <div class="uk-grid-row-collapse uk-grid-column-medium" uk-grid>
                     <div class="uk-width-1-1">
                         <div class="mat-group">
-                            <label for="name" class="mat-label">{% trans %}Введите название компании или ваше имя{% endtrans %}</label>
-                            <input type="text" name="header" class="mat-input" id="name" required />
+                            <label for="name" class="mat-label">{% trans %}Ваше имя и фамилия{% endtrans %}</label>
+                            <input type="text" name="header" class="mat-input" id="name" required>
                         </div>
                     </div>
 
                     <div class="uk-width-1-1 uk-width-1-2@m">
                         <div class="mat-group">
-                            <label for="email" class="mat-label">Ваш e-mail</label>
-                            <input type="email" name="email" class="mat-input" id="email" />
+                            <label for="email-signUp" class="mat-label">Ваш e-mail</label>
+                            <input type="email" name="email" class="mat-input" id="email-signUp">
                         </div>
                     </div>
 
@@ -86,12 +86,12 @@
                     <span class="checkmark"></span>
                 </label>
 
-                <a target="_blanc" href="/assets/docs/oferta.pdf" class="link-underline small">Я ознакомился с условиями оферты</a>
+                <a target="_blank" href="/assets/docs/oferta.pdf" class="link-underline small">Я ознакомился с условиями оферты</a>
             </div>
 
             <div class="modal-buttons">
-                <button class="btn btn-solid" disabled>Зарегистрироваться</button>
-                <p class="text-gray small">У меня уже есть аккаунт, <a href="#signIn" class="link" uk-toggle>войти</a></p>
+                <div class="uk-text-center uk-margin-bottom"><button class="btn btn-solid uk-margin-remove uk-width-1-1 uk-width-auto@m" disabled>Зарегистрироваться</button></div>
+                <p class="text-gray small uk-text-center uk-margin-remove">У меня уже есть аккаунт, <a href="#signIn" class="link" uk-toggle>войти</a></p>
             </div>
         </form>
 
@@ -105,13 +105,26 @@
         <h2 class="uk-modal-title uk-text-left uk-text-center@m">{% trans %}Смена пароля{% endtrans %}</h2>
 
         <form action="/userRecover" method="POST">
-            <input type="mail" name="email" placeholder="Введите email" class="uk-input uk-margin-bottom">
-            <input type="password" name="password1" placeholder="{% trans %}Придумайте новый пароль{% endtrans %}" class="uk-input uk-margin-bottom" required>
-            <input type="password" name="password2" placeholder="{% trans %}Повторите новый пароль{% endtrans %}" class="uk-input uk-margin-bottom" required>
-            <input type="hidden" name="return" value="{{ app.request.requestUri }}">
-            <div class="uk-clearfix">
-                <div class="uk-float-left"><button class="uk-button uk-button-primary">{% trans %}Сменить пароль{% endtrans %}</button></div>
-                <div class="uk-float-right"><a href="#pass_recover_tel" uk-toggle>{% trans %}Сменить через телефон{% endtrans %}</a></div>
+            <div class="mat-form">
+                <div class="mat-group uk-margin-remove">
+                    <label class="mat-label">{% trans %}Ваш E-mail{% endtrans %}</label>
+                    <input type="mail" name="email" class="mat-input uk-input" required>
+                </div>
+                <div class="mat-group">
+                    <label class="mat-label">{% trans %}Придумайте новый пароль{% endtrans %}</label>
+                    <input type="password" name="password1" class="mat-input uk-input" required>
+                </div>
+                <div class="mat-group">
+                    <label class="mat-label">{% trans %}Повторите новый пароль{% endtrans %}</label>
+                    <input type="password" name="password2" class="mat-input uk-input" required>
+                </div>
+
+                <input type="hidden" name="return" value="{{ app.request.requestUri }}">
+
+                <div class="uk-margin-medium-top uk-grid-medium uk-child-width-1-1 uk-child-width-auto@m uk-flex-between uk-flex-middle uk-grid" uk-grid>
+                    <div><button class="btn btn-solid uk-width-1-1 uk-width-auto@m">{% trans %}Сменить пароль{% endtrans %}</button></div>
+                    <div class="uk-text-center uk-text-right@m"><a href="#pass_recover_tel" class="link-underline small" uk-toggle>{% trans %}Сменить через телефон{% endtrans %}</a></div>
+                </div>
             </div>
         </form>
 
@@ -123,6 +136,7 @@
     <div class="uk-modal-dialog uk-modal-body">
         <button class="uk-modal-close-default" type="button" uk-close></button>
         <h2 class="uk-modal-title">{% trans %}Смена пароля через телефон{% endtrans %}</h2>
+
         <form action="/userRecoverPhone" method="POST">
             <div class="uk-grid uk-margin-bottom" uk-grid>
                 <div class=" uk-width-1-1 uk-width-auto@s uk-inline">
@@ -191,18 +205,26 @@
 
 {# Global city selector modal #}
 
-<div class="modal fade" id="cityModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
+<div id="cityModal" class="uk-modal" uk-modal bg-close="false">
+    <div class="uk-modal-dialog" uk-overflow-auto>
+        <div class="uk-modal-body">
+            <button class="uk-modal-close-defaul uk-hidden@m" type="button" uk-close></button>
+            <h2 class="uk-modal-title uk-hidden@m">{% trans %}Выбор города{% endtrans %}</h2>
+
+            <div class="uk-hidden@m">
+                <input type="text" placeholder="Поиск" class="js-city-search-input city-search-input">
+                <ul class="theme-city-search-list js-city-search-list"></ul>
+            </div>
+
+            <div class="uk-visible@m">
                 <p class="small text-gray text-left">Введите ваш город</p>
+
                 <form class="form-inline">
                     <div class="input-group">
-                        <div class="form-item">
-                            <input type="text" name="input_city" />
-                        </div>
+                        <div class="form-item"><input type="text" name="input_city"></div>
                     </div>
                 </form>
+
                 <div class="modal-buttons">
                     <button class="btn btn-solid">Это мой город</button>
                 </div>
