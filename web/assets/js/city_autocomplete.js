@@ -17,6 +17,7 @@ $(document).ready(function() {
     renderItem: function(item, search) {
       var res = item.split("|");
       item = res[0];
+      var itemOnly = item.split(',')[0];
       var id = res[1];
       search = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
       var re = new RegExp("(" + search.split(" ").join("|") + ")", "gi");
@@ -30,7 +31,7 @@ $(document).ready(function() {
         '" data-val = "' +
         id +
         '" >' +
-        item.replace(re, "<b>$1</b>") +
+        itemOnly.replace(re, "<b>$1</b>") +
         "</div>"
       );
     },
@@ -57,6 +58,7 @@ $(document).ready(function() {
     renderItem: function(item, search) {
       var res = item.split("|");
       item = res[0];
+      var itemOnly = item.split(',')[0];
       var id = res[1];
       search = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
       var re = new RegExp("(" + search.split(" ").join("|") + ")", "gi");
@@ -70,7 +72,7 @@ $(document).ready(function() {
         '" data-val = "' +
         id +
         '" >' +
-        item.replace(re, "<b>$1</b>") +
+        itemOnly.replace(re, "<b>$1</b>") +
         "</div>"
       );
     },

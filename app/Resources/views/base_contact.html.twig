@@ -4,9 +4,9 @@
         {% if app.session.has('city') and app.session.get('city').country != 'RUS' %}
         <meta name="robots" content="noindex">
         {% endif %}
-
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, shrink-to-fit=no">
+        <title>{% block title %}Мультипрокат{% endblock %}</title>
 
         {% block stylesheets %}
             <link href="{{ asset('assets/css/uikit.css') }}" rel="stylesheet">
@@ -32,24 +32,14 @@
 
         {% block socialScripts %}
         {% endblock %}
-
-        <link rel="icon" type="image/x-icon" href="{{ asset('assets/favicon.ico') }}" />
-
-
-
-        <title>{% block title %}Мультипрокат{% endblock %}</title>
+        <link rel="icon" type="image/x-icon" href="{{ asset('assets/favicon.ico') }}">
         <meta name="yandex-verification" content="a2d59e156f2bd014" />
     </head>
     <body {% block bodyVars %}{% endblock %} class="{{ is_mobile() ? 'mobile' : 'desktop' }} {% block bodyClass %}{% endblock %}">
         {{ include('header.html.twig') }}
-
-
-						<div class="page">
-            	{% block content %}{% endblock %}
-						</div>
-
-
+        <div class="page">{% block content %}{% endblock %}</div>
         {{ include('footer.html.twig') }}
+
         {% block javascripts %}
             <script src="{{ asset('assets/js/jquery-3.2.1.min.js') }}"></script>
             <script src="{{ asset('assets/js/uikit.min.js') }}"></script>
@@ -68,12 +58,12 @@
             {% endif %}
 
         {% endblock %}
+
         {{ include('yandex_metrica.html.twig') }}
         {{ include('counters.html.twig') }}
         {{ include('user/auth_modals.html.twig') }}
 
         {% block jivosite %}
         {% endblock %}
-
     </body>
 </html>

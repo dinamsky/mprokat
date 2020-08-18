@@ -1236,6 +1236,28 @@ hr, .uk-hr {
     }
 }
 
+/*-- inline select --*/
+.selectric-select-inline {
+    width: 100%;
+}
+
+.selectric-select-inline .selectric {
+    border: 1px solid #E4E3E3;
+    border-radius: 3px;
+}
+
+@media(min-width: 960px) {
+    .selectric-select-inline {
+        width: auto;
+    }
+
+    .selectric-select-inline .selectric {
+        border-color: transparent;
+        border-radius: 0;
+    }
+}
+/*-- /inline select --*/
+
 /*------------------
     /Selectric-theme
 -------------------*/
@@ -1283,8 +1305,21 @@ hr, .uk-hr {
     background-color: #fff;
 }
 
-.footer-main .nav-header {
+.footer-main .instagram-icon {
+    background-image: url('/assets/images/icons/instagram-icon.svg');
+}
 
+.footer-main .google-plus-icon {
+    background-image: url('/assets/images/icons/google-icon.svg')
+}
+
+.footer-main .vk-icon {
+    background-image: url('/assets/images/icons/vk-icon.svg')
+}
+
+.footer-main .nav-header {
+    font-size: 1rem;
+    margin: 0 0 20px;
 }
 
 .footer-main .uk-nav li + li {
@@ -1307,7 +1342,7 @@ hr, .uk-hr {
     list-style: none;
 }
 
-.footer-main__social-media li {
+.footer-main__social-media li + li {
     margin: 0 0 0 20px;
 }
 
@@ -1334,6 +1369,7 @@ hr, .uk-hr {
 
     .footer-main .nav-header {
         color: #fafafa;
+        font-size: 1.2rem;
     }
 
     .footer-main .uk-nav li > a {
@@ -1348,6 +1384,18 @@ hr, .uk-hr {
         padding: 26px 0;
         border-top-width: 1px;
         color: #aaa;
+    }
+
+    .footer-main .instagram-icon {
+        background-image: url('/assets/images/icons/instagram-icon_white.svg');
+    }
+
+    .footer-main .google-plus-icon {
+        background-image: url('/assets/images/icons/google-icon_white.svg')
+    }
+
+    .footer-main .vk-icon {
+        background-image: url('/assets/images/icons/vk-icon_white.svg')
     }
 }
 /*------------------
@@ -1519,6 +1567,79 @@ hr, .uk-hr {
 /*------------------
     ///Main Page / Section: Best Owners
 -------------------*/
+
+/*------------------
+    Hiding categories on users pages
+
+-------------------*/
+body.user-base #content {
+    padding-bottom: 50px;
+}
+
+body.user-base section.categories {
+    display: none!important;
+}
+/*------------------
+    ///Hiding categories on users pages
+-------------------*/
+
+/*----------------
+    Spinner Element
+-----------------*/
+/* Rotating border */
+@keyframes spinner-border {
+    to { transform: rotate(360deg); }
+}
+
+.spinner-border {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    vertical-align: text-bottom;
+    border: .25em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    -webkit-animation: spinner-border .75s linear infinite;
+    animation: spinner-border .75s linear infinite;
+}
+
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+    border-width: .2em;
+}
+
+/* Growing circle */
+@keyframes spinner-grow {
+    0% {
+        transform: scale(0);
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+.spinner-grow {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    vertical-align: text-bottom;
+    background-color: currentColor;
+    border-radius: 50%;
+    opacity: 0;
+    -webkit-animation: spinner-grow .75s linear infinite;
+    animation: spinner-grow .75s linear infinite;
+}
+
+.spinner-grow-sm {
+    width: 1rem;
+    height: 1rem;
+}
+
+/*----------------
+    ///Spinner Element
+-----------------*/
+
 .city-search-input {
     display: flex;
     align-items: center;

@@ -2,8 +2,8 @@
 
 {% block stylesheets %}
 	{{ parent() }}
-	<link href="{{ asset('assets/css/auto-complete.css') }}" rel="stylesheet" />
-	<link href="{{ asset('assets/css/nouislider.css') }}" rel="stylesheet" />
+	<link href="{{ asset('assets/css/auto-complete.css') }}" rel="stylesheet">
+	<link href="{{ asset('assets/css/nouislider.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block javascripts %}
@@ -30,10 +30,6 @@
 
 {% block content %}
 
-
-
-
-
 	{% set x_uri = app.request.pathinfo|split('/') %}
 
 	{% if bodyTypes and model.id == null %}
@@ -44,7 +40,7 @@
 	{% endif %}
 
 	<section class="categories-city">
-		<div class="container">
+		<div class="uk-container">
 			{% if custom_seo and custom_seo.h1 != ''%}
 				<h2>{% include(template_from_string(custom_seo.h1)) %}</h2>
 			{% else %}
@@ -54,6 +50,7 @@
 			{% if x_uri[2] is defined and x_uri[2] != 'rus' and x_uri|length == 3 %}
 				{{ include('search/gt_block.html.twig') }}
 			{% endif %}
+
 			{% if x_uri[2] is defined and x_uri[2] != 'rus' and x_uri|length > 4 and mark.id == null %}
 				{{ include('search/mark_block.html.twig') }}
 			{% endif %}
@@ -67,8 +64,8 @@
 	</section>
 
 	<section class="cards">
-		<div class="container">
-			<div class="cards-header">
+		<div class="uk-container">
+			<div class="cards-header cards-header-center">
 				{% if total_cards > 0 %}
 					<p class="results">{% trans %}Найдено{% endtrans %}: {{ total_cards }} {% trans %}транспорта{% endtrans %}</p>
 				{% else %}
@@ -88,7 +85,7 @@
 					{% elseif app.session.has('admin') %}
 						<a href="/card/new" class="uk-button uk-button-success zero_button">{% trans %}Разместить свой транспорт!{% endtrans %}</a>
 					{% else %}
-						<a uk-toggle="target: #sign_in" class="uk-button uk-button-success zero_button">{% trans %}Разместить транспорт!{% endtrans %}</a>
+						<a href="#signIn" class="uk-button uk-button-success zero_button" uk-toggle>{% trans %}Разместить транспорт!{% endtrans %}</a>
 					{% endif %}
 
 {#					{% if similar %}#}
@@ -106,12 +103,19 @@
 
 				{% endif %}
 
-				<div class="sort">
+				<div class="uk-flex uk-flex-middle uk-width-1-1 uk-width-auto@m">
+					{% if is_mobile() %}
+					<select class="select-inline" id="order" name="order" value="{{ app.request.get('order') is defined ? app.request.get('order') : 0 }}">
+						<option value="price_asc">Сортировка: сначала дешевле</option>
+						<option value="price_desc">Сортировка: сначала дороже</option>
+					</select>
+					{% else %}
 					<p>Сортировка:</p>
-					<select id="order" name="order" value="{{ app.request.get('order') is defined ? app.request.get('order') : 0 }}">
+					<select class="select-inline" id="order" name="order" value="{{ app.request.get('order') is defined ? app.request.get('order') : 0 }}">
 						<option value="price_asc">сначала дешевле</option>
 						<option value="price_desc">сначала дороже</option>
 					</select>
+					{% endif %}
 				</div>
 			</div>
 
@@ -178,14 +182,11 @@
 		</div>
 	</section>
 
-	<section class="alert">
-		<div class="container">
+	<section class="uk-text-center uk-margin-large-bottom">
+		<div class="uk-container uk-margin-auto uk-width-1-1 uk-width-1-2@m">
 			<h2>Примите участие в улучшении сервиса</h2>
-			<p>
-				Поделитесь своими впечатлениями от пользования платформой, это
-				поможет нам в улучшении.
-			</p>
-			<a href="#" class="btn btn-solid">Оставить отзыв</a>
+			<p class="uk-margin-medium-bottom">Поделитесь своими впечатлениями от пользования<br class="uk-visible@m"> платформой, это поможет нам в улучшении.</p>
+			<div class="uk-flex uk-flex-center"><a href="#" class="btn uk-width-1-1 uk-width-medium@m btn-solid">Оставить отзыв</a></div>
 		</div>
 	</section>
 

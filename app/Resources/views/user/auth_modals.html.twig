@@ -206,29 +206,62 @@
 {# Global city selector modal #}
 
 <div id="cityModal" class="uk-modal" uk-modal bg-close="false">
-    <div class="uk-modal-dialog" uk-overflow-auto>
+    <div class="uk-modal-dialog uk-width-auto uk-width-large@m" uk-overflow-auto>
         <div class="uk-modal-body">
-            <button class="uk-modal-close-defaul uk-hidden@m" type="button" uk-close></button>
+            <button class="uk-modal-close-default uk-hidden@m" type="button" uk-close></button>
             <h2 class="uk-modal-title uk-hidden@m">{% trans %}Выбор города{% endtrans %}</h2>
-
-            <div class="uk-hidden@m">
+            {% if is_mobile() %}
                 <input type="text" placeholder="Поиск" class="js-city-search-input city-search-input">
-                <ul class="theme-city-search-list js-city-search-list"></ul>
-            </div>
-
-            <div class="uk-visible@m">
+                <div class="js-city-search-list-preloader uk-flex uk-flex-center uk-flex-middle" style="display: none;">
+                    <span class="spinner-border"></span>
+                </div>
+                <ul class="theme-city-search-list js-city-search-list" style="display: none;"></ul>
+                <ul class="theme-city-search-list js-city-search-list-default">
+                    <li class="city_block" data-id="1229" data-url="Alushta" data-header="Алушта">Алушта</li>
+                    <li class="city_block" data-id="263" data-url="Anapa" data-header="Анапа">Анапа</li>
+                    <li class="city_block" data-id="358" data-url="Arhangelsk" data-header="Архангельск">Архангельск</li>
+                    <li class="city_block" data-id="371" data-url="Astrahan" data-header="Астрахань">Астрахань</li>
+                    <li class="city_block" data-id="251" data-url="Barnaul" data-header="Барнаул">Барнаул</li>
+                    <li class="city_block" data-id="379" data-url="Belgorod" data-header="Белгород">Белгород</li>
+                    <li class="city_block" data-id="389" data-url="Bryansk" data-header="Брянск">Брянск</li>
+                    <li class="city_block" data-id="314" data-url="Vladivostok" data-header="Владивосток">Владивосток</li>
+                    <li class="city_block" data-id="406" data-url="Vladimir" data-header="Владимир">Владимир</li>
+                    <li class="city_block" data-id="428" data-url="Volgograd" data-header="Волгоград">Волгоград</li>
+                    <li class="city_block" data-id="450" data-url="Vologda" data-header="Вологда">Вологда</li>
+                    <li class="city_block" data-id="466" data-url="Voronezh" data-header="Воронеж">Воронеж</li>
+                    <li class="city_block" data-id="267" data-url="Gelendzhik" data-header="Геленджик">Геленджик</li>
+                    <li class="city_block" data-id="1236" data-url="Evpatoriya" data-header="Евпатория">Евпатория</li>
+                    <li class="city_block" data-id="1013" data-url="Ekaterinburg" data-header="Екатеринбург">Екатеринбург</li>
+                    <li class="city_block" data-id="481" data-url="Ivanovo" data-header="Иваново">Иваново</li>
+                    <li class="city_block" data-id="227" data-url="Izhevsk" data-header="Ижевск">Ижевск</li>
+                    <li class="city_block" data-id="504" data-url="Irkutsk" data-header="Иркутск">Иркутск</li>
+                    <li class="city_block" data-id="209" data-url="Kazan" data-header="Казань">Казань</li>
+                    <li class="city_block" data-id="524" data-url="Kaliningrad" data-header="Калининград">Калининград</li>
+                    <li class="city_block" data-id="547" data-url="Kaluga" data-header="Калуга">Калуга</li>
+                    <li class="city_block" data-id="548" data-url="Kirov(Kaluzhskaya)" data-header="Киров(Калужская)">Киров(Калужская)</li>
+                    <li class="city_block" data-id="272" data-url="Krasnodar" data-header="Краснодар">Краснодар</li>
+                    <li class="city_block" data-id="302" data-url="Krasnoyarsk" data-header="Красноярск">Красноярск</li>
+                    <li class="city_block" data-id="1144" data-url="Magnitogorsk" data-header="Магнитогорск">Магнитогорск</li>
+                    <li class="city_block" data-id="123" data-url="Mahachkala" data-header="Махачкала">Махачкала</li>
+                    <li class="city_block" data-id="77" data-url="Moscow" data-header="Москва">Москва</li>
+                    <li class="city_block" data-id="215" data-url="Naberezhnye_Chelny" data-header="Набережные Челны">Набережные Челны</li>
+                    <li class="city_block" data-id="804" data-url="Nizhniy_Novgorod" data-header="Нижний Новгород">Нижний Новгород</li>
+                    <li class="city_block" data-id="833" data-url="Novosibirsk" data-header="Новосибирск">Новосибирск</li>
+                    <li class="city_block" data-id="1127" data-url="Novoulyanovsk" data-header="Новоульяновск">Новоульяновск</li>
+                </ul>
+            {% else %}
                 <p class="small text-gray text-left">Введите ваш город</p>
 
-                <form class="form-inline">
+                <form class="uk-width-1-1 uk-margin-bottom">
                     <div class="input-group">
-                        <div class="form-item"><input type="text" name="input_city"></div>
+                        <div class="form-item"><input type="text" name="input_city" class="uk-width-1-1"></div>
                     </div>
                 </form>
 
-                <div class="modal-buttons">
-                    <button class="btn btn-solid">Это мой город</button>
+                <div class="uk-flex uk-flex-center">
+                    <button class="btn btn-solid uk-width-auto">Это мой город</button>
                 </div>
-            </div>
+            {% endif %}
         </div>
     </div>
 </div>

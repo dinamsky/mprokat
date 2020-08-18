@@ -6,6 +6,8 @@ const commonAlex = (function($) {
         $citySearchList: $('.js-city-search-list')
     };
 
+    let buffVal;
+
     let countriesList = {
         ru: {
             placeholder: '+7 (000) 000-00-00',
@@ -43,27 +45,39 @@ const commonAlex = (function($) {
     }
     
     function _searchCity(e) {
-        let buffVal = '';
+
 
         let $this = $(this),
             currentVal = $this.val(),
             clearVal = currentVal.replace(/\s+/g, ' ').trim(),
             lengthVal = clearVal.length;
 
-        buffVal = clearVal;
+
+
 
         if(lengthVal > 0) {
+            if(clearVal === buffVal) return false;
+
+            buffVal = clearVal;
             console.log(clearVal + ' Запрос отправлен');
             $.ajax({
                 url: '/ajax/getCityByInput',
                 type: "POST",
                 dataType: "json",
                 data: { q: clearVal },
+                beforeSend: function() {
+                    $('.js-city-search-list-preloader').show();
+                    $('.js-city-search-list').hide();
+                    $('.js-city-search-list-default').hide();
+                },
                 success: function(response) {
-                    $('.js-city-search-list').empty();
+                    $('.js-city-search-list').empty().show();
+                    $('.js-city-search-list-preloader').hide();
+                    $('.js-city-search-list-default').hide();
+
 
                     let cityList = response;
-                    let cityListMapped = cityList.map((city) => '<li class="city_block" data-header="' + city.split('|')[0] + '" data-url="' + city.split('|')[2] + '" data-id="' + city.split('|')[1] + '" data-val="' + city.split('|')[1] + '">' + city.split('|')[0] + '</li>')
+                    let cityListMapped = cityList.map((city) => '<li class="city_block" data-header="' + city.split('|')[0] + '" data-url="' + city.split('|')[2] + '" data-id="' + city.split('|')[1] + '" data-val="' + city.split('|')[1] + '">' + city.split('|')[0].split(',')[0] + '</li>')
 
                     cityListMapped.forEach(function(entry) {
                         $('.js-city-search-list').append(entry);
@@ -72,6 +86,10 @@ const commonAlex = (function($) {
                     console.log(cityList.length);
                 }
             });
+        } else {
+            $('.js-city-search-list-default').show();
+            $('.js-city-search-list-preloader').hide();
+            $('.js-city-search-list').hide();
         }
     }
 
