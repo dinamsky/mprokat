@@ -1,0 +1,139 @@
+.chat-layout {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+@media(min-width: 960px) {
+    .chat-layout {
+        flex-direction: row;
+    }
+}
+
+.chat-sidebar {
+    background: #fff;
+    flex-grow: 2;
+    order: 1;
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+@media(min-width: 960px) {
+    .chat-sidebar {
+        flex-grow: 0;
+        width: 25%;
+        border-right: 1px solid #E4E3E3;
+    }
+}
+
+.chat-main {
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    order: 3;
+    flex: 1;
+    background: #fff;
+}
+
+@media(min-width: 960px) {
+    .chat-main {
+        height: 100vh;
+    }
+}
+
+.dialog-list {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.dialog-list > li {
+    display: block;
+    margin-top: -1px;
+    background-color: #fff;
+    border: 1px solid #E4E3E3;
+}
+
+.dialog-list.uk-tab > li.uk-active {
+    border-color: #4629D3;
+    z-index: 1;
+}
+
+.dialog-list > li:first-child {
+    margin-top: 0;
+}
+
+.dialog-list.uk-tab > * > a,
+.dialog-list.uk-tab > .uk-active > a {
+    border: 0;
+}
+
+
+.dialog-item {
+
+}
+
+.dialog-item__avatar-figure {
+    position: relative;
+    display: block;
+    width: 50px;
+    padding-bottom: 100%;
+    border-radius: 99px;
+}
+
+.dialog-item__avatar-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #eee;
+    background-position: 50% 50%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 99px;
+}
+
+.dialog-item__icon-wrapper {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 4px;
+
+    background-color: #3DD118;
+    border-radius: 99px;
+}
+
+.dialog-item__icon-wrapper_awaiting {
+    background-color: #2A73FF;
+}
+
+.dialog-item__icon-wrapper_approval {
+    background-color: #3DD118;
+}
+
+.dialog-item__icon-wrapper_request {
+    background-color: #4629D3;
+}
+
+.dialog-item__icon-wrapper_message {
+    background-color: #EA1D1D;
+}
+
+.dialog-item__icon {
+    width: 10px;
+    height: 10px;
+}

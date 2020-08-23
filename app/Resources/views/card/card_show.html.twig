@@ -510,6 +510,10 @@ prefix="og: http://ogp.me/ns#"
     {{ include('card/order_forms/old_order_form.html.twig') }}
 {% endif %}
 
+<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+        async defer>
+</script>
+
 {{ include('card/order_forms/nonreged_form.html.twig') }}
 
 {% endblock %}
