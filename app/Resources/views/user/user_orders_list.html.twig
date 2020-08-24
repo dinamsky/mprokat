@@ -2,11 +2,13 @@
 
 {% block stylesheets %}
 {{ parent() }}
+<link href="{{ asset('assets/css/simplebar.css') }}" rel="stylesheet">
 <link href="{{ asset('assets/css/alex/user/user-orders-list.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block javascripts %}
 {{ parent() }}
+<script src="{{ asset('assets/js/simplebar.min.js') }}"></script>
 <script src="{{ asset('assets/js/image_upload_preview.js') }}"></script>
 <script src="{{ asset('assets/js/jquery.maskedinput.js') }}"></script>
 <script src="{{ asset('assets/js/phone_validate.js') }}"></script>
@@ -22,248 +24,248 @@ big_order_list
 <div class="uk-container">
 
     <div class="chat-layout">
+
+        <!-- SideBar -->
         <div class="chat-sidebar">
-            users...
-        </div>
+            <div class="uk-height-1-1 uk-flex uk-flex-column hide-scrollbar chat-sidebar-inner" data-simplebar>
 
-        <div class="chat-main">
-            messages...
-        </div>
-    </div>
+                <ul class="uk-tab-left contacts-list" uk-tab="connect: #component-tab-left; animation: uk-animation-fade">
+                    {% for o in orders %}
 
-    <div class="uk-grid-match uk-grid-collapse" uk-grid>
+                    {% set url = '/assets/images/users/t/user_'~o.renterId~'.jpg' %}
 
-        <div class="uk-width-1-4">
+                    {% if( app.session.get('logged_user').id == o.renterId) %}
+                        {% set url = '/assets/images/users/t/user_'~o.userId~'.jpg' %}
+                    {% endif %}
 
-            <ul class="uk-tab-left dialog-list" uk-tab="connect: #component-tab-left; animation: uk-animation-fade">
-                {% for o in orders %}
+                    {% if not file_exists('.'~url) %}
+                        {% set url = '/assets/images/interface/default-user.png' %}
+                    {% endif %}
 
-                {% set url = '/assets/images/users/t/user_'~o.renterId~'.jpg' %}
-                {% if( app.session.get('logged_user').id == o.renterId) %}
-                {% set url = '/assets/images/users/t/user_'~o.userId~'.jpg' %}
-                {% endif %}
-                {% if not file_exists('.'~url) %}
-                {% set url = '/assets/images/interface/default-user.png' %}
-                {% endif %}
+                    {% set card = getcard(o.cardId) %}
+                    {% set rightuser = getuser(o.userId) %}
+                    {% set rating = o.ownerRating %}
 
-                {% set card = getcard(o.cardId) %}
-                {% set rightuser = getuser(o.userId) %}
-                {% set rating = o.ownerRating %}
-                {% if app.session.get('logged_user').id == o.userId %}
-                {% set rightuser = getuser(o.renterId) %}
-                {% set rating = o.renterRating %}
-                {% endif %}
+                    {% if app.session.get('logged_user').id == o.userId %}
+                        {% set rightuser = getuser(o.renterId) %}
+                        {% set rating = o.renterRating %}
+                    {% endif %}
 
-                <li>
-                    <a class="dialog-item" href="javascript:;">
-                        <div class="uk-grid-small" uk-grid>
-                            <div class="uk-width-auto">
-                                <div class="dialog-item__avatar-figure">
-                                    <div class="dialog-item__avatar-image" style="background-image: url('{{ url }}');">
+                    <li class="contacts-item">
+                        <a class="contacts-link" href="javascript:;">
+                            <div class="avatar"><img src="{{ url }}" alt=""></div>
+
+                            <div class="contacts-content">
+                                <div class="contacts-info">
+                                    <h6 class="chat-name uk-text-truncate">{{ rightuser.header is defined ? rightuser.header}}</h6>
+                                    <div class="chat-time">
+                                        {% if o.messages != '' %}
+                                            {% for m in jsond(o.messages) %}
+                                                {% if loop.last %}
+                                                    {{ m.date }} {{ m.time }}
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
                                     </div>
-
-                                    {% if notifies[o.id] is defined %}
-
-                                        {% set ord_icon = 'message' %}
-                                        {% if notifies[o.id]|length > 1%}
-                                            {% else %}
-
-                                            {% if notifies[o.id][0].notify == 'new_order' %}
-                                            {% set ord_icon = 'request' %}
-                                            {% endif %}
-
-                                            {% if notifies[o.id][0].notify == 'order_accept' %}
-                                            {% set ord_icon = 'approval' %}
-                                            {% endif %}
-
-                                            {% if notifies[o.id][0].notify == 'order_reject' %}
-                                            {% set ord_icon = 'message' %}
-                                            {% endif %}
-
-                                            {% if notifies[o.id][0].notify == 'order_answer' %}
-                                            {% set ord_icon = 'message' %}
-                                            {% endif %}
-
-                                            {% if notifies[o.id][0].notify == 'order_payed' %}
-                                            {% set ord_icon = 'approval' %}
-                                            {% endif %}
+                                </div>
+                                <div class="contacts-texts">
+                                    <p class="uk-text-truncate">
+                                        {% if o.ownerStatus == 'wait_for_accept' and app.session.get('logged_user').id == o.renterId %}
+                                        Ожидает одобрения
                                         {% endif %}
 
-                                        <div class="dialog-item__icon-wrapper dialog-item__icon-wrapper_{{ ord_icon }}">
-                                            <span class="uk-icon uk-icon-image dialog-item__icon" style="background-image: url('/assets/images/icons/order-list/chat-icon_{{ ord_icon }}.svg');"></span>
-                                        </div>
-                                    {% endif %}
+                                        {% if o.ownerStatus == 'wait_for_accept' and app.session.get('logged_user').id == o.userId %}
+                                        Ожидает одобрения
+                                        {% endif %}
 
+                                        {#---- after accept#}
+
+                                        {% if o.renterStatus == 'wait_for_pay' and app.session.get('logged_user').id == o.renterId %}
+                                        Ожидает оплаты
+                                        {% endif %}
+
+                                        {% if o.ownerStatus == 'accepted' and app.session.get('logged_user').id == o.userId %}
+                                        Ожидает оплаты
+                                        {% endif %}
+
+                                        {#---- after payment#}
+
+                                        {% if o.renterStatus == 'wait_for_finish' and app.session.get('logged_user').id == o.renterId %}
+                                        Заявка оплачена
+                                        {% endif %}
+
+                                        {% if o.ownerStatus == 'wait_for_rent' and app.session.get('logged_user').id == o.userId %}
+                                        Заявка оплачена
+                                        {% endif %}
+
+                                        {#---- after pincode#}
+
+                                        {% if o.renterStatus == 'rent_in_process' and app.session.get('logged_user').id == o.renterId %}
+                                        Идет аренда
+                                        {% endif %}
+
+                                        {% if o.ownerStatus == 'rent_in_process' and app.session.get('logged_user').id == o.userId %}
+                                        Идет аренда
+                                        {% endif %}
+
+                                        {#----- messages#}
+                                        {% if o.renterStatus == 'wait_for_answer' and app.session.get('logged_user').id == o.renterId %}
+                                        Есть ответ
+                                        {% endif %}
+
+                                        {% if o.ownerStatus == 'wait_for_answer' and app.session.get('logged_user').id == o.userId %}
+                                        Есть ответ
+                                        {% endif %}
+                                    </p>
                                 </div>
                             </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
 
-                            <div class="uk-width-expand">
-
-                                <div style="color:red;font-weight:bold;font-size: 12px; line-height: 13px;">
-
-                                    {% if o.ownerStatus == 'wait_for_accept' and app.session.get('logged_user').id == o.renterId %}
-                                    ожидает одобрения владельцем
-                                    {% endif %}
-
-                                    {% if o.ownerStatus == 'wait_for_accept' and app.session.get('logged_user').id == o.userId %}
-                                    ожидает вашего одобрения
-                                    {% endif %}
-
-                                    {#---- after accept#}
-
-                                    {% if o.renterStatus == 'wait_for_pay' and app.session.get('logged_user').id == o.renterId %}
-                                    Одобрено владельцем. Ожидает вашей оплаты
-                                    {% endif %}
-
-                                    {% if o.ownerStatus == 'accepted' and app.session.get('logged_user').id == o.userId %}
-                                    Ожидается оплата арендатором
-                                    {% endif %}
-
-                                    {#---- after payment#}
-
-                                    {% if o.renterStatus == 'wait_for_finish' and app.session.get('logged_user').id == o.renterId %}
-                                    Заявка оплачена
-                                    {% endif %}
-
-                                    {% if o.ownerStatus == 'wait_for_rent' and app.session.get('logged_user').id == o.userId %}
-                                    Заявка оплачена
-                                    {% endif %}
-
-                                    {#---- after pincode#}
-
-                                    {% if o.renterStatus == 'rent_in_process' and app.session.get('logged_user').id == o.renterId %}
-                                    Заявка в процессе аренды
-                                    {% endif %}
-
-                                    {% if o.ownerStatus == 'rent_in_process' and app.session.get('logged_user').id == o.userId %}
-                                    Заявка в процессе аренды
-                                    {% endif %}
-
-                                    {#----- messages#}
-                                    {% if o.renterStatus == 'wait_for_answer' and app.session.get('logged_user').id == o.renterId %}
-                                    Есть ответ владельца
-                                    {% endif %}
-
-                                    {% if o.ownerStatus == 'wait_for_answer' and app.session.get('logged_user').id == o.userId %}
-                                    Есть ответ арендатора
-                                    {% endif %}
-
-                                </div>
-
-                                <div>{{ rightuser.header is defined ? rightuser.header}}</div>
-
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                {% endfor %}
-            </ul>
-
+            </div>
         </div>
 
-        <div class="uk-width-3-4">
-            <div>
-                <!-- список с сообщениями -->
-                <ul id="component-tab-left" class="uk-switcher">
+        <!-- Main -->
+        <div class="chat-main">
+            <div class="uk-height-1-1 uk-width-1-1 uk-flex uk-flex-column chat-main-inner">
+                <ul id="component-tab-left" class="uk-switcher uk-height-1-1 uk-width-1-1 uk-flex uk-flex-column chats">
                     {% for o in orders %}
+
 
                     {% set user = getuser(o.userId) %}
                     {% if app.session.get('logged_user').id == o.userId %}
-                    {% set user = getuser(o.renterId) %}
+                        {% set user = getuser(o.renterId) %}
                     {% endif %}
 
-                    <li>
-                        <ul class="uk-comment-list">
-
-                            {% for m in jsond(o.messages) %}
-
-                            <!-- message settings -->
-                            {% set dir = 'left' %}
-
-                            {% if app.session.get('logged_user').id == o.userId and m.from == 'owner' %}
-                            {% set dir = 'right' %}
-                            {% endif %}
-
-                            {% if app.session.get('logged_user').id == o.userId and m.from == 'renter' %}
-                            {% set dir = 'left' %}
-                            {% endif %}
-
-                            {% if app.session.get('logged_user').id == o.renterId and m.from == 'renter' %}
-                            {% set dir = 'right' %}
-                            {% endif %}
-
-                            {% if app.session.get('logged_user').id == o.renterId and m.from == 'owner' %}
-                            {% set dir = 'left' %}
-                            {% endif %}
-
-                            {% if m.from == 'system' or m.from == 'system_renter' or m.from == 'system_owner' %}
-                            {% set dir = 'system' %}
-                            {% endif %}
-
-                            {% if m.from == 'system_ok' %}
-                            {% set dir = 'system_ok' %}
-                            {% endif %}
-
-                            {% if (dir == 'left') or (dir == 'right') %}
-
-                            {% set url = '/assets/images/users/t/user_'~o.renterId~'.jpg' %}
-
-                            {% if(m.from == 'owner') %}
-                            {% set url = '/assets/images/users/t/user_'~o.userId~'.jpg' %}
-                            {% endif %}
-
-                            {% if not file_exists('.'~url) %}
-                            {% set url = '/assets/images/interface/default-user.png' %}
-                            {% endif %}
-
-                            {% endif %}
-                            <!-- /message settings -->
-
-                            <li class="message-{{ dir }}">
-
-                                <div class="uk-grid-small" uk-grid>
-                                    {% if (dir == 'left') or (dir == 'right') %}
-                                    <div class="uk-width-auto">
-                                        <div
-                                                class="uk-background-cover uk-overflow-hidden uk-border-circle message-avatar"
-                                                style="background-image: url('{{ url }}'); width: 50px; height: 50px;"
-                                        >
-                                        </div>
+                    <li class="uk-height-1-1 uk-width-1-1">
+                        <div class="chat-body uk-height-1-1 uk-width-1-1">
+                            <div class="chat-header">
+                                <div class="media chat-name align-items-center uk-text-truncate">
+                                    <div class="media-body align-self-center">
+                                        <p class="uk-text-small uk-text-truncate uk-text-muted uk-margin-small-bottom">Ваш запрос: <a class="link-underline small" href="javascript:;">{{ o.transport }}</a>, {{ o.dateIn|date('d.m.Y') }} - {{ o.dateOut|date('d.m.Y') }}</p>
+                                        <p class="uk-text-small uk-text-truncate uk-text-muted uk-margin-remove">
+                                            <span class="uk-margin-right">Заявка №{{ o.id }}</span>
+                                            <span>Оплата производится через партнера: <a href="javascript:;" class="link-underline small">Mandarin Pay</a></span>
+                                        </p>
                                     </div>
-                                    {% endif %}
-
-                                    <div class="uk-width-expand">
-                                        <div class="message-box">
-                                            {% if (dir == 'left') or (dir == 'right') %}
-                                            <div class="uk-comment-meta">
-                                                <a class="uk-link-reset" href="/user/{{  m.from == 'owner' ? o.userId : o.renterId }}">{{ user.header is defined ? user.header}}</a>
-                                            </div>
-                                            {% endif %}
-                                            <div class="message-body">{{ m.message|raw }}</div>
-                                            <div class="uk-comment-meta uk-text-right">
-                                                {{ m.date }} {{ m.time }}
-                                            </div>
-                                        </div>
-                                    </div>
-
                                 </div>
 
+                                <div class="chat-header-surface">
+                                    <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('/assets/images/icons/order-list/chat-header_surface.svg');"></span> Безопасная сделка
+                                </div>
+                            </div>
+                            <div class="chat-content hide-scrollbar">
+                                <div>
+                                    <ul class="uk-comment-list chat-messages-list">
+
+                                    {% for m in jsond(o.messages) %}
+
+                                    <!-- message settings -->
+                                    {% set dir = 'left' %}
+
+                                    {% if app.session.get('logged_user').id == o.userId and m.from == 'owner' %}
+                                    {% set dir = 'right' %}
+                                    {% endif %}
+
+                                    {% if app.session.get('logged_user').id == o.userId and m.from == 'renter' %}
+                                    {% set dir = 'left' %}
+                                    {% endif %}
+
+                                    {% if app.session.get('logged_user').id == o.renterId and m.from == 'renter' %}
+                                    {% set dir = 'right' %}
+                                    {% endif %}
+
+                                    {% if app.session.get('logged_user').id == o.renterId and m.from == 'owner' %}
+                                    {% set dir = 'left' %}
+                                    {% endif %}
+
+                                    {% if m.from == 'system' or m.from == 'system_renter' or m.from == 'system_owner' %}
+                                    {% set dir = 'system' %}
+                                    {% endif %}
+
+                                    {% if m.from == 'system_ok' %}
+                                    {% set dir = 'system_ok' %}
+                                    {% endif %}
+
+                                    {% if (dir == 'left') or (dir == 'right') %}
+
+                                    {% set url = '/assets/images/users/t/user_'~o.renterId~'.jpg' %}
+
+                                    {% if(m.from == 'owner') %}
+                                    {% set url = '/assets/images/users/t/user_'~o.userId~'.jpg' %}
+                                    {% endif %}
+
+                                    {% if not file_exists('.'~url) %}
+                                    {% set url = '/assets/images/interface/default-user.png' %}
+                                    {% endif %}
+
+                                    {% endif %}
+                                    <!-- /message settings -->
+
+                                    <li class="message-{{ dir }}">
+
+                                        <div class="uk-grid-small" uk-grid>
+                                            {% if (dir == 'left') or (dir == 'right') %}
+                                            <div class="uk-width-auto">
+                                                <div
+                                                        class="uk-background-cover uk-overflow-hidden uk-border-circle message-avatar"
+                                                        style="background-image: url('{{ url }}'); width: 50px; height: 50px;"
+                                                >
+                                                </div>
+                                            </div>
+                                            {% endif %}
+
+                                            <div class="uk-width-expand">
+                                                <div class="message-box">
+                                                    {% if (dir == 'left') or (dir == 'right') %}
+                                                    <div class="uk-comment-meta">
+                                                        <a class="uk-link-reset" href="/user/{{  m.from == 'owner' ? o.userId : o.renterId }}">{{ user.header is defined ? user.header}}</a>
+                                                    </div>
+                                                    {% endif %}
+                                                    <div class="message-body">{{ m.message|raw }}</div>
+                                                    <div class="uk-comment-meta uk-text-right">
+                                                        {{ m.date }} {{ m.time }}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
 
 
-                            </li>
-                            {% endfor %}
-                        </ul>
-                        <!-- /содержимое вкладки -->
+
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                                </div>
+                            </div>
+                            <div class="chat-footer ord_content">
+                                <div class="uk-grid-small uk-flex-middle" uk-grid>
+                                    <div class="uk-width-auto">
+                                        <span uk-icon="upload"></span>
+                                    </div>
+
+                                    <div class="uk-width-expand msgb">
+                                        <textarea name="answer" class="uk-width-1-1 autoExpand chat-textarea-answer" placeholder="Написать сообщение"></textarea>
+                                    </div>
+
+                                    <div class="uk-width-auto">
+                                        <button type="button" class="{{ app.session.get('logged_user').id == o.userId ? 'owner' : 'renter' }}_answer snd_btn uk-icon-button uk-icon" value="{{ o.id }}"><i class="fa fa-send"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </li>
                     {% endfor %}
 
                 </ul>
-                <!-- /список с сообщениями -->
             </div>
         </div>
-
     </div>
-</div>
 
+
+
+</div>
 {% endblock %}
 
