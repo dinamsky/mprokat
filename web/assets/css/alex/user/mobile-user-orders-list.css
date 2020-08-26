@@ -1,0 +1,135 @@
+/* reset uk-tab styles */
+.contacts-list::before {
+    content: unset;
+}
+/* /reset uk-tab styles */
+
+.contacts-list {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    z-index: 1;
+}
+
+.contacts-list .contacts-item {
+    position: relative;
+    margin: -1px 0;
+    max-width: 100%;
+    width: 100%;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.contacts-list .contacts-item:first-child {
+    margin-top: 0;
+}
+
+.contacts-list .contacts-item.uk-active {
+    z-index: 1;
+}
+
+.contacts-list .contacts-item .contacts-link {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    max-width: 100%;
+    padding: 1rem 0;
+    border-top: 1px solid #EDEDED;
+    border-radius: 0;
+    transition: .3s;
+    color: inherit;
+}
+
+.contacts-list .contacts-item.uk-active .contacts-link {
+    border: 1px solid #4629D3;
+}
+
+.avatar {
+    height: 50px;
+    width: 50px;
+    min-width: 50px;
+    display: inline-block;
+    position: relative;
+    border-radius: 50%;
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.order-icon {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 18px;
+    height: 18px;
+
+    background-color: #EA1D1D;
+    border-radius: 50%;
+}
+
+.order-icon-star {
+    background-color: #4629D3;
+}
+
+.order-icon-check,
+.order-icon-happy {
+    background-color: #3DD118;
+}
+
+.contacts-list .contacts-content {
+    padding-left: 0.67rem;
+    transition: .4s;
+    overflow: hidden;
+    max-width: 100%;
+    flex: 1 1 auto;
+}
+
+.contacts-list .contacts-content .contacts-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.contacts-list .contacts-content .contacts-info .chat-name {
+    font-size: 1rem;
+    color: #1D1A1A;
+    margin-bottom: 0;
+    margin-right: auto;
+}
+
+.contacts-list .contacts-content .contacts-info .chat-time {
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    color: #474747;
+    white-space: nowrap;
+}
+
+.contacts-list .contacts-content .contacts-texts {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #474747;
+}
+
+.contacts-list .contacts-content .contacts-texts p {
+    font-size: 0.8rem;
+    line-height: 1.25;
+    text-transform: none;
+    margin-bottom: 0;
+    margin-right: auto;
+}
