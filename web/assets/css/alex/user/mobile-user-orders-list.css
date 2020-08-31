@@ -133,3 +133,61 @@
     margin-bottom: 0;
     margin-right: auto;
 }
+
+.contacts-list .contacts-content .contacts-texts p .message-status {
+    font-size: .8rem;
+    line-height: 1.25;
+    color: #FF0000;
+}
+
+.contacts-list .contacts-content .contacts-texts p .message-status.red {
+    color: #FF0000;
+}
+
+.contacts-list .contacts-content .contacts-texts p .message-status.green {
+    color: #3DD118;
+}
+
+.contacts-list .contacts-content .contacts-texts p .message-status.dark-blue {
+    color: #4629D3;
+}
+
+.contacts-list .contacts-content .contacts-texts p .message-status.blue {
+    color: #2B73FF;
+}
+
+
+.contacts-order-notify {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border-radius: 99px;
+    display: block;
+    width: 18px;
+    height: 18px;
+    background: #EA1D1D;
+}
+
+.contacts-order-notify.bell {
+    background: #EA1D1D;
+}
+
+.contacts-order-notify.star {
+    background: #4629D3;
+}
+
+.contacts-order-notify.check {
+    background: #3DD118;
+}
+
+.contacts-order-notify.ban {
+    background: #EA1D1D;
+}
+
+.contacts-order-notify.mail {
+    background: #4629D3;
+}
+
+.contacts-order-notify.happy {
+    background: #3DD118;
+}

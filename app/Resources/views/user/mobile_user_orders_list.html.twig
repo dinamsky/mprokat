@@ -51,35 +51,32 @@
         <li class="contacts-item">
             <a class="contacts-link" href="/user/order_page/{{ o.id }}">
                 <div class="avatar">
-
+                    <img src="{{ url }}" alt="">
                     {% set ord_icon = 'bell' %}
                     {% if notifies[o.id] is defined %}
-                        {% if notifies[o.id]|length > 1%}
 
-                        {% else %}
-                            {% if notifies[o.id][0].notify == 'new_order' %}
-                                {% set ord_icon = 'star' %}
-                            {% endif %}
-                            {% if notifies[o.id][0].notify == 'order_accept' %}
-                                {% set ord_icon = 'check' %}
-                            {% endif %}
-                            {% if notifies[o.id][0].notify == 'order_reject' %}
-                                {% set ord_icon = 'ban' %}
-                            {% endif %}
-                            {% if notifies[o.id][0].notify == 'order_answer' %}
-                                {% set ord_icon = 'mail' %}
-                            {% endif %}
-                            {% if notifies[o.id][0].notify == 'order_payed' %}
-                                {% set ord_icon = 'happy' %}
-                            {% endif %}
-                        {% endif %}
+                    {% if notifies[o.id]|length > 1%}
 
-                    <div class="order-icon order-icon-{{ ord_icon }}">
-                        <span uk-icon="icon: {{ ord_icon }}; ratio: .5"></span>
-                    </div>
+                    {% else %}
+                    {% if notifies[o.id][0].notify == 'new_order' %}
+                    {% set ord_icon = 'star' %}
+                    {% endif %}
+                    {% if notifies[o.id][0].notify == 'order_accept' %}
+                    {% set ord_icon = 'check' %}
+                    {% endif %}
+                    {% if notifies[o.id][0].notify == 'order_reject' %}
+                    {% set ord_icon = 'ban' %}
+                    {% endif %}
+                    {% if notifies[o.id][0].notify == 'order_answer' %}
+                    {% set ord_icon = 'mail' %}
+                    {% endif %}
+                    {% if notifies[o.id][0].notify == 'order_payed' %}
+                    {% set ord_icon = 'happy' %}
+                    {% endif %}
                     {% endif %}
 
-                    <img src="{{ url }}" alt="">
+                    <div class="contacts-order-notify {{ ord_icon }}"><i uk-icon="{{ ord_icon }}"></i></div>
+                    {% endif %}
                 </div>
 
                 <div class="contacts-content">
@@ -98,50 +95,50 @@
                     <div class="contacts-texts">
                         <p class="uk-text-truncate">
                             {% if o.ownerStatus == 'wait_for_accept' and app.session.get('logged_user').id == o.renterId %}
-                            Ожидает одобрения
+                            <span class="message-status blue">Ожидает одобрения</span>
                             {% endif %}
 
                             {% if o.ownerStatus == 'wait_for_accept' and app.session.get('logged_user').id == o.userId %}
-                            Ожидает одобрения
+                            <span class="message-status blue">Ожидает одобрения</span>
                             {% endif %}
 
                             {#---- after accept#}
 
                             {% if o.renterStatus == 'wait_for_pay' and app.session.get('logged_user').id == o.renterId %}
-                            Ожидает оплаты
+                            <span class="message-status blue">Ожидает оплаты</span>
                             {% endif %}
 
                             {% if o.ownerStatus == 'accepted' and app.session.get('logged_user').id == o.userId %}
-                            Ожидает оплаты
+                            <span class="message-status blue">Ожидает оплаты</span>
                             {% endif %}
 
                             {#---- after payment#}
 
                             {% if o.renterStatus == 'wait_for_finish' and app.session.get('logged_user').id == o.renterId %}
-                            Заявка оплачена
+                            <span class="message-status green">Заявка оплачена</span>
                             {% endif %}
 
                             {% if o.ownerStatus == 'wait_for_rent' and app.session.get('logged_user').id == o.userId %}
-                            Заявка оплачена
+                            <span class="message-status green">Заявка оплачена</span>
                             {% endif %}
 
                             {#---- after pincode#}
 
                             {% if o.renterStatus == 'rent_in_process' and app.session.get('logged_user').id == o.renterId %}
-                            Идет аренда
+                            <span class="message-status red">Идет аренда</span>
                             {% endif %}
 
                             {% if o.ownerStatus == 'rent_in_process' and app.session.get('logged_user').id == o.userId %}
-                            Идет аренда
+                            <span class="message-status red">Идет аренда</span>
                             {% endif %}
 
                             {#----- messages#}
                             {% if o.renterStatus == 'wait_for_answer' and app.session.get('logged_user').id == o.renterId %}
-                            Есть ответ
+                            <span class="message-status red">Есть ответ</span>
                             {% endif %}
 
                             {% if o.ownerStatus == 'wait_for_answer' and app.session.get('logged_user').id == o.userId %}
-                            Есть ответ
+                            <span class="message-status red">Есть ответ</span>
                             {% endif %}
                         </p>
                     </div>

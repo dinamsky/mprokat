@@ -131,6 +131,41 @@
     justify-content: center;
 }
 
+.contacts-order-notify {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border-radius: 99px;
+    display: block;
+    width: 18px;
+    height: 18px;
+    background: #EA1D1D;
+}
+
+.contacts-order-notify.bell {
+    background: #EA1D1D;
+}
+
+.contacts-order-notify.star {
+    background: #4629D3;
+}
+
+.contacts-order-notify.check {
+    background: #3DD118;
+}
+
+.contacts-order-notify.ban {
+    background: #EA1D1D;
+}
+
+.contacts-order-notify.mail {
+    background: #4629D3;
+}
+
+.contacts-order-notify.happy {
+    background: #3DD118;
+}
+
 .contacts-list .contacts-content {
     padding-left: 0.67rem;
     transition: .4s;
@@ -177,7 +212,27 @@
     margin-right: auto;
 }
 
+.contacts-list .contacts-content .contacts-texts p .message-status {
+    font-size: .8rem;
+    line-height: 1.25;
+    color: #FF0000;
+}
 
+.contacts-list .contacts-content .contacts-texts p .message-status.red {
+    color: #FF0000;
+}
+
+.contacts-list .contacts-content .contacts-texts p .message-status.green {
+    color: #3DD118;
+}
+
+.contacts-list .contacts-content .contacts-texts p .message-status.dark-blue {
+    color: #4629D3;
+}
+
+.contacts-list .contacts-content .contacts-texts p .message-status.blue {
+    color: #2B73FF;
+}
 
 
 
@@ -260,15 +315,22 @@
     margin-top: 2rem;
 }
 
-.chat-messages-list > li.message-system {
+.chat-messages-list > li.message-system,
+.chat-messages-list > li.message-system_ok {
     margin-left: auto;
-    margin-right: auto;border: 2px solid #4629D3;
+    margin-right: auto;
+    border: 2px solid #4629D3;
     padding: 20px;
     border-radius: 3px;
     opacity: .7;
 }
 
-.chat-messages-list > li.message-system .message-body {
+.chat-messages-list > li.message-system_ok {
+    border-color: #3DD118;
+}
+
+.chat-messages-list > li.message-system .message-body,
+.chat-messages-list > li.message-system_ok .message-body{
     margin-bottom: 20px;
 }
 

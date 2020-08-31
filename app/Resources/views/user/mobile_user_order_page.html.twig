@@ -92,6 +92,13 @@ user__order-page_mobile
 
         <!-- chat -->
         <div id="ord_desc_{{ o.id }}" class="messenger__content ord_content">
+
+            <div class="messenger__buttons" style="position: fixed;width: 100%;bottom: 0;left:0;background: white">
+                <button type="button" class="owner_accept ok_btn ok_big uk-width-1-1 btn btn-solid" value="{{ o.id }}">Одобрить</button>
+
+            </div>
+
+
             <div class="messenger__body ScrollView">
                 <!-- messenger messages -->
                 {% if o.messages != '' %}

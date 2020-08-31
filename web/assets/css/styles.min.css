@@ -7992,6 +7992,11 @@ a:hover {
     padding: 0 10px
 }
 
+
+.mobile-header .inner .icons>:first-child {
+    padding-left: 0
+}
+
 .mobile-header .inner .icons>:last-child {
     padding-right: 0
 }

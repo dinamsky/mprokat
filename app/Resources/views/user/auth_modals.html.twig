@@ -206,12 +206,22 @@
 {# Global city selector modal #}
 
 <div id="cityModal" class="uk-modal" uk-modal bg-close="false">
-    <div class="uk-modal-dialog uk-width-auto uk-width-large@m" uk-overflow-auto>
+    <div class="uk-modal-dialog uk-width-auto uk-width-3-4@m" uk-overflow-auto>
         <div class="uk-modal-body">
             <button class="uk-modal-close-default uk-hidden@m" type="button" uk-close></button>
             <h2 class="uk-modal-title uk-hidden@m">{% trans %}Выбор города{% endtrans %}</h2>
             {% if is_mobile() %}
-                <input type="text" placeholder="Поиск" class="js-city-search-input city-search-input">
+                <input type="text" placeholder="Поиск" class="js-city-search-input theme-city-search-input">
+            {% else %}
+                <p class="small text-gray text-left">Введите ваш город</p>
+
+                <div class="input-group uk-margin-medium-bottom">
+                    <div class="form-item form-item uk-inline">
+                        <a class="uk-form-icon uk-form-icon-flip js-clear-city-search-input" href="javascript;" uk-icon="icon: close"></a>
+                        <input type="text" placeholder="Найдите свой город" class="js-city-search-input uk-input uk-width-1-1">
+                    </div>
+                </div>
+            {% endif %}
                 <div class="js-city-search-list-preloader uk-flex uk-flex-center uk-flex-middle" style="display: none;">
                     <span class="spinner-border"></span>
                 </div>
@@ -249,19 +259,6 @@
                     <li class="city_block" data-id="833" data-url="Novosibirsk" data-header="Новосибирск">Новосибирск</li>
                     <li class="city_block" data-id="1127" data-url="Novoulyanovsk" data-header="Новоульяновск">Новоульяновск</li>
                 </ul>
-            {% else %}
-                <p class="small text-gray text-left">Введите ваш город</p>
-
-                <form class="uk-width-1-1 uk-margin-bottom">
-                    <div class="input-group">
-                        <div class="form-item"><input type="text" name="input_city" class="uk-width-1-1"></div>
-                    </div>
-                </form>
-
-                <div class="uk-flex uk-flex-center">
-                    <button class="btn btn-solid uk-width-auto">Это мой город</button>
-                </div>
-            {% endif %}
         </div>
     </div>
 </div>

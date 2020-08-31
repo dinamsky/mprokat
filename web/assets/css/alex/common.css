@@ -1651,7 +1651,59 @@ body.user-base section.categories {
     ///Spinner Element
 -----------------*/
 
-.city-search-input {
+/*----------------
+    Search Modal
+-----------------*/
+.search-modal__content {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.search-modal__categoriesItem {
+    margin: 0 20px 15px 0;
+}
+
+.search-modal__categoriesLink {
+    display: block;
+    border-radius: 20px;
+    padding: 10px 15px;
+    background: linear-gradient(145deg, #e6e6e6, #fff);
+    box-shadow: 5px 5px 10px #c9c9c9, -5px -5px 10px #fff;
+    color: #333;
+    text-decoration: none;
+    transition: .3s;
+}
+
+.search-modal__categoriesLink:hover,
+.search-modal__categoriesLink:focus,
+.search-modal__categoriesLink:active,
+.search-modal__categoriesLink.active {
+    color: #fff;
+    background: #7A5FFF;
+}
+
+.search-modal-city-input {
+    outline: 0;
+    border: 1px solid #E4E3E3;
+    width: 100%;
+    font-size: 1rem;
+    line-height: 40px;
+    color: #474747;
+    padding: 0 20px;
+    box-sizing: border-box;
+    border-radius: 3px;
+    margin: 0;
+}
+
+.search-modal-city-input:focus {
+    border-color: #aaa;
+}
+/*----------------
+    ///Search Modal
+-----------------*/
+
+.theme-city-search-input {
     display: flex;
     align-items: center;
     height: 60px;
@@ -1688,6 +1740,39 @@ body.user-base section.categories {
     font-size: 20px;
     line-height: 22px;
     color: #474747;
+    transition: .3s;
+    cursor: pointer;
+}
+
+.theme-city-search-list > li:hover {
+    color: #000;
+}
+
+@media (min-width: 960px) {
+
+    .theme-city-search-list {
+        display: block;
+        margin: 0;
+        max-width: 100%;
+        height: 100%;
+        column-count: 4;
+        column-gap: 15px;
+    }
+
+    .theme-city-search-list > li {
+        display: block;
+        padding: 0;
+        margin: 0 auto 20px;
+        font-weight: 500;
+        font-size: 1rem;
+        line-height: 1.2;
+        color: #474747;
+    }
+
+    .theme-city-search-list > li:hover {
+        color: #4629D3;
+    }
+
 }
 
 .cards-slide .swiper-container {
