@@ -411,12 +411,33 @@
 }
 
 .messenger__footer {
+    position: relative;
     -webkit-flex-shrink: 0;
     -ms-flex-negative: 0;
     flex-shrink: 0;
     background: #FAF9F9;
     padding: 0 20px;
 }
+
+.messenger__footerButtons {
+    position: absolute;
+    left: 0;
+    bottom: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding-bottom: 19px;
+}
+
+.messenger__footerButtons .uk-button {
+    text-transform: none;
+}
+
+.messenger__footerButtons .uk-button-default {
+    background-color: #fff;
+}
+
 
 .message-input-field {
     width: 100%;

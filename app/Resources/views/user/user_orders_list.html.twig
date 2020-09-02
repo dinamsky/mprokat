@@ -55,6 +55,8 @@ big_order_list
                         <a class="contacts-link" href="javascript:;">
                             <div class="avatar">
                                 <img src="{{ url }}" alt="">
+
+
                                 {% set ord_icon = 'bell' %}
                                 {% if notifies[o.id] is defined %}
 
@@ -97,6 +99,7 @@ big_order_list
                                 </div>
                                 <div class="contacts-texts">
                                     <p class="uk-text-truncate">
+                                        {{ o.ownerStatus }}
                                         {% if o.ownerStatus == 'wait_for_accept' and app.session.get('logged_user').id == o.renterId %}
                                         <span class="message-status blue">Ожидает одобрения</span>
                                         {% endif %}
@@ -248,7 +251,10 @@ big_order_list
                                                 <div class="message-box">
                                                     {% if (dir == 'left') or (dir == 'right') %}
                                                     <div class="uk-comment-meta">
-                                                        <a class="uk-link-reset" href="/user/{{  m.from == 'owner' ? o.userId : o.renterId }}">{{ user.header is defined ? user.header}}</a>
+                                                        <a class="uk-link-reset" href="/user/{{  m.from == 'owner' ? o.userId : o.renterId }}">
+                                                            {% if dir == 'left' %}{{ rightuser.header }}{% endif %}
+                                                            {% if dir == 'right' %}{{ app.session.get('logged_user').header }}{% endif %}
+                                                        </a>
                                                     </div>
                                                     {% endif %}
                                                     <div class="message-body">{{ m.message|raw }}</div>
@@ -268,6 +274,40 @@ big_order_list
                                 </div>
                             </div>
                             <div class="chat-footer ord_content">
+
+                                <!-- Buttons -->
+                                {% if o.renterStatus == 'wait_for_pay' and app.session.get('logged_user').id == o.renterId %}
+                                <div class="control-buttons">
+                                    <a href="/pay_for_order/{{ o.id }}" class="uk-button uk-button-primary ok_btn">Оплатить бронирование: {{ o.reservation }}</b> <i class="fa fa-ruble"></i></a>
+                                </div>
+                                <style>.chat-body .chat-content {padding-bottom: 100px;}</style>
+                                {% endif %}
+
+
+                                {% if o.ownerStatus in ['wait_for_accept','answered','wait_for_answer'] and app.session.get('logged_user').id == o.userId %}
+                                <div class="control-buttons">
+                                    <button type="button" class="uk-button uk-button-primary owner_accept ok_btn ok_big uk-width-auto uk-margin-small-right" value="{{ o.id }}">Одобрить</button>
+                                    <button type="button" class="uk-button uk-button-default owner_reject nt_btn uk-width-auto uk-margin-small-left" value="{{ o.id }}">Отклонить</button>
+                                </div>
+                                <style>.chat-body .chat-content {padding-bottom: 100px;}</style>
+                                {% endif %}
+
+                                {% if o.renterStatus == 'wait_for_finish' and app.session.get('logged_user').id == o.renterId %}
+                                <div class="control-buttons">
+                                    <button type="button" uk-toggle="target: #renter_modal_{{ o.id }}" class="uk-button uk-button-primary ok_btn uk-width-auto">Завершить</button>
+                                </div>
+                                <style>.chat-body .chat-content {padding-bottom: 100px;}</style>
+                                {% endif %}
+
+                                {% if o.ownerStatus == 'wait_for_rent' and app.session.get('logged_user').id == o.userId %}
+                                <div class="control-buttons">
+                                    <button type="button" uk-toggle="target: #owner_modal_{{ o.id }}" class="uk-button uk-button-primary ok_btn uk-width-auto">Завершить</button>
+                                </div>
+                                <style>.chat-body .chat-content {padding-bottom: 100px;}</style>
+                                {% endif %}
+                                <!-- ///Buttons -->
+
+
                                 <div class="uk-grid-small uk-flex-middle" uk-grid>
                                     <div class="uk-width-auto">
                                         <span uk-icon="upload"></span>
@@ -283,7 +323,10 @@ big_order_list
                                 </div>
                             </div>
                         </div>
+                        {{ include('card/order_forms/owner_anketa.html.twig') }}
+                        {{ include('card/order_forms/renter_anketa.html.twig') }}
                     </li>
+
                     {% endfor %}
 
                 </ul>

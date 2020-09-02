@@ -31,10 +31,12 @@
 
 				{% if app.session.has('logged_user') %}
 				<div class="notifications uk-flex-inline uk-flex-middle">
-					<span class="uk-icon uk-icon-image" style="background-image: url('/assets/images/icons/close-envelope-icon_mobile.svg'); width: 25px; height: 25px"></span>
-					{% if t3_new.getNotify|length > 0 %}
-						<span class="count">{{ t3_new.getNotify|length }}</span>
-					{% endif %}
+					<a href="/user/transport_orders/">
+						<span class="uk-icon uk-icon-image" style="background-image: url('/assets/images/icons/close-envelope-icon_mobile.svg'); width: 25px; height: 25px"></span>
+						{% if t3_new.getNotify|length > 0 %}
+							<span class="count">{{ t3_new.getNotify|length }}</span>
+						{% endif %}
+					</a>
 				</div>
 				{% endif %}
 
