@@ -52,31 +52,87 @@
             <a class="contacts-link" href="/user/order_page/{{ o.id }}">
                 <div class="avatar">
                     <img src="{{ url }}" alt="">
-                    {% set ord_icon = 'bell' %}
-                    {% if notifies[o.id] is defined %}
 
-                    {% if notifies[o.id]|length > 1%}
-
-                    {% else %}
-                    {% if notifies[o.id][0].notify == 'new_order' %}
-                    {% set ord_icon = 'star' %}
-                    {% endif %}
-                    {% if notifies[o.id][0].notify == 'order_accept' %}
-                    {% set ord_icon = 'check' %}
-                    {% endif %}
-                    {% if notifies[o.id][0].notify == 'order_reject' %}
-                    {% set ord_icon = 'ban' %}
-                    {% endif %}
-                    {% if notifies[o.id][0].notify == 'order_answer' %}
-                    {% set ord_icon = 'mail' %}
-                    {% endif %}
-                    {% if notifies[o.id][0].notify == 'order_payed' %}
-                    {% set ord_icon = 'happy' %}
-                    {% endif %}
+                    {% if o.ownerStatus == 'wait_for_accept' and app.session.get('logged_user').id == o.renterId %}
+                    <div class="contacts-order-notify secondary">
+                        <span class="uk-icon uk-icon-image" style="background-image: url('/assets/images/icons/order-list/chat-icon_awaiting.svg');"></span>
+                    </div>
                     {% endif %}
 
-                    <div class="contacts-order-notify {{ ord_icon }}"><i uk-icon="{{ ord_icon }}"></i></div>
+                    {% if o.ownerStatus == 'wait_for_accept' and app.session.get('logged_user').id == o.userId %}
+                    <div class="contacts-order-notify secondary">
+                        <span class="uk-icon uk-icon-image" style="background-image: url('/assets/images/icons/order-list/chat-icon_awaiting.svg');"></span>
+                    </div>
                     {% endif %}
+
+                    {#---- after accept#}
+
+                    {% if o.renterStatus == 'wait_for_pay' and app.session.get('logged_user').id == o.renterId %}
+                    <div class="contacts-order-notify secondary">
+                        <span uk-icon="credit-card"></span>
+                    </div>
+                    {% endif %}
+
+                    {% if o.ownerStatus == 'accepted' and app.session.get('logged_user').id == o.userId %}
+                    <div class="contacts-order-notify secondary">
+                        <span uk-icon="credit-card"></span>
+                    </div>
+                    {% endif %}
+
+                    {#---- after payment#}
+
+                    {% if o.renterStatus == 'wait_for_finish' and app.session.get('logged_user').id == o.renterId %}
+                    <div class="contacts-order-notify success">
+                        <span uk-icon="happy"></span>
+                    </div>
+                    {% endif %}
+
+                    {% if o.ownerStatus == 'wait_for_rent' and app.session.get('logged_user').id == o.userId %}
+                    <div class="contacts-order-notify success">
+                        <span uk-icon="credit-card"></span>
+                    </div>
+                    {% endif %}
+
+                    {#---- after pincode#}
+
+                    {% if o.renterStatus == 'rent_in_process' and app.session.get('logged_user').id == o.renterId %}
+                    <div class="contacts-order-notify danger">
+                        <span uk-icon="future"></span>
+                    </div>
+                    {% endif %}
+
+                    {% if o.ownerStatus == 'rent_in_process' and app.session.get('logged_user').id == o.userId %}
+                    <div class="contacts-order-notify danger">
+                        <span uk-icon="future"></span>
+                    </div>
+                    {% endif %}
+
+                    {#----- messages#}
+                    {% if o.renterStatus == 'wait_for_answer' and app.session.get('logged_user').id == o.renterId %}
+                    <div class="contacts-order-notify primary">
+                        <span class="uk-icon uk-icon-image" style="background-image: url('/assets/images/icons/order-list/chat-icon_message.svg');"></span>
+                    </div>
+                    {% endif %}
+
+                    {% if o.ownerStatus == 'wait_for_answer' and app.session.get('logged_user').id == o.userId %}
+                    <div class="contacts-order-notify primary">
+                        <span class="uk-icon uk-icon-image" style="background-image: url('/assets/images/icons/order-list/chat-icon_message.svg');"></span>
+                    </div>
+                    {% endif %}
+
+                    {#----- rejected#}
+                    {% if o.renterStatus == 'rejected' and app.session.get('logged_user').id == o.renterId %}
+                    <div class="contacts-order-notify danger">
+                        <span uk-icon="ban"></span>
+                    </div>
+                    {% endif %}
+
+                    {% if o.ownerStatus == 'rejected' and app.session.get('logged_user').id == o.userId %}
+                    <div class="contacts-order-notify danger">
+                        <span uk-icon="ban"></span>
+                    </div>
+                    {% endif %}
+
                 </div>
 
                 <div class="contacts-content">
@@ -139,6 +195,15 @@
 
                             {% if o.ownerStatus == 'wait_for_answer' and app.session.get('logged_user').id == o.userId %}
                             <span class="message-status red">Есть ответ</span>
+                            {% endif %}
+
+                            {#----- rejected#}
+                            {% if o.renterStatus == 'rejected' and app.session.get('logged_user').id == o.renterId %}
+                            <span class="message-status red">Заявка отклонена</span>
+                            {% endif %}
+
+                            {% if o.ownerStatus == 'rejected' and app.session.get('logged_user').id == o.userId %}
+                            <span class="message-status red">Заявка отклонена</span>
                             {% endif %}
                         </p>
                     </div>

@@ -1787,5 +1787,8 @@ body.user-base section.categories {
 
 #ms_search_button_main {
     padding: 12px 58px;
+}
 
+.rs_selector {
+    cursor: pointer;
 }

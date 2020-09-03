@@ -69,40 +69,10 @@
 				{% if total_cards > 0 %}
 					<p class="results">{% trans %}Найдено{% endtrans %}: {{ total_cards }} {% trans %}транспорта{% endtrans %}</p>
 				{% else %}
-					<p class="results">{% trans %}Транспорт не найден{% endtrans %}</p>
+					<p class="results mx-auto uk-h2">{% trans %}Транспорт не найден{% endtrans %}</p>
 				{% endif %}
 
-				{% if total_cards == 0 %}
-
-					<div class="zero_text">
-						{% trans %}Пока никто не разместил транспорт в этом городе и категории.{% endtrans %}<br>
-						{% trans %}Будь первым - добавь свой транспорт и получай клиентов!{% endtrans %}
-					</div>
-
-
-					{% if app.session.has('logged_user') %}
-						<a href="/card/new" class="uk-button uk-button-success zero_button">{% trans %}Разместить свой транспорт!{% endtrans %}</a>
-					{% elseif app.session.has('admin') %}
-						<a href="/card/new" class="uk-button uk-button-success zero_button">{% trans %}Разместить свой транспорт!{% endtrans %}</a>
-					{% else %}
-						<a href="#signIn" class="uk-button uk-button-success zero_button" uk-toggle>{% trans %}Разместить транспорт!{% endtrans %}</a>
-					{% endif %}
-
-{#					{% if similar %}#}
-{#						<h2 class="pf_style_header"><span>{% trans %}Многим нравится{% endtrans %}</span></h2>#}
-
-{#						<div uk-grid class="uk-grid-small uk-grid-match uk-margin-top">#}
-{#							{% for card in similar %}#}
-{#								<div class="uk-width-1-3@s">#}
-{#									{{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}#}
-{#								</div>#}
-{#							{% endfor %}#}
-{#						</div>#}
-{#					{% endif %}#}
-
-
-				{% endif %}
-
+				{% if total_cards > 0 %}
 				<div class="uk-flex uk-flex-middle uk-width-1-1 uk-width-auto@m">
 					{% if is_mobile() %}
 					<select class="select-inline" id="order" name="order" value="{{ app.request.get('order') is defined ? app.request.get('order') : 0 }}">
@@ -117,7 +87,39 @@
 					</select>
 					{% endif %}
 				</div>
+				{% endif %}
 			</div>
+
+			{% if total_cards == 0 %}
+
+				<div class="zero_text uk-text-center uk-margin-medium">
+					{% trans %}Пока никто не разместил транспорт в этом городе и категории.{% endtrans %}<br>
+					{% trans %}Будь первым - добавь свой транспорт и получай клиентов!{% endtrans %}
+				</div>
+
+
+				{% if app.session.has('logged_user') %}
+				<div class="uk-flex uk-flex-center uk-margin-large-bottom"><a href="/card/new" class="btn btn-solid zero_button">{% trans %}Разместить свой транспорт!{% endtrans %}</a></div>
+				{% elseif app.session.has('admin') %}
+				<div class="uk-flex uk-flex-center uk-margin-large-bottom"><a href="/card/new" class="btn btn-solid zero_button">{% trans %}Разместить свой транспорт!{% endtrans %}</a></div>
+				{% else %}
+				<div class="uk-flex uk-flex-center uk-margin-large-bottom"><a href="#signIn" class="btn btn-solid zero_button" uk-toggle>{% trans %}Разместить транспорт!{% endtrans %}</a></div>
+				{% endif %}
+
+				{#					{% if similar %}#}
+				{#						<h2 class="pf_style_header"><span>{% trans %}Многим нравится{% endtrans %}</span></h2>#}
+
+				{#						<div uk-grid class="uk-grid-small uk-grid-match uk-margin-top">#}
+				{#							{% for card in similar %}#}
+				{#								<div class="uk-width-1-3@s">#}
+					{#									{{ include('search/one_grid_view.html.twig', {'card':card, 'height':'150px'}) }}#}
+					{#								</div>#}
+				{#							{% endfor %}#}
+				{#						</div>#}
+				{#					{% endif %}#}
+
+
+			{% endif %}
 
 			{% include 'search/' ~ view ~ '.html.twig' %}
 

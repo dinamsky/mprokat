@@ -136,34 +136,35 @@
     bottom: 0;
     right: 0;
     border-radius: 99px;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 18px;
     height: 18px;
     background: #EA1D1D;
+    color: #fff;
+    fill: #fff;
 }
 
-.contacts-order-notify.bell {
+.contacts-order-notify > .uk-icon {
+    width: 10px;
+    height: 10px;
+}
+
+.contacts-order-notify.danger {
     background: #EA1D1D;
 }
 
-.contacts-order-notify.star {
-    background: #4629D3;
-}
-
-.contacts-order-notify.check {
+.contacts-order-notify.success {
     background: #3DD118;
 }
 
-.contacts-order-notify.ban {
-    background: #EA1D1D;
-}
-
-.contacts-order-notify.mail {
+.contacts-order-notify.primary {
     background: #4629D3;
 }
 
-.contacts-order-notify.happy {
-    background: #3DD118;
+.contacts-order-notify.secondary {
+    background: #2A73FF;
 }
 
 .contacts-list .contacts-content {
