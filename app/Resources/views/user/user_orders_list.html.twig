@@ -13,6 +13,7 @@
 <script src="{{ asset('assets/js/jquery.maskedinput.js') }}"></script>
 <script src="{{ asset('assets/js/phone_validate.js') }}"></script>
 <script src="{{ asset('assets/js/order.js') }}"></script>
+<script src="{{ asset('assets/js/alex/user-messages.js') }}"></script>
 {% endblock %}
 
 {% block bodyClass %}
@@ -29,7 +30,7 @@ big_order_list
         <div class="chat-sidebar">
             <div class="uk-height-1-1 uk-flex uk-flex-column hide-scrollbar chat-sidebar-inner" data-simplebar>
 
-                <ul class="uk-tab-left contacts-list" uk-tab="connect: #component-tab-left; animation: uk-animation-fade">
+                <ul class="uk-tab-left js-contacts-list contacts-list" uk-tab="connect: #component-tab-left; animation: uk-animation-fade">
                     {% for o in orders %}
 
                     {% set url = '/assets/images/users/t/user_'~o.renterId~'.jpg' %}
@@ -221,7 +222,7 @@ big_order_list
         <!-- Main -->
         <div class="chat-main">
             <div class="uk-height-1-1 uk-width-1-1 uk-flex uk-flex-column chat-main-inner">
-                <ul id="component-tab-left" class="uk-switcher uk-height-1-1 uk-width-1-1 uk-flex uk-flex-column chats">
+                <ul id="component-tab-left" class="uk-switcher js-dialogs-list uk-height-1-1 uk-width-1-1 uk-flex uk-flex-column chats">
                     {% for o in orders %}
 
 
@@ -302,79 +303,76 @@ big_order_list
                                     {% endif %}
                                     <!-- /message settings -->
 
-                                    <li class="message-{{ dir }}">
+                                        <li class="message-{{ dir }}">
 
-                                        <div class="uk-grid-small" uk-grid>
-                                            {% if (dir == 'left') or (dir == 'right') %}
-                                            <div class="uk-width-auto">
-                                                <div
-                                                        class="uk-background-cover uk-overflow-hidden uk-border-circle message-avatar"
-                                                        style="background-image: url('{{ url }}'); width: 50px; height: 50px;"
-                                                >
-                                                </div>
-                                            </div>
-                                            {% endif %}
-
-                                            <div class="uk-width-expand">
-                                                <div class="message-box">
-                                                    {% if (dir == 'left') or (dir == 'right') %}
-                                                    <div class="uk-comment-meta">
-                                                        <a class="uk-link-reset" href="/user/{{  m.from == 'owner' ? o.userId : o.renterId }}">
-                                                            {% if dir == 'left' %}{{ rightuser.header }}{% endif %}
-                                                            {% if dir == 'right' %}{{ app.session.get('logged_user').header }}{% endif %}
-                                                        </a>
-                                                    </div>
-                                                    {% endif %}
-                                                    <div class="message-body">{{ m.message|raw }}</div>
-                                                    <div class="uk-comment-meta uk-text-right">
-                                                        {{ m.date }} {{ m.time }}
+                                            <div class="uk-grid-small" uk-grid>
+                                                {% if (dir == 'left') or (dir == 'right') %}
+                                                <div class="uk-width-auto">
+                                                    <div
+                                                            class="uk-background-cover uk-overflow-hidden uk-border-circle message-avatar"
+                                                            style="background-image: url('{{ url }}'); width: 50px; height: 50px;"
+                                                    >
                                                     </div>
                                                 </div>
+                                                {% endif %}
+
+                                                <div class="uk-width-expand">
+                                                    <div class="message-box">
+                                                        {% if (dir == 'left') or (dir == 'right') %}
+                                                        <div class="uk-comment-meta">
+                                                            <a class="uk-link-reset" href="/user/{{  m.from == 'owner' ? o.userId : o.renterId }}">
+                                                                {% if dir == 'left' %}{{ rightuser.header }}{% endif %}
+                                                                {% if dir == 'right' %}{{ app.session.get('logged_user').header }}{% endif %}
+                                                            </a>
+                                                        </div>
+                                                        {% endif %}
+                                                        <div class="message-body">{{ m.message|raw }}</div>
+                                                        <div class="uk-comment-meta uk-text-right">
+                                                            {{ m.date }} {{ m.time }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                             </div>
-
-                                        </div>
-
-
-
-                                    </li>
+                                        </li>
                                     {% endfor %}
-                                </ul>
+                                    </ul>
+
+                                    <!-- Buttons -->
+                                    {% if o.renterStatus == 'wait_for_pay' and app.session.get('logged_user').id == o.renterId %}
+                                    <div class="control-buttons">
+                                        <a href="/pay_for_order/{{ o.id }}" class="btn btn-solid ok_btn">Оплатить бронирование: {{ o.reservation }}</b> <i class="fa fa-ruble"></i></a>
+                                    </div>
+
+                                    {% endif %}
+
+
+                                    {% if o.ownerStatus in ['wait_for_accept','answered','wait_for_answer'] and app.session.get('logged_user').id == o.userId %}
+                                    <div class="control-buttons">
+                                        <button type="button" class="btn btn-solid owner_accept ok_btn ok_big uk-width-auto uk-margin-small-right" value="{{ o.id }}">Одобрить</button>
+                                        <button type="button" class="btn btn-outline owner_reject nt_btn uk-width-auto uk-margin-small-left" value="{{ o.id }}">Отклонить</button>
+                                    </div>
+
+                                    {% endif %}
+
+                                    {% if o.renterStatus == 'wait_for_finish' and app.session.get('logged_user').id == o.renterId %}
+                                    <div class="control-buttons">
+                                        <button type="button" uk-toggle="target: #renter_modal_{{ o.id }}" class="btn btn-solid ok_btn uk-width-auto">Завершить</button>
+                                    </div>
+
+                                    {% endif %}
+
+                                    {% if o.ownerStatus == 'wait_for_rent' and app.session.get('logged_user').id == o.userId %}
+                                    <div class="control-buttons">
+                                        <button type="button" uk-toggle="target: #owner_modal_{{ o.id }}" class="btn btn-solid ok_btn uk-width-auto">Завершить</button>
+                                    </div>
+
+                                    {% endif %}
+                                    <!-- ///Buttons -->
+
                                 </div>
                             </div>
                             <div class="chat-footer ord_content">
-
-                                <!-- Buttons -->
-                                {% if o.renterStatus == 'wait_for_pay' and app.session.get('logged_user').id == o.renterId %}
-                                <div class="control-buttons">
-                                    <a href="/pay_for_order/{{ o.id }}" class="uk-button uk-button-primary ok_btn">Оплатить бронирование: {{ o.reservation }}</b> <i class="fa fa-ruble"></i></a>
-                                </div>
-                                <style>.chat-body .chat-content {padding-bottom: 100px;}</style>
-                                {% endif %}
-
-
-                                {% if o.ownerStatus in ['wait_for_accept','answered','wait_for_answer'] and app.session.get('logged_user').id == o.userId %}
-                                <div class="control-buttons">
-                                    <button type="button" class="uk-button uk-button-primary owner_accept ok_btn ok_big uk-width-auto uk-margin-small-right" value="{{ o.id }}">Одобрить</button>
-                                    <button type="button" class="uk-button uk-button-default owner_reject nt_btn uk-width-auto uk-margin-small-left" value="{{ o.id }}">Отклонить</button>
-                                </div>
-                                <style>.chat-body .chat-content {padding-bottom: 100px;}</style>
-                                {% endif %}
-
-                                {% if o.renterStatus == 'wait_for_finish' and app.session.get('logged_user').id == o.renterId %}
-                                <div class="control-buttons">
-                                    <button type="button" uk-toggle="target: #renter_modal_{{ o.id }}" class="uk-button uk-button-primary ok_btn uk-width-auto">Завершить</button>
-                                </div>
-                                <style>.chat-body .chat-content {padding-bottom: 100px;}</style>
-                                {% endif %}
-
-                                {% if o.ownerStatus == 'wait_for_rent' and app.session.get('logged_user').id == o.userId %}
-                                <div class="control-buttons">
-                                    <button type="button" uk-toggle="target: #owner_modal_{{ o.id }}" class="uk-button uk-button-primary ok_btn uk-width-auto">Завершить</button>
-                                </div>
-                                <style>.chat-body .chat-content {padding-bottom: 100px;}</style>
-                                {% endif %}
-                                <!-- ///Buttons -->
-
 
                                 <div class="uk-grid-small uk-flex-middle" uk-grid>
                                     <div class="uk-width-auto">

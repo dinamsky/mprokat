@@ -42,7 +42,7 @@
 {{ parent() }}
 <meta property="og:type" content="website">
 <meta property="og:image" content="{{ app.request.getSchemeAndHttpHost() ~ mainFoto }}">
-<meta property="og:title" content="{{ include(':seo_templates:p_h1.html.twig') }}">
+<meta property="og:title" content="{{ include(':seo_templates:p_title.html.twig') }}">
 <meta property="og:url" content="{{ app.request.schemeAndHttpHost ~ app.request.requestUri }}">
 {% endblock %}
 {% block metaTags %}
@@ -345,11 +345,11 @@ prefix="og: http://ogp.me/ns#"
             <!-- First Column/review -->
             <div class="uk-width-1-1 entry-reviews">
                 <div class="entry-reviews__header">
-                    <h3 class="entry-reviews__title">{% trans %}Отзывы{% endtrans %}{% if card.opinions is not empty %} <span class="uk-hidden@m">{{ card.opinions|length }}{% endif %}</span></h3>
-                    {% if card.opinions is not empty %}<a class="entry-reviews__link uk-visible@m" href="#">Все отзывы ({{ card.opinions|length }})</a>{% endif %}
+                    {% if card.opinions is not empty %} <h3 class="entry-reviews__title">Отзывы <span class="uk-hidden@m">{{ card.opinions|length }}</span></h3>
+                    <a class="entry-reviews__link uk-visible@m" href="#">Все отзывы ({{ card.opinions|length }})</a>
                 </div>
                 <div class="entry-reviews__body">
-                    {% if card.opinions is not empty %}
+
                     <ul class="uk-comment-list uk-margin-remove comment-list">
                         {% for opinion in card.opinions %}
                         <li>
@@ -393,10 +393,14 @@ prefix="og: http://ogp.me/ns#"
                             <span class="uk-icon uk-icon-image icon-giftbox"></span>
                         </div>
                         <div class="uk-width-1-1 uk-width-2-3@m uk-width-3-5@l">
-                            <h3 class="entry-share__title">Поделитесь записью и зарабатайте 500 рублей на аренду транспорта</h3>
+                            <h3 class="entry-share__title">Поделитесь записью и зарабoтайте 500 рублей на аренду транспорта</h3>
                             <div class="entry-share__body">Поделитесь с друзьями этой записью и мы подарим вам 500 рублей на аренду транспорта</div>
-                            <div class="entry-share__actions"><button type="button" class="uk-button button button-primary button-lg entry-share__button">Поделиться</button></div>
-                        </div>
+                            <div class="entry-share__actions">
+                                <script src="https://yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
+                                <script src="https://yastatic.net/share2/share.js"></script>
+                                <div class="ya-share2" data-services="vkontakte,facebook,odnoklassniki,twitter,viber,whatsapp,telegram"></div>
+{#                                <button type="button" class="uk-button button button-primary button-lg entry-share__button">Поделиться</button></div>#}
+                            </div> </div>
                     </div>
                 </div>
             </div>

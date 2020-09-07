@@ -1,43 +1,45 @@
 {% if app.session.has('logged_user') %}
 <div class="notifications">
-	<span class="icon">
-		<svg
-				width="20"
-				height="20"
-				viewBox="0 0 20 20"
-				fill="none"
-				xmlns="http://www.w3.org/2000/svg"
-		>
-			<g clip-path="url(#clip0)">
-				<path
-						d="M10.0017 12.8571L7.52741 10.6914L0.453125 16.7557C0.710268 16.9943 1.05741 17.1428 1.44027 17.1428H18.5631C18.9446 17.1428 19.2903 16.9943 19.546 16.7557L12.476 10.6914L10.0017 12.8571Z"
-						fill="#FAFAFA"
-				/>
-				<path
-						d="M19.5474 3.24456C19.2903 3.00456 18.9446 2.85742 18.5603 2.85742H1.43741C1.05598 2.85742 0.710268 3.00599 0.453125 3.24742L9.99884 11.4289L19.5474 3.24456Z"
-						fill="#FAFAFA"
-				/>
-				<path
-						d="M0 4.11133V15.9799L6.90429 10.1128L0 4.11133Z"
-						fill="#FAFAFA"
-				/>
-				<path
-						d="M13.0977 10.1131L20.0019 15.9803V4.10742L13.0977 10.1131Z"
-						fill="#FAFAFA"
-				/>
-			</g>
-			<defs>
-				<clipPath id="clip0">
-					<rect width="20" height="20" fill="white" />
-				</clipPath>
-			</defs>
-		</svg>
-	</span>
-	{% if t3_new.getNotify|length > 0 %}
-	<span class="count">
-		{{ t3_new.getNotify|length }}
-	</span>
-	{% endif %}
+	<a href="/user/transport_orders">
+		<span class="icon">
+			<svg
+					width="20"
+					height="20"
+					viewBox="0 0 20 20"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg"
+			>
+				<g clip-path="url(#clip0)">
+					<path
+							d="M10.0017 12.8571L7.52741 10.6914L0.453125 16.7557C0.710268 16.9943 1.05741 17.1428 1.44027 17.1428H18.5631C18.9446 17.1428 19.2903 16.9943 19.546 16.7557L12.476 10.6914L10.0017 12.8571Z"
+							fill="#FAFAFA"
+					/>
+					<path
+							d="M19.5474 3.24456C19.2903 3.00456 18.9446 2.85742 18.5603 2.85742H1.43741C1.05598 2.85742 0.710268 3.00599 0.453125 3.24742L9.99884 11.4289L19.5474 3.24456Z"
+							fill="#FAFAFA"
+					/>
+					<path
+							d="M0 4.11133V15.9799L6.90429 10.1128L0 4.11133Z"
+							fill="#FAFAFA"
+					/>
+					<path
+							d="M13.0977 10.1131L20.0019 15.9803V4.10742L13.0977 10.1131Z"
+							fill="#FAFAFA"
+					/>
+				</g>
+				<defs>
+					<clipPath id="clip0">
+						<rect width="20" height="20" fill="white" />
+					</clipPath>
+				</defs>
+			</svg>
+		</span>
+		{% if t3_new.getNotify|length > 0 %}
+		<span class="count">
+			{{ t3_new.getNotify|length }}
+		</span>
+		{% endif %}
+	</a>
 </div>
 <a class="header-profile" href="#" id="headerProfileMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	<div class="avatar">

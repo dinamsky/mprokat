@@ -19,6 +19,13 @@
     src: url(../fonts/Montserrat/Montserrat-Bold.woff2) format("woff2")
 }
 
+@font-face {
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 900;
+    src: url(../fonts/Montserrat/Montserrat-Black.woff2) format("woff2")
+}
+
 *,::after,::before {
     -webkit-box-sizing: border-box;
     box-sizing: border-box
@@ -8145,9 +8152,7 @@ a:hover {
 .form-inline .input-group {
     margin-right: 20px;
     border-radius: 20px;
-    background: #f9f9fb;
-    box-shadow:  10px 10px 19px #c5c5c6,
-    -10px -10px 19px #ffffff;
+
 
 }
 

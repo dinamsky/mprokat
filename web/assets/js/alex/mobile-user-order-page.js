@@ -4,8 +4,11 @@ const mobileUserOrderPage = (function($) {
         $messageInputField: $('.js-message-input-field')
     };
 
+    let messengerBody = document.querySelector('.messenger__body');
+
     function init() {
         _bindHandlers();
+        messengerBody.scrollTop = messengerBody.scrollHeight;
     }
 
     function _bindHandlers() {
