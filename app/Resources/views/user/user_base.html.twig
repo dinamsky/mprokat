@@ -1,75 +1,76 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        {% block stylesheets %}
-            <link href="{{ asset('assets/css/uikit.css') }}" rel="stylesheet" />
-            <link href="{{ asset('assets/css/base.css') }}" rel="stylesheet" />
-            <link href="{{ asset('assets/css/font-awesome.min.css') }}" rel="stylesheet" />
-            <link href="{{ asset('assets/css/colors.css') }}" rel="stylesheet" />
-            <link href="{{ asset('assets/css/typo.css') }}" rel="stylesheet" />
-            <link href="{{ asset('assets/css/base-responsive.css') }}" rel="stylesheet" />
-            <link href="{{ asset('assets/css/list-tree.css') }}" rel="stylesheet" />
-        {% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('assets/favicon.ico') }}" />
-        <title>{% block title %}Мультипрокат{% endblock %}</title>
-        <meta name="yandex-verification" content="a2d59e156f2bd014" />
-    </head>
-    <body class="{{ is_mobile() ? 'mobile' : 'desktop' }} {% block bodyClass %}{% endblock %}">
-        {{ include('header.html.twig') }}
-        <div id="content" class="standard_wide {{ is_mobile() ? '' : 'uk-margin-top' }}">
-            {% for label, messages in app.flashes %}
-                {% for message in messages %}
-                    <div id="main_message" uk-alert class="uk-position-absolute uk-position-center uk-width-1-3@s">
-                        <a class="uk-alert-close" uk-close></a>
-                        <div class="flash-{{ label }}">
-                            {{ message|raw }}
-                        </div>
-                        <script>
-                            document.addEventListener("DOMContentLoaded", function(event) {
-                              setTimeout(function() {
-                                UIkit.alert('#main_message').close();
-                              }, 3000);
-                            });
-                        </script>
-                    </div>
-                {% endfor %}
-            {% endfor %}
+<head>
+    <title>{% block title %}Мультипрокат{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="yandex-verification" content="a2d59e156f2bd014">
 
-                {% if full is not defined %}
-                    <div uk-grid>
-                    <div class=" uk-width-1-5@s">{% block left_block %}{{ include('user/user_left.html.twig') }}{% endblock %}</div>
-                    <div class=" uk-width-4-5@s">
-                {% endif %}
-                {% block content %}{% endblock %}
-                {% if full is not defined %}
-                    </div>
-                    </div>
-                {% endif %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('assets/favicon.ico') }}">
 
+    {% block stylesheets %}
+        <link href="{{ asset('assets/css/uikit.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/font-awesome.min.css') }}" rel="stylesheet">
+
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+        <link href="{{ asset('assets/css/selectric-default.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/styles.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/alex/common.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/alex/profile/profile-main.css') }}" rel="stylesheet">
+        {% if is_mobile() %}<link href="{{ asset('assets/css/alex/common_mobile.css') }}" rel="stylesheet">{% endif %}
+    {% endblock %}
+</head>
+
+<body class="user-base {{ is_mobile() ? 'mobile' : 'desktop' }} {% block bodyClass %}{% endblock %}">
+{{ include('header.html.twig') }}
+<div id="content">
+    {% for label, messages in app.flashes %}
+    {% for message in messages %}
+    <div id="main_message" uk-alert class="uk-position-absolute uk-position-center uk-width-1-3@s">
+        <a class="uk-alert-close" uk-close></a>
+        <div class="flash-{{ label }}">
+            {{ message|raw }}
         </div>
-        {{ include('footer.html.twig') }}
-        {% block javascripts %}
-            <script src="{{ asset('assets/js/jquery-3.2.1.min.js') }}"></script>
-            <script src="{{ asset('assets/js/uikit.min.js') }}"></script>
-            <script src="{{ asset('assets/js/uikit-icons.min.js') }}"></script>
-            <script src="{{ asset('assets/js/signup_validate.js') }}"></script>
-            <script src="{{ asset('assets/js/user_notify.js') }}"></script>
-        {% endblock %}
-        {{ include('counters.html.twig') }}
-        {{ include('user/auth_modals.html.twig') }}
+        <script>
+            document.addEventListener("DOMContentLoaded", function(event) {
+                setTimeout(function() {
+                    UIkit.alert('#main_message').close();
+                }, 3000);
+            });
+        </script>
+    </div>
+    {% endfor %}
+    {% endfor %}
+
+
+    {% block content %}{% endblock %}
+
+</div>
+
+{{ include('footer.html.twig') }}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/js/jquery-3.2.1.min.js') }}"></script>
+    <script src="{{ asset('assets/js/uikit.min.js') }}"></script>
+    <script src="{{ asset('assets/js/uikit-icons.min.js') }}"></script>
+    <script src="{{ asset('assets/js/scripts.min.js') }}"></script>
+    <script src="{{ asset('assets/js/signup_validate.js') }}"></script>
+    <script src="{{ asset('assets/js/user_notify.js') }}"></script>
+    <script src="{{ asset('assets/js/alex/common.js') }}"></script>
+{% endblock %}
+
+{{ include('counters.html.twig') }}
+{{ include('user/auth_modals.html.twig') }}
 
 
 {#{% if no_jivosite is not defined %}#}
-
 {#<!-- BEGIN JIVOSITE CODE {literal} -->#}
 {#<script type='text/javascript'>#}
 {#(function(){ var widget_id = 'pFfFoRqpXP';var d=document;var w=window;function l(){var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;s.src = '//code.jivosite.com/script/widget/'+widget_id; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);}if(d.readyState=='complete'){l();}else{if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();#}
 {#</script>#}
 {#<!-- {/literal} END JIVOSITE CODE -->#}
+{#{% endif %}#}
 
-    {#{% endif %}#}
-
-    </body>
+</body>
 </html>

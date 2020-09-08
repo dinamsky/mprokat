@@ -12,9 +12,15 @@
 {% block title %}404{% endblock %}
 
 {% block content %}
-    <div class="standard_wide uk-margin-large-top">
-        Выбранной вами страницы не найдено...
-    </div>
-
+    <section class="not-found">
+        <div class="container">
+            <div class="img">
+                <span>404</span>
+                <img src="/assets/img/404.png" alt="Not found">
+            </div>
+            <p>Похоже, мы не можем найти нужную вам страницу.</p>
+            <a href="/" class="btn btn-solid">Вернуться на главную</a>
+        </div>
+    </section>
 
 {% endblock %}

@@ -1,0 +1,113 @@
+<header>
+
+    {% if is_mobile() %}
+        {{ include('mobile_header.html.twig') }}
+
+    {% else %}
+        <input type="hidden" id="cityURL" name="cityURL" value="{{ city.url }}">
+        <input type="hidden" id="cityId" name="cityId" value="{{ city.id }}">
+
+        <div class="top_sticky desktop_header" uk-sticky>
+            <div class="standard_wide">
+                <div class="uk-grid">
+                    <div class="uk-width-1-3">
+                        <div class="uk-grid uk-grid-small">
+                            <div class="uk-width-auto">
+                                <a href="/"><img class="logo" src="/assets/images/interface/logo.png" alt=""></a>
+                            </div>
+                            <div class="uk-width-expand">
+                                {#<i uk-icon="icon:search"></i> <input class="glob_search" type="text" name="glob_search" placeholder="Поиск">#}
+                                <div class="uk-inline uk-width-1-1 uk-position-relative">
+                                    {#<a class="uk-form-icon search_popup_trigger" href="#" uk-icon="icon: search"></a>#}
+                                    {#<input class="uk-input glb search_popup_trigger" name="glob_search" placeholder="{% trans %}Поиск, например: bmw{% endtrans %}">#}
+                                    {#<input class="uk-input glb search_popup_trigger" name="" placeholder="{% trans %}Поиск, например: bmw{% endtrans %}">#}
+
+                                    <div class="search_popup_trigger">
+                                        <i uk-icon="icon: search"></i>
+                                        <span class="uk-text-small">{% trans %}Поиск{% endtrans %}</span>
+                                    </div>
+                                    {{ include('search_popup.html.twig') }}
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="uk-width-expand">
+
+                        <div class="uk-grid uk-grid-small uk-flex-right uk-flex-middle">
+
+                            <div>
+                                <a href="/faq"><i uk-icon="question"></i></a>
+                            </div>
+
+                            <div>
+                                <button uk-toggle="target: #howtopay" type="button" style="color: grey;
+                                background: transparent;
+                                text-decoration: underline;
+                                padding: 0;
+                                ">Как это работает?
+                                </button>
+                            </div>
+
+                            {#<div>#}
+                            {#<a href="/promo" class="uk-button uk-button-default">Сдать авто</a>#}
+                            {#</div>#}
+
+                            <div>
+                                {#{% if app.session.has('logged_user') %}#}
+                                {#<a href="/card/new" class="uk-button uk-button-success add_card_button">Сдать</a>#}
+                                {#{% elseif app.session.has('admin') %}#}
+                                {#<a href="/card/new" class="uk-button uk-button-success add_card_button">Сдать</a>#}
+                                {#{% else %}#}
+                                {#<a uk-toggle="target: #sign_in" class="uk-button uk-button-success add_card_button">Сдать</a>#}
+                                {#{% endif %}#}
+                                <a href="/card/new" style="border: 1px solid green;
+    color: grey;
+    font-size: 13px;
+    padding: 5px 10px;">Сдать в аренду</a>
+                            </div>
+
+                            <div class="c_grey uk-position-relative">
+                                {% if not is_mobile() %}
+                                    {{ include('selector/global_city_selector.html.twig') }}
+                                {% endif %}
+
+                                {% if not app.session.has('not_first_time') %}
+                                    <div class="city_helper">
+                                        Мы&nbsp;определили&nbsp;ваш&nbsp;город&nbsp;как&nbsp;{{ app.session.get('city').header }}
+                                        .<br>
+                                        Вы всегда можете поменять его здесь.
+                                        <div class="city_helper_close"><span uk-icon="icon:close"></span></div>
+                                    </div>
+                                {% endif %}
+
+                            </div>
+                            {% if app.session.has('logged_user') %}
+                            {% else %}
+                                <div>
+                                    <button uk-toggle="target: #sign_up" style="background: transparent;
+    color: grey;"><span uk-icon="icon:lock"></span>{% trans %}Регистрация{% endtrans %}</button>
+                                </div>
+                            {% endif %}
+
+
+                            <div>{{ include('user/auth_button_modal.html.twig') }}</div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <div id="search_block" hidden>{{ include('search/top_search.html.twig') }}</div>
+
+            </div>
+        </div>
+
+
+
+
+
+    {% endif %}
+
+</header>

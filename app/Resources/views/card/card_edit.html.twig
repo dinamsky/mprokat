@@ -2,374 +2,526 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link href="{{ asset('assets/css/auto-complete.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/select2.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/datepicker.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/auto-complete.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/select2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/datepicker.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/alex/card/card_new.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/alex/card/card_edit.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-
-    <script src="{{ asset('assets/tinymce/jquery.tinymce.min.js') }}"></script>
-    <script src="{{ asset('assets/tinymce/tinymce.min.js') }}"></script>
-    <script src="{{ asset('assets/js/visual_editor.js') }}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWdm1zrblFjsdUfi1-6fsPvj30ACCiCxk"></script>
-    <script src="{{ asset('assets/js/edit_card_validate.js') }}"></script>
-    <script src="{{ asset('assets/js/newCardForm.js') }}"></script>
-    <script src="{{ asset('assets/js/sliderSettings.js') }}"></script>
-    <script src="{{ asset('assets/js/editCardForm.js') }}"></script>
-    <script src="{{ asset('assets/js/tariff_selector.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.damnUploader.min.js') }}"></script>
     <script src="{{ asset('assets/js/image_upload_preview.js') }}"></script>
-    <script src="{{ asset('assets/js/select2.min.js') }}"></script>
-    <script src="{{ asset('assets/js/select_combo.js') }}"></script>
     <script src="{{ asset('assets/js/datepicker.min.js') }}"></script>
-    {% if not subfields %}<script src="{{ asset('assets/js/get_new_subfields.js') }}"></script>{% endif %}
-    {% if app.session.has('promote') %}
+
+    <script>var isSubfieldsEmpty = {% if not subfields %}true {% else %}false{% endif %};</script>
+
+    <script src="{{ asset('assets/js/alex/images_upload.js') }}"></script>
+    <script src="{{ asset('assets/js/alex/address_change.js') }}"></script>
+    <script src="{{ asset('assets/js/alex/tariff_change.js') }}"></script>
+    <script src="{{ asset('assets/js/alex/transport-edit_change.js') }}"></script>
+    <script src="{{ asset('assets/js/alex/card-edit_validate.js') }}"></script>
+
+     {% if app.session.has('promote') %}
         <script src="{{ asset('assets/js/promote.js') }}"></script>
         {{ app.session.remove('promote') }}
     {% endif %}
-
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWdm1zrblFjsdUfi1-6fsPvj30ACCiCxk"></script>
 {% endblock %}
 
 {% block bodyVars %}data-lang="{{ lang }}"{% endblock %}
 
 {% block content %}
+<div class="uk-container">
 
-    <form id="edit_card_form" action="/card/update" method="POST" enctype="multipart/form-data" class="standard_wide uk-margin-top" onsubmit="return edit_card_validate();">
+    <h2 class="uk-margin-medium-bottom">Редактирование транспорта</h2>
+    <div class="uk-hr uk-align uk-margin-remove-top"></div>
+    <form id="edit_card_form" action="/card/update" method="POST" enctype="multipart/form-data" class="js-card-edit-form">
+        <!-- 1 section -->
+        <h3 class="uk-margin-bottom">Фотографии транспорта</h3>
 
-        <div uk-grid>
-            <div class="uk-width-1-2@s">
-                {#<div class="uk-margin-bottom"><input type="text" name="header" placeholder="Заголовок" class="uk-input" value="{{ card.header }}"></div>#}
-                <div uk-grid class="service_selector">
-                    <div class="uk-width-1-3">
-                        <button type="button" class="uk-button {{ card.serviceTypeId == 1 ? 'uk-button-primary' : '' }} uk-width-1-1" value="1">{% trans %}Прокат{% endtrans %}</button>
-                    </div>
-                    <div class="uk-width-1-3">
-                        <button type="button" class="uk-button {{ card.serviceTypeId == 2 ? 'uk-button-primary' : '' }}uk-width-1-1" value="2">{% trans %}Аренда{% endtrans %}</button>
-                    </div>
-                    <div class="uk-width-1-3">
-                        <button type="button" class="uk-button {{ card.serviceTypeId == 3 ? 'uk-button-primary' : '' }}uk-width-1-1" value="3">{% trans %}Аренда с правом выкупа{% endtrans %}</button>
-                    </div>
-                    <input type="hidden" name="serviceTypeId" value="{{ card.serviceTypeId }}">
-                </div>
-
-                <hr>
-
-                <div uk-grid>
-                    <div class="uk-width-1-2">
-                        <span class="uk-text-small">{% trans %}Дата начала аренды{% endtrans %}</span>
-                        <input type="text" name="date_rent_start" class="uk-input uk-width-1-1 datepicker-here" value="{{ card.dateRentStart|date("d.m.Y") }}">
-                    </div>
-
-                    <div class="uk-width-1-2">
-                        <span class="uk-text-small">{% trans %}Дата окончания аренды{% endtrans %}</span>
-                        <input type="text" name="date_rent_finish" class="uk-input uk-width-1-1 datepicker-here" value="{{ card.dateRentFinish|date("d.m.Y") }}">
-                    </div>
-                </div>
-
-                <hr>
-
-                <div class=""><span class="red_star">*</span>{% trans %}Адрес{% endtrans %}: <span uk-toggle="target: #city_selector">{{ city.header }} <i uk-icon="icon:chevron-down"></i></span></div>
-
-                <div class="uk-display-inline-block uk-margin-top">
-                    Доставка транспорта клиенту:
-                    <label><input type="radio" name="deliveryStatus" value="0" {{ card.deliveryStatus == 0 ? 'checked' }}> нет</label>
-                    <label><input type="radio" name="deliveryStatus" value="1" {{ card.deliveryStatus == 1 ? 'checked' }}> да</label>
-                    <label><input type="radio" name="deliveryStatus" value="2" {{ card.deliveryStatus == 2 ? 'checked' }}> возможна</label>
-                </div>
-
-                <div class="expandable_block" id="city_selector" hidden>
-                    <div class="uk-text-small">{% trans %}Страна{% endtrans %}</div>
-                    <select name="countryCode" id="countryCode" class="uk-select">
-                        {#{{ include( 'common/ajax_edit_options.html.twig', { 'options': countries, 'id': countryCode }) }}#}
-
-                        <option value="0">-выберите страну-</option>
-
-                        {% if app.session.has('admin') %}
-                            {% for cntr in countries %}
-                            <option value="{{ cntr.iso3 }}" {{ card.city.country == cntr.iso3 ? 'selected' }}>{{ cntr.header }}</option>
-                            {% endfor %}
-                        {% else %}
-                            <option value="RUS" selected>Россия</option>
-                        {% endif %}
-
-
-                    </select>
-                    <div class="uk-text-small">{% trans %}Регион{% endtrans %}</div>
-                    <select name="regionId" id="regionId" class="uk-select">
-                        {{ include( 'common/ajax_edit_options.html.twig', { 'options': regions, 'id': regionId }) }}
-                    </select>
-                    <div class="uk-text-small">{% trans %}Город{% endtrans %}</div>
-                    <select name="cityId" id="cityId" class="uk-select">
-                        {{ include( 'common/ajax_edit_options.html.twig', { 'options': cities, 'id': card.cityId }) }}
-                    </select>
-                    <div class="uk-text-small">{% trans %}Адрес{% endtrans %}</div>
-                    <div>
-                        <textarea name="address" class="uk-textarea">{{ card.address }}</textarea>
-                    </div>
-                    <div class="uk-text-small" uk-toggle="target: #map_selector" id="show_map">{% trans %}Карта{% endtrans %} <i uk-icon="icon:chevron-down"></i></div>
-                    <div id="map_selector" hidden>
-                        <input type="hidden" name="coords"  value="{{ card.coords  }}">
-                        {% set coords = card.coords|split(",") %}
-                        {% if coords[1] is not defined %}
-                            {% set coords = [55.753410,37.620285] %}
-                        {% endif %}
-                        <div id="map" data-lat="{{ coords[0] }}" data-lng="{{ coords[1] }}"></div>
-                    </div>
-
-
-                    <input type="hidden" name="streetView">
-
-                </div>
-
-                <hr>
-
-                <div class=""><span class="red_star">*</span>{% trans %}Тип транспорта{% endtrans %}: <span uk-toggle="target: #general_selector">{{ lang == 'ru' ? gt.header : gt.url }} <i uk-icon="icon:chevron-down"></i></span></div>
-
-
-
-                <div class="expandable_block" id="general_selector" hidden>
-                    <div uk-grid>
-                        <div class="uk-width-1-2">
-                            <select name="generalTypeTopLevelId" id="generalTypeTopLevelId" class="uk-select">
-                                {{ include( 'common/ajax_edit_options.html.twig', { 'options': generalTopLevel, 'id': pgtid }) }}
-                            </select>
+        <div class="uk-child-width-1-1 uk-grid-medium" uk-grid>
+            <div>
+                <div class="template-photo-grid">
+                    {% for foto in card.getFotos %}
+                    <div class="template-photo-grid__item js-photo-grid-item" data-id="{{ foto.id }}">
+                        <div class="template-photo-grid__photo" style="background-image: url('/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg');">
                         </div>
 
-                        <div class="uk-width-1-2">
-                            <select name="generalTypeId" id="generalTypeId" class="uk-select">
+                        <button type="button" class="uk-button-danger delete_foto_button" uk-close data-id="{{ foto.id }}"
+                                style="position:absolute;top:0;right:0;color: white;">
+                        </button>
+
+                        <button type="button" class="{{ foto.isMain ? 'uk-button-primary' : 'not_first' }} main_foto_button" data-id="{{ foto.id }}"
+                                style="position:absolute;top:0;left:0;color: white;">1
+                        </button>
+
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="uk-grid-medium" uk-grid>
+
+            <div class="uk-width-1-1 uk-width-3-5@m">
+                <div uk-form-custom>
+                    <input class="js-upload-photo" name="fotos[]" type="file" accept="image/x-png,image/gif,image/jpeg" multiple>
+                    <button class="uk-flex uk-flex-column uk-flex-middle uk-flex-center uk-padding uk-placeholder uk-margin-remove theme-image-uploader" type="button" tabindex="-1">
+                        <span class="uk-icon uk-icon-image uk-margin-small-bottom" style="background-image: url('/assets/images/icons/image-upload-icon.svg'); width: 120px; height: 40px;"></span>
+                        <span class="uk-padding-small uk-padding-remove-vertical ">{% trans %}Нажмите, чтобы загрузить фотографии{% endtrans %}</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="uk-width-1-1 uk-width-2-5@m">
+                <div class="uk-text-muted">{% trans %}До 5 фотографий одновременно{% endtrans %}</div>
+            </div>
+
+        </div>
+        <ul class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-5@m uk-text-center js-upload-area uk-padding uk-padding-remove-horizontal uk-padding-remove-top uk-margin-small-bottom" uk-grid uk-sortable></ul>
+        <!-- /1 section -->
+
+        <!-- 2 section -->
+        <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-2@m" uk-grid>
+            <div>
+                <h3 class="uk-margin-bottom">{% trans %}Измнение типа аренды или проката{% endtrans %}</h3>
+                <ul class="uk-list theme-radio-list">
+                    <li><label><input class="uk-radio theme-radio" type="radio" name="serviceTypeId" value="1" {{ card.serviceTypeId == 1 ? 'checked' }}><span>{% trans %}Прокат{% endtrans %}</span></label></li>
+                    <li><label><input class="uk-radio theme-radio" type="radio" name="serviceTypeId" value="2" {{ card.serviceTypeId == 2 ? 'checked' }}><span>{% trans %}Аренда{% endtrans %}</span></label></li>
+                    <li><label><input class="uk-radio theme-radio" type="radio" name="serviceTypeId" value="3" {{ card.serviceTypeId == 3 ? 'checked' }}><span>{% trans %}Аренда с правом выкупа{% endtrans %}</span></label></li>
+                    <li><label><input class="uk-radio theme-radio" type="radio" name="serviceTypeId" disabled><span>{% trans %}Аренда с водителем{% endtrans %}</span></label></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="uk-margin-bottom">{% trans %}Доставка транспорта клиенту{% endtrans %}</h3>
+                <ul class="uk-list theme-radio-list">
+                    <li><label><input class="uk-radio theme-radio" type="radio" name="deliveryStatus" value="1" {{ card.deliveryStatus == 1 ? 'checked' }}><span>{% trans %}Да с доставкой{% endtrans %}</span></label></li>
+                    <li><label><input class="uk-radio theme-radio" type="radio" name="deliveryStatus" value="2" {{ card.deliveryStatus == 2 ? 'checked' }}><span>{% trans %}Возможно{% endtrans %}</span></label></li>
+                    <li><label><input class="uk-radio theme-radio" type="radio" name="deliveryStatus" value="0" {{ card.deliveryStatus == 0 ? 'checked' }}><span>{% trans %}Без доставки{% endtrans %}</span></label></li>
+                </ul>
+            </div>
+        </div>
+        <div class="uk-sortable-empty"></div>
+        <div class="uk-hr uk-align uk-margin-remove-top uk-visible@m"></div>
+        <!-- ///2 section -->
+
+        <!-- 3 section -->
+        <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-2@m" uk-grid>
+            <div>
+                <h3 class="uk-margin-bottom">{% trans %}Изменение типа и группы{% endtrans %}</h3>
+                <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-2@m" uk-grid>
+
+                    <div>
+                        <div class="uk-form-stacked">
+                        <label class="uk-form-label">{% trans %}Тип транспорта{% endtrans %}</label>
+                        <div class="uk-form-controls">
+                            <select name="generalTypeTopLevelId" class="uk-select select-border-bottom js-transport-type-select">
+                                {{ include('common/ajax_edit_options.html.twig', {'options' : generalTopLevel, 'id' : pgtid, 'hideOptionAll' : true}) }}
+                            </select>
+                        </div>
+                    </div>
+                        <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-bottom uk-text-danger uk-text-small theme-d-none js-transport-type-select-error js-error-alert">
+                        Выберите значение!</div>
+                    </div>
+
+                    <div>
+                        <div class="uk-form-stacked">
+                        <label class="uk-form-label">{% trans %}Группа транспорта{% endtrans %}</label>
+                        <div class="uk-form-controls">
+                            <select name="generalTypeId" class="uk-select select-border-bottom js-transport-group-select">
                                 {{ include( 'common/ajax_edit_options.html.twig', { 'options': generalSecondLevel, 'id': gtid }) }}
                             </select>
                         </div>
                     </div>
-
-
-                </div>
-
-                <hr>
-
-                <div uk-grid class="uk-grid-small">
-                    <div class="uk-width-1-3">
-                        <div class="uk-text-small"><span class="red_star">*</span>{% trans %}Группа{% endtrans %}</div>
-                        <select name="groupName" id="markGroupName" class="uk-select">
-                            {{ include( 'common/ajax_edit_options.html.twig', { 'options': mark_groups, 'id': model.carTypeId }) }}
-                        </select>
-                    </div>
-
-                    <div class="uk-width-1-3">
-                        <div class="uk-text-small"><span class="red_star">*</span>{% trans %}Марка{% endtrans %}</div>
-                        <select name="mark" id="markId" class="uk-select sel_combo">
-                            {{ include( 'common/ajax_edit_options.html.twig', { 'options': marks, 'id': mark.id }) }}
-                        </select>
-                    </div>
-
-                    <div class="uk-width-1-3">
-                        <div class="uk-text-small"><span class="red_star">*</span>{% trans %}Модель{% endtrans %}</div>
-                        <select name="modelId" id="markModelId" class="uk-select sel_combo">
-                            {{ include( 'common/ajax_edit_options.html.twig', { 'options': models, 'id': model.id }) }}
-                        </select>
+                        <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-bottom uk-text-danger uk-text-small theme-d-none js-transport-group-select-error js-error-alert">
+                        Выберите значение!</div>
                     </div>
                 </div>
+            </div>
 
-
-
-                <hr>
-                <div>
-                    <div>{% trans %}Фотографии{% endtrans %}: <input id="foto_upload" type="file" name="fotos[]" multiple> ({% trans %}до 5 одновременно{% endtrans %})</div>
-                    <div id="foto_list_view" uk-grid uk-sortable class="uk-grid-small"></div>
-                </div>
-
-                <hr>
-
-                <div class="uk-margin-bottom">
-                    Валюта:
-                    <select name="currency" class="uk-width-1-5 uk-select">
-                        <option value="EUR" {{ card.currency == 'EUR' ? 'selected' }}>EUR</option>
-                        <option value="USD" {{ card.currency == 'USD' ? 'selected' }}>USD</option>
-                        <option value="RUB" {{ card.currency == 'RUB' ? 'selected' }}>RUB</option>
-                    </select>
-                </div>
-
-                <div class="uk-margin-bottom">
-                    <input type="number"
-                           name="price[10]"
-                           class="uk-input uk-width-1-3 one_of"
-                           value="{% for cardPrice in card.getCardPrices if cardPrice.priceId == 10 %}{{ cardPrice.value }}{% endfor %}">
-                    ₽ - <span> Залог (укажите, если необходимо) </span>
-                </div>
-
-                <div class="uk-clearfix">
-                    {% for price in prices if price.id == 2%}
-                        <div class="uk-float-left uk-width-1-2">
-                            <input type="number" name="price[{{ price.id }}]" class="uk-input uk-width-1-2"
-                                   value="{% for cardPrice in card.getCardPrices if cardPrice.priceId == price.id %}{{ cardPrice.value }}{% endfor %}">
-                             / <span>{{ price.header|trans }} </span>
+            <div>
+                <h3 class="uk-margin-bottom">{% trans %}Изменение марки и модели{% endtrans %}</h3>
+                <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-2@m" uk-grid>
+                    <div>
+                        <div class="uk-form-stacked">
+                        <label class="uk-form-label">{% trans %}Марка{% endtrans %}</label>
+                        <div class="uk-form-controls">
+                            <select name="mark" class="uk-select select-border-bottom js-transport-mark-select">
+                                {{ include( 'common/ajax_edit_options.html.twig', { 'options': marks, 'id': mark.id }) }}
+                            </select>
                         </div>
-                    {% endfor %}
-                    <span class="uk-float-right" uk-toggle="target: #price_selector">{% trans %}Еще расценки{% endtrans %} <i uk-icon="icon:chevron-down"></i></span>
-                </div>
-                <div class="expandable_block" id="price_selector" hidden>
-                    {% for price in prices if price.id != 2 and price.id < 7 %}
-                        <div>
-                            <input type="number" name="price[{{ price.id }}]" class="uk-input uk-width-1-5"
-                                   value="{% for cardPrice in card.getCardPrices if cardPrice.priceId == price.id %}{{ cardPrice.value }}{% endfor %}">
-                             / <span>{{ price.header|trans }} </span>
+                    </div>
+                        <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-bottom uk-text-danger uk-text-small theme-d-none js-transport-mark-select-error js-error-alert">
+                            Выберите значение!</div>
+                    </div>
+                    <div>
+                        <div class="uk-form-stacked">
+                        <label class="uk-form-label">{% trans %}Модель{% endtrans %}</label>
+                        <div class="uk-form-controls">
+                            <select name="modelId" class="uk-select select-border-bottom js-transport-model-select">
+                                {{ include( 'common/ajax_edit_options.html.twig', { 'options': models, 'id': model.id }) }}
+                            </select>
                         </div>
-                    {% endfor %}
+                    </div>
+                        <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-bottom uk-text-danger uk-text-small theme-d-none js-transport-model-select-error js-error-alert">
+                            Выберите значение!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="uk-sortable-empty"></div>
+        <div class="uk-hr uk-align uk-margin-remove-top uk-visible@m"></div>
+        <!-- ///3 section -->
+
+        <!-- 4 section -->
+        <div class="uk-grid-medium" uk-grid>
+            <div class="uk-width-1-1">
+                <h3 class="uk-margin-bottom">{% trans %}Измнение расценок{% endtrans %}</h3>
+            </div>
+
+            <div class="uk-width-1-1 uk-width-1-2@m">
+
+                <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-2@m" uk-grid>
+                    <div>
+                        <div class="uk-form-stacked">
+                            <label class="uk-form-label">{% trans %}Валюта{% endtrans %}</label>
+                            <div class="uk-form-controls">
+                                <select name="currency" class="uk-select select-border-bottom">
+                                    <option value="EUR" {{ card.currency == 'EUR' ? 'selected' }}>EUR</option>
+                                    <option value="USD" {{ card.currency == 'USD' ? 'selected' }}>USD</option>
+                                    <option value="RUB" {{ card.currency == 'RUB' ? 'selected' }}>RUB</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <hr>
-                <div><textarea name="content" class="uk-textarea" placeholder="{% trans %}Тут можно указать условия аренды или проката{% endtrans %}">{{ card.content }}</textarea></div>
+                <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-2@m" uk-grid>
+                    <div>
+                        <!-- За час -->
+                        {% for price in prices if price.id == 1%}
+                        <div class="uk-form-stacked uk-align">
+                            <label class="uk-form-label">{{ price.header|trans }}</label>
+                            <div class="uk-inline uk-width-1-1">
+                                <span class="uk-form-icon uk-flex-right@m uk-form-icon-flip"><i class="fa fa-rub"></i></span>
+                                <input type="text"
+                                       class="uk-input js-pay-per-hour"
+                                       name="price[{{ price.id }}]"
+                                       value="{% for cardPrice in card.getCardPrices if cardPrice.priceId == price.id %}{{ cardPrice.value }}{% endfor %}">
 
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <!-- За час -->
 
+                        <!-- За день -->
+                        {% for price in prices if price.id == 2%}
+                        <div class="uk-form-stacked uk-align">
+                            <label class="uk-form-label">{{ price.header|trans }}</label>
+                            <div class="uk-inline uk-width-1-1">
+                                <span class="uk-form-icon uk-flex-right@m uk-form-icon-flip"><i class="fa fa-rub"></i></span>
+                                <input type="text"
+                                       class="uk-input js-pay-per-day"
+                                       name="price[{{ price.id }}]"
+                                       value="{% for cardPrice in card.getCardPrices if cardPrice.priceId == price.id %}{{ cardPrice.value }}{% endfor %}">
+
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <!-- За день -->
+
+                        <!-- error -->
+                        <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-top uk-text-danger uk-text-small theme-d-none js-pay-error js-error-alert">
+                            Укажите одну из расценок: в час/в день!</div>
+                        <!-- /error -->
+
+                        <div class="js-price-list-toggle uk-align uk-margin-top uk-text-right">
+                            <a class="link-underline" href="javascript:;" uk-toggle="target: .js-price-list-toggle; animation: uk-animation-fade; queued: true; duration: 300">Добавить расценку</a>
+                        </div>
+
+                        <div class="js-price-list-toggle" hidden>
+                            {% for price in prices if price.id > 2 and price.id < 7 %}
+                            <div class="uk-form-stacked uk-align">
+                                <label class="uk-form-label">{{ price.header|trans }}</label>
+                                <div class="uk-inline uk-width-1-1">
+                                    <span class="uk-form-icon uk-flex-right@m uk-form-icon-flip"><i class="fa fa-rub"></i></span>
+                                    <input type="text"
+                                           class="uk-input"
+                                           name="price[{{ price.id }}]"
+                                           value="{% for cardPrice in card.getCardPrices if cardPrice.priceId == price.id %}{{ cardPrice.value }}{% endfor %}">
+
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                    <div>
+                        <p class="uk-text-muted uk-margin-top">{% trans %}Одна из расценок в час или в день обязательна{% endtrans %}</p>
+                        <p class="uk-text-muted uk-visible@m">Платформа Мультипрокат добавляет от <a style="color: var(--purple-color);" href="#price_info" uk-toggle>10 до 20 %</a> к вашей стоимости</p>
+                        <p class="uk-text-muted uk-hidden@m">Указывая добавление стоимости <a style="color: var(--purple-color);" href="#price_info" uk-toggle>забронирования</a>, учитывайте сервисный сбор системы - 15%</p>
+                    </div>
+                </div>
+
+                <div class="uk-flex-bottom uk-grid-medium uk-child-width-1-1 uk-child-width-1-2@m" uk-grid>
+                    <div>
+                        <div class="uk-form-stacked uk-align">
+                            <label class="uk-form-label">{% trans %}Залог{% endtrans %}</label>
+                            <div class="uk-inline uk-width-1-1">
+                                <span class="uk-form-icon uk-flex-right@m uk-form-icon-flip"><i class="fa fa-rub"></i></span>
+                                <input type="text"
+                                       class="uk-input"
+                                       name="price[10]"
+                                       value="{% for cardPrice in card.getCardPrices if cardPrice.priceId == 10 %}{{ cardPrice.value }}{% endfor %}">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div><p class="uk-text-muted uk-margin-small-bottom">{% trans %}Укажите, если это необходимо{% endtrans %}.</p></div>
+                </div>
 
             </div>
 
-            <div id="dop_fields" class="uk-width-1-2@s">
-
-
-
-                <div class=""><span uk-toggle="target: #features_selector">{% trans %}Характеристики{% endtrans %}  <i uk-icon="icon:chevron-down"></i></span></div>
-
-                <div class="expandable_block" id="features_selector" hidden>
-                    <div >
-                        {% set setFeatures = [] %}
-                        {% for cardFeature in card.getCardFeatures %}
-                            {% set setFeatures = setFeatures|merge([cardFeature.featureId]) %}
-                        {% endfor %}
-                        <div>
-                            {% for feature in features %}
-                                <div>
-                                    <b>{{ feature.header }}</b>
-                                    <div>
-                                        {% for item in feature.getChildren %}
-                                            <div>
-                                                <label>
-                                                    <input class="feature_item" type="checkbox" name="feature[{{ item.id }}]" value="{{  item.id in setFeatures ? '1' : '0' }}"
-                                                            {{  item.id in setFeatures ? 'checked' : '0' }}
-                                                    > {{ item.header }}
-                                                </label>
-                                            </div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-
-                <hr>
-
-                <div class=""><span uk-toggle="target: #subfields">{% trans %}Дополнительно{% endtrans %} <i uk-icon="icon:chevron-down"></i></span></div>
-                <div class="expandable_block" id="subfields" hidden>
-                    {% if subfields %}
-                        {% for item in subfields %}
-                            <div>
-                                <div class="uk-text-small">{{ item.label }}</div>
-                                {% if item.subfield_last is defined %}
-                                    {{ include(item.template, {
-                                        'data': item.data,
-                                        'subfield_last':item.subfield_last,
-                                        'subfield_first':item.subfield_first,
-                                        'first':item.first,
-                                        'level':item.level,
-                                        'field_id': item.field_id
-                                    }) }}
-                                {% else %}
-                                    {{ include(item.template, {
-                                        'options': item.value,
-                                        'data': item.data,
-                                        'subfield':item.subfield,
-                                    }) }}
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                </div>
-
-                <hr>
-
-                <div uk-grid class="uk-grid-small">
-                    <div class="uk-width-1-3">
-                        <div class="uk-text-small"><span class="red_star">*</span>{% trans %}Состояние{% endtrans %}</div>
-                        <select name="conditionId" class="uk-select">
-                            {% for condition in conditions %}
-                                <option value="{{ condition.id }}" {{ condition.id == card.conditionId ? 'selected' : '' }}>{{ condition.header }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <div class="uk-width-1-3">
-                        <div class="uk-text-small"><span class="red_star">*</span>{% trans %}Цвет{% endtrans %}</div>
-                        <select name="colorId" class="uk-select">
-                            <option value="0" {{ 0 == card.colorId ? 'selected' : '' }}>- выберите -</option>
-                            {% for color in colors %}
-                                <option value="{{ color.id }}" {{ color.id == card.colorId ? 'selected' : '' }}>{{ color.header }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <div class="uk-width-1-3">
-                        <div class="uk-text-small"><span class="red_star">*</span>{% trans %}Год выпуска{% endtrans %}</div>
-                        <select name="prodYear" class="uk-select">
-                            <option value="0" {{  0 == card.prodYear  ? 'selected'}}>- выберите -</option>
-                            {% for year in 'now'|date('Y')..1950 %}
-                                <option value="{{ year }}" {{  year == card.prodYear  ? 'selected'}}>{{ year }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                </div>
-
-                <hr>
-
+            <div class="uk-width-1-1 uk-width-1-2@m">
                 <div class="uk-text-small">{% trans %}Видео{% endtrans %}:</div>
                 <input name="video" class="uk-input" value="{{ card.video }}">
+                <iframe src="{{ card.video }}" width="560" height="315" frameborder="0" allowfullscreen uk-responsive uk-video="automute: true"></iframe>
+            </div>
+        </div>
+        <div class="uk-sortable-empty"></div>
+        <div class="uk-hr uk-align uk-margin-remove-top uk-visible@m"></div>
+        <!-- ///4 section -->
 
-                <hr>
 
-                <div uk-grid class="edit_fotos_block uk-grid-small">
-                    {% for foto in card.getFotos %}
-                        <div class="uk-width-1-5 edit_foto">
-                            <div style="background:url('/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg') center center; background-size: cover; height: 80px;" class="uk-position-relative">
-                                <button type="button" class="uk-button-danger delete_foto_button" uk-close data-id="{{ foto.id }}"
-                                        style="position:absolute;top:0;right:0;color: white;">
-                                </button>
-
-                                <button type="button" class="{{ foto.isMain ? 'uk-button-primary' : 'not_first' }} main_foto_button" data-id="{{ foto.id }}"
-                                        style="position:absolute;top:0;left:0;color: white;">1
-                                </button>
+        <!-- 5 section -->
+        <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-2@m" uk-grid>
+            <div>
+                <h3 class="uk-margin-bottom">{% trans %}Изменение адреса размещения вашего транспорта{% endtrans %}</h3>
+                <div class="uk-grid-medium uk-child-width-1-2" uk-grid>
+                    <div>
+                        <div class="uk-form-stacked">
+                            <label class="uk-form-label">{% trans %}Страна{% endtrans %}</label>
+                            <div class="uk-form-controls">
+                                <select name="countryCode" class="uk-select select-border-bottom js-address-country-select">
+                                    {#{{ include( 'common/ajax_edit_options.html.twig', { 'options': countries, 'id': countryCode }) }}#}
+                                    <option hidden disabled selected value>{% trans %}Значение не выбрано{% endtrans %}</option>
+                                    <option value="0">{% trans %}Все{% endtrans %}</option>
+                                    {% if app.session.has('admin') %}
+                                    {% for cntr in countries %}
+                                    <option value="{{ cntr.iso3 }}" {{ card.city.country == cntr.iso3 ? 'selected' }}>{{ cntr.header }}</option>
+                                    {% endfor %}
+                                    {% else %}
+                                    <option value="RUS" selected>{% trans %}Россия{% endtrans %}</option>
+                                    {% endif %}
+                                </select>
                             </div>
                         </div>
-                    {% endfor %}
-                </div>
+                        <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-bottom uk-text-danger uk-text-small theme-d-none js-address-country-select-error js-error-alert">
+                            Выберите значение!</div>
+                    </div>
+                    <div>
+                        <div class="uk-form-stacked">
+                            <label class="uk-form-label">{% trans %}Регион{% endtrans %}</label>
+                            <div class="uk-form-controls">
+                                <select name="regionId" class="uk-select select-border-bottom js-address-region-select">
+                                    {{ include( 'common/ajax_edit_options.html.twig', { 'options': regions, 'id': regionId }) }}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-bottom uk-text-danger uk-text-small theme-d-none js-address-region-select-error js-error-alert">
+                            Выберите значение!</div>
+                    </div>
+                    <div>
+                        <div class="uk-form-stacked">
+                            <label class="uk-form-label">{% trans %}Город{% endtrans %}</label>
+                            <div class="uk-form-controls">
+                                <select name="cityId" class="uk-select select-border-bottom js-address-city-select">
+                                    {{ include( 'common/ajax_edit_options.html.twig', { 'options': cities, 'id': card.cityId }) }}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-bottom uk-text-danger uk-text-small theme-d-none js-address-city-select-error js-error-alert">
+                            Выберите значение!</div>
+                    </div>
+                    <div class="uk-width-1-1">
+                        <div class="uk-form-stacked">
+                            <label class="uk-form-label">Адрес</label>
+                            <div class="uk-form-controls">
+                                <textarea name="address" rows="2" class="uk-textarea js-address-textarea">{{ card.address }}</textarea>
+                            </div>
+                        </div>
 
+                        <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-bottom uk-text-danger uk-text-small theme-d-none js-address-textarea-error js-error-alert">
+                            Введите адрес!        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="uk-margin-bottom">{% trans %}Опишите условия аренды или проката транспорта{% endtrans %}</h3>
+                <textarea
+                        rows="7"
+                        name="content"
+                        class="uk-textarea js-rent-terms"
+                        placeholder="{% trans %}Тут можно указать условия аренды или проката{% endtrans %}"
+                >{{ card.content }}</textarea>
+
+                <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-bottom uk-text-danger uk-text-small theme-d-none js-rent-terms-error js-error-alert">
+                    Поле не заполнено!</div>
+            </div>
+        </div>
+        <!-- ///5 section -->
+
+        <!-- 6 section -->
+        <h3 class="uk-margin-bottom uk-margin-large-top">Дополнительная информация</h3>
+
+        <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-3@m" uk-grid>
+            <div>
+                <div class="uk-form-stacked">
+                    <label class="uk-form-label">Состояние</label>
+                    <div class="uk-form-controls">
+                        <select name="conditionId" class="uk-select select-border-bottom">
+                            {% for condition in conditions %}
+                            <option value="{{ condition.id }}" {{ condition.id == card.conditionId ? 'selected' : '' }}>{{ condition.header }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="uk-form-stacked">
+                    <label class="uk-form-label">Цвет</label>
+                    <div class="uk-form-controls">
+                        <select name="colorId" class="uk-select select-border-bottom">
+                            <option value="0" hidden disabled selected>{% trans %}Значение не выбрано{% endtrans %}</option>
+                            {% for color in colors %}
+                            <option value="{{ color.id }}" {{ color.id == card.colorId ? 'selected' : '' }}>{{ color.header }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="uk-form-stacked">
+                    <label class="uk-form-label">Год выпуска</label>
+                    <div class="uk-form-controls">
+                        <select name="prodYear" class="uk-select select-border-bottom">
+                            <option value="0" hidden disabled selected>{% trans %}Значение не выбрано{% endtrans %}</option>
+                            {% for year in 'now'|date('Y')..1950 %}
+                            <option value="{{ year }}" {{  year == card.prodYear  ? 'selected'}}>{{ year }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <hr>
+        <div class="uk-grid-medium uk-child-width-1-1">
+            <div><a href="javascript:;" uk-toggle="target: #features_selector" class="uk-button uk-button-link">Указать характеристики</a></div>
+            <div>
+                <div class="expandable_block uk-card uk-background-muted uk-card-body uk-padding-small uk-margin-small-bottom" id="features_selector" hidden>
+            <ul class="uk-list uk-list-divider">
+                {% set setFeatures = [] %}
+                {% for cardFeature in card.getCardFeatures %}
+                {% set setFeatures = setFeatures|merge([cardFeature.featureId]) %}
+                {% endfor %}
 
-        <div id="change_tariff" hidden>
+                {% for feature in features %}
+                <li>
+                    <h5 class="uk-heading-bullet">{{ feature.header }}</h5>
+                    <div>
+                        {% for item in feature.getChildren %}
+                        <div>
+                            <label>
+                                <input class="feature_item" type="checkbox" name="feature[{{ item.id }}]" value="{{  item.id in setFeatures ? '1' : '0' }}"
+                                       {{  item.id in setFeatures ? 'checked' : '0' }}
+                                > {{ item.header }}
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </li>
+                {% endfor %}
+
+            </ul>
+        </div>
+            </div>
+        </div>
+
+        <div class="js-subfields-area uk-grid-medium uk-child-width-1-1 uk-child-width-1-3@m" id="subfields" uk-grid>
+
+            {% if subfields %}
+            {% for item in subfields %}
+            <div>
+                <div class="uk-form-stacked">
+                    <label class="uk-form-label">{{ item.label }}</label>
+                    <div class="uk-form-controls">
+                        {% if item.subfield_last is defined %}
+
+                        {{ include('common/ajax_select_edit.html.twig', {
+                        'data': item.data,
+                        'subfield_last':item.subfield_last,
+                        'subfield_first':item.subfield_first,
+                        'first':item.first,
+                        'level':item.level,
+                        'field_id': item.field_id
+                        }) }}
+
+                        {% else %}
+
+                        {{ include(item.template, {
+                        'options': item.value,
+                        'data': item.data,
+                        'subfield':item.subfield,
+                        }) }}
+
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+        <!-- /6 section -->
+        <div class="uk-align uk-margin-remove-bottom">
+            <button class="uk-button button button-primary button-lg uk-width-1-1 uk-width-1-3@m uk-padding-remove-horizontal" name="update">{% trans %}Сохранить изменения{% endtrans %}</button>
+        </div>
+
+
+        <!-- 7 section -->
+        <h3 class="uk-margin-bottom uk-margin-large-top">Выберите тариф размещения</h3>
+        <div class="uk-width-1-1">
             {{ include(':card:tariff_selector.html.twig', {'tariffId':card.tariff.id, 'edit':true}) }}
         </div>
-
-
-        <input type="hidden" name="tariffId" value="{{ card.tariff.id }}">
+        <!-- /7 section -->
 
         <input type="hidden" name="cardId" value="{{ card.id }}">
-
-        <div class="edit_bottom uk-clearfix uk-margin-top">
-            <button class="uk-button uk-button-primary uk-float-left hide_on_change" name="update">{% trans %}Сохранить{% endtrans %}</button>
-            <button id="tariff_changer" type="button" class="uk-button uk-button-secondary uk-float-left" uk-toggle="target: #change_tariff">{% trans %}Сменить тариф{% endtrans %}</button>
-            <button class="uk-button uk-button-danger uk-float-right" name="delete">{% trans %}Удалить{% endtrans %}</button>
-        </div>
-
     </form>
 
+</div>
 
-
-
+<div id="price_info" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+        <h2 class="uk-modal-title">Сервисный сбор</h2>
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div>
+            На что идет сервисный сбор?<br>
+            <br>
+            Реклама вашего транспорта в интернете.<br>
+            Мы привлекаем дополнительный рекламный трафик из внешних источников именно на ваш транспорт  <br>
+            Вы зарабатываете больше денег.<br>
+            <br>
+            Владельцы, чей транспорт бронируется через нашу платформу, автоматически получают аккаунт PRO<br>
+            <br>
+            В сервисный сбор также входят: расходы на банковские переводы и обслуживание платежей.<br>
+            Также вы как владелец транспорта сможете проверить арендатора по нашей базе «безопасных арендаторов» и запросить
+            дополнительную информацию о безопасности сделки.
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 

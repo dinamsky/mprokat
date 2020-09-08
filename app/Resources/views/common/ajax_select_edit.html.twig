@@ -1,17 +1,14 @@
 <select
         {% if subfield_first is not empty and subfield_first.getChildren is empty %}
-        name="subField[{{ subfield_first.getFieldId }}]" data-id="{{ subfield_first.getFieldId }}" class="subFieldSelect uk-select">
+            name="subField[{{ subfield_first.getFieldId }}]" data-id="{{ subfield_first.getFieldId }}" class="uk-select select-border-bottom">
         {% else %}
-
             {% if subfield_first is not empty%}
-                name="" data-id="{{ subfield_first.getFieldId }}" class="subFieldSelect uk-select">
+                name="" data-id="{{ subfield_first.getFieldId }}" class="uk-select select-border-bottom">
             {% else %}
-                name="subField[{{ field_id }}]" data-id="{{ field_id }}" class="subFieldSelect uk-select">
+                name="subField[{{ field_id }}]" data-id="{{ field_id }}" class="uk-select select-border-bottom">
             {% endif %}
-
-
         {% endif %}
-    <option value="0">- {% trans %}все{% endtrans %} -</option>
+    <option value="0">{% trans %}Все{% endtrans %}</option>
     {% for option in first %}
         {% if subfield_first is not empty %}
         <option value="{{ option.id }}" {{ option.id == subfield_first.id ? 'selected' : '' }}>{{ lang=='ru' ? option.header : option.url }}</option>
@@ -23,8 +20,8 @@
 
 
 {% if subfield_first is not empty and subfield_first.getChildren is not empty %}
-<select name="subField[{{ subfield_first.getFieldId }}]" data-id="{{ subfield_first.getFieldId }}" class="subFieldSelect uk-select">
-    <option value="0">- {% trans %}все{% endtrans %} -</option>
+<select name="subField[{{ subfield_first.getFieldId }}]" data-id="{{ subfield_first.getFieldId }}" class="uk-select select-border-bottom">
+    <option value="0">{% trans %}Все{% endtrans %}</option>
     {%  for option in subfield_first.getChildren %}
         <option value="{{ option.id }}" {{ option.id == subfield_last.id ? 'selected' : '' }}>{{ lang=='ru' ? option.header : option.url }}</option>
     {% endfor %}

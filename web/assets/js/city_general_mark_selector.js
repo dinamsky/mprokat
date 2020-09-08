@@ -140,7 +140,7 @@ $( document ).ready(function() {
             type: 'POST',
             data: {cityId:cityId},
             success: function(){
-                UIkit.modal('#city_popular').hide();
+                $('#cityModal').modal('hide');
                 var go_href = getSelectorUrl() + getQueryVars();
                 if($('body').hasClass('main_page')) go_href = '/';
                 if($('body').hasClass('promo')) go_href = '/promo';

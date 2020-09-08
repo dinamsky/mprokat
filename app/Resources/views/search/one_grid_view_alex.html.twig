@@ -1,0 +1,77 @@
+<div class="card-item">
+
+    {% set main_foto = main_foto(card.getFotos) %}
+
+    {% set img_src = '/assets/images/interface/no_image.jpg' %}
+    {% set img_src_error = '/assets/images/interface/no_image.jpg' %}
+
+    {% if main_foto  %}
+    {% set img_src = '/assets/images/cards/'~main_foto.folder~'/t/'~main_foto.id~'.jpg' %}
+    {% elseif card.fotos[0] is defined %}
+    {% set img_src = '/assets/images/cards/'~card.fotos[0].folder~'/t/'~card.fotos[0].id~'.jpg' %}
+    {% else %}
+    {% set img_src = '/assets/images/interface/no_image.jpg' %}
+    {% endif %}
+
+
+    {% set serviceType = 'Прокат' %}
+    {% if card.serviceTypeId == 2  %}
+    {% set serviceType = 'Аренда' %}
+    {% endif %}
+
+    {% if card.currency == 'RUB' %}
+    {% set currency = 'ruble' %}
+    {% endif %}
+    {% if card.currency == 'EUR' %}
+    {% set currency = 'euro' %}
+    {% endif %}
+    {% if card.currency == 'USD' %}
+    {% set currency = 'dollar' %}
+    {% endif %}
+
+    <a class="uk-display-block" href="/card/{{ card.id }}">
+        <div class="card-item__figure">
+            <div class="card-item__image" style="background-image: url('{{ img_src }}')"></div>
+        </div>
+    </a>
+
+    {% set c_price = '' %}
+    {% set c_ed = '' %}
+
+    {% for price in card.cardPrices if price.priceId == 2 %}
+    {% set c_price = price.value %}
+    {% set c_ed = 'день'|trans %}
+    {% endfor %}
+
+    {% for price in card.cardPrices if price.priceId == 1 and c_price == '' %}
+    {% set c_price = price.value %}
+    {% set c_ed = 'час'|trans %}
+    {% endfor %}
+
+    {% for price in card.cardPrices if price.priceId == 6 and c_price == '' %}
+    {% set c_price = price.value %}
+    {% set c_ed = '' %}
+    {% endfor %}
+
+    <div class="card-item__header header-card-item">
+        <h3 class="header-card-item__title">
+            <a class="header-card-item__link" href="/card/{{ card.id }}">{{ card.markModel.Mark.header }} {{ card.markModel.header }}</a>
+        </h3>
+    </div>
+
+    <div class="card-item__owner owner-card-item">
+        {% trans %}Владелец:&nbsp;{% endtrans %}<a class="owner-card-item__link" href="/user/{{ card.user.id }}">{{ card.user.header }}</a>
+    </div>
+
+    {% if c_price != '' %}
+    {% set serv_perc = card.generalType.servicePercent %}
+    {% set c_price = c_price + (c_price/100*serv_perc)|round(0,'ceil') %}
+
+    <div class="card-item__price">
+        {{ c_price|number_format(0,'.','&nbsp;')|raw }}
+        &nbsp;<i class="fa fa-{{ currency }}"></i>&nbsp;
+        {{ c_ed }}
+    </div>
+    {% endif %}
+
+</div>

@@ -1,4 +1,5 @@
-<option value="0">- все -</option>
+<option hidden disabled selected value>{% trans %}Значение не выбрано{% endtrans %}</option>
+<option value="0">{% trans %}Все{% endtrans %}</option>
 {% for option in options %}
-    <option value="{{ option.id }}" data-url="{{ option.url is defined ? option.url : option.header }}">{{ option.header }}</option>
+<option value="{{ option.id }}" data-url="{{ option.url is defined ? option.url : option.header }}">{{ option.header }}</option>
 {% endfor %}

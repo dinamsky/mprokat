@@ -2,7 +2,156 @@
 <input type="hidden" id="cityId" name="cityId" value="{{ city.id }}">
 {% if no_header is not defined %}
 
-    <div class="uk-sticky " uk-sticky="sel-target: .uk-navbar-container">
+<section class="mobile-header">
+	<div class="uk-container">
+		<div class="inner uk-flex uk-flex-between uk-flex-middle uk-width-1-1">
+
+			<div class="logo">
+				<a class="logo__link" href="/">
+					<span class="logo__title logo__title_mobile">Мультипрокат</span>
+					<span class="logo__subtitle logo__subtitle_mobile">Прокат и аренда транспорта</span>
+				</a>
+			</div>
+
+			<div class="icons uk-flex uk-flex-middle">
+
+				<div class="search-select uk-flex-inline uk-flex-middle">
+					<a href="#modal-search" class="search-select-link uk-flex-inline" uk-toggle>
+						<span class="uk-icon uk-icon-image" style="background-image: url('/assets/images/icons/search-icon.svg'); width: 25px; height: 25px"></span>
+					</a>
+				</div>
+
+				{{ include('search_popup.html.twig') }}
+
+			
+				{% if app.session.has('logged_user') %}
+				<div class="notifications uk-flex-inline uk-flex-middle">
+					<a href="/user/transport_orders/">
+						<span class="uk-icon uk-icon-image" style="background-image: url('/assets/images/icons/close-envelope-icon_mobile.svg'); width: 25px; height: 25px"></span>
+						{% if t3_new.getNotify|length > 0 %}
+							<span class="count">{{ t3_new.getNotify|length }}</span>
+						{% endif %}
+					</a>
+				</div>
+				{% endif %}
+
+				<div class="burger uk-flex-inline uk-flex-middle">
+					<a class="uk-flex" href="#burger-main-menu" uk-toggle>
+						<span class="uk-icon uk-icon-image" style="background-image: url('/assets/images/icons/burger-icon_mobile.svg'); width: 30px; height: 19px"></span>
+					</a>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</section>
+
+
+<div id="burger-main-menu" uk-offcanvas="overlay: true">
+	<div class="uk-offcanvas-bar burger-menu-main uk-width-1-1 uk-padding">
+		{% if app.session.get('logged_user') %}
+			{% set avatar_url = '/assets/images/users/t/user_'~app.session.get('logged_user').id~'.jpg' %}
+		{% endif %}
+		{% if not file_exists('.'~url) %}
+			{% set avatar_url = '/assets/images/interface/default-user.png' %}
+		{% endif %}
+
+		<!-- Part 1 -->
+		<div class="uk-grid-small uk-flex uk-flex-middle uk-margin-medium-bottom" uk-grid>
+			<div class="uk-width-3-4 uk-flex uk-flex-middle">
+				{% if app.session.has('logged_user') %}
+					<div class="uk-background-cover uk-background-center-center uk-border-circle" style="background-image:url('{{ avatar_url }}'); width: 40px; height: 40px; flex: 0 0 40px;"></div>
+					<span class="uk-text-truncate uk-margin-small-left text-white">{{ app.session.get('logged_user').header }}</span>
+				{% else %}
+					<span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('/assets/images/icons/login-icon_mobile.svg');"></span>
+					<a href="#signIn" uk-toggle>Войти</a>
+				{% endif %}
+			</div>
+
+			<div class="uk-width-1-4 uk-flex uk-flex-middle uk-flex-between">
+				<a class="text-white" href="#modal-search" uk-toggle>
+					<span class="uk-icon uk-icon-image" style="background-image: url('/assets/images/icons/search-icon_mobile.svg')"></span>
+				</a>
+
+				<button class="uk-offcanvas-close uk-padding-remove burger-menu-close" type="button" uk-close></button>
+			</div>
+		</div>
+
+		<!-- Part 2: Rent Button -->
+		<ul class="uk-nav uk-nav-default burger-nav">
+			<li>
+				{% if app.session.has('logged_user') %}
+					<a class="uk-padding-remove" href="/card/new">
+						<span class="uk-icon-button" uk-icon="plus" style="color: #fff; background: #4629D3; width: 32px; height: 32px;"></span>
+						<span class="uk-margin-small-left">Сдать в аренду</span>
+					</a>
+				{% elseif app.session.has('admin') %}
+					<a class="uk-padding-remove" href="/card/new">
+						<span class="uk-icon-button" uk-icon="plus" style="color: #fff; background: #4629D3; width: 32px; height: 32px;"></span>
+						<span class="uk-margin-small-left">Сдать в аренду</span>
+					</a>
+				{% else %}
+					<a class="uk-padding-remove" href="#signIn" uk-toggle>
+						<span class="uk-icon-button" uk-icon="plus" style="color: #fff; background: #4629D3; width: 32px; height: 32px;"></span>
+						<span class="uk-margin-small-left">Сдать в аренду</span>
+					</a>
+				{% endif %}
+			</li>
+		</ul>
+
+		<!-- Part 3: Logined Buttons -->
+		{% if app.session.has('logged_user') %}
+		<ul class="uk-nav uk-nav-default burger-nav">
+			<li><a href="/profile">Мой профиль</a></li>
+			<li><a href="/user/cards">Мой транспорт</a></li>
+			<li>
+				<a href="/user/transport_orders"><span class="uk-margin-small-right">Мои сообщения</span>{% if t3_new.getNotify|length > 0 %}<span class="uk-badge notification-badge">{{ t3_new.getNotify|length }}</span>{% endif %}
+				</a>
+			</li>
+			<li><a href="/userLogout">Выход</a></li>
+			{% if app.session.get('admin').email is defined %}
+				<li><a href="/admin">{{ app.session.get('admin').email }}</a></li>
+				<li><a href="/adminLogout">Выход</a></li>
+			{% endif %}
+		</ul>
+		{% endif %}
+
+		<!-- Part 4: Nav List -->
+		<ul class="uk-nav uk-nav-default burger-nav burger-nav-pt">
+			<li><a href="#howtopay" uk-toggle>Как это работает?</a></li>
+			<li>
+				<a href="javascript:;" uk-toggle="target: .js-cat-transport-list">Категории транспорта</a>
+				<ul class="uk-nav-sub uk-list js-cat-transport-list" hidden>
+					{% for gt in t3_new.getGt if gt.carTypeIds%}
+					<li>
+						<a chref="/rent/{{ city.url }}/all/{{ gt.url }}">
+							<i class="fa fa-{{ gt.icon }} left_gt_icon"></i>
+							<span class="uk-margin-small-left">{{ gt.header }}</span></a>
+					</li>
+					{% endfor %}
+				</ul>
+			</li>
+		</ul>
+
+		<!-- Part 5: FAQ -->
+		<ul class="uk-nav uk-nav-default burger-nav burger-nav-pt burger-nav-pb">
+			<li><a href="/faq">Часто задаваемые вопросы</a></li>
+		</ul>
+
+		<!-- Part 6: Social Media -->
+		<ul class="burger-nav__social-media">
+			<li><a href="https://www.youtube.com/channel/UCj-igu9KFIbzdzVCezy1qFg" targer="_blank" uk-icon="youtube"></a></li>
+			<li><a href="https://twitter.com/multiprokat" targer="_blank" uk-icon="twitter"></a></li>
+			<li><a href="https://www.instagram.com/multiprokat/" target="_blank"><span class="uk-icon uk-icon-image" style="background-image: url('/assets/images/icons/instagram-icon_white.svg');"></span></a></li>
+			<li><a href="https://plus.google.com/u/1/102220936243060868002" target="_blank"><span class="uk-icon uk-icon-image" style="background-image: url('/assets/images/icons/google-plus-icon_white.svg');"></span></a></li>
+			<li><a href="https://www.facebook.com/multiprokatcom/" targer="_blank" uk-icon="facebook"></a></li>
+			<li><a href="https://vk.com/multiprokatcom" target="_blank"><span class="uk-icon uk-icon-image" style="background-image: url('/assets/images/icons/vk-icon_white.svg');"></span></a></li>
+		</ul>
+
+	</div>
+</div>
+
+    {# <div class="uk-sticky " uk-sticky="sel-target: .uk-navbar-container">
         <nav class="uk-navbar uk-navbar-container bg_blue mp-drop-menu-main" style=" background: #06a7ea;">
             <div class="uk-navbar-left">
                 <div>
@@ -10,9 +159,9 @@
                 </div>
             </div>
             <div class="uk-navbar-right">
-                <div>
+                <div> #}
                     {# <button class="" href="#navbar-slide" uk-toggle><i uk-icon="ratio: 2; icon:menu" class="uk-icon c_white" mp-nav-primary></i></button> #}
-                    <a class="uk-margin-small-right" uk-toggle="target: #mp-nav-primary">
+                    {# <a class="uk-margin-small-right" uk-toggle="target: #mp-nav-primary">
                         <i class="mp-menu-queued-icon uk-icon c_white" uk-icon="ratio: 2; icon:menu"></i>
                     </a>
                  </div>
@@ -81,5 +230,5 @@
             </div>
 
         </div>
-    </div>
+    </div> #}
 {% endif %}

@@ -1,146 +1,72 @@
-<footer class="uk-margin-top">
-
-
-
-
-    <div class="footer_info bg_dark">
-        <div class="standard_wide c_white">
-            <div uk-grid>
-             {% if generalTypes is defined and city is defined  %}
-                <div class="uk-width-1-1">
-                    <div class="uk-margin-bottom uk-text-uppercase"><b>{% trans %}Категории{% endtrans %}</b></div>
-                        <div  uk-grid class="uk-flex uk-margin-top uk-grid-small">
-                            {% for gt in generalTypes if gt.carTypeIds %}
-                                <div class="uk-width-1-2 uk-width-auto@s">
-                                    <a href="/rent/{{ city.url }}/all/{{ gt.url }}" class=""><i class="fa fa-{{ gt.icon }}"></i> {{ lang == 'ru' ? gt.header : gt.url }}</a>
-                                </div>
-                            {% endfor %}
-                        </div>
-
-                        {# <a href="/faq" style="background: #ffffff;    color: green;    padding: 10px;    display: inline-block;    border: 1px solid green;
-    margin-top: 20px;    font-size: 13px;    width: 100%;    box-sizing: border-box;    text-align: center;">Ответы на часто задаваемые вопросы</a>
- #}
-
-                </div>
-                {% endif %}
-                {# <div class="uk-width-1-5@l uk-visible@l">
-                    <div class="uk-margin-bottom uk-text-uppercase"><b>{% trans %}Лучшие предложения{% endtrans %}</b></div>
-                    {% for card in t3_new.getTop3 %}
-                        {{ include(':footer:top_new_tpl.html.twig', {'card':card}) }}
-                    {% endfor %}
-
-
-                </div>
-                <div class="uk-width-1-5@l uk-visible@l">
-                    <div class="uk-margin-bottom uk-text-uppercase"><b>{% trans %}Новые на сайте{% endtrans %}</b></div>
-                    {% for card in t3_new.getNew %}
-                        {{ include(':footer:top_new_tpl.html.twig', {'card':card}) }}
-                    {% endfor %}
-                </div> #}
-                
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {# {% if generalTypes is defined and city is defined and not is_mobile() %}
-    <div class="mid_footer">
-        <div class="standard_wide c_white">
-            <div uk-grid class="uk-grid-small">
-                {% for gt in generalTypes %}
-                    <div class="uk-width-1-3"><a href="/rent/{{ city.url }}/all/{{ gt.url }}" class="uk-text-small c_grey">{{ gt.url == 'special-machines' or gt.url == 'airplanes' ? 'Аренда' : 'Прокат и аренда' }} {{ gt.chegoPlural }} в {{ city.gde }}</a></div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-    {% endif %} #}
-
-        {% if lang is not defined %}
-            {% set lang = 'ru' %}
-        {% endif %}
-    <div class="bottom_line bg_black">
-        <div class="standard_wide uk-clearfix">
-            
-            <div class="uk-width-1-1 uk-light" uk-grid>
-                <div class="uk-width-1-1 uk-width-1-3@m">
-                <ul class="uk-nav-default uk-nav-parent-icon" uk-nav>
-                    <li class="uk-nav-header">{% trans %}Информация{% endtrans %}</li>
-                    <li><a href="/news"><span class="uk-margin-small-right" uk-icon="icon: link"></span> {% trans %}Новости{% endtrans %}</a></li>
-                    <li><a href="/regions" uk-toggle="target: #howtopay"><span class="uk-margin-small-right" uk-icon="icon: link"></span> Как это работает?</a></li>
-                    <li><a href="/faq"><span class="uk-margin-small-right" uk-icon="icon: link"></span> Часто задаваемые вопросы</a></li>
-                    <li><a href="/contacts"><span class="uk-margin-small-right" uk-icon="icon: link"></span> Контакты</a></li>
-                </ul>
-                </div>
-
-                <div class="uk-width-1-1 uk-width-1-3@m">
-                <ul class="uk-nav-default uk-nav-parent-icon" uk-nav>
-                    <li class="uk-nav-header">Владельцам</li>
-                    <li><a href="/card/new"><span class="uk-margin-small-right" uk-icon="icon: link"></span> {% trans %}Сдать свой автомобиль{% endtrans %}</a></li>
-                    {% if lang == 'ru' %}
-                    <li><a href="/regions"><span class="uk-margin-small-right" uk-icon="icon: link"></span> Регионы России</a></li>
-                    {%  endif %}
-                    <li><a href="/assets/docs/oferta.pdf" target="_blank"><span class="uk-margin-small-right" uk-icon="icon: file-pdf"></span> Оферта</a></li>
-                    <li><a href="/privacy_policy_ru.pdf" target="_blank"><span class="uk-margin-small-right" uk-icon="icon: file-pdf"></span> Политика конфиденциальности</a></li>
-                </ul>
-                </div>
-
-                <div class="uk-width-1-1 uk-width-1-3@m">
-                <ul class="uk-nav-default uk-nav-parent-icon" uk-nav>
-                    <li class="uk-nav-header">Арендаторам</li>
-                    <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: link"></span> Как связаться и забронировать?</a></li>
-                    <li><a href="/article/term-conditions" uk-toggle="target: #howtopay"><span class="uk-margin-small-right" uk-icon="icon: link"></span> {% trans %}Условия и положения{% endtrans %}</a></li>
-                    <li><a href="/article/pravila-oplaty"><span class="uk-margin-small-right" uk-icon="icon: link"></span> Правила оплаты на сайте</a></li>
-                </ul>
-                </div>
-                
-</div>
-                    
-                   <hr>
-             <div class="uk-text-center">
-                <div class="uk-grid-small uk-child-width-auto uk-flex-inline uk-grid c_white" uk-grid="">
-                    <div class="uk-first-column">
-                        <a class=" uk-icon" href="https://www.facebook.com/multiprokatcom/" uk-icon="icon: facebook"></a>
-                    </div>
-                    <div>
-                        <a class=" uk-icon" href="https://twitter.com/multiprokat" uk-icon="icon: twitter"></a>
-                    </div>
-                    <div>
-                        <a class=" uk-icon" href="https://plus.google.com/u/1/102220936243060868002" uk-icon="icon: google-plus"></a>
-                    </div>
-                    <div>
-                        <a class=" uk-icon" href="https://www.instagram.com/multiprokat/" uk-icon="icon: instagram"></a>
-                    </div>
-                    <div>
-                        <a class=" uk-icon" href="https://vk.com/multiprokatcom">
-                            <span class="fa fa-vk" style="font: normal normal normal 20px/1 FontAwesome;"></span>
-                        </a>
-                    </div>
-                    <div>
-                        <a class=" uk-icon" href="https://www.youtube.com/channel/UCj-igu9KFIbzdzVCezy1qFg" uk-icon="icon: youtube"></a>
-                    </div>
-                </div>
-            </div>
-                <div class="uk-width-1-1@s uk-text-center">&copy; {{ date()|date("Y") }} {{ app.request.host }} | Мультипрокат - это платформа аренды, где владельцы сдают свой транспорт</div>
-
-                {# <div class="uk-width-1-1@s uk-text-center">
-                    <a rel="nofollow" href="/article/term-conditions" class="c_grey">{% trans %}Условия и положения{% endtrans %}</a> /
-                    <a rel="nofollow" href="/privacy_policy_ru.pdf" class="c_grey">{% trans %}Конфиденциальность{% endtrans %}</a> /
-                    <a rel="nofollow" href="/assets/docs/oferta.pdf" class="c_grey">Оферта</a>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <a rel="nofollow" href="/article/pravila-oplaty" class="c_grey">Правила оплаты на сайте</a>
-                #}
-                    {#<a rel="nofollow" href="/promo" class="c_grey uk-margin-left">Промо</a>#}
-                {#</div> #}
-
-            </div>
-        </div>
-    </div>
-</footer>
-
-{% if is_mobile() %}
-    {% include 'left_bar.html.twig' %}
+{% if generalTypes is defined and city is defined  %}
+<section class="categories">
+	<div class="uk-container">
+		<h2>Категории</h2>
+		<ul class="categories-list">
+		{% for gt in generalTypes if gt.carTypeIds %}
+			<li class="item"><a href="/rent/{{ city.url }}/all/{{ gt.url }}">{{ lang == 'ru' ? gt.header : gt.url }}</a></li>
+		{% endfor %}
+		</ul>
+	</div>
+</section>
 {% endif %}
 
-{# {% include 'howtopay1.html.twig' %} #}
+{% if lang is not defined %}
+	{% set lang = 'ru' %}
+{% endif %}
+
+
+<footer class="footer-main">
+	<div class="uk-container">
+		<div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-4@m uk-padding uk-padding-remove-top uk-padding-remove-horizontal uk-margin-small-bottom" uk-grid>
+			<div>
+				<h3 class="nav-header">{% trans %}Информация{% endtrans %}</h3>
+				<ul class="uk-nav">
+					<li><a href="/news">{% trans %}Новости{% endtrans %}</a></li>
+					<li><a href="/regions">Как это работает?</a></li>
+					<li><a href="/faq">Часто задаваемые вопросы</a></li>
+					<li><a href="/contacts">Контакты</a></li>
+				</ul>
+			</div>
+
+			<div>
+				<h3 class="nav-header">Владельцам</h3>
+				<ul class="uk-nav">
+					<li><a href="/card/new">{% trans %}Сдать свой автомобиль{% endtrans %}</a></li>
+					{% if lang == 'ru' %}
+					<li><a href="/regions">Регионы России</a></li>
+					{%  endif %}
+					<li><a href="/assets/docs/oferta.pdf">Оферта</a></li>
+					<li><a href="/privacy_policy_ru.pdf">Политика конфиденциальности</a></li>
+				</ul>
+			</div>
+
+			<div>
+				<h3 class="nav-header">{% trans %}Арендаторам{% endtrans %}</h3>
+				<ul class="uk-nav">
+					<li><a href="#">{% trans %}Как связаться и забронировать{% endtrans %}?</a></li>
+					<li><a href="/article/term-conditions">{% trans %}Условия и положения{% endtrans %}</a></li>
+					<li><a href="/article/pravila-oplaty">{% trans %}Правила оплаты на сайте{% endtrans %}</a></li>
+				</ul>
+			</div>
+
+			<div class="uk-flex">
+				<ul class="footer-main__social-media">
+					<li><a href="https://www.youtube.com/channel/UCj-igu9KFIbzdzVCezy1qFg" targer="_blank" uk-icon="youtube"></a></li>
+					<li><a href="https://twitter.com/multiprokat" targer="_blank" uk-icon="twitter"></a></li>
+					<li><a href="https://www.instagram.com/multiprokat/" target="_blank"><span class="uk-icon uk-icon-image instagram-icon"></span></a></li>
+					<li><a href="https://plus.google.com/u/1/102220936243060868002" target="_blank"><span class="uk-icon uk-icon-image google-plus-icon"></span></a></li>
+					<li><a href="https://www.facebook.com/multiprokatcom/" targer="_blank" uk-icon="facebook"></a></li>
+					<li><a href="https://vk.com/multiprokatcom" target="_blank"><span class="uk-icon uk-icon-image vk-icon"></span></a></li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="footer-main__bottom">
+			&copy; 2019 multiprokat.com
+		</div>
+	</div>
+</footer>
+
 {% include 'how_to_pay.html.twig' %}
 {% include 'whyreserve.html.twig' %}

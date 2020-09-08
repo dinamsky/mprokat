@@ -1,9 +1,75 @@
 .autocomplete-suggestions {
-    text-align: left; cursor: default; border: 1px solid #ccc; border-top: 0; background: #fff; box-shadow: -1px 1px 3px rgba(0,0,0,.1);
-
-    /* core styles should not be changed */
-    position: absolute; display: none; z-index: 9999; max-height: 254px; overflow: hidden; overflow-y: auto; box-sizing: border-box;
+    text-align: left;
+    cursor: default;
+    box-sizing: border-box;
+    position: absolute;
+    display: none;
+    z-index: 9999;
 }
-.autocomplete-suggestion { position: relative; padding: 0 .6em; line-height: 23px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 1.02em; color: #333; }
-.autocomplete-suggestion b { font-weight: normal; color: #1f8dd6; }
-.autocomplete-suggestion.selected { background: #f0f0f0; }
+
+.autocomplete-suggestions-inner {
+    background: #fff;
+    border: 1px solid #E4E3E3!important;
+    border-radius: 3px!important;
+    box-shadow: none!important;
+    margin: 0!important;
+
+    max-height: 254px;
+    overflow: hidden;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.autocomplete-suggestions-inner:before,
+.autocomplete-suggestions-inner:after {
+    position: absolute;
+    content: '';
+    display: inline-block;
+}
+
+.autocomplete-suggestions-inner:before {
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    top: -6px;
+    left: 9px;
+    border-bottom: 7px solid #d9d9d9;
+}
+
+.autocomplete-suggestions-inner::after {
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    top: -5px;
+    left: 10px;
+    border-bottom: 6px solid #fff;
+}
+
+.autocomplete-suggestion {
+    position: relative;
+    display: block;
+    padding: 10px 20px;
+    background: #fff;
+    font-size: 15px;
+    line-height: 18px;
+    min-height: 18px;
+    color: #474747;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: .3s;
+    will-change: background, color;
+}
+
+.autocomplete-suggestion b {
+    font-weight: normal;
+    color: #1f8dd6;
+}
+
+.autocomplete-suggestion.selected {
+    background: #7A5FFF;
+    color: #ddd;
+}
+
+.autocomplete-suggestion.selected b {
+    color: #fff;
+}
+

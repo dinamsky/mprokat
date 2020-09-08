@@ -1,4 +1,4 @@
-<div class="uk-padding" id="f_search" style="background: #f1f1f1c4;">
+{# <div class="uk-padding" id="f_search" style="background: #f1f1f1c4;">
 <div class="standard_wide">
     <form id="ms_search_form" method="POST" action="#">
         <fieldset class="uk-fieldset">
@@ -28,7 +28,7 @@
                 </div>
             </div>
         </fieldset>
-    </form>
+    </form> #}
     {# <div class="standard_wide uk-position-relative" hidden id="f_search_res">
         <div class="uk-text-center tx_24 uk-margin-bottom top_txt">Результат поиска</div>
         <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="6">
@@ -37,5 +37,22 @@
             {% endfor %}
         </div>
     </div> #}
-    </div>
-</div>
+    {# </div>
+</div> #}
+
+<form class="form-inline" id="ms_search_form" method="POST" action="#">
+	<div class="input-group">
+		<div class="form-item">
+			<select class="uk-select select-main-search" name="ms_car_type_in" required form="ms_search_form">
+				{% for gt in t3_new.getGt if gt.carTypeIds%}
+						<option value="{{ gt.url }}">{{ gt.header }}</option>
+				{% endfor %}
+			</select>
+		</div>
+		<div class="form-item">
+			<input autocomplete="on" type="text" required form="ms_search_form" name="ms_input_city" placeholder="Укажите город" />
+			<input autocomplete="off" hidden name="ms_input_city_id" type="text" form="ms_search_form">
+		</div>
+	</div>
+	<button id="ms_search_button_main" class="btn btn-solid" form="ms_search_form">Найти</button>
+</form>

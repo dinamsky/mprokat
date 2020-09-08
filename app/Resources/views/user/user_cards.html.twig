@@ -1,30 +1,61 @@
 {% extends 'user/user_base.html.twig' %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/alex/user_cards.js') }}"></script>
+{% endblock %}
 
 {% block content %}
-        <h1>{% trans %}Мой транспорт{% endtrans %}</h1>
-        {{ include('search/grid_view.html.twig') }}
+<div class="uk-container">
+    <div class="uk-grid-medium uk-child-width-1-1 uk-grid uk-grid-stack" uk-grid="">
+        <div class="uk-first-column">
+            <h1 class="uk-h2">{% trans %}Мой транспорт{% endtrans %}</h1>
+        </div>
+    </div>
 
-        {% if app.session.has('first_jump') %}
+    <div class="uk-grid-medium" uk-grid>
+        <div class="uk-width-1-1 uk-width-1-4@m">
+            {% if app.session.get('logged_user').accountTypeId == 0 %}
+            <div class="uk-h4">{% trans %}Ваш аккаунт{% endtrans %}: <span class="uk-text-danger">{% trans %}стандартный{% endtrans %}</span></div>
+            <p class="uk-text-muted">{% trans %}Вы можете разместить не более 2-х транспортов{% endtrans %}</p>
+            <a href="/userPayPro/{{ app.session.get('logged_user').id }}" class="uk-button button button-outline-primary button-lg uk-width-1-1 uk-padding-remove-horizontal">
+                <span class="uk-icon uk-icon-image" style="background-image: url('/assets/images/icons/medal-pro-icon.svg'); width: 24px; height: 24px"></span>
+                <span>{% trans %}Купить PRO аккаунт{% endtrans %}</span>
+            </a>
 
-            <div id="first_jump" class="uk-modal" uk-modal>
-                <div class="uk-modal-dialog uk-modal-body">
-                    <button class="uk-modal-close-default" type="button" uk-close><i class="fa fa-close"></i></button>
-                    <h2 class="uk-modal-title">Добрый день!</h2>
-                    <p>
-                        Мы зарегистрировали вашу компанию на сайте Мультипрокат и разместили ваш транспорт.<br>
-                        На сайте Мультипрокат клиенты ищут аренду и прокат транспорта, в данный момент мы работаем в 215 городах России,
-                        на сайте более 8000 единиц транспорта, мы ежедневно соединяем арендаторов и владельцев.<br>
-                        Теперь вам будут звонить клиенты и мы будем высылать заявки на ваш мейл.<br>
-                        Мы не берем никаких комиссий от ваших сделок, цель сайта создать единый портал аренды, для удобства клиентов.<br>
-                    </p>
-                </div>
+            <div class="uk-margin-top">
+                {% trans %}PRO аккаунт действует бессрочно и дает возможность сдавать больше транспорта в аренду{% endtrans %}
             </div>
-            <script>document.addEventListener("DOMContentLoaded", function(event) { UIkit.modal('#first_jump').show();})</script>
+            {% else %}
+            {% trans %}Ваш аккаунт{% endtrans %}: <img src="/assets/images/interface/fb3.svg" alt="" style="width: 16px"><span class="c_red uk-text-bold">PRO</span>
+            <div class="uk-margin-top">{% trans %}Вы можете разместить неограниченное количество транспорта{% endtrans %}</div>
+            {% endif %}
+        </div>
+        <div class="uk-width-1-1 uk-width-3-4@m">
+            {{ include('search/user_grid_view.html.twig') }}
+        </div>
+    </div>
+</div>
 
-            <span style="display: none">{{ app.session.remove('first_jump') }}</span>
-
-        {% endif %}
-
-
+{% if app.session.has('first_jump') %}
+    <div id="first_jump" class="uk-modal" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <button class="uk-modal-close-default" type="button" uk-close><i class="fa fa-close"></i></button>
+            <h2 class="uk-modal-title">Добрый день!</h2>
+            <p>
+                Мы зарегистрировали вашу компанию на сайте Мультипрокат и разместили ваш транспорт.<br>
+                На сайте Мультипрокат клиенты ищут аренду и прокат транспорта, в данный момент мы работаем в 215 городах России,
+                на сайте более 8000 единиц транспорта, мы ежедневно соединяем арендаторов и владельцев.<br>
+                Теперь вам будут звонить клиенты и мы будем высылать заявки на ваш мейл.<br>
+                Мы не берем никаких комиссий от ваших сделок, цель сайта создать единый портал аренды, для удобства клиентов.<br>
+            </p>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function(){
+            UIkit.modal('#first_jump').show();
+        });
+    </script>
+    <span hidden>{{ app.session.remove('first_jump') }}</span>
+{% endif %}
 {% endblock %}

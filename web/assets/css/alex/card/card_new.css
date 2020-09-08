@@ -1,0 +1,55 @@
+#content {
+    padding-bottom: 50px;
+}
+
+.theme-tariff-grid {
+    position: relative;
+    padding: 20px 0;
+}
+
+.theme-tariff-grid:after {
+    content: '';
+    display: block;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 30px;
+    height: 1px;
+    background: #E4E3E3;
+}
+
+.theme-tariff-label {
+    font-size: .8rem;
+    font-weight: 600;
+}
+
+.theme-tariff-desc {
+    display: block;
+    margin: 20px 0 0;
+    font-weight: 500;
+    font-size: .8rem;
+    line-height: 1.5;
+    text-align: center;
+    color: #aaa;
+}
+
+@media(min-width: 960px) {
+
+    .theme-tariff-grid {
+        padding: 29px 0;
+    }
+
+    .theme-tariff-label {
+        font-size: 1rem;
+    }
+
+    .theme-tariff-desc {
+        display: none;
+    }
+
+}
+
+section.categories,
+footer.footer-main {
+    display: none!important;
+}

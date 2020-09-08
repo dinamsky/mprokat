@@ -2,65 +2,109 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        {% block stylesheets %}
-            <link href="{{ asset('assets/css/uikit.css') }}" rel="stylesheet" />
-            <link href="{{ asset('assets/css/base.css') }}" rel="stylesheet" />
-            <link href="{{ asset('assets/css/font-awesome.min.css') }}" rel="stylesheet" />
-            <link href="{{ asset('assets/css/colors.css') }}" rel="stylesheet" />
-            <link href="{{ asset('assets/css/typo.css') }}" rel="stylesheet" />
-            <link href="{{ asset('assets/css/base-responsive.css') }}" rel="stylesheet" />
-        {% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('assets/favicon.ico') }}" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>{% block title %}Мультипрокат{% endblock %}</title>
-        <meta name="yandex-verification" content="a2d59e156f2bd014" />
+        {% block stylesheets %}
+            <link href="{{ asset('assets/css/uikit.css') }}" rel="stylesheet">
+            <link href="{{ asset('assets/css/font-awesome.min.css') }}" rel="stylesheet">
+            <link href="{{ asset('assets/css/colors.css') }}" rel="stylesheet">
+            <link href="{{ asset('assets/css/typo.css') }}" rel="stylesheet">
+            <link href="{{ asset('assets/css/selectric-default.css') }}" rel="stylesheet">
+            <link href="{{ asset('assets/css/styles.min.css') }}" rel="stylesheet">
+            <link href="{{ asset('assets/css/alex/common.css') }}" rel="stylesheet">
+            {% if is_mobile() %}<link href="{{ asset('assets/css/alex/common_mobile.css') }}" rel="stylesheet">{% endif %}
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('assets/favicon.ico') }}">
+        <meta name="yandex-verification" content="a2d59e156f2bd014">
     </head>
+
     <body class="{{ is_mobile() ? 'mobile' : 'desktop' }} {% block bodyClass %}{% endblock %}">
         {# {{ include('header.html.twig') }} #}
-        <div id="content" class="standard_wide {{ is_mobile() ? '' : 'uk-margin-top' }}">
+        <div id="content" class="uk-flex uk-flex-center uk-width-1-1 uk-padding-remove uk-height-viewport">
 
-{% if not app.session.has('logged_user') and not app.session.has('admin')%}
-    <div >
-        <div >
-            <h2 >Для продолжения необходимо войти в систему</h2>
-            <form action="/userSignIn" method="POST">
-                <input type="text" name="email" placeholder="Email или номер телефона" class="uk-input uk-margin-bottom">
-                <input type="password" name="password" placeholder="{% trans %}Пароль{% endtrans %}" class="uk-input uk-margin-bottom">
-                <input type="hidden" name="return" value="{{ urlReturn }}">
-                <div class="uk-clearfix">
-                    <div class="uk-float-left"><button class="uk-button uk-button-primary">{% trans %}Войти{% endtrans %}</button></div>
-                    <div class="uk-float-right"><a uk-toggle="target: #pass_recover">{% trans %}Забыли пароль?{% endtrans %}</a></div>
+            {% if not app.session.has('logged_user') and not app.session.has('admin')%}
+                <div class="uk-container uk-width-1-1 uk-margin-auto-vertical">
+                    <div class="uk-padding uk-padding-remove-horizontal">
+                        <h2>Для продолжения необходимо войти в систему</h2>
+
+                        <form action="/userSignIn" method="POST">
+
+                            <div class="mat-form uk-margin-medium-bottom">
+                                <div class="mat-group">
+                                    <label class="mat-label">Email или номер телефона</label>
+                                    <input type="text" name="email" class="mat-input" required>
+                                </div>
+                                <div class="mat-group">
+                                    <label class="mat-label">{% trans %}Ваш пароль{% endtrans %}</label>
+                                    <input type="password" name="password" class="mat-input password-input" autocomplete="on" required>
+                                    <a href="javascript:;" class="password-control"></a>
+                                </div>
+                                <input type="hidden" name="return" value="/">
+                            </div>
+
+                            <div class="uk-grid-medium uk-flex-middle uk-flex-between uk-child-width-1-1 uk-child-width-auto@m" uk-grid>
+                                <div class="uk-text-center uk-text-left@m">
+                                    <button class="uk-button uk-button-primary uk-width-1-1 uk-width-auto@m">{% trans %}Войти{% endtrans %}</button>
+                                </div>
+
+                                <div class="uk-text-center uk-text-right@m">
+                                    <a href="#pass_recover" class="link-underline small" uk-toggle>{% trans %}Забыли пароль?{% endtrans %}</a>
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="return" value="{{ urlReturn }}">
+                        </form>
+                    </div>
                 </div>
-            </form>
-        </div>
-    </div>
 
-    <div id="pass_recover" class="uk-modal" uk-modal>
-        <div class="uk-modal-dialog uk-modal-body">
-            <button class="uk-modal-close-default" type="button" uk-close></button>
-            <h2 class="uk-modal-title">{% trans %}Смена пароля{% endtrans %}</h2>
-            <form action="/userRecover" method="POST">
-                <input type="mail" name="email" placeholder="{% trans %}Введите email или номер телефона использованный при регистрации{% endtrans %}" class="uk-input uk-margin-bottom">
-                <input type="password" name="password1" placeholder="{% trans %}Придумайте новый пароль{% endtrans %}" class="uk-input uk-margin-bottom">
-                <input type="password" name="password2" placeholder="{% trans %}Повторите новый пароль{% endtrans %}" class="uk-input uk-margin-bottom">
-                <input type="hidden" name="return" value="{{ urlReturn }}">
-                <button class="uk-button uk-button-primary">{% trans %}Сменить пароль{% endtrans %}</button>
-            </form>
-        </div>
-    </div>
+                <div id="pass_recover" class="uk-modal" uk-modal>
+                    <div class="uk-modal-dialog uk-modal-body">
+                        <button class="uk-modal-close-default" type="button" uk-close></button>
+                        <h2 class="uk-modal-title">{% trans %}Смена пароля{% endtrans %}</h2>
 
-{% endif %}
-                {# {% block content %}{% endblock %} #}
+                        <form action="/userRecover" method="POST">
+                            <div class="mat-form uk-margin-medium-bottom">
+                                <div class="mat-group">
+                                    <label class="mat-label">Ваш E-mail</label>
+                                    <input type="mail" name="email" class="mat-input uk-input" required="">
+                                </div>
+
+                                <div class="mat-group">
+                                    <label class="mat-label">Придумайте новый пароль</label>
+                                    <input type="password" name="password1" class="mat-input uk-input" autocomplete="on" required>
+                                </div>
+
+                                <div class="mat-group">
+                                    <label class="mat-label">Повторите новый пароль</label>
+                                    <input type="password" name="password2" class="mat-input uk-input" autocomplete="on" required>
+                                </div>
+                            </div>
+
+                            <div class="uk-text-center">
+                                <button class="uk-button uk-button-primary uk-width-1-1 uk-width-auto@m">{% trans %}Сменить пароль{% endtrans %}</button>
+                            </div>
+
+                            <input type="hidden" name="return" value="{{ urlReturn }}">
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
+
+        {# {% block content %}{% endblock %} #}
 
         </div>
         {# {{ include('footer.html.twig') }} #}
+
         {% block javascripts %}
             <script src="{{ asset('assets/js/jquery-3.2.1.min.js') }}"></script>
             <script src="{{ asset('assets/js/uikit.min.js') }}"></script>
             <script src="{{ asset('assets/js/uikit-icons.min.js') }}"></script>
             <script src="{{ asset('assets/js/signup_validate.js') }}"></script>
             <script src="{{ asset('assets/js/user_notify.js') }}"></script>
+            <script src="{{ asset('assets/js/scripts.min.js') }}"></script>
+            <script src="{{ asset('assets/js/alex/common.js') }}"></script>
         {% endblock %}
+
         {# {{ include('counters.html.twig') }}
         {{ include('user/auth_modals.html.twig') }} #}
 

@@ -1,11 +1,17 @@
-<div uk-grid>
-    <div class="uk-width-1-5">
-        {% trans %}Описание{% endtrans %} <span class="red_star">*</span>
-        <div class="help_text">{% trans %}Подробно опишите все условия аренды/проката вашего транспорта. Не указывайте здесь свой номер телефона, email и вебсайт!{% endtrans %}</div>
-    </div>
-    <div class="uk-width-3-5">
-        <textarea name="content" class="uk-textarea" placeholder="{% trans %}Тут можно указать условия аренды или проката{% endtrans %}. Не указывайте здесь свой номер телефона, email и вебсайт!" style="height: 200px"></textarea>
-    </div>
-    <div class="uk-width-1-5">
+<h3 class="uk-margin-remove theme-required">
+    <span class="uk-visible@m">{% trans %}Опишите все условия аренды или проката вашего транспорта{% endtrans %}</span>
+    <span class="uk-hidden@m">{% trans %}Описание условий аренды или проката транспорта{% endtrans %}</span>
+</h3>
+<div class="uk-grid-margin-medium uk-grid-column-collapse" uk-grid>
+    <div class="uk-width-1-1 uk-width-3-5@m">
+    <textarea
+        rows="7"
+        name="content"
+        class="uk-textarea js-rent-terms"
+        placeholder="{% trans %}Не указывайте здесь номер телефона, E-mail или ваш Веб-сайт{% endtrans %}."
+        style="height: 200px"
+    ></textarea>
+    <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-bottom uk-text-danger uk-text-small theme-d-none js-rent-terms-error js-step-four-error">
+        Поле не заполнено!</div>
     </div>
 </div>

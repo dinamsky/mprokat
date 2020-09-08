@@ -255,8 +255,10 @@ $( document ).ready(function() {
         var s = $(this).data('star')-0;
         var t = $(this);
         $(this).parent('div').find('.rs_selector').removeClass('filled');
+        $(this).parent('div').find('.rs_selector .rating-icon').removeClass('rating-icon_active');
         for (var i = 1; i <= s; i++) {
-           t.parent('div').find('.star_'+i).addClass('filled');
+            t.parent('div').find('.star_'+i).addClass('filled');
+            t.parent('div').find('.star_'+i).find('.rating-icon').addClass('rating-icon_active');
         }
 
     });
@@ -265,8 +267,10 @@ $( document ).ready(function() {
         var t = $(this);
         var s = t.parent('div').find('.rs_selector.stopped').data('star')-0;
         $(this).parent('div').find('.rs_selector').removeClass('filled');
+        $(this).parent('div').find('.rs_selector .rating-icon').removeClass('rating-icon_active');
         for (var i = 1; i <= s; i++) {
-           t.parent('div').find('.star_'+i).addClass('filled');
+            t.parent('div').find('.star_' + i).addClass('filled');
+            t.parent('div').find('.star_' + i).find('.rating-icon').addClass('rating-icon_active');
         }
     });
 
@@ -277,6 +281,7 @@ $( document ).ready(function() {
         t.parents('form').find('input[name="rating"]').val(s);
         t.parent('div').find('.rs_selector').removeClass('stopped');
         t.addClass('stopped');
+        t.find('.rating-icon').addClass('rating-icon_active');
     });
 
     //console.log($(window).height());

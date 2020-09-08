@@ -2,6 +2,8 @@ $( document ).ready(function() {
     
     var my_city_autoComplete_ms_input = new autoComplete({
         selector: 'input[name="ms_input_city"]',
+        minChars: 1,
+        offsetTop: 16,
         source: function(term, response){
             $.ajax({
                 url: '/ajax/getCityByInput',
@@ -19,7 +21,7 @@ $( document ).ready(function() {
             var id = res[1];
             search = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
             var re = new RegExp("(" + search.split(' ').join('|') + ")", "gi");
-            return '<div class="autocomplete-suggestion "  data-header="' + item + '" data-id="' + id + '" data-val = "' + id + '" >' + item.replace(re, "<b>$1</b>") + '</div>';
+            return '<div class="autocomplete-suggestion"  data-header="' + item + '" data-id="' + id + '" data-val = "' + id + '" >' + item.split(',')[0].replace(re, "<b>$1</b>") + '</div>';
         },
         onSelect: function(e, term, item){
             $('input[name="ms_input_city_id"]').val(item.getAttribute('data-id'));

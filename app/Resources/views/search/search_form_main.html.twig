@@ -1,0 +1,15 @@
+<form class="form-inline" id="searchForm" action="/search" method="GET">
+	<div class="input-group">
+		<div class="form-item">
+			<select name="ds" id="">
+				{% for gt in generalTypes if gt.total>0 %}
+					<option value="{{ gt.url }}">{{ gt.header }}</option>
+				{% endfor %}
+			</select>
+		</div>
+		<div class="form-item">
+			<input type="text" />
+		</div>
+	</div>
+	<button class="btn btn-solid" id="main_search_button">Применить</button>
+</form>

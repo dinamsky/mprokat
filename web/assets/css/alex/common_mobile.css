@@ -1,0 +1,68 @@
+/*-------------------
+    UK Modal
+-------------------*/
+.uk-modal {
+    padding: 0!important;
+}
+
+.uk-modal-dialog {
+    width: 100%!important;
+    max-width: 100% !important;
+    min-height: 100vh!important;
+    border-radius: 0;
+}
+
+.uk-modal-title {
+    font-size: 20px;
+    line-height: 30px;
+    padding-bottom: 20px;
+    padding-right: 25px;
+    border-bottom: 1px solid #EDEDED;
+}
+
+[class*='uk-modal-close-'] {
+    top: 31px;
+    right: 31px;
+}
+/*-------------------
+    /UK Modal
+-------------------*/
+
+
+/*-------------------
+    Bootstrap Modal
+-------------------*/
+.modal {
+    text-align: inherit!important;
+}
+
+.modal-dialog {
+    padding: 0!important;
+    margin: 0!important;
+    border: 0!important;
+    width: 100%!important;
+    max-width: 100%!important;
+
+}
+
+.modal-content {
+    padding: 30px;
+    border-radius: 0!important;
+    min-height: 100vh;
+}
+
+.modal-body {
+    position: static;
+    padding: 0!important;
+}
+
+.modal-title {
+    text-align: left;
+    font-size: 20px!important;
+    line-height: 30px!important;
+    border-bottom: 1px solid #EDEDED;
+    padding-bottom: 20px;
+}
+/*-------------------
+    ///Bootstrap Modal
+-------------------*/

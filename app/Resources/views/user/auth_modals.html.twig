@@ -1,159 +1,265 @@
 {% if not app.session.has('logged_user') and not app.session.has('admin')%}
-    <div id="sign_in" class="uk-modal" uk-modal bg-close="false">
-        <div class="uk-modal-dialog uk-modal-body">
-            <button class="uk-modal-close-default" type="button" uk-close></button>
-            <h2 class="uk-modal-title">{% trans %}Вход{% endtrans %}</h2>
-            <form action="/userSignIn" method="POST">
-                <input type="text" name="email" placeholder="Email или номер телефона" class="uk-input uk-margin-bottom" >
-                <input type="password" name="password" placeholder="{% trans %}Пароль{% endtrans %}" class="uk-input uk-margin-bottom">
-                <input type="hidden" name="return" value="{{ app.request.requestUri }}">
-                <div class="uk-clearfix">
-                    <div class="uk-float-left"><button class="uk-button uk-button-primary">{% trans %}Войти{% endtrans %}</button></div>
-                    <div class="uk-float-right"><a uk-toggle="target: #pass_recover">{% trans %}Забыли пароль?{% endtrans %}</a></div>
-                </div>
-            </form>
-            <hr>
-            <div uk-grid class="reg_in_signin_block">
-                <div class="uk-width-1-2" style="font-size: 21px;">{% trans %}Нет аккаунта?{% endtrans %}</div>
-                <div class="uk-width-1-2 uk-text-right"><button  uk-toggle="target: #sign_up" class="uk-button uk-button-success "><span uk-icon="icon:lock"></span>{% trans %}Регистрация{% endtrans %}</button></div>
-            </div>
-        </div>
-    </div>
 
-    <div id="sign_up" class="uk-modal" uk-modal bg-close="false">
-        <div class="uk-modal-dialog uk-modal-body">
-            <button class="uk-modal-close-default" type="button" uk-close></button>
-            <h2 class="uk-modal-title">{% trans %}Регистрация{% endtrans %}</h2>
-            <form id="signUpForm" action="/userSignUp" method="POST" onsubmit="return signup_validate();">
-                <input type="text" name="header" placeholder="{% trans %}Введите название компании или ваше имя{% endtrans %}" class="uk-input uk-margin-bottom" required>
-                <div class="uk-grid uk-margin-bottom" uk-grid>
-                    <div class=" uk-width-1-1 uk-width-auto@s uk-inline">
-                        <div uk-form-custom="target: > * > span:last-child">
-                            <select class="country-select" name="country">
-                                <option value="RU" data-code="+7" data-pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{2}$" data-filter="(999) 999-99-99" data-plshold="(###)###-##-##" selected>Россия</option>
-                                {# {% for countr in country %}
-                                    <option value="2">Абхазия</option>
-                                {% endfor %} #}
-                                
-                                <option value="AB" data-code="+7 840" data-pattern="^\d{3}[-]\d{2}[-]\d{2}$"  data-filter="999-99-99" data-plshold="###-##-##">Абхазия</option>
-                                <option value="KZ" data-code="+7" data-pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{2}$"  data-filter="(999) 999-99-99" data-plshold="(###)###-##-##">Казахстан</option>
-                                <option value="UK" data-code="+380" data-pattern="^\(\d{2}\)\s\d{3}[-]\d{2}[-]\d{2}$"  data-filter="(99) 999-99-99" data-plshold="(##)###-##-##">Украина</option>
-                                <option value="US" data-code="+1" data-pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{3}$"  data-filter="(999) 999-99-999" data-plshold="(###)###-##-###">США</option>
+
+<!-- Modal: Sign In -->
+<div id="signIn" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-width-1-1 uk-width-large@m">
+        <button class="uk-modal-close-default uk-hidden@m" type="button" uk-close></button>
+        <h2 class="uk-modal-title uk-text-left uk-text-center@m">{% trans %}Вход{% endtrans %}</h2>
+
+        <form action="/userSignIn" method="POST">
+            <div class="mat-form">
+                <div class="mat-group">
+                    <label class="mat-label" for="email-signIn">Ваш e-mail</label>
+                    <input type="email" name="email" class="mat-input" id="email-signIn">
+                </div>
+                <div class="mat-group">
+                    <label for="password-signIp" class="mat-label">Ваш пароль</label>
+                    <input type="password" name="password" id="password-signIp" class="mat-input password-input">
+                    <a href="javascript:;" class="password-control"></a>
+                </div>
+                <input type="hidden" name="return" value="{{ app.request.requestUri }}">
+            </div>
+            <div class="text-right">
+                <a href="#pass_recover" class="link-underline small" uk-toggle>Забыли пароль?</a>
+            </div>
+            <div class="modal-buttons">
+                <button type="submit" class="btn btn-solid">Войти</button>
+                <button class="btn btn-outline" uk-toggle="target: #signUp" type="button" uk-toggle>Зарегистрироваться</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<!-- Modal: Sign Up -->
+<div id="signUp" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-width-1-1 uk-width-1-2@m">
+        <button class="uk-modal-close-default uk-hidden@m" type="button" uk-close></button>
+        <h2 class="uk-modal-title uk-text-left uk-text-center@m">{% trans %}Регистрация{% endtrans %}</h2>
+
+        <form id="signUpForm" action="/userSignUp" method="POST" onsubmit="return signup_validate();">
+            <div class="mat-form">
+                <div class="uk-grid-row-collapse uk-grid-column-medium" uk-grid>
+                    <div class="uk-width-1-1">
+                        <div class="mat-group">
+                            <label for="name" class="mat-label">{% trans %}Ваше имя и фамилия{% endtrans %}</label>
+                            <input type="text" name="header" class="mat-input" id="name" required>
+                        </div>
+                    </div>
+
+                    <div class="uk-width-1-1 uk-width-1-2@m">
+                        <div class="mat-group">
+                            <label for="email-signUp" class="mat-label">Ваш e-mail</label>
+                            <input type="email" name="email" class="mat-input" id="email-signUp">
+                        </div>
+                    </div>
+
+                    <div class="uk-width-1-1 uk-width-1-2@m">
+                        <div class="mat-group">
+                            <label for="phoneInput" class="mat-label phone-label">Номер телефона</label>
+                            <select class="phone-select" id="phoneSelect">
+                                <option value="russia"></option>
+                                <option value="abkhazia"></option>
+                                <option value="kazakhstan"></option>
+                                <option value="ukraine"></option>
+                                <option value="usa"></option>
                             </select>
-                            <span class="uk-link">
+                            <input type="text" name="phone" class="mat-input phone-input" id="phoneInput" required>
+                        </div>
+                    </div>
+
+                    <div class="uk-width-1-1">
+                        <div class="mat-group">
+                            <label for="password-signUp" class="mat-label">Ваш пароль</label>
+                            <input type="password" name="password" class="mat-input" id="password-signUp">
+                            <a href="#" class="password-control"></a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="checkbox-link">
+                <label class="checkbox">
+                    <input type="checkbox" name="oferta">
+                    <span class="checkmark"></span>
+                </label>
+
+                <a target="_blank" href="/assets/docs/oferta.pdf" class="link-underline small">Я ознакомился с условиями оферты</a>
+            </div>
+
+            <div class="modal-buttons">
+                <div class="uk-text-center uk-margin-bottom"><button class="btn btn-solid uk-margin-remove uk-width-1-1 uk-width-auto@m" disabled>Зарегистрироваться</button></div>
+                <p class="text-gray small uk-text-center uk-margin-remove">У меня уже есть аккаунт, <a href="#signIn" class="link" uk-toggle>войти</a></p>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<!-- Modal: Pass Recover -->
+<div id="pass_recover" class="uk-modal" uk-modal bg-close="false">
+    <div class="uk-modal-dialog uk-modal-body">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <h2 class="uk-modal-title uk-text-left uk-text-center@m">{% trans %}Смена пароля{% endtrans %}</h2>
+
+        <form action="/userRecover" method="POST">
+            <div class="mat-form">
+                <div class="mat-group uk-margin-remove">
+                    <label class="mat-label">{% trans %}Ваш E-mail{% endtrans %}</label>
+                    <input type="mail" name="email" class="mat-input uk-input" required>
+                </div>
+                <div class="mat-group">
+                    <label class="mat-label">{% trans %}Придумайте новый пароль{% endtrans %}</label>
+                    <input type="password" name="password1" class="mat-input uk-input" required>
+                </div>
+                <div class="mat-group">
+                    <label class="mat-label">{% trans %}Повторите новый пароль{% endtrans %}</label>
+                    <input type="password" name="password2" class="mat-input uk-input" required>
+                </div>
+
+                <input type="hidden" name="return" value="{{ app.request.requestUri }}">
+
+                <div class="uk-margin-medium-top uk-grid-medium uk-child-width-1-1 uk-child-width-auto@m uk-flex-between uk-flex-middle uk-grid" uk-grid>
+                    <div><button class="btn btn-solid uk-width-1-1 uk-width-auto@m">{% trans %}Сменить пароль{% endtrans %}</button></div>
+                    <div class="uk-text-center uk-text-right@m"><a href="#pass_recover_tel" class="link-underline small" uk-toggle>{% trans %}Сменить через телефон{% endtrans %}</a></div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<!-- Modal: Pass Recover Tel -->
+<div id="pass_recover_tel" class="uk-modal" uk-modal bg-close="false">
+    <div class="uk-modal-dialog uk-modal-body">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <h2 class="uk-modal-title">{% trans %}Смена пароля через телефон{% endtrans %}</h2>
+
+        <form action="/userRecoverPhone" method="POST">
+            <div class="uk-grid uk-margin-bottom" uk-grid>
+                <div class=" uk-width-1-1 uk-width-auto@s uk-inline">
+                    <div uk-form-custom="target: > * > span:last-child">
+                        <select class="country-select" name="country">
+                            <option value="RU" data-code="+7" data-pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{2}$" data-filter="(999) 999-99-99" data-plshold="(###)###-##-##" selected>Россия</option>
+                            {# {% for countr in country %}
+                            <option value="2">Абхазия</option>
+                            {% endfor %} #}
+
+                            <option value="AB" data-code="+7 840" data-pattern="^\d{3}[-]\d{2}[-]\d{2}$"  data-filter="999-99-99" data-plshold="###-##-##">Абхазия</option>
+                            <option value="KZ" data-code="+7" data-pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{2}$"  data-filter="(999) 999-99-99" data-plshold="(###)###-##-##">Казахстан</option>
+                            <option value="UK" data-code="+380" data-pattern="^\(\d{2}\)\s\d{3}[-]\d{2}[-]\d{2}$"  data-filter="(99) 999-99-99" data-plshold="(##)###-##-##">Украина</option>
+                            <option value="US" data-code="+1" data-pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{3}$"  data-filter="(999) 999-99-999" data-plshold="(###)###-##-###">США</option>
+                        </select>
+                        <span class="uk-link">
                                 <span uk-icon="icon: pencil"></span>
                                 <span></span>
                             </span>
-                        </div>
-                    </div>
-                    <div class=" uk-width-1-1 uk-width-expand@s">
-                        <div class="uk-inline uk-width-expand">
-                            <span class="uk-form-icon mp-country-code mp-form-span">+7</span>
-                            <input type="tel" name="phone" class="uk-input mp-country-phone" placeholder="(###)###-##-##" pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{2}$"  required>
-                        </div>
                     </div>
                 </div>
-                <input type="mail" name="email" placeholder="Email" required class="uk-input uk-margin-bottom">
-
-                {# <div class="uk-margin-top uk-width-1-1 uk-inline">
-                    <span class="uk-form-icon">+7</span>
-                    <input type="tel" name="phone" placeholder="Телефон в формате 79001234567" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required class="uk-input uk-margin-bottom">
-                </div> #}
-                
-                <input type="password" name="password" placeholder="{% trans %}Пароль{% endtrans %}" required class="uk-input uk-margin-bottom">
-                <div class="uk-margin-bottom"><label><input type="checkbox" name="oferta"> Я ознакомлен и согласен с условиями <a target="_blanc" class="underline" uk-tooltip="title:откроется в новом окне" href="/assets/docs/oferta.pdf">оферты</a></label></div>
-                <button class="uk-button uk-button-primary" disabled>{% trans %}Зарегистрироваться{% endtrans %}</button>
-            </form>
-            <hr>
-            <div uk-grid class="reg_in_signin_block">
-                <div class="uk-width-1-2" style="font-size: 21px;">Есть аккаунт?</div>
-                <div class="uk-width-1-2 uk-text-right"><button  uk-toggle="target: #sign_in" class="uk-button uk-button-success "><span uk-icon="icon:lock"></span>{% trans %}Войти{% endtrans %}</button></div>
+                <div class=" uk-width-1-1 uk-width-expand@s">
+                    <div class="uk-inline uk-width-expand">
+                        <span class="uk-form-icon mp-country-code mp-form-span">+7</span>
+                        <input type="tel" name="phone" class="uk-input mp-country-phone" placeholder="(###)###-##-##" pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{2}$"  required>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
+            <input type="password" name="password1" placeholder="{% trans %}Придумайте новый пароль{% endtrans %}" class="uk-input uk-margin-bottom" required>
+            <input type="password" name="password2" placeholder="{% trans %}Повторите новый пароль{% endtrans %}" class="uk-input uk-margin-bottom" required>
+            <input type="hidden" name="return" value="{{ app.request.requestUri }}">
 
-    <div id="pass_recover" class="uk-modal" uk-modal bg-close="false">
-        <div class="uk-modal-dialog uk-modal-body">
-            <button class="uk-modal-close-default" type="button" uk-close></button>
-            <h2 class="uk-modal-title">{% trans %}Смена пароля{% endtrans %}</h2>
-            <form action="/userRecover" method="POST">
-                <input type="mail" name="email" placeholder="Введите email" class="uk-input uk-margin-bottom">
-                <input type="password" name="password1" placeholder="{% trans %}Придумайте новый пароль{% endtrans %}" class="uk-input uk-margin-bottom" required>
-                <input type="password" name="password2" placeholder="{% trans %}Повторите новый пароль{% endtrans %}" class="uk-input uk-margin-bottom" required>
-                <input type="hidden" name="return" value="{{ app.request.requestUri }}">
-                <div class="uk-clearfix">
-                    <div class="uk-float-left"><button class="uk-button uk-button-primary">{% trans %}Сменить пароль{% endtrans %}</button></div>
-                    <div class="uk-float-right"><a uk-toggle="target: #pass_recover_tel">{% trans %}Сменить через телефон{% endtrans %}</a></div>
-                </div>
-            </form>
-        </div>
+            <div class="uk-clearfix">
+                <div class="uk-float-left"><button class="uk-button uk-button-primary" id="prtc1">{% trans %}Сменить пароль{% endtrans %}</button></div>
+                <div class="uk-float-right"><a uk-toggle="target: #pass_recover">{% trans %}Сменить через email{% endtrans %}</a></div>
+            </div>
+        </form>
     </div>
+</div>
 
-    <div id="pass_recover_tel" class="uk-modal" uk-modal bg-close="false">
-        <div class="uk-modal-dialog uk-modal-body">
-            <button class="uk-modal-close-default" type="button" uk-close></button>
-            <h2 class="uk-modal-title">{% trans %}Смена пароля через телефон{% endtrans %}</h2>
-            <form action="/userRecoverPhone" method="POST">
-                <div class="uk-grid uk-margin-bottom" uk-grid>
-                    <div class=" uk-width-1-1 uk-width-auto@s uk-inline">
-                        <div uk-form-custom="target: > * > span:last-child">
-                            <select class="country-select" name="country">
-                                <option value="RU" data-code="+7" data-pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{2}$" data-filter="(999) 999-99-99" data-plshold="(###)###-##-##" selected>Россия</option>
-                                {# {% for countr in country %}
-                                    <option value="2">Абхазия</option>
-                                {% endfor %} #}
-                                
-                                <option value="AB" data-code="+7 840" data-pattern="^\d{3}[-]\d{2}[-]\d{2}$"  data-filter="999-99-99" data-plshold="###-##-##">Абхазия</option>
-                                <option value="KZ" data-code="+7" data-pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{2}$"  data-filter="(999) 999-99-99" data-plshold="(###)###-##-##">Казахстан</option>
-                                <option value="UK" data-code="+380" data-pattern="^\(\d{2}\)\s\d{3}[-]\d{2}[-]\d{2}$"  data-filter="(99) 999-99-99" data-plshold="(##)###-##-##">Украина</option>
-                                <option value="US" data-code="+1" data-pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{3}$"  data-filter="(999) 999-99-999" data-plshold="(###)###-##-###">США</option>
-                            </select>
-                            <span class="uk-link">
-                                <span uk-icon="icon: pencil"></span>
-                                <span></span>
-                            </span>
-                        </div>
-                    </div>
-                    <div class=" uk-width-1-1 uk-width-expand@s">
-                        <div class="uk-inline uk-width-expand">
-                            <span class="uk-form-icon mp-country-code mp-form-span">+7</span>
-                            <input type="tel" name="phone" class="uk-input mp-country-phone" placeholder="(###)###-##-##" pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{2}$"  required>
-                        </div>
-                    </div>
-                </div>                
-                <input type="password" name="password1" placeholder="{% trans %}Придумайте новый пароль{% endtrans %}" class="uk-input uk-margin-bottom" required>
-                <input type="password" name="password2" placeholder="{% trans %}Повторите новый пароль{% endtrans %}" class="uk-input uk-margin-bottom" required>
-                <input type="hidden" name="return" value="{{ app.request.requestUri }}">
-                
-                <div class="uk-clearfix">
-                    <div class="uk-float-left"><button class="uk-button uk-button-primary" id="prtc1">{% trans %}Сменить пароль{% endtrans %}</button></div>
-                    <div class="uk-float-right"><a uk-toggle="target: #pass_recover">{% trans %}Сменить через email{% endtrans %}</a></div>
-                </div>
-            </form>
-        </div>
+<!-- Modal: Pass Recover Tel Code -->
+<div id="pass_recover_tel_code" class="uk-modal" uk-modal bg-close="false">
+    <div class="uk-modal-dialog uk-modal-body">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <h2 class="uk-modal-title">Подтверждение</h2>
+        <form action="/userRecoverPhone" method="POST">
+            <div>
+                <input type="text" name="regcode" class="uk-input" placeholder="пароль из СМС">
+            </div>
+            <div class="uk-margin-top">
+                <button class="uk-button uk-button-primary" id="prtc2">Войти</button>
+            </div>
+        </form>
     </div>
+</div>
 
-    <div id="pass_recover_tel_code" class="uk-modal" uk-modal bg-close="false">
-        <div class="uk-modal-dialog uk-modal-body">
-            <button class="uk-modal-close-default" type="button" uk-close></button>
-            <h2 class="uk-modal-title">Подтверждение</h2>
-            <form action="/userRecoverPhone" method="POST">
-                <div>
-                    <input type="text" name="regcode" class="uk-input" placeholder="пароль из СМС">
-                </div>
-                <div class="uk-margin-top">
-                    <button class="uk-button uk-button-primary" id="prtc2">Войти</button>
-                </div>
-            </form>
-        </div>
+<div id="sign_in_or_up" class="uk-modal" uk-modal bg-close="false">
+    <div class="uk-modal-dialog uk-modal-body">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <h2 class="uk-modal-title">{% trans %}Что дальше?{% endtrans %}</h2>
+        <div><a uk-toggle="target: #sign_in">{% trans %}Войдите{% endtrans %}</a> {% trans %}или пройдите{% endtrans %} <a uk-toggle="target: #sign_up">{% trans %}быструю регистрацию{% endtrans %}</a> {% trans %}чтобы разместить ваш транспорт{% endtrans %}.</div>
+        <div>{% trans %}Выберите пакет 'Премиум', чтобы попасть в ТОП{% endtrans %}.</div>
     </div>
-
-    <div id="sign_in_or_up" class="uk-modal" uk-modal bg-close="false">
-        <div class="uk-modal-dialog uk-modal-body">
-            <button class="uk-modal-close-default" type="button" uk-close></button>
-            <h2 class="uk-modal-title">{% trans %}Что дальше?{% endtrans %}</h2>
-            <div><a uk-toggle="target: #sign_in">{% trans %}Войдите{% endtrans %}</a> {% trans %}или пройдите{% endtrans %} <a uk-toggle="target: #sign_up">{% trans %}быструю регистрацию{% endtrans %}</a> {% trans %}чтобы разместить ваш транспорт{% endtrans %}.</div>
-            <div>{% trans %}Выберите пакет 'Премиум', чтобы попасть в ТОП{% endtrans %}.</div>
-        </div>
-    </div>
+</div>
 {% endif %}
+
+{# Global city selector modal #}
+
+<div id="cityModal" class="uk-modal" uk-modal bg-close="false">
+    <div class="uk-modal-dialog uk-width-auto uk-width-3-4@m" uk-overflow-auto>
+        <div class="uk-modal-body">
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+            <h2 class="uk-modal-title uk-hidden@m">{% trans %}Выбор города{% endtrans %}</h2>
+            {% if is_mobile() %}
+                <input type="text" placeholder="Поиск" class="js-city-search-input theme-city-search-input">
+            {% else %}
+                <p class="small text-gray text-left">Введите ваш город</p>
+
+                <div class="input-group uk-margin-medium-bottom">
+                    <div class="form-item form-item uk-inline">
+                        <a class="uk-form-icon uk-form-icon-flip js-clear-city-search-input" href="javascript;" uk-icon="icon: close"></a>
+                        <input type="text" placeholder="Найдите свой город" class="js-city-search-input uk-input uk-width-1-1">
+                    </div>
+                </div>
+            {% endif %}
+                <div class="js-city-search-list-preloader uk-flex uk-flex-center uk-flex-middle" style="display: none;">
+                    <span class="spinner-border"></span>
+                </div>
+                <ul class="theme-city-search-list js-city-search-list" style="display: none;"></ul>
+                <ul class="theme-city-search-list js-city-search-list-default">
+                    <li class="city_block" data-id="77" data-url="Moscow" data-header="Москва"><h3>Москва</h3></li>
+                    <li class="city_block" data-id="78" data-url="St-Peterburg" data-header="Санкт-Петербург"><b>Санкт-Петербург</b></li>
+                    <li class="city_block" data-id="833" data-url="Novosibirsk" data-header="Новосибирск">Новосибирск</li>
+                    <li class="city_block" data-id="1013" data-url="Ekaterinburg" data-header="Екатеринбург">Екатеринбург</li>
+                    <li class="city_block" data-id="209" data-url="Kazan" data-header="Казань">Казань</li>
+                    <li class="city_block" data-id="804" data-url="Nizhniy_Novgorod" data-header="Нижний Новгород">Нижний Новгород</li>
+                    <li class="city_block" data-id="1158" data-url="Chelyabinsk" data-header="Челябинск">Челябинск</li>
+                    <li class="city_block" data-id="960" data-url="Samara" data-header="Самара">Самара</li>
+                    <li class="city_block" data-id="843" data-url="Omsk" data-header="Омск">Омск</li>
+                    <li class="city_block" data-id="935" data-url="Rostov-na-Donu" data-header="Ростов-на-Дону">Ростов-на-Дону</li>
+                    <li class="city_block" data-id="106" data-url="Ufa" data-header="Уфа">Уфа</li>
+                    <li class="city_block" data-id="302" data-url="Krasnoyarsk" data-header="Красноярск"><b>Красноярск</b></li>
+                    <li class="city_block" data-id="466" data-url="Voronezh" data-header="Воронеж">Воронеж</li>
+                    <li class="city_block" data-id="895" data-url="Perm" data-header="Пермь">Пермь</li>
+                    <li class="city_block" data-id="428" data-url="Volgograd" data-header="Волгоград">Волгоград</li>
+                    <li class="city_block" data-id="272" data-url="Krasnodar" data-header="Краснодар"><h3>Краснодар</h3></li>
+                    <li class="city_block" data-id="979" data-url="Saratov" data-header="Саратов">Саратов</li>
+                    <li class="city_block" data-id="1122" data-url="Tyumen" data-header="Тюмень">Тюмень</li>
+                    <li class="city_block" data-id="962" data-url="Tolyatti" data-header="Тольятти">Тольятти</li>
+                    <li class="city_block" data-id="227" data-url="Izhevsk" data-header="Ижевск">Ижевск</li>
+                    <li class="city_block" data-id="227" data-url="Izhevsk" data-header="Ижевск">Ижевск</li>
+                    <li class="city_block" data-id="251" data-url="Barnaul" data-header="Барнаул">Барнаул</li>
+                    <li class="city_block" data-id="504" data-url="Irkutsk" data-header="Иркутск">Иркутск</li>
+                    <li class="city_block" data-id="314" data-url="Vladivostok" data-header="Владивосток"><b>Владивосток</b></li>
+                    <li class="city_block" data-id="267" data-url="Gelendzhik" data-header="Геленджик">Геленджик</li>
+                    <li class="city_block" data-id="1236" data-url="Evpatoriya" data-header="Евпатория">Евпатория</li>
+                    <li class="city_block" data-id="123" data-url="Mahachkala" data-header="Махачкала">Махачкала</li>
+                    <li class="city_block" data-id="281" data-url="Sochi" data-header="Сочи"><h3>Сочи</h3></li>
+                    <li class="city_block" data-id="524" data-url="Kaliningrad" data-header="Калининград">Калининград</li>
+                    <li class="city_block" data-id="4" data-url="Respublika_Altay" data-header="Республика Алтай">Республика Алтай</li>
+                    <li class="city_block" data-id="10" data-url="Respublika_Kareliya" data-header="Республика Карелия">Республика Карелия</li>
+                    <li class="city_block" data-id="84" data-url="Crimea" data-header="Республика Крым"><h3>Республика Крым</h3></li>
+                </ul>
+        </div>
+    </div>
+</div>

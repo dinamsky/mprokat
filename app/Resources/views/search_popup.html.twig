@@ -1,35 +1,88 @@
-<div id="search_popup" class="uk-hidden ">
+{% if lang is not defined %}
+    {% set lang = 'ru' %}
+{% endif %}
 
+<div id="modal-search" class="search-modal uk-modal" uk-modal bg-close="false">
+    <div class="uk-modal-dialog uk-modal-body uk-width-1-1 uk-width-3-4@m">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <h2 class="uk-modal-title">Поиск</h2>
 
+        <div class="search-modal__content uk-margin-medium-bottom">
+            <div class="search-modal__categories uk-margin-medium-bottom">
+                <p class="small text-gray text-left">Выберите категорию:</p>
+                {% if is_mobile() %}
+                <select name="countryCode" class="uk-select select-border-bottom js-search-modal-mobile-category-select">
+                    <option hidden disabled value>Значение не выбрано</option>
+                    {% for gt in t3_new.getGt if gt.carTypeIds %}
+                    <option value="{{ gt.url }}">{{ lang == 'ru' ? gt.header : gt.url }}</option>
+                    {% endfor %}
+                </select>
 
-    <div class="popup_city_search uk-inline uk-width-1-1">
-        <span class="uk-form-icon" uk-icon="icon: search"></span>
-        <input type="text" name="popup_search" class="uk-input uk-width-1-1" placeholder="Город">
-    </div>
+                {% else %}
+                <ul class="uk-flex uk-flex-wrap search-modal__categoriesList">
+                    {% for gt in t3_new.getGt if gt.carTypeIds %}
+                    <li class="search-modal__categoriesItem">
+                        <a href="/rent/{{ city.url }}/all/{{ gt.url }}" data-url="{{ gt.url }}" class="js-search-model-category search-modal__categoriesLink {{ gt.url == 'cars' ? 'search-modal__categoriesLink_active' }}">
+                            {{ lang == 'ru' ? gt.header : gt.url }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
 
-
-
-
-        <div class="uk-text-center uk-margin-bottom uk-margin-top">
-        {% trans %}Наши категории{% endtrans %}:
-        </div>
-
-
-    {% if lang is not defined %}
-        {% set lang = 'ru' %}
-    {% endif %}
-
-{# {% if gt is defined and city is defined  %} #}
-    <div  class=" top_pop_carousel owl-carousel uk-margin-bottom">
-            {% for gt in t3_new.getGt if gt.carTypeIds %}
-                <div class="uk-width-1-1" style="display: none">
-                    <a href="/rent/{{ city.url }}/all/{{ gt.url }}" class="gt_button {{ gt.url == 'cars' ? 'active' }}">
-                        <i class="fa fa-{{ gt.icon }}"></i>
-                        <br>
-                        <span>{{ lang == 'ru' ? gt.header : gt.url }}</span>
-                    </a>
+            <div class="search-modal__cities">
+                <p class="small text-gray text-left">Начните вводить и выберите ваш город:</p>
+                <div><input type="text" class="js-search-modal-city-input search-modal-city-input uk-input"></div>
+                <div class="js-modal-search-city-search-list-preloader uk-margin-top uk-flex uk-flex-center uk-flex-middle" style="display: none;">
+                    <span class="spinner-border"></span>
                 </div>
-            {% endfor %}
+                <ul class="uk-margin-top theme-city-search-list js-modal-search-city-search-list" style="display: none;"></ul>
+                <ul class="uk-margin-top theme-city-search-list js-modal-search-city-search-list-default">
+                    <li class="js-search-modal-city" data-id="77" data-url="Moscow" data-header="Москва"><h3>Москва</h3></li>
+                    <li class="js-search-modal-city" data-id="78" data-url="St-Peterburg" data-header="Санкт-Петербург"><b>Санкт-Петербург</b></li>
+                    <li class="js-search-modal-city" data-id="833" data-url="Novosibirsk" data-header="Новосибирск">Новосибирск</li>
+                    <li class="js-search-modal-city" data-id="1013" data-url="Ekaterinburg" data-header="Екатеринбург">Екатеринбург</li>
+                    <li class="js-search-modal-city" data-id="209" data-url="Kazan" data-header="Казань">Казань</li>
+                    <li class="js-search-modal-city" data-id="804" data-url="Nizhniy_Novgorod" data-header="Нижний Новгород">Нижний Новгород</li>
+                    <li class="js-search-modal-city" data-id="1158" data-url="Chelyabinsk" data-header="Челябинск">Челябинск</li>
+                    <li class="js-search-modal-city" data-id="960" data-url="Samara" data-header="Самара">Самара</li>
+                    <li class="js-search-modal-city" data-id="843" data-url="Omsk" data-header="Омск">Омск</li>
+                    <li class="js-search-modal-city" data-id="935" data-url="Rostov-na-Donu" data-header="Ростов-на-Дону">Ростов-на-Дону</li>
+                    <li class="js-search-modal-city" data-id="106" data-url="Ufa" data-header="Уфа">Уфа</li>
+                    <li class="js-search-modal-city" data-id="302" data-url="Krasnoyarsk" data-header="Красноярск"><b>Красноярск</b></li>
+                    <li class="js-search-modal-city" data-id="466" data-url="Voronezh" data-header="Воронеж">Воронеж</li>
+                    <li class="js-search-modal-city" data-id="895" data-url="Perm" data-header="Пермь">Пермь</li>
+                    <li class="js-search-modal-city" data-id="428" data-url="Volgograd" data-header="Волгоград">Волгоград</li>
+                    <li class="js-search-modal-city" data-id="272" data-url="Krasnodar" data-header="Краснодар"><h3>Краснодар</h3></li>
+                    <li class="js-search-modal-city" data-id="979" data-url="Saratov" data-header="Саратов">Саратов</li>
+                    <li class="js-search-modal-city" data-id="1122" data-url="Tyumen" data-header="Тюмень">Тюмень</li>
+                    <li class="js-search-modal-city" data-id="962" data-url="Tolyatti" data-header="Тольятти">Тольятти</li>
+                    <li class="js-search-modal-city" data-id="227" data-url="Izhevsk" data-header="Ижевск">Ижевск</li>
+                    <li class="js-search-modal-city" data-id="227" data-url="Izhevsk" data-header="Ижевск">Ижевск</li>
+                    <li class="js-search-modal-city" data-id="251" data-url="Barnaul" data-header="Барнаул">Барнаул</li>
+                    <li class="js-search-modal-city" data-id="504" data-url="Irkutsk" data-header="Иркутск">Иркутск</li>
+                    <li class="js-search-modal-city" data-id="314" data-url="Vladivostok" data-header="Владивосток"><b>Владивосток</b></li>
+                    <li class="js-search-modal-city" data-id="267" data-url="Gelendzhik" data-header="Геленджик">Геленджик</li>
+                    <li class="js-search-modal-city" data-id="1236" data-url="Evpatoriya" data-header="Евпатория">Евпатория</li>
+                    <li class="js-search-modal-city" data-id="123" data-url="Mahachkala" data-header="Махачкала">Махачкала</li>
+                    <li class="js-search-modal-city" data-id="281" data-url="Sochi" data-header="Сочи"><h3>Сочи</h3></li>
+                    <li class="js-search-modal-city" data-id="524" data-url="Kaliningrad" data-header="Калининград">Калининград</li>
+                    <li class="js-search-modal-city" data-id="4" data-url="Respublika_Altay" data-header="Республика Алтай">Республика Алтай</li>
+                    <li class="js-search-modal-city" data-id="10" data-url="Respublika_Kareliya" data-header="Республика Карелия">Республика Карелия</li>
+                    <li class="js-search-modal-city" data-id="84" data-url="Crimea" data-header="Республика Крым"><h3>Республика Крым</h3></li>
+
+
+                </ul>
+            </div>
         </div>
-{# {% endif %} #}
+
+        <input type="hidden" class="js-modal-search-selected-city">
+        <input type="hidden" class="js-modal-search-selected-category">
+
+        <div class="uk-flex uk-flex-center">
+            <a href="javascript:;" class="js-search-modal-button btn uk-width-1-1 uk-width-medium@m btn-solid">Найти</a>
+        </div>
+
+    </div>
 </div>
