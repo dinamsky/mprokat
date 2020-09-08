@@ -1,38 +1,26 @@
-<div id="howtopay" class="uk-modal-container ver1" uk-modal>
-    <div class="uk-modal-dialog mp-modal-body">
-        <h2 class="uk-modal-title uk-text-center uk-margin-large-bottom">Как арендовать у наших владельцев?</h2>
+<div id="howtopay" class="uk-modal-container" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
         <button class="uk-modal-close-default" type="button" uk-close></button>
+        <h2 class="uk-modal-title">Как снять транспорт</h2>
         <div class="mp-list">
             <ol>
-                <li><b>Выберите транспорт</b><br>
-                Можно искать в своем городе<br>
-                или в том, в который едете. <br>
-                Всего 22 категории транспорта в 575 городах</li>
-                <li><b>Забронируйте на сайте</b><br>
-                Отправьте заявку владельцу и получите ответ<br>
-                <strong>ООО Мультипрокат</strong> выступает гарантом всех сделок.<br>
-                Компания обязуется вернуть деньги, в полном объеме,<br>
-                если аренда не состоялась (по любым причинам)<br>
-                Все транзакции проводятся через <a href="https://mandarinbank.com/">Мандарин Банк</a></li>
-                <li><b>Пользуйтесь!</b><br>
-                А на сэкономленные деньги купите<br>
-                что-нибудь в дорогу ;)</li>
+                <li>
+                    <h3 class="uk-margin-small-bottom">Выберите транспорт</h3>
+                    <p>Можно искать как в своем городе, так и в том, в который вы планируете отправиться, всего 22 категории транспорта в 575 городах</p>
+                </li>
+                <li>
+                    <h3 class="uk-margin-small-bottom">Забронируйте на сайте</h3>
+                    <p>Отправьте заявку владельцу и получите от него ответ, <strong>ООО Мультипрокат</strong> выступает гарантом всех сделок.</p>
+                    <p>Компания обязуется вернуть деньги, в полном объеме, если аренда не состоялась (по любым причинам)</p>
+                    <p>Все транзакции проводятся через <a href="https://mandarinbank.com/">Мандарин Банк</a></p>
+                </li>
+                <li>
+                    <h3 class="uk-margin-small-bottom">Пользуйтесь!</h3>
+                    <p>А на сэкономленные деньги купите что-нибудь в дорогу :)</p>
+                </li>
             </ol>
         </div>
-        <div class="uk-text-center uk-margin-large-top">
-            <a href="/sl_page" class="uk-button uk-button-primary">Найти</a>
-        </div>
 
-        <div class="uk-text-center uk-margin-top">
-            <a href="/faq" class="">Больше информации</a>
-            &nbsp;<br>
-            {% if app.session.has('logged_user') %}
-                <a href="/card/new" >Сдать в аренду</a>
-            {% elseif app.session.has('admin') %}
-                <a href="/card/new" >Сдать в аренду</a>
-            {% else %}
-                <a  data-toggle="modal" href="#signUp">Хочу сам сдавать!</a>
-            {% endif %}
-        </div>
+
     </div>
 </div>

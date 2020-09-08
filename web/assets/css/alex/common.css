@@ -1791,3 +1791,30 @@ body.user-base section.categories {
 .rs_selector {
     cursor: pointer;
 }
+
+.datepickers-container {
+    z-index: 2000;
+}
+
+/* DatePicker Custom */
+.datepicker {
+    color: #474747;
+}
+
+.datepicker--day-name {
+    color: #4629D3;
+}
+
+.datepicker--cell.-current- {
+    color: #4629D3;
+}
+
+.datepicker--cell.-selected-, .datepicker--cell.-selected-.-current- {
+    color: #fff;
+    background: #4629D3;
+}
+
+.main-alert-window .uk-modal-dialog {
+    border-radius: 20px;
+    box-shadow: 10px 10px 19px rgb(197 197 198 / .5), -10px -10px 19px rgb(0 0 0 / 0.5);
+}

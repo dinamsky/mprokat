@@ -126,13 +126,13 @@ $( document ).ready(function() {
 
 
     //var dat = $(this).data('res').split("-");
-
+    /*
     $('.datepicker-reserve').datepicker({
         minDate: new Date(document.getElementById('user_book_form').getAttribute('data-res')),
-
         autoClose: true
     });
-
+    */
+    
     function qreg_1(but) {
         var email = $('#nrf input[name="mail"]').val().trim();
         //var password = $('#nrf input[name="password"]').val().trim();

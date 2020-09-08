@@ -24,7 +24,7 @@
 				{{ include('search_popup.html.twig') }}
 
 				<div class="city-select uk-flex-inline uk-flex-middle">
-					<a href="#modal-search" class="city-select-link uk-flex-inline" uk-toggle>
+					<a href="#cityModal" class="city-select-link uk-flex-inline" uk-toggle>
 						<span class="uk-icon uk-icon-image" style="background-image: url('/assets/images/icons/city-choice-icon_mobile.svg'); width: 25px; height: 25px"></span>
 					</a>
 				</div>
@@ -74,7 +74,7 @@
 			</div>
 
 			<div class="uk-width-1-4 uk-flex uk-flex-middle uk-flex-between">
-				<a class="text-white" href="javascript:;">
+				<a class="text-white" href="#modal-search" uk-toggle>
 					<span class="uk-icon uk-icon-image" style="background-image: url('/assets/images/icons/search-icon_mobile.svg')"></span>
 				</a>
 
@@ -123,8 +123,19 @@
 
 		<!-- Part 4: Nav List -->
 		<ul class="uk-nav uk-nav-default burger-nav burger-nav-pt">
-			<li><a href="javascript:;">Как это работает?</a></li>
-			<li><a href="javascript:;">Категории транспорта</a></li>
+			<li><a href="#howtopay" uk-toggle>Как это работает?</a></li>
+			<li>
+				<a href="javascript:;" uk-toggle="target: .js-cat-transport-list">Категории транспорта</a>
+				<ul class="uk-nav-sub uk-list js-cat-transport-list" hidden>
+					{% for gt in t3_new.getGt if gt.carTypeIds%}
+					<li>
+						<a chref="/rent/{{ city.url }}/all/{{ gt.url }}">
+							<i class="fa fa-{{ gt.icon }} left_gt_icon"></i>
+							<span class="uk-margin-small-left">{{ gt.header }}</span></a>
+					</li>
+					{% endfor %}
+				</ul>
+			</li>
 		</ul>
 
 		<!-- Part 5: FAQ -->

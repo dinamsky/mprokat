@@ -1,5 +1,25 @@
 const cardApp = (function($) {
 
+    let ui = {
+        $datepickerInputIn: $('.js-date-in'),
+        $datepickerInputOut: $('.js-date-out'),
+        $likeButton: $('.js-like-button')
+    };
+
+    let datepicInputInSetting = {
+        minDate: new Date(),
+        autoClose: true,
+        position: 'bottom right'
+    };
+
+    let datepicInputOutSetting = {
+        minDate: new Date(),
+        autoClose: true,
+        position: 'bottom right'
+    };
+
+    let currentDate = new Date();
+
     function init() {
         _bindHandlers();
     }
@@ -7,7 +27,10 @@ const cardApp = (function($) {
     // Навешивам события
     function _bindHandlers() {
         _imagesCarousel();
-        $('.js-like-button').on('click', _plusLike);
+        ui.$likeButton.on('click', _plusLike);
+        ui.$datepickerInputIn.datepicker(datepicInputInSetting);
+        ui.$datepickerInputOut.datepicker(datepicInputOutSetting);
+        ui.$datepickerInputIn.data('datepicker').selectDate(new Date())
     }
 
     function _plusLike(e) {

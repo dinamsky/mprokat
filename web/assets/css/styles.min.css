@@ -8061,11 +8061,12 @@ a:hover {
 .main .main-slider .main-slider-bg {
     position: absolute;
     left: 0;
-    right: 0
+    right: 0;
+    display: flex;
 }
 
 .main .main-slider .main-slider-bg .round {
-    margin-left: 40%;
+    margin: 0 auto;
     border-radius: 100px;
     width: 160px;
     height: 160px;
@@ -8091,6 +8092,7 @@ a:hover {
 
 .main .main-slider .main-slider-content .text {
     color: #1e1e1e
+    margin: 0 0 15px;
 }
 
 .main .main-slider .main-slider-content .text .title {
@@ -8106,7 +8108,7 @@ a:hover {
 }
 
 .main .main-slider .main-slider-content .img {
-    padding-left: 40px
+    padding-left: 0px
 }
 
 .main h1 {

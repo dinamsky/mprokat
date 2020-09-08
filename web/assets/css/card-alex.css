@@ -991,3 +991,25 @@ hr, .uk-hr {
 /*-----------------
     many-like
 ------------------*/
+
+/* DatePicker Custom */
+.datepicker {
+    color: #474747;
+}
+
+.datepicker--day-name {
+    color: #4629D3;
+}
+
+.datepicker--cell.-current- {
+    color: #4629D3;
+}
+
+.datepicker--cell.-selected-, .datepicker--cell.-selected-.-current- {
+    color: #fff;
+    background: #4629D3;
+}
+
+.datepicker--cell.-disabled- {
+    color: #aaa;
+}
