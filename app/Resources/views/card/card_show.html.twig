@@ -42,7 +42,7 @@
 {{ parent() }}
 <meta property="og:type" content="website">
 <meta property="og:image" content="{{ app.request.getSchemeAndHttpHost() ~ mainFoto }}">
-<meta property="og:title" content="{{ include(':seo_templates:p_title.html.twig') }}">
+<meta property="og:title" content="{{ include(':seo_templates:p_description.html.twig') }}">
 <meta property="og:url" content="{{ app.request.schemeAndHttpHost ~ app.request.requestUri }}">
 {% endblock %}
 {% block metaTags %}
@@ -52,7 +52,7 @@
 {% block htmlblock %}
 prefix="og: http://ogp.me/ns#"
 {% endblock %}
-{% block title %}{{ include(':seo_templates:p_title.html.twig') }}{% endblock %}
+{% block title %}{{ include(':seo_templates:p_description.html.twig') }}{% endblock %}
 {% block content %}
 <script>var cardId = {{ card.id }};</script>
 <!-- FB -->
@@ -229,11 +229,8 @@ prefix="og: http://ogp.me/ns#"
                     {% else %}
                         <button class="uk-button button button-primary button-lg uk-width-1-1 uk-margin-small actions-entry__button" uk-toggle="target: {{ app.session.has('logged_user') ? '#user_book_form' : '#nonreged_user_book_form' }}">{{ card.user.adminId ? 'Забронировать' : 'Забронировать' }}</button>
                         <div class="uk-flex uk-flex-middle">
-                            <button class="uk-button button button-outline-primary button-lg actions-entry__button uk-width-1-1 uk-padding-remove-horizontal uk-margin-right">Отправить сообщение</button>
-                            <a href="javascript:;">
-                                <span class="icon-whatsapp"></span>
-                            </a>
-                        </div>
+                            <button class="uk-button button button-outline-primary button-lg actions-entry__button uk-width-1-1 uk-padding-remove-horizontal" uk-toggle="target: {{ app.session.has('logged_user') ? '#user_book_form' : '#nonreged_user_book_form' }}">Отправить сообщение</button>
+                                                  </div>
                         <p class="actions-entry__text">Среднее время ответа на заявку 10 мин.</p>
                     {% endif %}
                 </div>
@@ -398,7 +395,7 @@ prefix="og: http://ogp.me/ns#"
                             <div class="entry-share__actions">
                                 <script src="https://yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
                                 <script src="https://yastatic.net/share2/share.js"></script>
-                                <div class="ya-share2" data-services="vkontakte,facebook,odnoklassniki,twitter,viber,whatsapp,telegram"></div>
+                                <div class="ya-share2" data-services="vkontakte,facebook,odnoklassniki,twitter,viber,whatsapp,telegram" image="{{mainFoto}}"></div>
 {#                                <button type="button" class="uk-button button button-primary button-lg entry-share__button">Поделиться</button></div>#}
                             </div> </div>
                     </div>
@@ -521,3 +518,7 @@ prefix="og: http://ogp.me/ns#"
 {{ include('card/order_forms/nonreged_form.html.twig') }}
 
 {% endblock %}
+
+
+
+
