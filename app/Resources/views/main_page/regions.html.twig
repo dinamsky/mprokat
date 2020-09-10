@@ -10,13 +10,14 @@
 
 {% block metaTags %}
     {{ parent() }}
+    <meta name="description" content="Мультипрокат | Аренда и прокат транспорта во всех регионах России">
 {% endblock %}
 
-{% block title %}Регионы работы Мультипрокат{% endblock %}
+{% block title %}Мультипрокат | Аренда и прокат транспорта во всех регионах России{% endblock %}
 
 {% block content %}
 <div class="uk-container uk-padding-large uk-padding-remove-horizontal">
-    <h2>Регионы работы Мультипрокат</h2>
+    <h2>Мультипрокат | Аренда и прокат транспорта во всех регионах России</h2>
     <div class="uk-column-1-5">
         {% for region in regions %}
             <a class="uk-display-block" href="/region/{{ region.id }}">{{ region.header }} </a>

@@ -10,13 +10,14 @@
 
 {% block metaTags %}
     {{ parent() }}
+    <meta name="description" content="Мультипрокат| Прокат и аренда транспорта в {{ region.header }}">
 {% endblock %}
 
-{% block title %}Города{% endblock %}
+{% block title %}Мультипрокат| Прокат и аренда транспорта в {{ region.header }}{% endblock %}
 
 {% block content %}
 <div class="uk-container uk-padding-large uk-padding-remove-horizontal">
-    <h2>{{ region.header }}</h2>
+    <h2>Прокат и аренда транспорта в {{ region.header }}</h2>
     <div class="uk-column-1-5">
         {% for city in cities %}
             <a class="uk-display-block" href="/rent/{{ city.url }}">{{ city.header }} </a>
