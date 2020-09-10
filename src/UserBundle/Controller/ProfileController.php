@@ -2250,8 +2250,23 @@ class ProfileController extends Controller
             ];
             $stat->setStat($stat_arr);
 
+
+
+            $star = 0;
+            $total_opinions = 0;
+            foreach($user->getOpinions() as $op){
+                $star = $star + $op->getStars();
+                $total_opinions++;
+            }
+            if ($total_opinions > 0) $opinions = round($star/$total_opinions, 1);
+            else $opinions = 0;
+
+
             return $this->render('user/user_page.html.twig', [
                 'user' => $user,
+                'opinions' => $opinions,
+                'total_opinions' => $total_opinions,
+                'date_create' => $user->getDateCreate(),
                 'user_foto' => $user_foto,
                 'city' => $city,
                 'is_admin_card' => $is_admin_card,
@@ -2266,6 +2281,7 @@ class ProfileController extends Controller
             ]);
         } else return new Response("",404);
     }
+
 
     // private function captchaverify($recaptcha){
     //     $url = "https://www.google.com/recaptcha/api/siteverify";
