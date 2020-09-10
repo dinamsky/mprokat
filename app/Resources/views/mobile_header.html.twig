@@ -64,7 +64,8 @@
 					<span class="uk-text-truncate uk-margin-small-left text-white">{{ app.session.get('logged_user').header }}</span>
 				{% else %}
 					<span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('/assets/images/icons/login-icon_mobile.svg');"></span>
-					<a href="#signIn" uk-toggle>Войти</a>
+					<a href="#signIn" uk-toggle>Вход&nbsp;</a>
+					<a href="#signUp" uk-toggle>&nbsp;Регистрация </a>
 				{% endif %}
 			</div>
 
@@ -124,7 +125,7 @@
 				<ul class="uk-nav-sub uk-list js-cat-transport-list" hidden>
 					{% for gt in t3_new.getGt if gt.carTypeIds%}
 					<li>
-						<a chref="/rent/{{ city.url }}/all/{{ gt.url }}">
+						<a href="/rent/{{ city.url }}/all/{{ gt.url }}">
 							<i class="fa fa-{{ gt.icon }} left_gt_icon"></i>
 							<span class="uk-margin-small-left">{{ gt.header }}</span></a>
 					</li>
