@@ -180,6 +180,37 @@
     <div class="content">
         <h3><a href="/card/{{ card.id }}">{{ card.markModel.Mark.header }} {{ card.markModel.header }}</a></h3>
         <p class="owner">{% trans %}Владелец:&nbsp;{% endtrans %}<a href="/user/{{ card.user.id }}">{{ card.user.header }}</a></p>
+         {% if share is defined %}
+   <a class="bottom_share" href="/card_share/{{ card.id }}">Разместить в своих соцсетях</a>
+   <div class="uk-text-center uk-text-small">Ваш тариф: "
+       {{ card.tariffId == 1 ? 'Стандарт' }}
+       {{ card.tariffId == 2 ? 'Экспресс' }}
+       {{ card.tariffId == 3 ? 'Премиум' }}"
+   </div>
+   <div class="uk-text-center">
+       <a class="promote_card_link" href="/promote_card/{{ card.id }}">Продвинуть</a>
+   </div>
+   {% endif %}
+
+
+
+         {% if (
+        ( app.session.has('admin') and card.adminId == app.session.get('admin').id )
+        or ( app.session.has('admin') and app.session.get('admin').role == 'superadmin' )
+        or ( app.session.has('logged_user') and card.user.id == app.session.get('logged_user').id )
+        ) %}
+        {% if in_edit is not defined %}
+        <form action="/card/update" method="POST" onsubmit="return confirm('Вы уверены?');" style="position: absolute;top:0;right:0;">
+            <input type="hidden" name="cardId" value="{{ card.id }}">
+            <input type="hidden" name="return" value="{{ app.request.requestUri }}">
+            <button class="uk-button-danger c_white" name="delete" uk-close></button>
+        </form>
+        <a class="uk-button-primary uk-position-top-left icon_button" href="/user/edit/card/{{ card.id }}">
+            <i class="fa fa-pencil"></i>
+        </a>
+        {% endif %}
+        {% endif %}
+
         {% if c_price != '' %}
         {% set serv_perc = card.generalType.servicePercent %}
         {% set c_price = c_price + (c_price/100*serv_perc)|round(0,'ceil') %}
@@ -189,6 +220,29 @@
             {{ c_ed }}
         </p>
         {% endif %}
+        <div class="uk-grid-collapse" uk-grid>
+            <div class="uk-width-expand uk-text-truncate uk-text-small c_grey {{ micro is defined ? 'micro' : '' }}">
+                <i class="fa fa-map-marker"></i>
+                {{ card.city.header }}
+            </div>
+            <div class="uk-width-auto uk-text-small c_grey {{ micro is defined ? 'micro' : '' }}">
+                <i class="fa fa-eye"></i>
+                {{ card.views }}</div>
+
+            {% if card.dateRentFinish > date() %}
+                <div class="reserved">бронь до
+                    {{ card.dateRentFinish|date("d.m.Y") }}</div>
+            {% endif %}
+
+            {% if card.user.accountTypeId == 1 %}
+                <div style="position: absolute;
+                                                    top: 7px;
+                                                    right: 7px;" uk-tooltip="title:Пользователь с аккаунтом PRO">
+                    <img alt="" src="/assets/images/interface/fb3.svg" style="width: 16px">
+                </div>
+            {% endif %}
+
+        </div>
     </div>
 </div>
 
