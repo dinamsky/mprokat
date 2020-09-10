@@ -119,9 +119,9 @@ class DefaultController extends Controller
         $region = $this->getDoctrine()
             ->getRepository(City::class)
             ->find($id);
-        $query = $em->createQuery('SELECT c.cityId FROM AppBundle:Card c ');
+        $query = $em->createQuery('SELECT c.id FROM AppBundle:City c ');
         foreach($query->getScalarResult() as $row){
-            $city_ids[] = $row['cityId'];
+            $city_ids[] = $row['id'];
         }
         $query = $em->createQuery('SELECT c FROM AppBundle:City c WHERE c.parentId ='.$id.' AND c.id IN ('.implode(",",$city_ids).')');
         $cities = $query->getResult();

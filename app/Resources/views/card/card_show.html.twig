@@ -42,7 +42,7 @@
 {{ parent() }}
 <meta property="og:type" content="website">
 <meta property="og:image" content="{{ app.request.getSchemeAndHttpHost() ~ mainFoto }}">
-    <meta property="og:title" content="{{ include(':seo_templates:p_description.html.twig') }}">
+<meta property="og:title" content="{{ include(':seo_templates:p_description.html.twig') }}">
 <meta property="og:url" content="{{ app.request.schemeAndHttpHost ~ app.request.requestUri }}">
 {% endblock %}
 {% block metaTags %}
@@ -230,8 +230,7 @@ prefix="og: http://ogp.me/ns#"
                         <button class="uk-button button button-primary button-lg uk-width-1-1 uk-margin-small actions-entry__button" uk-toggle="target: {{ app.session.has('logged_user') ? '#user_book_form' : '#nonreged_user_book_form' }}">{{ card.user.adminId ? 'Забронировать' : 'Забронировать' }}</button>
                         <div class="uk-flex uk-flex-middle">
                             <button class="uk-button button button-outline-primary button-lg actions-entry__button uk-width-1-1 uk-padding-remove-horizontal" uk-toggle="target: {{ app.session.has('logged_user') ? '#user_book_form' : '#nonreged_user_book_form' }}">Отправить сообщение</button>
-
-                        </div>
+                                                  </div>
                         <p class="actions-entry__text">Среднее время ответа на заявку 10 мин.</p>
                     {% endif %}
                 </div>
@@ -342,7 +341,6 @@ prefix="og: http://ogp.me/ns#"
 
             <!-- First Column/review -->
             <div class="uk-width-1-1 entry-reviews">
-
                 <div class="entry-reviews__header">
                     <h3 class="entry-reviews__title">Отзывы <span class="uk-hidden@m">{{ card.opinions|length }}</span></h3>
                     <a class="entry-reviews__link uk-visible@m" href="#">Все отзывы ({{ card.opinions|length }})</a>
