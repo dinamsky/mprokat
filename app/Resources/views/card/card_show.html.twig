@@ -344,44 +344,73 @@ prefix="og: http://ogp.me/ns#"
 
             <!-- First Column/review -->
             <div class="uk-width-1-1 entry-reviews">
+
                 <div class="entry-reviews__header">
-                    {% if card.opinions is not empty %} <h3 class="entry-reviews__title">Отзывы <span class="uk-hidden@m">{{ card.opinions|length }}</span></h3>
+                    <h3 class="entry-reviews__title">Отзывы <span class="uk-hidden@m">{{ card.opinions|length }}</span></h3>
                     <a class="entry-reviews__link uk-visible@m" href="#">Все отзывы ({{ card.opinions|length }})</a>
                 </div>
                 <div class="entry-reviews__body">
 
-                    <ul class="uk-comment-list uk-margin-remove comment-list">
-                        {% for opinion in card.opinions %}
-                        <li>
-                            <article class="uk-comment comment">
-                                <header class="uk-comment-header comment__header header-comment">
-                                    <h4 class="uk-comment-title uk-margin-remove header-comment__title">{{ opinion.user.header }}</h4>
-                                </header>
-                                <div class="uk-comment-body comment__body">
-                                    {{ opinion.content }}
-                                </div>
-                                <footer class="uk-comment-footer comment__footer">
-                                    <div class="uk-flex uk-flex-between uk-comment-meta comment__actions">
-
-                                        <div class="rating-list">
-                                            {{ comment.stars }}
-                                            <div class="rating-list__item"><span class="rating-list__icon{% if (opinion.stars >= 1) %} rating-list__icon_active{% endif %}"></span></div>
-                                            <div class="rating-list__item"><span class="rating-list__icon{% if (opinion.stars >= 2) %} rating-list__icon_active{% endif %}"></span></div>
-                                            <div class="rating-list__item"><span class="rating-list__icon{% if (opinion.stars >= 3) %} rating-list__icon_active{% endif %}"></span></div>
-                                            <div class="rating-list__item"><span class="rating-list__icon{% if (opinion.stars >= 4) %} rating-list__icon_active{% endif %}"></span></div>
-                                            <div class="rating-list__item"><span class="rating-list__icon{% if (opinion.stars == 5) %} rating-list__icon_active{% endif %}"></span></div>
+                    {% if card.opinions is not empty %}
+                        <ul class="uk-comment-list uk-margin-remove comment-list">
+                            {% for opinion in card.opinions %}
+                                <li>
+                                    <article class="uk-comment comment">
+                                        <header class="uk-comment-header comment__header header-comment">
+                                            <h4 class="uk-comment-title uk-margin-remove header-comment__title">{{ opinion.user.header }}</h4>
+                                        </header>
+                                        <div class="uk-comment-body comment__body">
+                                            {{ opinion.content }}
                                         </div>
+                                        <footer class="uk-comment-footer comment__footer">
+                                            <div class="uk-flex uk-flex-between uk-comment-meta comment__actions">
 
-                                        <div class="uk-flex-first@m">{{ opinion.dateCreate|date('d.m.Y H:i') }}</div>
+                                                <div class="rating-list">
+                                                    {{ comment.stars }}
+                                                    <div class="rating-list__item"><span class="rating-list__icon{% if (opinion.stars >= 1) %} rating-list__icon_active{% endif %}"></span></div>
+                                                    <div class="rating-list__item"><span class="rating-list__icon{% if (opinion.stars >= 2) %} rating-list__icon_active{% endif %}"></span></div>
+                                                    <div class="rating-list__item"><span class="rating-list__icon{% if (opinion.stars >= 3) %} rating-list__icon_active{% endif %}"></span></div>
+                                                    <div class="rating-list__item"><span class="rating-list__icon{% if (opinion.stars >= 4) %} rating-list__icon_active{% endif %}"></span></div>
+                                                    <div class="rating-list__item"><span class="rating-list__icon{% if (opinion.stars == 5) %} rating-list__icon_active{% endif %}"></span></div>
+                                                </div>
 
-                                    </div>
-                                </footer>
-                            </article>
-                        </li>
-                        {% endfor %}
-                    </ul>
+                                                <div class="uk-flex-first@m">{{ opinion.dateCreate|date('d.m.Y H:i') }}</div>
+
+                                            </div>
+                                        </footer>
+                                    </article>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <div class="uk-comment-body comment__body">
+                            Никто пока не оставил отзыв
+                        </div>
+
                     {% endif %}
                 </div>
+                <h3 class="entry-reviews__title">Оставить отзыв</h3>
+                {% if app.session.has('logged_user') %}
+                    <form action="/userAddOpinion" method="POST">
+                        <div class="stars uk-margin-bottom">
+                            {% for i in 1..5 %}
+                                <span class="star {{ i == 1 ? 'active' }}" data-star="{{ i }}"><i class="fa fa-star"></i></span>
+                            {% endfor %}
+                            <span id="stars">1</span>
+                        </div>
+                        <textarea name="content" class="uk-textarea" placeholder="{% trans %}Ваш отзыв{% endtrans %}" required></textarea>
+                        <input type="hidden" name="stars" value="1">
+                        <input type="hidden" name="user_id" value="{{ app.session.get('logged_user').id }}">
+                        <input type="hidden" name="card_id" value="{{ card.id }}">
+                        <input type="hidden" name="return" value="{{ app.request.requestUri }}">
+                        <button class="uk-button uk-button-default uk-margin-top">{% trans %}Отправить{% endtrans %}</button>
+                    </form>
+
+                {% else %}
+                    <div>
+                        <a uk-toggle="target: #sign_in">{% trans %}Войдите{% endtrans %}</a> {% trans %}или{% endtrans %} <a uk-toggle="target: #sign_up">{% trans %}зарегистрируйтесь{% endtrans %}</a>, {% trans %}чтобы оставить отзыв{% endtrans %}.
+                    </div>
+                {% endif %}
             </div>
             <!-- /First Column/review -->
 
