@@ -37,7 +37,7 @@
     </head>
     <body {% block bodyVars %}{% endblock %} class="{{ is_mobile() ? 'mobile' : 'desktop' }} {% block bodyClass %}{% endblock %}">
         {{ include('header.html.twig') }}
-        <div class="page">{% block content %}{% endblock %}</div>
+        <div id="content"><div class="page uk-margin-large-bottom">{% block content %}{% endblock %}</div></div>
         {{ include('footer.html.twig') }}
 
         {% block javascripts %}
@@ -51,7 +51,7 @@
             <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
             <script src="{{ asset('assets/js/search_popup.js') }}"></script>
             <script src="{{ asset('assets/js/scripts.min.js') }}"></script>
-            <script src="{{ asset('assets/css/alex/common.js') }}"></script>
+            <script src="{{ asset('assets/js/alex/common.js') }}"></script>
 
             {% if app.session.has('logged_user') %}
                 <script src="{{ asset('assets/js/user_notify.js') }}"></script>

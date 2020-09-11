@@ -869,6 +869,17 @@ hr, .uk-hr {
 .entry-reviews__link:hover {
     color: #1D1A1A;
 }
+
+.entry-reviews__body {
+    margin: 0 0 40px;
+}
+
+.entry-reviews__textarea {
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    resize: none;
+    height: 100px;
+}
 /*-----------------
     ///entry-reviews
 ------------------*/

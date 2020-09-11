@@ -45,6 +45,7 @@
             {% for message in messages %}
             <div class="js-main-alert main-alert-window" uk-modal>
                 <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+                    <h2 class="uk-modal-title">Уведомление!</h2>
                     <button class="uk-modal-close-default uk-flex-top" type="button" uk-close></button>
                     <div class="flash-{{ label }}">{{ message|raw }}</div>
                 </div>

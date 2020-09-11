@@ -1,6 +1,10 @@
 /*-------------------
     UK Modal
 -------------------*/
+.main-alert-window .uk-modal-dialog {
+    border-radius: 0!important;
+}
+
 .uk-modal {
     padding: 0!important;
 }

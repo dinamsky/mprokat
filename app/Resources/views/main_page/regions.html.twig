@@ -16,9 +16,9 @@
 {% block title %}Мультипрокат | Аренда и прокат транспорта во всех регионах России{% endblock %}
 
 {% block content %}
-<div class="uk-container uk-padding-large uk-padding-remove-horizontal">
+<div class="uk-container">
     <h2>Мультипрокат | Аренда и прокат транспорта во всех регионах России</h2>
-    <div class="uk-column-1-5">
+    <div class="uk-column-1-2 uk-column-1-3@s uk-column-1-5@m">
         {% for region in regions %}
             <a class="uk-display-block" href="/region/{{ region.id }}">{{ region.header }} </a>
         {% endfor %}

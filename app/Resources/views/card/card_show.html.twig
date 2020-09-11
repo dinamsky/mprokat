@@ -385,28 +385,44 @@ prefix="og: http://ogp.me/ns#"
 
                     {% endif %}
                 </div>
-                <h3 class="entry-reviews__title">Оставить отзыв</h3>
-                {% if app.session.has('logged_user') %}
-                    <form action="/userAddOpinion" method="POST">
-                        <div class="stars uk-margin-bottom">
-                            {% for i in 1..5 %}
-                                <span class="star {{ i == 1 ? 'active' }}" data-star="{{ i }}"><i class="fa fa-star"></i></span>
-                            {% endfor %}
-                            <span id="stars">1</span>
-                        </div>
-                        <textarea name="content" class="uk-textarea" placeholder="{% trans %}Ваш отзыв{% endtrans %}" required></textarea>
-                        <input type="hidden" name="stars" value="1">
-                        <input type="hidden" name="user_id" value="{{ app.session.get('logged_user').id }}">
-                        <input type="hidden" name="card_id" value="{{ card.id }}">
-                        <input type="hidden" name="return" value="{{ app.request.requestUri }}">
-                        <button class="uk-button uk-button-default uk-margin-top">{% trans %}Отправить{% endtrans %}</button>
-                    </form>
 
-                {% else %}
-                    <div>
-                        <a uk-toggle="target: #sign_in">{% trans %}Войдите{% endtrans %}</a> {% trans %}или{% endtrans %} <a uk-toggle="target: #sign_up">{% trans %}зарегистрируйтесь{% endtrans %}</a>, {% trans %}чтобы оставить отзыв{% endtrans %}.
-                    </div>
-                {% endif %}
+                <div class="entry-reviews__header"><h3 class="entry-reviews__title">Оставьте свой отзыв</h3></div>
+                <div class="entry-reviews__body">
+                    {% if app.session.has('logged_user') %}
+                        <form action="/userAddOpinion" method="POST">
+                            <div class="uk-form-stacked uk-margin">
+                                <label class="uk-form-label">{% trans %}Ваша оценка{% endtrans %}</label>
+
+                                <div class="uk-flex uk-flex-middle">
+                                    <div class="rating-list">
+                                        {% for s in [1,2,3,4,5] %}
+                                        <div class="rating-list__item filled rs_selector star_{{ s }} {{ s == 5 ? 'stopped' }}" data-star="{{ s }}"><span class="rating-icon rating-icon_active"></span></div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="uk-margin-small-left">
+                                        <span class="js-stars-rating-list">5</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="uk-form-stacked uk-align">
+                                <label class="uk-form-label">{% trans %}Ваш отзыв{% endtrans %}</label>
+                                <textarea name="content" class="uk-textarea entry-reviews__textarea" required></textarea>
+                            </div>
+                            <input type="hidden" name="stars" value="5">
+                            <input type="hidden" name="user_id" value="{{ app.session.get('logged_user').id }}">
+                            <input type="hidden" name="card_id" value="{{ card.id }}">
+                            <input type="hidden" name="return" value="{{ app.request.requestUri }}">
+                            <div class="uk-flex uk-flex-center">
+                                <button class="btn btn-solid">{% trans %}Отправить{% endtrans %}</button>
+                            </div>
+                        </form>
+
+                    {% else %}
+                        <div>
+                            <a class="link" href="#signIn" uk-toggle>{% trans %}Войдите{% endtrans %}</a> {% trans %}или{% endtrans %} <a class="link" href="#signUp" uk-toggle>{% trans %}зарегистрируйтесь{% endtrans %}</a>, {% trans %}чтобы оставить отзыв{% endtrans %}.
+                        </div>
+                    {% endif %}
+                </div>
             </div>
             <!-- /First Column/review -->
 

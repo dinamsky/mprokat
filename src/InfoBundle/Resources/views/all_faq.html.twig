@@ -1,32 +1,71 @@
 {% extends 'base.html.twig' %}
 
-
 {% block content %}
-    <div class="standard_wide">
-        <div uk-grid class="uk-margin-top">
-            <div class="uk-width-1-2 uk-width-1-4@s">
+<div class="c-faq">
+    <div class="uk-container">
+        <h1 class="c-faq__title">Вопросы и ответы</h1>
 
-                <h5>Арендаторам</h5>
-                {% for a in arnd %}
-                    <div><a href="/faq/{{ a.id }}">{{ a.header }}</a></div>
-                {% endfor %}
+        <div class="uk-grid-large" uk-grid>
+            <div class="uk-width-1-1 uk-width-3-5@m">
+                {% if is_mobile() %}
+                <ul class="c-faq-tab uk-margin-remove-bottom" uk-tab>
+                    <li><a href="javascript:;">Арендаторам</a></li>
+                    <li><a href="javascript:;">Владельцам</a></li>
+                </ul>
+                <ul class="uk-switcher">
+                    <li>
+                        <div>
+                            <ul class="c-faq__list" uk-accordion>
+                                {% for a in arnd %}
+                                <li {% if loop.first %}class="uk-open"{% endif %}>
+                                    <a class="uk-accordion-title" href="javascript:;">{{ a.header }}</a>
+                                    <div class="uk-accordion-content">{{ a.content|raw }}</div>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </li>
 
-                <h5>Владельцам</h5>
-                {% for o in ownr %}
-                    <div><a href="/faq/{{ o.id }}">{{ o.header }}</a></div>
-                {% endfor %}
-
-            </div>
-            <div class="uk-width-1-2 uk-width-3-4@s">
-                <h5>Ответы на часто задаваемые вопросы</h5>
-                <hr>
-                {% if faq is defined %}
-                    <h5>{{ faq.header }}</h5>
-                    <div>
-                        {{ faq.content|raw }}
-                    </div>
+                    <li>
+                        <div>
+                            <ul class="c-faq__list" uk-accordion>
+                                {% for o in ownr %}
+                                <li {% if loop.first %}class="uk-open"{% endif %}>
+                                    <a class="uk-accordion-title" href="javascript:;">{{ o.header }}</a>
+                                    <div class="uk-accordion-content">{{ o.content|raw }}</div>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+                {% else %}
+                <h3 class="uk-align uk-margin-remove-top">Арендаторам</h3>
+                <ul class="c-faq__list" uk-accordion>
+                    {% for a in arnd %}
+                    <li {% if loop.first %}class="uk-open"{% endif %}>
+                        <a class="uk-accordion-title" href="javascript:;">{{ a.header }}</a>
+                        <div class="uk-accordion-content">{{ a.content|raw }}</div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <h3 class="uk-align uk-margin-remove-top">Владельцам</h3>
+                <ul class="c-faq__list" uk-accordion>
+                    {% for o in ownr %}
+                    <li {% if loop.first %}class="uk-open"{% endif %}>
+                        <a class="uk-accordion-title" href="javascript:;">{{ o.header }}</a>
+                        <div class="uk-accordion-content">{{ o.content|raw }}</div>
+                    </li>
+                    {% endfor %}
+                </ul>
                 {% endif %}
+            </div>
+
+            <div class="uk-width-1-1 uk-width-2-5@m">
+                <h3 class="uk-margin">В случае возникновения каких либо трудностей</h3>
+                Писать на почту <a href="mailto:mail@multiprokat.com" class="link-underline">mail@multiprokat.com</a>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}

@@ -68,21 +68,39 @@ $( document ).ready(function() {
         });
     });
 
-    $('.likes').on('click', function () {
-        var card_id = $(this).data('card_id');
+
+    $('.rs_selector').on('mouseenter', function () {
+        var s = $(this).data('star')-0;
         var t = $(this);
-        $.ajax({
-            url: '/ajax/plusLike',
-            type: 'POST',
-            data: {card_id: card_id},
-            success: function (html) {
-                $(t).find('i').attr('class', 'fa fa-heart c_red');
-                if (html === 'ok') {
-                    var l = $('#card_likes').html() - 0;
-                    $('#card_likes').html(l + 1);
-                }
-            }
-        });
+        $(this).parent('div').find('.rs_selector').removeClass('filled');
+        $(this).parent('div').find('.rs_selector .rating-icon').removeClass('rating-icon_active');
+        for (var i = 1; i <= s; i++) {
+            t.parent('div').find('.star_'+i).addClass('filled');
+            t.parent('div').find('.star_'+i).find('.rating-icon').addClass('rating-icon_active');
+        }
+
+    });
+
+    $('.rs_selector').on('mouseleave', function () {
+        var t = $(this);
+        var s = t.parent('div').find('.rs_selector.stopped').data('star')-0;
+        $(this).parent('div').find('.rs_selector').removeClass('filled');
+        $(this).parent('div').find('.rs_selector .rating-icon').removeClass('rating-icon_active');
+        for (var i = 1; i <= s; i++) {
+            t.parent('div').find('.star_' + i).addClass('filled');
+            t.parent('div').find('.star_' + i).find('.rating-icon').addClass('rating-icon_active');
+        }
+    });
+
+    $('.rs_selector').on('click', function () {
+        var t = $(this);
+        var s = $(this).data('star')-0;
+
+        t.parents('form').find('input[name="stars"]').val(s);
+        t.parents('form').find('.js-stars-rating-list').text(s);
+        t.parent('div').find('.rs_selector').removeClass('stopped');
+        t.addClass('stopped');
+        t.find('.rating-icon').addClass('rating-icon_active');
     });
 
     $('.star').on('mouseenter', function () {
