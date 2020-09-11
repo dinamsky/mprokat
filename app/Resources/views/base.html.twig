@@ -38,6 +38,8 @@
 
         <title>{% block title %}Мультипрокат{% endblock %}</title>
         <meta name="yandex-verification" content="a2d59e156f2bd014" />
+        <meta name="google-site-verification" content="8AbJhMqV8zah1g0HYnLUkH8goe3GB4O6b3L_YdB4Np0" />
+        {{ include('counters.html.twig') }}
     </head>
     <body {% block bodyVars %}{% endblock %} class="{{ is_mobile() ? 'mobile' : 'desktop' }} {% block bodyClass %}{% endblock %}">
 
@@ -80,8 +82,8 @@
 
         {% endblock %}
 
-        {# {{ include('yandex_metrica.html.twig') }} #}
-        {{ include('counters.html.twig') }}
+         {{ include('yandex_metrica.html.twig') }}
+
         {{ include('user/auth_modals.html.twig') }}
 
         {% block jivosite %}
