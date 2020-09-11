@@ -28,7 +28,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * @Route("/contacts")
+     * @Route("/contacts", name="contacts")
      */
     public function contactsAction(EntityManagerInterface $em)
     {
@@ -48,7 +48,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * @Route("/sl_page")
+     * @Route("/sl_page", name="searchs")
      */
     public function slAction(EntityManagerInterface $em, MenuMarkModel $mm)
     {

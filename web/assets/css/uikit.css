@@ -2298,21 +2298,21 @@ select.uk-form-width-xsmall {
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 /* Phone landscape and bigger */
 @media (min-width: 640px) {
   .uk-container {
-    padding-left: 30px;
-    padding-right: 30px;
+    padding-left: 0px;
+    padding-right: 0px;
   }
 }
 /* Tablet landscape and bigger */
 @media (min-width: 960px) {
   .uk-container {
-    padding-left: 40px;
-    padding-right: 40px;
+    padding-left: 0px;
+    padding-right: 0px;
   }
 }
 /*

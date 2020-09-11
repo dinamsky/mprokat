@@ -31,7 +31,7 @@ class NewsController extends Controller
     }
 
     /**
-     * @Route("/news")
+     * @Route("/news",name="news")
      */
     public function contactsAction()
     {
