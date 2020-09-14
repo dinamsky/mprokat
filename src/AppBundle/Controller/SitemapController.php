@@ -2,6 +2,7 @@
 // AppBundle/SitemapController.php
 
 namespace AppBundle\Controller;
+use AppBundle\Entity\GeneralType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +25,8 @@ class SitemapController extends Controller
         $urls[] = array('loc' => $this->generateUrl('faq'));
         $urls[] = array('loc' => $this->generateUrl('searchs'));
         $urls[] = array('loc' => $this->generateUrl('promo'));
-        $urls[] = array('loc' => $this->generateUrl('regions'));
+
+
 
 
         // add static urls with optional tags
@@ -32,31 +34,68 @@ class SitemapController extends Controller
 //        $urls[] = array('loc' => $this->generateUrl('cookie_policy'), 'lastmod' => '2018-01-01');
 
         // add dynamic urls, like blog posts from your DB
-        foreach ($em->getRepository('AppBundle:Card')->findAll() as $card) {
-            $urls[] = array(
-                'loc' => $this->generateUrl('showCard', array('card_id' => $card->getId()))
-            );
+//        foreach ($em->getRepository('InfoBundle:Article')->findAll() as $article) {
+//            $urls[] = array(
+//                'loc' => $this->generateUrl('article', array('slug' => $article->getId()))
+//            );
+//        }
+//        foreach ($em->getRepository('AppBundle:Card')->findAll() as $card) {
+//            $urls[] = array(
+//                'loc' => $this->generateUrl('showCard', array('id' => $card->getId()))
+//            );
+//        }
+//        foreach ($em->getRepository('AppBundle:City')->findAll() as $city) {
+//            $urls[] = array(
+//                'loc' => $this->generateUrl('search', array('city' => $city->getUrl()))
+//            );
+//        }
+//        foreach ($em->getRepository('UserBundle:User')->findAll() as $user) {
+//            $urls[] = array(
+//                'loc' => $this->generateUrl('user_page', array('id' => $user->getId()))
+//            );
+//        }
+
+
+//        foreach ($em->getRepository('AppBundle:GeneralType')->findAll() as $gt){
+//            foreach ($em->getRepository('AppBundle:City')->findBy(['country'=>'RUS']) as $city) {
+//                $urls[] = array(
+//                    'loc' => $this->generateUrl('search', array('city' => $city->getUrl(),'service'=>'all','general'=>$gt->getUrl()))
+//                );
+//            }
+//        }
+
+
+
+
+
+
+                    foreach ($em->getRepository('AppBundle:City')->findBy(['country' => 'RUS']) as $city) {
+                        foreach ($em->getRepository('AppBundle:GeneralType')->findAll() as $gt) {
+                        foreach ($em->getRepository('AppBundle:Mark')->findAll() as $mark) {
+                        foreach ($em->getModels($mark->getId()) as $model) {
+                        $urls[] = array(
+                            'loc' => $this->generateUrl('search', array('city' => $city->getUrl(), 'service' => 'all', 'general' => $gt->getUrl(), 'mark' => $mark->getHeader(),'model'=>$model->getHeader()))
+                        );
+                    }
+                }
+            }
         }
-        foreach ($em->getRepository('AppBundle:City')->findAll() as $city) {
-            $urls[] = array(
-                'loc' => $this->generateUrl('search', array('city' => $city->getId()))
-            );
-        }
+
 
         // add image urls
-        $products = $em->getRepository('AppBundle:Card')->findAll();
-        foreach ($products as $item) {
-            foreach($card->getFotos() as $foto){
-            $images = array(
-                'loc' => $item->getImagePath(), // URL to image
-                'title' => $item->getTitle()    // Optional, text describing the image
-            );}
-
-            $urls[] = array(
-                'loc' => $this->generateUrl('showCard', array('slug' => $item->getProductSlug())),
-                'image' => $images              // set the images for this product url
-            );
-        }
+//        $products = $em->getRepository('AppBundle:Card')->findAll();
+//        foreach ($products as $item) {
+//            foreach($card->getFotos() as $foto){
+//            $images = array(
+//                'loc' => $item->getImagePath(), // URL to image
+//                'title' => $item->getTitle()    // Optional, text describing the image
+//            );}
+//
+//            $urls[] = array(
+//                'loc' => $this->generateUrl('showCard', array('slug' => $item->getProductSlug())),
+//                'image' => $images              // set the images for this product url
+//            );
+//        }
 
 
         // return response in XML format

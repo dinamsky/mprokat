@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ArticleController extends Controller
 {
     /**
-     * @Route("/article/{slug}")
+     * @Route("/article/{slug}", name="article")
      */
     public function indexAction($slug)
     {
