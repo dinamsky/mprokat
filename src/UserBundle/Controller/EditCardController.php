@@ -257,10 +257,10 @@ class EditCardController extends Controller
             ->find($card->getUserId());
         $card->setUser($user);
 
-        $color = $this->getDoctrine()
-            ->getRepository(Color::class)
-            ->find($post->get('colorId'));
-        $card->setColor($color);
+        if ($post->get('colorId')){
+            $color = $this->getDoctrine()->getRepository(Color::class)->find($post->get('colorId'));
+            $card->setColor($color);
+        }
 
         $tariff = $this->getDoctrine()
             ->getRepository(Tariff::class)
