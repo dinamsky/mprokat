@@ -1,0 +1,56 @@
+
+<footer itemscope itemtype="http://schema.org/WPFooter" class="footer-main">
+	<div class="uk-container">
+		<div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-4@m uk-padding uk-padding-remove-top uk-padding-remove-horizontal uk-margin-small-bottom" uk-grid>
+			<div>
+				<h3 class="nav-header">{% trans %}Информация{% endtrans %}</h3>
+				<ul class="uk-nav">
+					<li><a href="/news">{% trans %}Новости{% endtrans %}</a></li>
+					<li><a href="#howtopay" uk-toggle>Как это работает?</a></li>
+					<li><a href="/faq">Часто задаваемые вопросы</a></li>
+					<li><a href="/contacts">Контакты</a></li>
+				</ul>
+			</div>
+
+			<div>
+				<h3 class="nav-header">Владельцам</h3>
+				<ul class="uk-nav">
+					<li><a href="/card/new">{% trans %}Сдать свой автомобиль{% endtrans %}</a></li>
+					{% if lang == 'ru' %}
+					<li><a href="/regions">Регионы России</a></li>
+					{%  endif %}
+					<li><a href="/assets/docs/oferta.pdf">Оферта</a></li>
+					<li><a href="/privacy_policy_ru.pdf">Политика конфиденциальности</a></li>
+				</ul>
+			</div>
+
+			<div>
+				<h3 class="nav-header">{% trans %}Арендаторам{% endtrans %}</h3>
+				<ul class="uk-nav">
+					<li><a href="#howtopay" uk-toggle>{% trans %}Как связаться и забронировать{% endtrans %}?</a></li>
+					<li><a href="/article/term-conditions">{% trans %}Условия и положения{% endtrans %}</a></li>
+					<li><a href="/article/pravila-oplaty">{% trans %}Правила оплаты на сайте{% endtrans %}</a></li>
+				</ul>
+			</div>
+
+			<div class="uk-flex">
+				<ul class="footer-main__social-media">
+					<li><a href="https://www.youtube.com/channel/UCj-igu9KFIbzdzVCezy1qFg" targer="_blank" uk-icon="youtube"></a></li>
+					<li><a href="https://twitter.com/multiprokat" targer="_blank" uk-icon="twitter"></a></li>
+					<li><a href="https://www.instagram.com/multiprokat/" target="_blank"><span class="uk-icon uk-icon-image instagram-icon"></span></a></li>
+					<li><a href="https://plus.google.com/u/1/102220936243060868002" target="_blank"><span class="uk-icon uk-icon-image google-plus-icon"></span></a></li>
+					<li><a href="https://www.facebook.com/multiprokatcom/" targer="_blank" uk-icon="facebook"></a></li>
+					<li><a href="https://vk.com/multiprokatcom" target="_blank"><span class="uk-icon uk-icon-image vk-icon"></span></a></li>
+				</ul>
+			</div>
+		</div>
+		<meta itemprop="copyrightYear" content="2020">
+		<meta itemprop="copyrightHolder" content="multiprokat.com">
+		<div class="footer-main__bottom">
+			&copy; 2020 multiprokat.com
+		</div>
+	</div>
+</footer>
+
+{% include 'how_to_pay.html.twig' %}
+{% include 'whyreserve.html.twig' %}

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html {% block htmlblock %}{% endblock %}>
-    <head>
+    <head itemscope itemtype="http://schema.org/WPHeader">
         {% if app.session.has('city') and app.session.get('city').country != 'RUS' %}
         <meta name="robots" content="noindex">
         {% endif %}
@@ -36,7 +36,7 @@
 
         <link rel="icon" type="image/x-icon" href="{{ asset('assets/favicon.ico') }}" />
 
-        <title>{% block title %}Мультипрокат{% endblock %}</title>
+        <title itemprop="headline">{% block title %}Мультипрокат | Прокат и Аренда транспорта от владельцев{% endblock %}</title>
         <meta name="yandex-verification" content="a2d59e156f2bd014" />
         <meta name="google-site-verification" content="8AbJhMqV8zah1g0HYnLUkH8goe3GB4O6b3L_YdB4Np0" />
         {{ include('counters.html.twig') }}
