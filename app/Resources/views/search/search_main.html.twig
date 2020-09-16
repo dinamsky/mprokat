@@ -19,11 +19,20 @@
 
 {% block metaTags %}
 {{ parent() }}
-{% if custom_seo and custom_seo.description != ''%}
-<meta name="description" content="{% include(template_from_string(custom_seo.description)) %}">
-{% else %}
-<meta name="description" content="{% include '/seo_templates/c_description.html.twig' %}">
-{% endif %}
+
+<meta name="description" content="{{ include(':seo_templates:c_description.html.twig') }}">
+
+{% endblock %}
+
+{% block openGraph %}
+	{{ parent() }}
+
+	<meta property="og:type" content="website">
+	<meta property="og:image" content="https://multiprokat.com/logosnip.png">
+	<meta property="og:title" content="{{ include(':seo_templates:c_title.html.twig') }}">
+	<meta property="og:url" content="{{ app.request.schemeAndHttpHost ~ app.request.requestUri }}">
+	<meta property="og:description" content="{{ include(':seo_templates:c_description.html.twig') }}">
+
 {% endblock %}
 
 {% block title %}{% if custom_seo and custom_seo.title != '' %}{% include(template_from_string(custom_seo.title)) %}{% else %}{% include '/seo_templates/c_title.html.twig' %}{% endif %}{% endblock %}

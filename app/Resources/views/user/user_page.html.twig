@@ -88,7 +88,7 @@
                 <div class="uk-width-1-1 uk-width-1-2@m uk-flex uk-flex-right@m uk-flex-middle uk-text-left uk-text-right@m">
                     <ul class="uk-list uk-margin-remove-bottom">
                         <li class="uk-link"><span class="uk-margin-small-right" uk-icon="check"></span>Пользователь верифицирован</li>
-                        <li class="uk-link"><span class="uk-margin-small-right" uk-icon="check"></span>Проверенный владелец</li>
+                       {% if user.accountTypeId == 1 %} <li class="uk-link"><span class="uk-margin-small-right" uk-icon="check"></span>Проверенный владелец</li>{% endif %}
                         {% if app.session.has('admin') %}<li class="uk-link"><span class="uk-margin-small-right" uk-icon="mail"></span>{{ user.email }}</li>{% endif %}
                     </ul>
                 </div>
