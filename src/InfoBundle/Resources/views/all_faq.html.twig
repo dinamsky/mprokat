@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-<div class="c-faq">
+<div class="c-faq" itemscope itemtype="https://schema.org/FAQPage">
     <div class="uk-container">
         <h1 class="c-faq__title">Вопросы и ответы</h1>
 
@@ -18,8 +18,19 @@
                             <ul class="c-faq__list" uk-accordion>
                                 {% for a in arnd %}
                                 <li {% if loop.first %}class="uk-open"{% endif %}>
+                                    <div itemprop="mainEntity" itemscope itemtype="https://schema.org/Question">
+                                        <meta itemprop="name" content="{{ a.header }}"/>
+                                        <meta itemprop="text" content="{{ a.header }}"/>
+                                        <div itemprop="acceptedAnswer" itemscope="" itemtype="http://schema.org/Answer">
+                                            <meta itemprop="text" content="{{ a.content|raw }}">
+                                        </div>
+                                    </div>
                                     <a class="uk-accordion-title" href="javascript:;">{{ a.header }}</a>
+
+
                                     <div class="uk-accordion-content">{{ a.content|raw }}</div>
+
+
                                 </li>
                                 {% endfor %}
                             </ul>
@@ -31,6 +42,13 @@
                             <ul class="c-faq__list" uk-accordion>
                                 {% for o in ownr %}
                                 <li {% if loop.first %}class="uk-open"{% endif %}>
+                                    <div itemprop="mainEntity" itemscope itemtype="https://schema.org/Question">
+                                        <meta itemprop="name" content="{{ o.header }}"/>
+                                        <meta itemprop="text" content="{{ o.header }}"/>
+                                        <div itemprop="acceptedAnswer" itemscope="" itemtype="http://schema.org/Answer">
+                                            <meta itemprop="text" content="{{ o.content|raw }}">
+                                        </div>
+                                    </div>
                                     <a class="uk-accordion-title" href="javascript:;">{{ o.header }}</a>
                                     <div class="uk-accordion-content">{{ o.content|raw }}</div>
                                 </li>
@@ -44,6 +62,13 @@
                 <ul class="c-faq__list" uk-accordion>
                     {% for a in arnd %}
                     <li {% if loop.first %}class="uk-open"{% endif %}>
+                        <div itemprop="mainEntity" itemscope itemtype="https://schema.org/Question">
+                            <meta itemprop="name" content="{{ a.header }}"/>
+                            <meta itemprop="text" content="{{ a.header }}"/>
+                            <div itemprop="acceptedAnswer" itemscope="" itemtype="http://schema.org/Answer">
+                                <meta itemprop="text" content="{{ a.content|raw }}">
+                            </div>
+                        </div>
                         <a class="uk-accordion-title" href="javascript:;">{{ a.header }}</a>
                         <div class="uk-accordion-content">{{ a.content|raw }}</div>
                     </li>
@@ -53,6 +78,13 @@
                 <ul class="c-faq__list" uk-accordion>
                     {% for o in ownr %}
                     <li {% if loop.first %}class="uk-open"{% endif %}>
+                        <div itemprop="mainEntity" itemscope itemtype="https://schema.org/Question">
+                            <meta itemprop="name" content="{{ o.header }}"/>
+                            <meta itemprop="text" content="{{ o.header }}"/>
+                            <div itemprop="acceptedAnswer" itemscope="" itemtype="http://schema.org/Answer">
+                                <meta itemprop="text" content="{{ o.content|raw }}">
+                            </div>
+                        </div>
                         <a class="uk-accordion-title" href="javascript:;">{{ o.header }}</a>
                         <div class="uk-accordion-content">{{ o.content|raw }}</div>
                     </li>

@@ -104,8 +104,8 @@ prefix="og: http://ogp.me/ns#"
             <meta itemprop="price" content="{{ price_hour}}" />
             <meta itemprop="priceCurrency" content="RUB">
             <meta itemprop="availability" content="http://schema.org/InStock" />
-        </div>
-    </div>
+
+
     <!-- /Product schema -->
 
     <!-- Entry Title -->
@@ -389,6 +389,18 @@ prefix="og: http://ogp.me/ns#"
 
                                                 <div class="uk-flex-first@m">{{ opinion.dateCreate|date('d.m.Y H:i') }}</div>
 
+                                                <div itemprop="review" itemscope itemtype="http://schema.org/Review">
+                                                    <meta itemprop="name">Отзыв</meta>
+                                                     <meta itemprop="author" content="{{ opinion.user.header }}">,
+                                                    <meta itemprop="datePublished" content="{{ opinion.dateCreate|date('d.m.Y') }}">
+                                                    <div itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+                                                        <meta itemprop="worstRating" content="1">
+                                                        <meta itemprop="ratingValue"  content="{{ opinion.stars }}">
+                                                        <meta itemprop="bestRating" content="5">
+                                                        <meta itemprop="description" content="{{ opinion.content }}">
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </footer>
                                     </article>
@@ -470,7 +482,7 @@ prefix="og: http://ogp.me/ns#"
                 <div class="best-offers__header">
                     <h3 class="best-offers__title">{% trans %}Лучшие предложения{% endtrans %}</h3>
                 </div>
-                <div class="best-offers__content">
+                <div class="best-offers__content" itemscope itemtype="http://schema.org/ItemList">
                     <div class="uk-child-width-1-2 uk-child-width-1-1@m best-offers__list" uk-grid>
                         {% for card in t3_new.getTop3 %}
                         {{ include('search/one_grid_view_alex.html.twig', {'card':card, 'height':'150px'}) }}
@@ -486,7 +498,7 @@ prefix="og: http://ogp.me/ns#"
     <div uk-grid>
         <div class="uk-width-1-1">
 
-            <div class="many-like uk-margin-large-bottom">
+            <div class="many-like uk-margin-large-bottom" itemscope itemtype="http://schema.org/ItemList">
                 <div class="many-like__header">
                     <h3 class="many-like__title">{% trans %}Многим нравится{% endtrans %}</h3>
                 </div>
@@ -499,6 +511,8 @@ prefix="og: http://ogp.me/ns#"
         </div>
     </div>
     <!-- /Third Grid: many people like -->
+        </div>
+    </div>
 </div>
 
 <input type="hidden" name="card_id" value="{{ card.id }}">
