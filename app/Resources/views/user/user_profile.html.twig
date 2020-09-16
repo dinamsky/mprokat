@@ -2,6 +2,8 @@
 
 {% block stylesheets %}
 {{ parent() }}
+    <link href="{{ asset('assets/css/auto-complete.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/alex/profile/profile-main.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block javascripts %}
@@ -12,6 +14,11 @@
 <script src="{{ asset('assets/js/common.js') }}"></script>
 <script src="{{ asset('assets/js/inputmask.min.js') }}"></script>
 <script src="{{ asset('assets/js/country.js') }}"></script>
+    <script src="{{ asset('assets/js/city_general_mark_selector.js') }}"></script>
+    <script src="{{ asset('assets/js/showCard.js') }}"></script>
+    <script src="{{ asset('assets/js/left_selector.js') }}"></script>
+    <script src="{{ asset('assets/js/recapthcha_validate.js') }}"></script>
+
 {% endblock %}
 
 {% block content %}
@@ -172,9 +179,10 @@
                                 <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
                                 <div class="rating-item"><span class="rating-icon"></span></div>
                             </div>
-                            <span class="uk-text-muted uk-margin-small-left">(7)</span>
+                            <span class="uk-text-muted uk-margin-small-left">({{ user.opinions|length }})</span>
                         </div>
-                        <div class="uk-text-muted uk-text-center uk-text-right@m">Баланс: 0 ₽</div>
+                        <div class="uk-text-muted uk-text-center uk-text-right@m">Заработано: {{ totalSum }} ₽</div>
+                        <div class="uk-text-muted uk-text-center uk-text-right@m">Cделок: {{ totalOrd }} </div>
                     </div>
 
                     <div class="uk-hr"></div>
@@ -335,8 +343,8 @@
                     <div uk-grid class="edit-toggle">
                         <div class="uk-width-1-1">
                             <div class="uk-flex uk-flex-between uk-flex-middle uk-card-header uk-padding-remove-horizontal">
-                                <h2 class="uk-margin-remove">{% trans %}Отзывы{% endtrans %}<span class="uk-hidden@m"> 7</span><span class="uk-visible@m"> обо мне</span></h2>
-                                <div class="uk-visible@m"><a href="#" class="uk-link link-underline">{% trans %}Все отзывы (6){% endtrans %}</a></div>
+                                <h2 class="uk-margin-remove">{% trans %}Отзывы{% endtrans %}<span class="uk-hidden@m"> {{ user.opinions|length }}</span><span class="uk-visible@m"> обо мне</span></h2>
+                                <div class="uk-visible@m"><a href="#" class="uk-link link-underline">{% trans %}Все отзывы {% endtrans %}({{ user.opinions|length }})</a></div>
                             </div>
                         </div>
                     </div>
@@ -344,58 +352,47 @@
                     <!-- Список: Отзывы -->
                     <div class="uk-grid-medium edit-toggle" uk-grid>
                         <div class="uk-width-1-1">
-                            <ul class="uk-comment-list uk-margin-remove review-list">
-                                <li>
-                                    <article class="uk-comment review">
-                                        <header class="uk-comment-header review-header">
-                                            <h4 class="uk-comment-title uk-margin-remove review-title"><a class="review-link" href="#">Иван Иванов</a></h4>
-                                        </header>
-                                        <div class="uk-comment-body review-body uk-width-1-1 uk-width-1-2@m">
-                                            <p>Все четко, быстрая коммуникация с владельцем авто, будем пользоваться снова</p>
-                                        </div>
-                                        <footer class="uk-comment-footer review-footer">
-                                            <div class="uk-flex uk-flex-between uk-comment-meta uk-flex-middle">
-                                                <div class="rating">
-                                                    <div class="rating-list">
-                                                        <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
-                                                        <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
-                                                        <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
-                                                        <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
-                                                        <div class="rating-item"><span class="rating-icon"></span></div>
-                                                    </div>
+                            {% if user.opinions is not empty %}
+                                <ul class="uk-comment-list uk-margin-remove review-list review-list__user-page">
+                                    {% for opinion in user.opinions %}
+                                        <li>
+                                            <article class="uk-comment review">
+                                                <header class="uk-comment-header review-header">
+                                                    <h4 class="uk-comment-title uk-margin-remove review-title">{{ opinion.user.header }}</h4>
+                                                </header>
+                                                <div class="uk-comment-body review-body uk-width-1-1 uk-width-1-2@m">
+                                                    {{ opinion.content }}
                                                 </div>
+                                                <footer class="uk-comment-footer review-footer">
+                                                    <div class="uk-flex uk-flex-between uk-comment-meta uk-flex-middle">
 
-                                                <div class="uk-flex-first@m">21.03.2018</div>
-                                            </div>
-                                        </footer>
-                                    </article>
-                                </li>
-                                <li>
-                                    <article class="uk-comment review">
-                                        <header class="uk-comment-header review-header">
-                                            <h4 class="uk-comment-title uk-margin-remove review-title"><a class="review-link" href="#">Сергей</a></h4>
-                                        </header>
-                                        <div class="uk-comment-body review-body uk-width-1-1 uk-width-1-2@m">
-                                            <p>Все четко, быстрая коммуникация с владельцем авто, будем пользоваться снова</p>
-                                        </div>
-                                        <footer class="uk-comment-footer review-footer">
-                                            <div class="uk-flex uk-flex-between uk-comment-meta uk-flex-middle">
-                                                <div class="rating">
-                                                    <div class="rating-list">
-                                                        <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
-                                                        <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
-                                                        <div class="rating-item"><span class="rating-icon rating-icon_active"></span></div>
-                                                        <div class="rating-item"><span class="rating-icon"></span></div>
-                                                        <div class="rating-item"><span class="rating-icon"></span></div>
+                                                        <div class="rating">
+
+                                                            <div class="rating-item"><span class="rating-icon{% if (opinion.stars >= 1) %} rating-icon_active{% endif %}"></span></div>
+                                                            <div class="rating-item"><span class="rating-icon{% if (opinion.stars >= 2) %} rating-icon_active{% endif %}"></span></div>
+                                                            <div class="rating-item"><span class="rating-icon{% if (opinion.stars >= 3) %} rating-icon_active{% endif %}"></span></div>
+                                                            <div class="rating-item"><span class="rating-icon{% if (opinion.stars >= 4) %} rating-icon_active{% endif %}"></span></div>
+                                                            <div class="rating-item"><span class="rating-icon{% if (opinion.stars == 5) %} rating-icon_active{% endif %}"></span></div>
+                                                        </div>
+
+                                                        <div class="uk-flex-first@m">{{ opinion.dateCreate|date('d.m.Y H:i') }}</div>
+
                                                     </div>
-                                                </div>
+                                                </footer>
+                                            </article>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <div class="uk-comment-body comment__body">
+                                    Никто пока не оставил отзыв
+                                </div>
 
-                                                <div class="uk-flex-first@m">21.03.2018</div>
-                                            </div>
-                                        </footer>
-                                    </article>
-                                </li>
-                            </ul>
+                            {% endif %}
+
+
+
+
                         </div>
                     </div>
 

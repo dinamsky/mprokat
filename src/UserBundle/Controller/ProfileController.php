@@ -393,7 +393,7 @@ class ProfileController extends Controller
 
         $user = $this->getDoctrine()
             ->getRepository(User::class)
-            ->find($this->get('session')->get('logged_user')->getId());
+            ->find((int)$this->get('session')->get('logged_user')->getId());
 
 
 
@@ -418,17 +418,28 @@ class ProfileController extends Controller
             $generalTypes = $query->getResult();
 
             $totalSum = $this->countSum($user->getId());
+            $totalOrd = $this->countOrd($user->getId());
+            $star = 0;
+            $total_opinions = 0;
+            foreach($user->getOpinions() as $op){
+                $star = $star + $op->getStars();
+                $total_opinions++;
+            }
+            if ($total_opinions > 0) $total_stars = round($star/$total_opinions, 1);
+            else $total_stars = 0;
 
 
             return $this->render('user/user_profile.html.twig', [
                 'user' => $user,
                 'city' => $city,
-
+                'total_opinions' => $total_opinions,
+                'total_stars' => $total_stars,
                 'in_city' => $in_city,
                 'cityId' => $city->getId(),
                 'generalTypes' => $generalTypes,
                 'lang' => $_SERVER['LANG'],
-                'totalSum' => $totalSum
+                'totalSum' => $totalSum,
+                 'totalOrd' => $totalOrd,
 
             ]);
         }
@@ -1297,6 +1308,7 @@ class ProfileController extends Controller
                 'generalTypes' => $generalTypes,
                 'lang' => $_SERVER['LANG'],
                 'totalSum' => $totalSum,
+
                 'no_jivosite' => true,
                 'no_header' => true,
                 'notifies' => $ntf
@@ -1353,6 +1365,7 @@ class ProfileController extends Controller
                 'generalTypes' => $generalTypes,
                 'lang' => $_SERVER['LANG'],
                 'totalSum' => $totalSum,
+
                 'no_jivosite' => true,
                 'no_header' => true
             ]);
@@ -2258,13 +2271,14 @@ class ProfileController extends Controller
                 $star = $star + $op->getStars();
                 $total_opinions++;
             }
-            if ($total_opinions > 0) $opinions = round($star/$total_opinions, 1);
-            else $opinions = 0;
+            if ($total_opinions > 0) $total_stars = round($star/$total_opinions, 1);
+            else $total_stars = 0;
 
 
             return $this->render('user/user_page.html.twig', [
                 'user' => $user,
-                'opinions' => $opinions,
+//                'opinions' => $opinions,
+                'total_stars' => $total_stars,
                 'total_opinions' => $total_opinions,
                 'date_create' => $user->getDateCreate(),
                 'user_foto' => $user_foto,
@@ -2302,9 +2316,7 @@ class ProfileController extends Controller
 
     private function countSum($user_id)
     {
-        $user = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->find((int)$user_id);
+
 
         $em = $this->getDoctrine()->getManager();
 
@@ -2318,6 +2330,25 @@ class ProfileController extends Controller
             $total = $total + $o->getPrice();
         }
         return $total;
+    }
+    private function countOrd($user_id)
+    {
+
+
+        $em = $this->getDoctrine()->getManager();
+
+        $query = $em->createQuery('SELECT o FROM UserBundle:FormOrder o WHERE o.userId = ?1 AND o.ownerStatus = ?2');
+        $query->setParameter(1, $user_id);
+        $query->setParameter(2, 'wait_for_rent');
+        $orders = $query->getResult();
+
+        $total = 0;
+        $totals = 0;
+        foreach ($orders as $o){
+            $total = $total + $o->getPrice();
+            $totals = $totals + 1;
+        }
+        return $totals;
     }
 
     /**

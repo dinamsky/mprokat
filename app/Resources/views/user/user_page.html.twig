@@ -47,11 +47,11 @@
                     <div class="rating uk-flex uk-flex-center">
                         <div class="rating-list">
                             {{ comment.stars }}
-                            <div class="rating-item"><span class="rating-icon{% if (opinions >= 1) %} rating-icon_active{% endif %}"></span></div>
-                            <div class="rating-item"><span class="rating-icon{% if (opinions >= 2) %} rating-icon_active{% endif %}"></span></div>
-                            <div class="rating-item"><span class="rating-icon{% if (opinions >= 3) %} rating-icon_active{% endif %}"></span></div>
-                            <div class="rating-item"><span class="rating-icon{% if (opinions >= 4) %} rating-icon_active{% endif %}"></span></div>
-                            <div class="rating-item"><span class="rating-icon{% if (opinions == 5) %} rating-icon_active{% endif %}"></span></div>
+                            <div class="rating-item"><span class="rating-icon{% if (total_stars >= 1) %} rating-icon_active{% endif %}"></span></div>
+                            <div class="rating-item"><span class="rating-icon{% if (total_stars >= 2) %} rating-icon_active{% endif %}"></span></div>
+                            <div class="rating-item"><span class="rating-icon{% if (total_stars >= 3) %} rating-icon_active{% endif %}"></span></div>
+                            <div class="rating-item"><span class="rating-icon{% if (total_stars >= 4) %} rating-icon_active{% endif %}"></span></div>
+                            <div class="rating-item"><span class="rating-icon{% if (total_stars == 5) %} rating-icon_active{% endif %}"></span></div>
                         </div>
                         <span class="uk-text-muted uk-margin-small-left">{{ total_opinions }}</span>
                     </div>
