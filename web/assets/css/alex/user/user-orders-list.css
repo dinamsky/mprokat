@@ -323,7 +323,7 @@
     margin-right: auto;
     border: 2px solid #4629D3;
     padding: 20px;
-    border-radius: 3px;
+    border-radius: 15px;
     opacity: .7;
 }
 
@@ -347,7 +347,7 @@
 .chat-messages-list > li.message-left .message-box,
 .chat-messages-list > li.message-right .message-box {
     border: 1px solid #eee;
-    border-radius: 3px;
+    border-radius: 15px;
     padding: 12px 20px;
 }
 
