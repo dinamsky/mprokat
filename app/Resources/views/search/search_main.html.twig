@@ -1,145 +1,148 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-	{{ parent() }}
-	<link href="{{ asset('assets/css/auto-complete.css') }}" rel="stylesheet">
-	<link href="{{ asset('assets/css/nouislider.css') }}" rel="stylesheet">
+{{ parent() }}
+<link href="{{ asset('assets/css/auto-complete.css') }}" rel="stylesheet">
+<link href="{{ asset('assets/css/nouislider.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block javascripts %}
-	{{ parent() }}
-	<script src="{{ asset('assets/js/city_general_mark_selector.js') }}"></script>
-	<script src="{{ asset('assets/js/nouislider.min.js') }}"></script>
-	<script src="{{ asset('assets/js/search_page.js') }}"></script>
-	<script src="{{ asset('assets/js/auto-complete.min.js') }}"></script>
-	<script src="{{ asset('assets/js/mark_autocomplete.js') }}"></script>
-	<script src="{{ asset('assets/js/inputmask.min.js') }}"></script>
-	<script src="{{ asset('assets/js/country.js') }}"></script>
+{{ parent() }}
+<script src="{{ asset('assets/js/city_general_mark_selector.js') }}"></script>
+<script src="{{ asset('assets/js/nouislider.min.js') }}"></script>
+<script src="{{ asset('assets/js/search_page.js') }}"></script>
+<script src="{{ asset('assets/js/auto-complete.min.js') }}"></script>
+<script src="{{ asset('assets/js/mark_autocomplete.js') }}"></script>
+<script src="{{ asset('assets/js/inputmask.min.js') }}"></script>
+<script src="{{ asset('assets/js/country.js') }}"></script>
 {% endblock %}
 
 {% block metaTags %}
-	{{ parent() }}
-	{% if custom_seo and custom_seo.description != ''%}
-		<meta name="description" content="{% include(template_from_string(custom_seo.description)) %}">
-	{% else %}
-		<meta name="description" content="{% include '/seo_templates/c_description.html.twig' %}">
-	{% endif %}
+{{ parent() }}
+{% if custom_seo and custom_seo.description != ''%}
+<meta name="description" content="{% include(template_from_string(custom_seo.description)) %}">
+{% else %}
+<meta name="description" content="{% include '/seo_templates/c_description.html.twig' %}">
+{% endif %}
 {% endblock %}
 
 {% block title %}{% if custom_seo and custom_seo.title != '' %}{% include(template_from_string(custom_seo.title)) %}{% else %}{% include '/seo_templates/c_title.html.twig' %}{% endif %}{% endblock %}
 
 {% block content %}
 
-	{% set x_uri = app.request.pathinfo|split('/') %}
+{% set x_uri = app.request.pathinfo|split('/') %}
 
-	{% if bodyTypes and model.id == null %}
-		{% set body_url = '/rent/'~x_uri[2]~'/'~x_uri[3]~'/'~x_uri[4] %}
-		{% if mark.id != null %}
-			{% set body_url = '/rent/'~x_uri[2]~'/'~x_uri[3]~'/'~x_uri[4]~'/'~x_uri[5] %}
+{% if bodyTypes and model.id == null %}
+{% set body_url = '/rent/'~x_uri[2]~'/'~x_uri[3]~'/'~x_uri[4] %}
+{% if mark.id != null %}
+{% set body_url = '/rent/'~x_uri[2]~'/'~x_uri[3]~'/'~x_uri[4]~'/'~x_uri[5] %}
+{% endif %}
+{% endif %}
+
+<div hidden>
+	{{ include('search/search_form.html.twig',{'top':true}) }}
+</div>
+<section class="categories-city">
+	<div class="uk-container">
+		{% if custom_seo and custom_seo.h1 != ''%}
+		<h2>{% include(template_from_string(custom_seo.h1)) %}</h2>
+		{% else %}
+		<h2>{% include 'seo_templates/c_h1.html.twig' %}</h2>
 		{% endif %}
-	{% endif %}
 
-	<section class="categories-city">
-		<div class="uk-container">
-			{% if custom_seo and custom_seo.h1 != ''%}
-				<h2>{% include(template_from_string(custom_seo.h1)) %}</h2>
+		{% if x_uri[2] is defined and x_uri[2] != 'rus' and x_uri|length == 3 %}
+		{{ include('search/gt_block.html.twig') }}
+		{% endif %}
+
+		{% if x_uri[2] is defined and x_uri[2] != 'rus' and x_uri|length > 4 and mark.id == null %}
+		{{ include('search/mark_block.html.twig') }}
+		{% endif %}
+
+		{% if x_uri[2] is defined and x_uri[2] != 'rus' and x_uri|length > 5 and model.id == null %}
+		{{ include('search/model_block.html.twig') }}
+		{% endif %}
+
+		{#			{{ include('search/search_form.html.twig',{'top':true}) }}#}
+	</div>
+</section>
+
+<section class="cards">
+	<div class="uk-container">
+		<div class="cards-header cards-header-center">
+			{% if total_cards > 0 %}
+			<p class="results">{% trans %}Найдено{% endtrans %}: {{ total_cards }} {% trans %}транспорта{% endtrans %}</p>
 			{% else %}
-				<h2>{% include 'seo_templates/c_h1.html.twig' %}</h2>
+			<p class="results mx-auto uk-h2">{% trans %}Транспорт не найден{% endtrans %}</p>
 			{% endif %}
 
-			{% if x_uri[2] is defined and x_uri[2] != 'rus' and x_uri|length == 3 %}
-				{{ include('search/gt_block.html.twig') }}
-			{% endif %}
-
-			{% if x_uri[2] is defined and x_uri[2] != 'rus' and x_uri|length > 4 and mark.id == null %}
-				{{ include('search/mark_block.html.twig') }}
-			{% endif %}
-
-			{% if x_uri[2] is defined and x_uri[2] != 'rus' and x_uri|length > 5 and model.id == null %}
-				{{ include('search/model_block.html.twig') }}
-			{% endif %}
-
-{#			{{ include('search/search_form.html.twig',{'top':true}) }}#}
-		</div>
-	</section>
-
-	<section class="cards">
-		<div class="uk-container">
-			<div class="cards-header cards-header-center">
-				{% if total_cards > 0 %}
-					<p class="results">{% trans %}Найдено{% endtrans %}: {{ total_cards }} {% trans %}транспорта{% endtrans %}</p>
+			{% if total_cards > 0 %}
+			<div class="uk-flex uk-flex-middle uk-width-1-1 uk-width-auto@m">
+				{% if is_mobile() %}
+				<select class="select-inline" id="order" name="order" value="{{ app.request.get('order') is defined ? app.request.get('order') : 0 }}">
+					<option value="price_asc">Сортировка: сначала дешевле</option>
+					<option value="price_desc">Сортировка: сначала дороже</option>
+				</select>
 				{% else %}
-					<p class="results mx-auto uk-h2">{% trans %}Транспорт не найден{% endtrans %}</p>
-				{% endif %}
-
-				{% if total_cards > 0 %}
-				<div class="uk-flex uk-flex-middle uk-width-1-1 uk-width-auto@m">
-					{% if is_mobile() %}
-					<select class="select-inline" id="order" name="order" value="{{ app.request.get('order') is defined ? app.request.get('order') : 0 }}">
-						<option value="price_asc">Сортировка: сначала дешевле</option>
-						<option value="price_desc">Сортировка: сначала дороже</option>
-					</select>
-					{% else %}
-					<p>Сортировка:</p>
-					<select class="select-inline" id="order" name="order" value="{{ app.request.get('order') is defined ? app.request.get('order') : 0 }}">
-						<option value="price_asc">сначала дешевле</option>
-						<option value="price_desc">сначала дороже</option>
-					</select>
-					{% endif %}
-				</div>
+				<p>Сортировка:</p>
+				<select class="select-inline" id="order" name="order" value="{{ app.request.get('order') is defined ? app.request.get('order') : 0 }}">
+					<option value="price_asc">сначала дешевле</option>
+					<option value="price_desc">сначала дороже</option>
+				</select>
 				{% endif %}
 			</div>
+			{% endif %}
+		</div>
 
-			{% if total_cards == 0 %}
+		{% if total_cards == 0 %}
 
-				<div class="zero_text uk-text-center uk-margin-medium">
-					{% trans %}Пока никто не разместил транспорт в этом городе и категории.{% endtrans %}<br>
-					{% trans %}Будь первым - добавь свой транспорт и получай клиентов!{% endtrans %}
-				</div>
+		<div class="zero_text uk-text-center uk-margin-medium">
+			{% trans %}Пока никто не разместил транспорт в этом городе и категории.{% endtrans %}<br>
+			{% trans %}Будь первым - добавь свой транспорт и получай клиентов!{% endtrans %}
+		</div>
 
 
-				{% if app.session.has('logged_user') %}
-				<div class="uk-flex uk-flex-center uk-margin-large-bottom"><a href="/card/new" class="btn btn-solid zero_button">{% trans %}Разместить свой транспорт!{% endtrans %}</a></div>
-				{% elseif app.session.has('admin') %}
-				<div class="uk-flex uk-flex-center uk-margin-large-bottom"><a href="/card/new" class="btn btn-solid zero_button">{% trans %}Разместить свой транспорт!{% endtrans %}</a></div>
-				{% else %}
-				<div class="uk-flex uk-flex-center uk-margin-large-bottom"><a href="#signIn" class="btn btn-solid zero_button" uk-toggle>{% trans %}Разместить транспорт!{% endtrans %}</a></div>
-				{% endif %}
+		{% if app.session.has('logged_user') %}
+		<div class="uk-flex uk-flex-center uk-margin-large-bottom"><a href="/card/new" class="btn btn-solid zero_button">{% trans %}Разместить свой транспорт!{% endtrans %}</a></div>
+		{% elseif app.session.has('admin') %}
+		<div class="uk-flex uk-flex-center uk-margin-large-bottom"><a href="/card/new" class="btn btn-solid zero_button">{% trans %}Разместить свой транспорт!{% endtrans %}</a></div>
+		{% else %}
+		<div class="uk-flex uk-flex-center uk-margin-large-bottom"><a href="#signIn" class="btn btn-solid zero_button" uk-toggle>{% trans %}Разместить транспорт!{% endtrans %}</a></div>
+		{% endif %}
 
-									{% if similar %}
-				<div uk-grid>
-					<div class="uk-width-1-1">
+		{% if similar %}
+		<div uk-grid>
+			<div class="uk-width-1-1">
 
-						<div class="many-like uk-margin-large-bottom">
-							<div class="many-like__header">
-								<h3 class="many-like__title">{% trans %}Многим нравится{% endtrans %}</h3>
-							</div>
-							<div class="uk-child-width-1-2 uk-child-width-1-4@m uk-grid-column-medium uk-grid-row-large many-like__list" uk-grid>
-								{% for card in similar %}
-									{{ include('search/one_grid_view_alex.html.twig', {'card':card, 'height':'150px'}) }}
-								{% endfor %}
-							</div>
-						</div>
+				<div class="many-like uk-margin-large-bottom">
+					<div class="many-like__header">
+						<h3 class="many-like__title">{% trans %}Многим нравится{% endtrans %}</h3>
+					</div>
+					<div class="uk-child-width-1-2 uk-child-width-1-4@m uk-grid-column-medium uk-grid-row-large many-like__list" uk-grid>
+						{% for card in similar %}
+						{{ include('search/one_grid_view_alex.html.twig', {'card':card, 'height':'150px'}) }}
+						{% endfor %}
 					</div>
 				</div>
-									{% endif %}
-
-
-			{% endif %}
-
-			{% include 'search/' ~ view ~ '.html.twig' %}
-
-			{% include 'search/mobile_search_pager.html.twig' %}
-
+			</div>
 		</div>
-	</section>
+		{% endif %}
 
-	<section class="uk-text-center uk-margin-large-bottom">
-		<div class="uk-container uk-margin-auto uk-width-1-1 uk-width-1-2@m">
-			<h2>Примите участие в улучшении сервиса</h2>
-			<p class="uk-margin-medium-bottom">Поделитесь своими впечатлениями от пользования<br class="uk-visible@m"> платформой, это поможет нам в улучшении.</p>
-			<div class="uk-flex uk-flex-center"><a href="https://wa.me/79164559808?text=Добрый день!%20Пишу%20с%20сайта%20Мультипрокат!" class="btn uk-width-1-1 uk-width-medium@m btn-solid">Оставить отзыв</a></div>
-		</div>
-	</section>
+
+		{% endif %}
+
+		{% include 'search/' ~ view ~ '.html.twig' %}
+
+		{% include 'search/mobile_search_pager.html.twig' %}
+
+	</div>
+</section>
+
+<section class="uk-text-center uk-margin-large-bottom">
+	<div class="uk-container uk-margin-auto uk-width-1-1 uk-width-1-2@m">
+		<h2>Примите участие в улучшении сервиса</h2>
+		<p class="uk-margin-medium-bottom">Поделитесь своими впечатлениями от пользования<br class="uk-visible@m"> платформой, это поможет нам в улучшении.</p>
+		<div class="uk-flex uk-flex-center"><a href="https://wa.me/79164559808?text=Добрый день!%20Пишу%20с%20сайта%20Мультипрокат!" class="btn uk-width-1-1 uk-width-medium@m btn-solid">Оставить отзыв</a></div>
+	</div>
+</section>
 
 {% endblock %}
