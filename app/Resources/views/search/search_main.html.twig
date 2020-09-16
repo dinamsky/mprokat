@@ -25,6 +25,21 @@
 		<meta name="description" content="{% include '/seo_templates/c_description.html.twig' %}">
 	{% endif %}
 {% endblock %}
+{% block openGraph %}
+	{{ parent() }}
+	<link rel="shortcut icon" type="image/ico" href="/assets/favicon.ico" />
+	<link rel="icon" type="image/ico" href="/assets/favicon.ico" />
+	<link rel="canonical" href="https://multiprokat.com/" />
+	<link rel="apple-touch-icon" href="https://multiprokat.com/apple-touch-icon.png">
+	<link rel="shortcut icon" href="https://multiprokat.com/apple-touch-icon.png">
+	<meta name="description" content="РњСѓР»СЊС‚РёРїСЂРѕРєР°С‚: Р°СЂРµРЅРґР° Рё РїСЂРѕРєР°С‚ РјРѕС‚РѕС†РёРєР»РѕРІ, Р°РІС‚РѕРјРѕР±РёР»РµР№, РєР°С‚РµСЂРѕРІ, СЏС…С‚ РІ 230 РіРѕСЂРѕРґР°С… РѕС‚ РІР»Р°РґРµР»СЊС†РµРІ С‚СЂР°РЅСЃРїРѕСЂС‚Р°. 4600 РµРґРёРЅРёС† С‚СЂР°РЅСЃРїРѕСЂС‚Р° РІ РѕРґРЅРѕРј РјРµСЃС‚Рµ"  />
+	<meta name="twitter:card" content="summary_large_image">
+	<meta property="og:type" content="website">
+
+	<meta property="og:url" content="https://multiprokat.com">
+	<meta property="og:title" content="РњСѓР»СЊС‚РёРїСЂРѕРєР°С‚: Р°СЂРµРЅРґР° Рё РїСЂРѕРєР°С‚ С‚СЂР°РЅСЃРїРѕСЂС‚Р° РѕС‚ РІР»Р°РґРµР»СЊС†РµРІ.">
+	<meta property="og:description" content="РњСѓР»СЊС‚РёРїСЂРѕРєР°С‚: Р°СЂРµРЅРґР° Рё РїСЂРѕРєР°С‚ РјРѕС‚РѕС†РёРєР»РѕРІ, Р°РІС‚РѕРјРѕР±РёР»РµР№, РєР°С‚РµСЂРѕРІ, СЏС…С‚ РІ 230 РіРѕСЂРѕРґР°С… РѕС‚ РІР»Р°РґРµР»СЊС†РµРІ. 4600 РµРґРёРЅРёС† С‚СЂР°РЅСЃРїРѕСЂС‚Р° РІ РѕРґРЅРѕРј РјРµСЃС‚Рµ">
+	<meta property="og:image" content="https://multiprokat.com/logosnip.png">{% endblock %}
 
 {% block title %}{% if custom_seo and custom_seo.title != '' %}{% include(template_from_string(custom_seo.title)) %}{% else %}{% include '/seo_templates/c_title.html.twig' %}{% endif %}{% endblock %}
 

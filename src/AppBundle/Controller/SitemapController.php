@@ -3,6 +3,7 @@
 
 namespace AppBundle\Controller;
 use AppBundle\Entity\GeneralType;
+use AppBundle\Menu\MenuMarkModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,7 +14,7 @@ class SitemapController extends Controller
     /**
      * @Route("/sitemap/sitemap.xml", name="sitemap", defaults={"_format"="xml"})
      */
-    public function showAction(Request $request) {
+    public function showAction(Request $request, MenuMarkModel $mm) {
         $em = $this->getDoctrine()->getManager();
         $urls = array();
         $hostname = $request->getSchemeAndHttpHost();
@@ -69,18 +70,40 @@ class SitemapController extends Controller
 
 
 
-                    foreach ($em->getRepository('AppBundle:City')->findBy(['country' => 'RUS']) as $city) {
-                        foreach ($em->getRepository('AppBundle:GeneralType')->findAll() as $gt) {
+                    foreach ($em->getRepository('AppBundle:City')->findBy(['country' => 'RUS' AND 'total'!='0']) as $city) {
+                        foreach ($em->getRepository('AppBundle:GeneralType')->findBy(['url'=>'cars']) as $gt) {
                         foreach ($em->getRepository('AppBundle:Mark')->findAll() as $mark) {
-                        foreach ($em->getModels($mark->getId()) as $model) {
+    //                    foreach ($mm->getModels($mark->getId()) as $model) {
                         $urls[] = array(
-                            'loc' => $this->generateUrl('search', array('city' => $city->getUrl(), 'service' => 'all', 'general' => $gt->getUrl(), 'mark' => $mark->getHeader(),'model'=>$model->getHeader()))
+                            'loc' => $this->generateUrl('search', array('city' => $city->getUrl(), 'service' => 'all', 'general' => $gt->getUrl(), 'mark' => $mark->getHeader(),'model' => $model->getHeader()))
                         );
                     }
                 }
             }
-        }
+      //  }
 
+//        foreach ($em->getRepository('AppBundle:City')->findBy(['country' => 'RUS']) as $city) {
+//            foreach ($em->getRepository('AppBundle:GeneralType')->findBy(['url'=>'trucks']) as $gt) {
+//                foreach ($em->getRepository('AppBundle:Mark')->findAll() as $mark) {
+//                    foreach ($mm->getModels($mark->getId()) as $model) {
+//                        $urls[] = array(
+//                            'loc' => $this->generateUrl('search', array('city' => $city->getUrl(), 'service' => 'all', 'general' => $gt->getUrl(),'model' => $model->getHeader()))
+//                        );
+//                    }
+//                }
+//            }
+//        }
+//        foreach ($em->getRepository('AppBundle:City')->findBy(['country' => 'RUS']) as $city) {
+//            foreach ($em->getRepository('AppBundle:GeneralType')->findBy(['url'=>'limo']) as $gt) {
+//                foreach ($em->getRepository('AppBundle:Mark')->findAll() as $mark) {
+//                    foreach ($mm->getModels($mark->getId()) as $model) {
+//                        $urls[] = array(
+//                            'loc' => $this->generateUrl('search', array('city' => $city->getUrl(), 'service' => 'all', 'general' => $gt->getUrl(), 'model' => $model->getHeader()))
+//                        );
+//                    }
+//                }
+//            }
+//        }
 
         // add image urls
 //        $products = $em->getRepository('AppBundle:Card')->findAll();
