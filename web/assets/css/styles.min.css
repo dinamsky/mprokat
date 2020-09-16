@@ -7897,7 +7897,8 @@ a:hover {
     -webkit-box-flex: .175;
     -webkit-flex: .175;
     -ms-flex: .175;
-    flex: .175
+    flex: .175;
+    min-width: 0;
 }
 
 .header-top .header-profile .avatar {
@@ -7906,6 +7907,8 @@ a:hover {
     width: 30px;
     height: 30px;
     overflow: hidden;
+    -webkit-flex-shrink: 0;
+            flex-shrink: 0;
 }
 
 .header-top .header-profile .avatar img {
@@ -7924,11 +7927,23 @@ a:hover {
     -webkit-box-align: center;
     -webkit-align-items: center;
     -ms-flex-align: center;
-    align-items: center
+    align-items: center;
+    min-width: 0;
 }
 
 .header-top .header-profile .text .name {
-    margin-right: 5px
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 5px;
+}
+
+.header-top .header-profile .text .dropdown-icon {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: none;
 }
 
 .header-top .login {

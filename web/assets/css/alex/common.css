@@ -1908,4 +1908,25 @@ body.user-base section.categories {
     color: #aaa;
 }
 
+.transport-card {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+}
 
+.transport-card-content {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+}
+
+.transport-card-footer {
+    padding: 3px 0 0;
+}

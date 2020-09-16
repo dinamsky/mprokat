@@ -1,5 +1,18 @@
 $( document ).ready(function() {
 
+    jQuery.fn.swap = function(b) {
+        b = jQuery(b)[0];
+        var a = this[0],
+            a2 = a.cloneNode(true),
+            b2 = b.cloneNode(true),
+            stack = this;
+
+        a.parentNode.replaceChild(b2, a);
+        b.parentNode.replaceChild(a2, b);
+
+        stack[0] = a2;
+        return this.pushStack( stack );
+    };
 
     $('#subfields').on('change', '.subFieldSelect', function(){
         var subId = $(this).children('option:selected').val();
@@ -31,9 +44,10 @@ $( document ).ready(function() {
         else $(this).val('0').removeAttr('checked');
     });
 
-    $('.delete_foto_button').on('click',function(){
+    $('body').on('click', '.delete_foto_button', function(){
         var t = $(this);
         var id = $(t).data('id');
+
         $.ajax({
             url: '/ajax/deleteFoto',
             type: 'POST',
@@ -41,20 +55,30 @@ $( document ).ready(function() {
             success: function(html){
                 if(html==='stop'){
                     alert('Нельзя удалить единственное фото!');
-                } else $(t).parents('.edit_foto').remove();
+                } else {
+                    t.parents('.template-photo-grid__item').remove();
+                }
             }
         });
+
     });
 
-    $('.main_foto_button').on('click',function(){
+    $('body').on('click', '.main_foto_button', function(){
         var t = $(this);
         var id = $(t).data('id');
+        let tblock = t.parents('.js-photo-grid-item'),
+            firstBlock = $('.template-photo-grid .js-photo-grid-item')[0];
+
         $.ajax({
             url: '/ajax/mainFoto',
             type: 'POST',
             data: {id:id},
             success: function(html){
-                $(t).parents('.edit_foto').prependTo(".edit_fotos_block");
+                //$(t).parents('.edit_foto').prependTo(".edit_fotos_block");
+                $('.main_foto_button.uk-button-primary').removeClass('uk-button-primary').addClass('uk-button-default');
+                t.addClass('uk-button-primary').removeClass('uk-button-default');
+
+                tblock.swap(firstBlock);
             }
         });
     });
