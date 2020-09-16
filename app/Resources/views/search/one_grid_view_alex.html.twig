@@ -66,7 +66,18 @@
     {% if c_price != '' %}
     {% set serv_perc = card.generalType.servicePercent %}
     {% set c_price = c_price + (c_price/100*serv_perc)|round(0,'ceil') %}
+        <div itemscope itemprop="itemListElement" itemtype="http://schema.org/Product">
+            <meta itemprop="name" content="{{ card.markModel.Mark.header }} {{ card.markModel.header }}">
+            <link itemprop="url" href="https://multiprokat.com/card/{{ card.id }}"/>
+            <link itemprop="image" href="https://multiprokat.com{{ img_src }}" />
+            <meta itemprop="description" content="Прокат {{ card.markModel.Mark.header }} {{ card.markModel.header }} в {{ card.city.header }}">
 
+            <div itemscope itemprop="offers" itemtype="http://schema.org/Offer">
+                <meta itemprop="price" content="{{ c_price}}" />
+                <meta itemprop="priceCurrency" content="RUB">
+                <meta itemprop="availability" content="http://schema.org/InStock" />
+            </div>
+        </div>
     <div class="card-item__price">
         {{ c_price|number_format(0,'.','&nbsp;')|raw }}
         &nbsp;<i class="fa fa-{{ currency }}"></i>&nbsp;

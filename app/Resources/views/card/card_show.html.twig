@@ -42,7 +42,7 @@
 {{ parent() }}
 <meta property="og:type" content="website">
 <meta property="og:image" content="{{ app.request.getSchemeAndHttpHost() ~ mainFoto }}">
-<meta property="og:title" content="{{ include(':seo_templates:p_description.html.twig') }}">
+<meta property="og:title" content="{{ include(':seo_templates:p_title.html.twig') }}">
 <meta property="og:url" content="{{ app.request.schemeAndHttpHost ~ app.request.requestUri }}">
 {% endblock %}
 {% block metaTags %}
@@ -52,7 +52,7 @@
 {% block htmlblock %}
 prefix="og: http://ogp.me/ns#"
 {% endblock %}
-{% block title %}{{ include(':seo_templates:p_description.html.twig') }}{% endblock %}
+{% block title %}{{ include(':seo_templates:p_title.html.twig') }}{% endblock %}
 {% block content %}
 <script>var cardId = {{ card.id }};</script>
 <!-- FB -->
@@ -69,31 +69,48 @@ prefix="og: http://ogp.me/ns#"
     {{ app.session.remove('share') }}
 {% endif %}
 
-<div class="uk-container">
+<div class="uk-container" >
     <!-- Breadcrumbs -->
-    <ul class="uk-breadcrumb uk-margin-bottom breadcrumb">
-        <li><a href="/">{% trans %}Главная{% endtrans %}</a></li>
-        <li><a href="/rent/{{ card.city.url }}">{{ card.city.header }}</a></li>
-        <li><a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}">{{ lang == 'ru' ? card.generalType.header : card.generalType.url }}</a></li>
+    <ul itemscope itemtype="http://schema.org/BreadcrumbList" class="uk-breadcrumb uk-margin-bottom breadcrumb">
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem"><a itemprop="item" href="/"><span itemprop="name">{% trans %}Главная{% endtrans %}</span></a><meta itemprop="position" content="1" /></li>
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem"><a itemprop="item" href="/rent/{{ card.city.url }}"><span itemprop="name">{{ card.city.header }}</span></a><meta itemprop="position" content="2" /></li>
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem"><a itemprop="item" href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}"><span itemprop="name">{{ lang == 'ru' ? card.generalType.header : card.generalType.url }}</span></a><meta itemprop="position" content="3" /></li>
         {% if bodyType %}
-        <li>
-            <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ bodyType.url }}">{{ lang == 'ru' ? bodyType.header : bodyType.url }}</a>
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a itemprop="item" href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ bodyType.url }}"><span itemprop="name">{{ lang == 'ru' ? bodyType.header : bodyType.url }}</span></a>
+            <meta itemprop="position" content="4" />
         </li>
         {% endif %}
         {% if card.modelId != 20991 %}
-        <li>
-            <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ card.markModel.mark.header }}">{{ card.serviceTypeId == 1 ? 'Прокат'|trans : 'Аренда'|trans }} {{ card.markModel.mark.header }} в {{ card.city.gde }}</a>
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a itemprop="item" href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ card.markModel.mark.header }}"><span itemprop="name">{{ card.serviceTypeId == 1 ? 'Прокат'|trans : 'Аренда'|trans }} {{ card.markModel.mark.header }} в {{ card.city.gde }}</span></a>
+            <meta itemprop="position" content="5" />
         </li>
-        <li>
-            <a href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ card.markModel.mark.header }}/{{ card.markModel.header }}">{{ card.markModel.mark.header }} {{ card.markModel.header }}</a>
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a itemprop="item" href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ card.markModel.mark.header }}/{{ card.markModel.header }}"><span itemprop="name">{{ card.markModel.mark.header }} {{ card.markModel.header }}</span></a>
+            <meta itemprop="position" content="6" />
         </li>
         {% endif %}
     </ul>
     <!-- /Breadcrumbs -->
+    <!-- Product schema -->
+    <div itemscope  itemtype="http://schema.org/Product">
+        <meta itemprop="name" content="{{ card.markModel.Mark.header }} {{ card.markModel.header }}">
+        <link itemprop="url" href="https://multiprokat.com/card/{{ card.id }}"/>
+        <link itemprop="image" href="https://multiprokat.com{{ mainFoto}}" />
+        <meta itemprop="description" content="Прокат {{ card.markModel.Mark.header }} {{ card.markModel.header }} в {{ card.city.header }}">
+
+        <div itemscope itemprop="offers" itemtype="http://schema.org/Offer">
+            <meta itemprop="price" content="{{ price_hour}}" />
+            <meta itemprop="priceCurrency" content="RUB">
+            <meta itemprop="availability" content="http://schema.org/InStock" />
+        </div>
+    </div>
+    <!-- /Product schema -->
 
     <!-- Entry Title -->
     <div class="entry-header">
-        <h1 class="entry-header__title">{{ include(':seo_templates:p_h1.html.twig') }}</h1>
+        <h1  class="entry-header__title">{{ include(':seo_templates:p_h1.html.twig') }}</h1>
     </div>
     <!-- /Entry Title -->
 
@@ -140,10 +157,10 @@ prefix="og: http://ogp.me/ns#"
                             <div class="entry-preview__slider slider-preview js-entry-preview-slider" uk-lightbox>
                                 {% for k, foto in card.getFotos %}
                                 <div class="entry-preview__slide">
-                                    <a class="entry-preview__link" href="/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg">
+                                    <a class="entry-preview__link"  href="/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg">
                                         <div class="entry-preview__item">
                                             <div class="entry-preview__figure">
-                                                <div class="entry-preview__image" style="background-image: url('/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg');"></div>
+                                                <div class="entry-preview__image"  style="background-image: url('/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg');"></div>
                                             </div>
                                         </div>
                                     </a>
@@ -259,7 +276,7 @@ prefix="og: http://ogp.me/ns#"
                 <ul class="uk-switcher">
                     <li>
                         <div class="entry-information">
-                            <div class="entry-information__description">{{ card.content|striptags('<br><p><b><ul><li><strong>')|raw }}</div>
+                            <div itemprop="description" class="entry-information__description">{{ card.content|striptags('<br><p><b><ul><li><strong>')|raw }}</div>
 
                             <div class="entry-information__list uk-grid-row-collapse uk-child-width-1-1 uk-child-width-1-2@m" uk-grid>
                                 {% if card.prodYear != 0 %}

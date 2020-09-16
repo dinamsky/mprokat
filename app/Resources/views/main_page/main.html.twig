@@ -152,7 +152,7 @@
             {# end блок выбора города #}
         </div>
         <div class="swiper-container">
-            <div class="swiper-wrapper">
+            <div class="swiper-wrapper" itemscope itemtype="http://schema.org/ItemList">
                 {% for card in top10Slider %}
                 {{ include('search/one_grid_view.html.twig', {'card':card, 'micro':true}) }}
                 {% endfor %}
@@ -163,22 +163,6 @@
     </div>
 </section>
 
-{# <div class="uk-width-1-1" style="padding: 10px 0 15px 0; background: #eaeaea;">
-    <div class="standard_wide">
-        <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="4">
-            {% for card in top10Slider %}
-            {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px', 'micro':true}) }}
-            {% endfor %}
-        </div>
-        <div class="uk-text-center">
-            {% if app.session.has('logged_user') %}
-            <a class="" href="/card/new" title="Хотите сюда?<br>Разместите в ТОП!" uk-tooltip>Разместить в ТОП</a>
-            {% else %}
-            <a class="after_top" title="Хотите сюда?<br>Разместите в ТОП!" uk-toggle="target: #sign_in_or_up" uk-tooltip>Разместить в ТОП</a>
-            {% endif %}
-        </div>
-    </div>
-</div> #}
 
 {# end блок слайдера ТОП оплаченных #}
 
@@ -189,7 +173,7 @@
 <section class="cards cards-slide">
     <div class="uk-container">
         <div class="swiper-container">
-            <div class="swiper-wrapper">
+            <div class="swiper-wrapper" itemscope itemtype="http://schema.org/ItemList">
                 {% for card in top10OwnerSlider %}
                 {{ include('search/one_grid_view.html.twig', {'card':card, 'micro':true}) }}
                 {% endfor %}
@@ -200,18 +184,6 @@
     </div>
 </section>
 
-{# <div class="uk-width-1-1  uk-margin-medium-top">
-    <div class="standard_wide">
-        <div class="uk-text-center ">
-            <div class="uk-h4 uk-text-truncate"></div>
-        </div>
-        <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="4">
-            {% for card in top10OwnerSlider %}
-            {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px'}) }}
-            {% endfor %}
-        </div>
-    </div>
-</div>  #}
 {% endif %}
 
 {# end блок слайдера ТОП активных арендаторов #}
@@ -222,7 +194,7 @@
 <section class="cards cards-slide uk-margin-medium-bottom">
     <div class="uk-container">
         <div class="swiper-container">
-            <div class="swiper-wrapper">
+            <div class="swiper-wrapper" itemscope itemtype="http://schema.org/ItemList">
                 {% for card in top13_10Slider %}
                 {{ include('search/one_grid_view.html.twig', {'card':card, 'micro':true}) }}
                 {% endfor %}
@@ -233,39 +205,6 @@
     </div>
 </section>
 
-{# <div class="uk-width-1-1  uk-margin-medium-top">
-    <div class="standard_wide">
-        <div class="uk-text-center ">
-            <div class="uk-h4 uk-text-truncate"></div>
-        </div>
-        <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="4">
-            {% for card in top13_10Slider %}
-            {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px'}) }}
-            {% endfor %}
-        </div>
-    </div>
-</div> #}
-{# end блок слайдера ТОП ?? #}
-
-{# <div class="uk-visible@s" id="animation_container" style="background-color:rgba(255, 255, 255, 1.00); width:100%; height:90px">
-    <canvas height="90" id="canvas" style="position: absolute; display: block; background-color:rgba(255, 255, 255, 1.00);" width="100%"></canvas>
-    <div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:100%; height:90px; position: absolute; left: 0px; top: 0px; display: block;"></div>
-</div> #}
-
-
-{# begin блок слайдера ТОП новых бесплатных #}
-{# <div class="uk-width-1-1 uk-margin-medium-top">
-    <div class="standard_wide">
-        <div class="uk-text-center ">
-            <div class="uk-h4 uk-text-truncate">{% trans %}Новые на сайте{% endtrans %}</div>
-        </div>
-        <div class="owl-carousel owl-carousel-all owl-theme uk-width-1-1" data-dots="0" data-items="4">
-            {% for card in t3_new.getNew10 %}
-            {{ include('search/one_grid_view.html.twig', {'card':card, 'height':'250px'}) }}
-            {% endfor %}
-        </div>
-    </div>
-</div> #}
 
 <section class="cards cards-slide">
     <div class="uk-container">
@@ -273,7 +212,7 @@
             <h2>{% trans %}Новые на сайте{% endtrans %}</h2>
         </div>
         <div class="swiper-container">
-            <div class="swiper-wrapper">
+            <div class="swiper-wrapper" itemscope itemtype="http://schema.org/ItemList">
                 {% for card in t3_new.getNew10 %}
                 {{ include('search/one_grid_view.html.twig', {'card':card}) }}
                 {% endfor %}
@@ -283,17 +222,10 @@
         </div>
     </div>
 </section>
-{# <div class="uk-width-1-5@l uk-visible@l">
-    <div class="uk-margin-bottom uk-text-uppercase"><b>{% trans %}Новые на сайте{% endtrans %}</b></div>
-    {% for card in t3_new.getNew %}
-    {{ include(':footer:top_new_tpl.html.twig', {'card':card}) }}
-    {% endfor %}
-</div> #}
-{# end блок слайдера ТОП новых бесплатных #}
+
 
 {{ include('waytosuccess.html.twig') }}
 
-{# {{ dump(positionCars) }} #}
 
 {% for kPosC, posC in positionCars %}
 {{ include('grid_view_tops.html.twig', {'in_city':in_city, 'header':positionHeader[kPosC], 'posC':posC, 'cards':blockCars[kPosC], 'height':'250px', 'keyC':kPosC}) }}
@@ -303,79 +235,7 @@
 {{ include('owners_top.html.twig') }}
 {# end блок лучших арендаторов #}
 
-{#
-{% if not is_mobile() %}
-<div class="top_counter bg_white c_grey uk-margin-large-bottom">
-    <div class="standard_wide">
-        <div uk-grid class="{% if is_mobile() %}{% else %}uk-grid-divider{% endif %}">
-            <div class="uk-width-1-4">
-                <div class="uk-text-center">
-                    <i class="fa fa-file"></i><br>
-                    <span class="top_counter_desc">{% trans %}Транспорта{% endtrans %}</span><br>
-                    <b>{{ total.cards }}</b>
-                </div>
-            </div>
-            <div class="uk-width-1-4">
-                <div class="uk-text-center">
-                    <i class="fa fa-eye"></i><br>
-                    <span class="top_counter_desc">{% trans %}Просмотров{% endtrans %}</span><br>
-                    <b>{{ total.views }}</b>
-                </div>
-            </div>
-            <div class="uk-width-1-4">
-                <div class="uk-text-center">
-                    <i class="fa fa-home"></i><br>
-                    <span class="top_counter_desc">{% trans %}Городов{% endtrans %}</span><br>
-                    <b>{{ total.cities }}</b>
-                </div>
-            </div>
-            <div class="uk-width-1-4">
-                <div class="uk-text-center">
-                    <i class="fa fa-list"></i><br>
-                    <span class="top_counter_desc">{% trans %}Категорий{% endtrans %}</span><br>
-                    <b>{{ total.categories }}</b>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-{% endif %} #}
 
-{#
-<div class="top_counter bg_white c_grey uk-margin-large-bottom">
-    <div class="standard_wide">
-        <div uk-grid class="{% if is_mobile() %}{% else %}uk-grid-divider{% endif %}">
-            <div class="uk-width-1-1 uk-width-1-4@s">
-                <div class="uk-text-center">
-                    <i class="fa fa-eye"></i><br>
-                    <span class="top_counter_desc">Просмотров</span><br>
-                    <b>{{ total.views }}</b>
-                </div>
-            </div>
-            <div class="uk-width-1-3 uk-width-1-4@s">
-                <div class="uk-text-center">
-                    <i class="fa fa-file"></i><br>
-                    <span class="top_counter_desc">Транспорта</span><br>
-                    <b>{{ total.cards }}</b>
-                </div>
-            </div>
-            <div class="uk-width-1-3 uk-width-1-4@s">
-                <div class="uk-text-center">
-                    <i class="fa fa-home"></i><br>
-                    <span class="top_counter_desc">Городов</span><br>
-                    <b>{{ total.cities }}</b>
-                </div>
-            </div>
-            <div class="uk-width-1-3 uk-width-1-4@s">
-                <div class="uk-text-center">
-                    <i class="fa fa-list"></i><br>
-                    <span class="top_counter_desc">Категорий</span><br>
-                    <b>{{ total.categories }}</b>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> #}
 
 {% set seo_text = '' %}
 {% if custom_seo and custom_seo.seoText != ''%}
