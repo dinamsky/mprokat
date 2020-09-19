@@ -67,18 +67,26 @@ class SitemapController extends Controller
 
 
 
+//                    $em = $this->getDoctrine()->getManager();
+//                    $qb = $em -> createQueryBuilder();
+//        $query=$qb->select(array('c'))
+//            ->from('AppBundle:City','c')
+//            ->where('c.country=RUS')
+//            ->andWhere($qb->expr()->gt('c.total',0))
+//            ->getQuery();
+//        $cities = $query->getResult();
 
 
-
-                    foreach ($em->getRepository('AppBundle:City')->findBy(['country' => 'RUS' AND 'total'!='0']) as $city) {
+                    foreach ($em->getRepository('AppBundle:City')->findBy(['country' => 'RUS']) as $city) {
+                        if ($city->getTotal()!=0){
                         foreach ($em->getRepository('AppBundle:GeneralType')->findBy(['url'=>'cars']) as $gt) {
                         foreach ($em->getRepository('AppBundle:Mark')->findAll() as $mark) {
     //                    foreach ($mm->getModels($mark->getId()) as $model) {
                         $urls[] = array(
-                            'loc' => $this->generateUrl('search', array('city' => $city->getUrl(), 'service' => 'all', 'general' => $gt->getUrl(), 'mark' => $mark->getHeader(),'model' => $model->getHeader()))
+                            'loc' => $this->generateUrl('search', array('city' => $city->getUrl(), 'service' => 'all', 'general' => $gt->getUrl(),'mark' => $mark->getHeader()))
                         );
                     }
-                }
+                }}
             }
       //  }
 
