@@ -7331,6 +7331,11 @@ input:checked+.slider:before {
     width: 45px
 }
 
+.mat-group .selectric-phone-select li img {
+    width: 18px;
+    height: 18px;
+}
+
 .mat-group .selectric-phone-select .selectric {
     height: 44px;
     background-color: transparent
@@ -7346,6 +7351,15 @@ input:checked+.slider:before {
 .mat-group .selectric-phone-select .selectric .label {
     padding: 0;
     margin: 0 20px 0 0
+}
+
+.mat-group .selectric-phone-select .selectric .label img,
+.selectric-select-phone-code li img,
+.selectric-select-phone-code .selectric .label img{
+    height: 18px;
+    width: 18px;
+    max-width: 18px;
+    max-height: 18px;
 }
 
 @media (max-width: 575.98px) {
@@ -7849,10 +7863,10 @@ a:hover {
 }
 
 .header-top .city-select {
-    -webkit-box-flex: .55;
-    -webkit-flex: .55;
-    -ms-flex: .55;
-    flex: .55
+    -webkit-box-flex: .5;
+    -webkit-flex: .5;
+    -ms-flex: .5;
+    flex: .5
 }
 
 .header-top .city-select .city-select-link {
