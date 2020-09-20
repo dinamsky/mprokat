@@ -208,17 +208,14 @@ prefix="og: http://ogp.me/ns#"
                 <div class="entry-aside__price price-entry">
                     <h4 class="price-entry__title">Стоимость аренды</h4>
                     {% set servicePercent = card.generalType.servicePercent %}
-                    {% if card.currency == 'RUB' %}
-                    {% set currency = 'ruble' %}
-                    {% elseif card.currency == 'USD' %}
-                    {% set currency = 'dollar' %}
-                    {% elseif card.currency == 'EUR'%}
-                        {% set currency = 'euro' %}
-                    {% elseif card.currency == 'KZT'%}
-                        {% set currency = 'tenge' %}
-                    {% elseif card.currency == 'UAH'%}
-                        {% set currency = 'hryvnia' %}
-                    {% endif %}
+                    {% set currency = {
+                        'RUB': '<i class="fa fa-ruble"></i>',
+                        'EUR': '<i class="fa fa-euro"></i>',
+                        'USD': '<i class="fa fa-dollar"></i>',
+                        'BYN':'Бел. Рублей',
+                        'KZT':'Тенге',
+                        'UAH':'Гривен'
+                    } %}
                     <ul class="price-entry__list">
                         {% for price in card.getCardPrices if price.value != '' and price.value != '0.00' and price.priceId != 10 %}
                         <li class="price-entry__item">
@@ -226,7 +223,7 @@ prefix="og: http://ogp.me/ns#"
                             <span class="price-entry__price">
                                         {% set c_price = price.value + (price.value/100*servicePercent)|round(0,'ceil') %}
                                         {{ c_price|number_format(0,'.','&nbsp;')|raw }}&nbsp;
-                                        <i class="fa fa-{{ currency }}">{{ currency }}</i>
+                                         {{ currency[card.currency]|raw }}
                                     </span>
                         </li>
                         {% endfor %}
@@ -235,17 +232,11 @@ prefix="og: http://ogp.me/ns#"
                             <span class="price-entry__time">Залог</span>
                             <span class="price-entry__price">
                                         {{ price.value|number_format(0,'.','&nbsp;')|raw }}&nbsp;
-                                        <i class="fa fa-{{ currency }}">{{ currency }}</i>
+                                        {{ currency[card.currency]|raw }}
                                     </span>
                         </li>
                         {% endfor %}
-                        <li class="price-entry__item price-entry__item_pledge">
-                            <span class="price-entry__time">Обменный курс</span>
-                            <span class="price-entry__price">
-                                       {{  exchange|number_format(2,'.','&nbsp;')|raw  }}
-                                        <i class="fa fa-ruble"> / {{ currency }}</i>
-                                    </span>
-                        </li>
+
 
                     </ul>
                 </div>
