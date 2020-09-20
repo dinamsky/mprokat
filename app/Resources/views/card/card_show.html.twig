@@ -83,7 +83,7 @@ prefix="og: http://ogp.me/ns#"
         {% endif %}
         {% if card.modelId != 20991 %}
         <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-            <a itemprop="item" href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ card.markModel.mark.header }}"><span itemprop="name">{{ card.serviceTypeId == 1 ? 'Прокат'|trans : 'Аренда'|trans }} {{ card.markModel.mark.header }} в {{ card.city.gde == null ? card.city.header : card.city.gde  }}</span></a>
+            <a itemprop="item" href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ card.markModel.mark.header }}"><span itemprop="name">{{ card.serviceTypeId == 1 ? 'Прокат'|trans : 'Аренда'|trans }} {{ card.markModel.mark.header }} в {{ card.city.gde == ' ' ? card.city.header : card.city.gde  }}</span></a>
             <meta itemprop="position" content="5" />
         </li>
         <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
