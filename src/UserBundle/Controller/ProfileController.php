@@ -446,6 +446,20 @@ class ProfileController extends Controller
         else return new Response("",404);
     }
 
+    public function getExchangeRates($currency)
+    {
+        $rates = array();
+        $id = 'Nominal';
+        $id1 = 'Valute';
+        $id2 = $currency;
+        $id3 = 'Value';
+
+        $rates[] = json_decode(file_get_contents('https://www.cbr-xml-daily.ru/daily_json.js'),true);
+        $rate = $rates[0][$id1][$id2][$id3];
+        $nominal = $rates[0][$id1][$id2][$id];
+        return  $rate/$nominal;
+    }
+
     /**
      * @Route("/profile/save")
      */
@@ -671,6 +685,9 @@ class ProfileController extends Controller
             ->getRepository(GeneralType::class)
             ->find($gt_id);
 
+
+            $currency = $card->getCurrency();
+           $exchangeRate = $this->getExchangeRates($currency);
             $price = $price_hour = $deposit = $service = 0;
             foreach ($card->getCardPrices() as $cp){
                 if($cp->getpriceId() == 2) $price = $cp->getValue();
@@ -698,7 +715,7 @@ class ProfileController extends Controller
             $service = ceil($price/100*floatval($gt->getServicePercent()));
 
             // if($service == 0) $service = 500;
-            $reservation = ($service == 0)?100:$service;
+            $reservation = (($service == 0)?500:$service)*$exchangeRate;
 
             //$total = $price + $deposit + $service;
             $total = $price + $service;
@@ -789,14 +806,14 @@ class ProfileController extends Controller
                         <div class="uk-text-left"><a href="/card/'.$card->getId().'">'.$post->get('header').'</a><br>
                         <b><i class="fa fa-calendar"></i> '.$post->get('date_in').' - <i class="fa fa-calendar"></i> '.$d_o.'
                         Дней аренды: '.$between.'. Город:'.$msg_tmp_city.'<br><br>
-                        Стоимость аренды: '.($total).' <i class="fa fa-ruble"></i><br>
-                        В том числе бронирование: '.$reservation.' <i class="fa fa-ruble"></i><br>
-                        Оплата при получении транспорта: '.$price.' <i class="fa fa-ruble"></i><br></b>
+                        Стоимость аренды: '.($total).' '.$currency.'</i><br>
+                        В том числе бронирование: '.$reservation.' <i class="fa fa-ruble"> (оплата за бронирование принимаетс в рублх по курсу ЦБ)</i><br>
+                        Оплата при получении транспорта: '.$price.' '.$currency.'<br></b>
                         <hr/>
                         Мы гарантируем безопасность сделки при условии бронирования на сайте.<br>
                         В целях безопасности Ваш телефон скрыт от владельца. Он увидит его, когда подтвердит бронь, а Вы оплатите бронирование.<br><br>
                         После оплаты бронирования:<br>
-                        Оплатите остаток '.$price.' руб на месте приемки транспорта<br><br>
+                        Оплатите остаток '.$price.''.$currency.' на месте приемки транспорта<br><br>
                         <span class="uk-text-muted">В целях безопасности не переводите деньги и не общайтесь за пределами сайта!<span><br>
                         <a href uk-toggle="target: .mp-garant-information-'.$card->getId().'">Скрыть условия аренды...</a>
                         </div></div>
@@ -823,9 +840,9 @@ class ProfileController extends Controller
                 $msg_tmp_1 = '<div class="uk-text-left"><a href="/card/'.$card->getId().'">'.$post->get('header').'</a><br>
                         <b><i class="fa fa-calendar"></i> '.$post->get('date_in').' - <i class="fa fa-calendar"></i> '.$d_o.'
                         Дней аренды: '.$between.'. Город:'.$msg_tmp_city.'<br><br>
-                        Стоимость аренды: '.($total).' <i class="fa fa-ruble"></i><br>
+                        Стоимость аренды: '.($total).' '.$currency.'</i><br>
                         В том числе бронирование: '.$reservation.' <i class="fa fa-ruble"></i><br>
-                        Оплата при получении транспорта: '.$price.' <i class="fa fa-ruble"></i><br></b>
+                        Оплата при получении транспорта: '.$price.' '.$currency.'</i><br></b>
                         </div>';
                 
                 $messages[] = [

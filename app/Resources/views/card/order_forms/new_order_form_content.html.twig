@@ -7,6 +7,7 @@
                         <form id="nbf_form" action="/user/bookMessage" uk-grid class="uk-grid-small" method="POST" onsubmit="return new_book_validate();">
 
                             <div class="uk-width-1-1">
+
                                 <span class="uk-text-small">{% trans %}Транспортное средство{% endtrans %}</span>
                                 <input type="text" name="header" class="uk-input" value="{{ card.markModel.mark.header }} {{ card.markModel.header }}" required>
                             </div>

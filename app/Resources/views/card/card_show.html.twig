@@ -83,7 +83,7 @@ prefix="og: http://ogp.me/ns#"
         {% endif %}
         {% if card.modelId != 20991 %}
         <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-            <a itemprop="item" href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ card.markModel.mark.header }}"><span itemprop="name">{{ card.serviceTypeId == 1 ? 'Прокат'|trans : 'Аренда'|trans }} {{ card.markModel.mark.header }} в {{ card.city.gde }}</span></a>
+            <a itemprop="item" href="/rent/{{ card.city.url }}/all/{{ card.generalType.url }}/{{ card.markModel.mark.header }}"><span itemprop="name">{{ card.serviceTypeId == 1 ? 'Прокат'|trans : 'Аренда'|trans }} {{ card.markModel.mark.header }} в {{ card.city.gde == ' ' ? card.city.header : card.city.gde  }}</span></a>
             <meta itemprop="position" content="5" />
         </li>
         <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
@@ -208,13 +208,14 @@ prefix="og: http://ogp.me/ns#"
                 <div class="entry-aside__price price-entry">
                     <h4 class="price-entry__title">Стоимость аренды</h4>
                     {% set servicePercent = card.generalType.servicePercent %}
-                    {% if card.currency == 'RUB' %}
-                    {% set currency = 'ruble' %}
-                    {% elseif card.currency == 'USD' %}
-                    {% set currency = 'dollar' %}
-                    {% else %}
-                    {% set currency = 'euro' %}
-                    {% endif %}
+                    {% set currency = {
+                        'RUB': '<i class="fa fa-ruble"></i>',
+                        'EUR': '<i class="fa fa-euro"></i>',
+                        'USD': '<i class="fa fa-dollar"></i>',
+                        'BYN':'Бел. Рублей',
+                        'KZT':'Тенге',
+                        'UAH':'Гривен'
+                    } %}
                     <ul class="price-entry__list">
                         {% for price in card.getCardPrices if price.value != '' and price.value != '0.00' and price.priceId != 10 %}
                         <li class="price-entry__item">
@@ -222,7 +223,7 @@ prefix="og: http://ogp.me/ns#"
                             <span class="price-entry__price">
                                         {% set c_price = price.value + (price.value/100*servicePercent)|round(0,'ceil') %}
                                         {{ c_price|number_format(0,'.','&nbsp;')|raw }}&nbsp;
-                                        <i class="fa fa-{{ currency }}"></i>
+                                         {{ currency[card.currency]|raw }}
                                     </span>
                         </li>
                         {% endfor %}
@@ -231,10 +232,12 @@ prefix="og: http://ogp.me/ns#"
                             <span class="price-entry__time">Залог</span>
                             <span class="price-entry__price">
                                         {{ price.value|number_format(0,'.','&nbsp;')|raw }}&nbsp;
-                                        <i class="fa fa-{{ currency }}"></i>
+                                        {{ currency[card.currency]|raw }}
                                     </span>
                         </li>
                         {% endfor %}
+
+
                     </ul>
                 </div>
 

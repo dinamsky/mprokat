@@ -483,6 +483,8 @@ class SearchController extends Controller
         if ($city) {
             $seo['city']['chto'] = $city->getHeader();
             $seo['city']['gde'] = $city->getGde();
+            if($seo['city']['gde'] == ' '){
+            $seo['city']['gde'] = $city->getHeader();}
         } else {
             $seo['city']['chto'] = 'России';
             $seo['city']['gde'] = 'России';
