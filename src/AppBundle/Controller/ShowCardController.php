@@ -373,8 +373,7 @@ class ShowCardController extends Controller
             'price_day' => $day,
             'currency' => $currency,
             'exchange' => $exchangeRate,
-            //TODO remove this string before commit
-            'reservation'=>($day*$exchangeRate)/10,
+
 
         ]);
     }
