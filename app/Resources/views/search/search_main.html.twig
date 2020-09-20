@@ -79,14 +79,14 @@
 			<div class="uk-flex uk-flex-middle uk-width-1-1 uk-width-auto@m">
 				{% if is_mobile() %}
 				<select class="select-inline" id="order" name="order" value="{{ app.request.get('order') is defined ? app.request.get('order') : 0 }}">
-					<option value="price_asc">Сортировка: сначала дешевле</option>
-					<option value="price_desc">Сортировка: сначала дороже</option>
+					<option value="price_asc" {{ app.request.get('order') is defined and app.request.get('order') == 'price_asc' ? 'selected' }}>Сортировка: сначала дешевле</option>
+					<option value="price_desc" {{ app.request.get('order') is defined and app.request.get('order') == 'price_desc' ? 'selected' }}>Сортировка: сначала дороже</option>
 				</select>
 				{% else %}
 				<p>Сортировка:</p>
 				<select class="select-inline" id="order" name="order" value="{{ app.request.get('order') is defined ? app.request.get('order') : 0 }}">
-					<option value="price_asc">сначала дешевле</option>
-					<option value="price_desc">сначала дороже</option>
+					<option value="price_asc" {{ app.request.get('order') is defined and app.request.get('order') == 'price_asc' ? 'selected' }}>сначала дешевле</option>
+					<option value="price_desc" {{ app.request.get('order') is defined and app.request.get('order') == 'price_desc' ? 'selected' }}>сначала дороже</option>
 				</select>
 				{% endif %}
 			</div>
