@@ -42,8 +42,8 @@
 	<meta property="og:image" content="https://multiprokat.com/logosnip.png">
 {% endblock %}
 
-	{% if custom_seo and custom_seo.title != '' %}{% include(template_from_string(custom_seo.title)) %}
-	{% else %}{% include '/seo_templates/c_title.html.twig' %}{% endif %}
+{% block title %}
+	{% include ':seo_templates:c_title.html.twig' %}
 {% endblock %}
 
 {% block content %}
