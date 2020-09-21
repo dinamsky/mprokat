@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 class SitemapController extends Controller
 {
     /**
-     * @Route("/sitemap/sitemap.xml", name="sitemap", defaults={"_format"="xml"})
+     * @Route("/sitemap/sitemap-main.xml", name="sitemap-main", defaults={"_format"="xml"})
      */
     public function showAction(Request $request, MenuMarkModel $mm) {
         $em = $this->getDoctrine()->getManager();
@@ -35,35 +35,35 @@ class SitemapController extends Controller
 //        $urls[] = array('loc' => $this->generateUrl('cookie_policy'), 'lastmod' => '2018-01-01');
 
         // add dynamic urls, like blog posts from your DB
-//        foreach ($em->getRepository('InfoBundle:Article')->findAll() as $article) {
-//            $urls[] = array(
-//                'loc' => $this->generateUrl('article', array('slug' => $article->getId()))
-//            );
-//        }
-//        foreach ($em->getRepository('AppBundle:Card')->findAll() as $card) {
-//            $urls[] = array(
-//                'loc' => $this->generateUrl('showCard', array('id' => $card->getId()))
-//            );
-//        }
-//        foreach ($em->getRepository('AppBundle:City')->findAll() as $city) {
-//            $urls[] = array(
-//                'loc' => $this->generateUrl('search', array('city' => $city->getUrl()))
-//            );
-//        }
-//        foreach ($em->getRepository('UserBundle:User')->findAll() as $user) {
-//            $urls[] = array(
-//                'loc' => $this->generateUrl('user_page', array('id' => $user->getId()))
-//            );
-//        }
+        foreach ($em->getRepository('InfoBundle:Article')->findAll() as $article) {
+            $urls[] = array(
+                'loc' => $this->generateUrl('article', array('slug' => $article->getId()))
+            );
+        }
+        foreach ($em->getRepository('AppBundle:Card')->findAll() as $card) {
+            $urls[] = array(
+                'loc' => $this->generateUrl('showCard', array('id' => $card->getId()))
+            );
+        }
+        foreach ($em->getRepository('AppBundle:City')->findAll() as $city) {
+            $urls[] = array(
+                'loc' => $this->generateUrl('search', array('city' => $city->getUrl()))
+            );
+        }
+        foreach ($em->getRepository('UserBundle:User')->findAll() as $user) {
+            $urls[] = array(
+                'loc' => $this->generateUrl('user_page', array('id' => $user->getId()))
+            );
+        }
 
 
-//        foreach ($em->getRepository('AppBundle:GeneralType')->findAll() as $gt){
-//            foreach ($em->getRepository('AppBundle:City')->findBy(['country'=>'RUS']) as $city) {
-//                $urls[] = array(
-//                    'loc' => $this->generateUrl('search', array('city' => $city->getUrl(),'service'=>'all','general'=>$gt->getUrl()))
-//                );
-//            }
-//        }
+        foreach ($em->getRepository('AppBundle:GeneralType')->findAll() as $gt){
+            foreach ($em->getRepository('AppBundle:City')->findBy(['country'=>'RUS']) as $city) {
+                $urls[] = array(
+                    'loc' => $this->generateUrl('search', array('city' => $city->getUrl(),'service'=>'all','general'=>$gt->getUrl()))
+                );
+            }
+        }
 
 
 
@@ -77,17 +77,17 @@ class SitemapController extends Controller
 //        $cities = $query->getResult();
 
 
-                    foreach ($em->getRepository('AppBundle:City')->findBy(['country' => 'RUS']) as $city) {
-                        if ($city->getTotal()!=0){
+//                    foreach ($em->getRepository('AppBundle:City')->findBy(['country' => 'RUS']) as $city) {
+//                        if ($city->getTotal()!=0){
                         foreach ($em->getRepository('AppBundle:GeneralType')->findBy(['url'=>'cars']) as $gt) {
                         foreach ($em->getRepository('AppBundle:Mark')->findAll() as $mark) {
-    //                    foreach ($mm->getModels($mark->getId()) as $model) {
+                       foreach ($mm->getModels($mark->getId()) as $model) {
                         $urls[] = array(
-                            'loc' => $this->generateUrl('search', array('city' => $city->getUrl(), 'service' => 'all', 'general' => $gt->getUrl(),'mark' => $mark->getHeader()))
+                            'loc' => $this->generateUrl('search', array('city' => 'Russia', 'service' => 'all', 'general' => $gt->getUrl(),'mark' => $mark->getHeader(),'model' => $model->getHeader()))
                         );
                     }
                 }}
-            }
+//            }
       //  }
 
 //        foreach ($em->getRepository('AppBundle:City')->findBy(['country' => 'RUS']) as $city) {

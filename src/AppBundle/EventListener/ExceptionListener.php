@@ -65,11 +65,11 @@ class ExceptionListener
 
             if ($exception->getStatusCode() == 500){
 
-                $msg = (new \Swift_Message('Ошибка 500 в системе'))
-                    ->setFrom('mail@multiprokat.com')
-                    ->setTo('wqs-info@mail.ru')
-                    ->setBody($message,'text/html');
-                $this->mailer->send($msg);
+//                $msg = (new \Swift_Message('Ошибка 500 в системе'))
+//                    ->setFrom('mail@multiprokat.com')
+//                    ->setTo('wqs-info@mail.ru')
+//                    ->setBody($message,'text/html');
+//                $this->mailer->send($msg);
 
                 $templating = $this->container->get('templating');
 
