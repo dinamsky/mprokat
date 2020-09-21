@@ -86,7 +86,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/regions")
+     * @Route("/regions", name="regions")
      */
     public function showRegionsAction(EntityManagerInterface $em)
     {
@@ -112,7 +112,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/region/{id}")
+     * @Route("/region/{id}", name="cities")
      */
     public function showRegionAction($id, EntityManagerInterface $em)
     {

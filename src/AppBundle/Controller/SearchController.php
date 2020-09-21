@@ -29,6 +29,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class SearchController extends Controller
+
 {
     /**
      * @Route("/rent/{city}/{service}/{general}/{mark}/{model}", name="search")

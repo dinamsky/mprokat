@@ -10,4 +10,11 @@ namespace AppBundle\Repository;
  */
 class CityRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findByCountryTotal($country, $total){
+
+        return $this ->createQueryBuilder('a')->
+        andWhere('a.country = :country')->setParameter('country',$country)->
+            andWhere('a.total > :total')->setParameter('total',$total)->getQuery()->getResult();
+
+    }
 }

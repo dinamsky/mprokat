@@ -51,7 +51,7 @@ class FaqController extends Controller
     }
 
     /**
-     * @Route("/faq")
+     * @Route("/faq",name="faq")
      */
     public function contactsAction()
     {
