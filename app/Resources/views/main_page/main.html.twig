@@ -43,15 +43,14 @@
 {% endblock %}
 {% block title %}
     {{ parent() }}
-    {% if custom_seo and custom_seo.title != ''%}
-        {% include(template_from_string(custom_seo.title)) %}{% else %}Мультипрокат | Прокат и Аренда транспорта от владельцев
-    {% endif %}
+    Мультипрокат | Прокат и Аренда транспорта от владельцев
+
 {% endblock %}
 {% block metaTags %}
 {{ parent() }}
-{% if custom_seo and custom_seo.description != ''%}
-<meta itemprop="description" name="description" content="{% include(template_from_string(custom_seo.description)) %}">
-{% endif %}
+
+<meta itemprop="description" name="description" content="Мультипрокат: аренда и прокат мотоциклов, автомобилей, катеров, яхт в 230 городах от владельцев. 4600 единиц транспорта в одном месте">
+
 {% endblock %}
 
 
