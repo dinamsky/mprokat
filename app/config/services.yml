@@ -76,9 +76,9 @@ services:
             tags: ['twig.extension']
             arguments: ["@doctrine.orm.entity_manager"]
 
-    #AppBundle\EventListener\ExceptionListener:
-    #        tags:
-    #            - { name: kernel.event_listener, event: kernel.exception }
+    AppBundle\EventListener\ExceptionListener:
+            tags:
+                - { name: kernel.event_listener, event: kernel.exception }
 
     app.subscriber.auth_admin:
         class: AdminBundle\EventSubscriber\AuthenticationSubscriber
