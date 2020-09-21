@@ -50,14 +50,7 @@ class SitemapBase extends Controller
             );
         }
 
-        foreach ($em->getRepository('AppBundle:City')->findBy(['country'=>'RUS']) as $city) {
-        foreach ($em->getRepository('AppBundle:GeneralType')->findAll() as $gt){
 
-                $urls[] = array(
-                    'loc' => $this->generateUrl('search', array('city' => $city->getUrl(),'service'=>'all','general'=>$gt->getUrl()))
-                );
-            }
-        }
 
         $response = new Response(
             $this->renderView('sitemap/sitemap.html.twig', array( 'urls' => $urls,

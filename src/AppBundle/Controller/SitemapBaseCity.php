@@ -1,4 +1,5 @@
 <?php
+// AppBundle/SitemapController.php
 
 namespace AppBundle\Controller;
 use AppBundle\Entity\GeneralType;
@@ -8,29 +9,24 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class SitemapSch extends Controller
+class SitemapBaseCity extends Controller
 {
-
     /**
-     * @Route("/sitemap/sitemap-sch.xml", name="sitemap-sch", defaults={"_format"="xml"})
+     * @Route("/sitemap/sitemap-basecity.xml", name="sitemap-basecity", defaults={"_format"="xml"})
      */
-    public function showAction(Request $request, MenuMarkModel $mm)
-    {
+    public function showAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $urls = array();
         $hostname = $request->getSchemeAndHttpHost();
-        $city = 'Sochi';
-        foreach ($em->getRepository('AppBundle:GeneralType')->findAll() as $gt) {
 
-            $urls[] = array(
-                'loc' => $this->generateUrl('search', array('city' => $city, 'service' => 'all', 'general' => $gt->getUrl()))
-            );
-        }
+        // add static urls
 
-        foreach ($em->getRepository('AppBundle:GeneralType')->findAll() as $gt) {
-            foreach ($em->getRepository('AppBundle:Mark')->findAll() as $mark) {
+
+        foreach ($em->getRepository('AppBundle:City')->findBy(['country'=>'RUS']) as $city) {
+        foreach ($em->getRepository('AppBundle:GeneralType')->findAll() as $gt){
+
                 $urls[] = array(
-                    'loc' => $this->generateUrl('search', array('city' => $city, 'service' => 'all', 'general' => $gt->getUrl(),'mark' => $mark->getHeader()))
+                    'loc' => $this->generateUrl('search', array('city' => $city->getUrl(),'service'=>'all','general'=>$gt->getUrl()))
                 );
             }
         }
@@ -47,4 +43,5 @@ class SitemapSch extends Controller
 
 
     }
+
 }

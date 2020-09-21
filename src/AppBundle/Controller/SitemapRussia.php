@@ -21,14 +21,7 @@ class SitemapRussia extends Controller
         $hostname = $request->getSchemeAndHttpHost();
         $city = 'rus';
 
-        foreach ($em->getRepository('AppBundle:GeneralType')->findBy(['url'=>'cars']) as $gt) {
-            foreach ($em->getRepository('AppBundle:Mark')->findAll() as $mark) {
-                foreach ($mm->getModels($mark->getId()) as $model) {
-                    $urls[] = array(
-                        'loc' => $this->generateUrl('search', array('city' => 'rus', 'service' => 'all', 'general' => $gt->getUrl(),'mark' => $mark->getHeader(),'model' => $model->getHeader()))
-                    );
-                }
-            }}
+
         foreach ($em->getRepository('AppBundle:GeneralType')->findAll() as $gt) {
             foreach ($em->getRepository('AppBundle:Mark')->findAll() as $mark) {
                     $urls[] = array(

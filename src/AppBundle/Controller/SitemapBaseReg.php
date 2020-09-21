@@ -39,15 +39,15 @@ class SitemapBaseReg extends Controller
                 );
             }
         }
-        foreach ($regions as $city) {
-            foreach ($em->getRepository('AppBundle:GeneralType')->findAll() as $gt) {
-                foreach ($em->getRepository('AppBundle:Mark')->findAll() as $mark) {
-                    $urls[] = array(
-                        'loc' => $this->generateUrl('search', array('city' => $city, 'service' => 'all', 'general' => $gt->getUrl(), 'mark' => $mark->getHeader()))
-                    );
-                }
-            }
-        }
+//        foreach ($regions as $city) {
+//            foreach ($em->getRepository('AppBundle:GeneralType')->findAll() as $gt) {
+//                foreach ($em->getRepository('AppBundle:Mark')->findAll() as $mark) {
+//                    $urls[] = array(
+//                        'loc' => $this->generateUrl('search', array('city' => $city, 'service' => 'all', 'general' => $gt->getUrl(), 'mark' => $mark->getHeader()))
+//                    );
+//                }
+//            }
+//        }
             $response = new Response(
                 $this->renderView('sitemap/sitemap.html.twig', array('urls' => $urls,
                     'hostname' => $hostname)),
