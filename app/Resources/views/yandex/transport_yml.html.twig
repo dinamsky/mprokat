@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<yml_catalog date="{{"now"|date('Y/m/d H:i') }}">
+    <shop>
+        <name>Мультипрокат</name>
+        <company>Мультипрокат</company>
+        <url>https://multiprokat.com</url>
+        <currencies>
+            <currency id="RUR" rate="1"/>
+        </currencies>
+        <categories>
+            <category id="1">Авто</category>
+            <category id="2" parentId="1">Легковые автомобили</category>
+            <category id="3" parentId="1">Грузовые автомобили</category>
+            <category id="4" parentId="1">Лимузины</category>
+            <category id="5" parentId="1">Микроавтобусы</category>
+            <category id="6" parentId="1">Свадебные автомобили</category>
+            <category id="7">Мото</category>
+            <category id="8" parentId="7">Мотоциклы</category>
+            <category id="9" parentId="7">Квадроциклы</category>
+            <category id="10" parentId="7">Снегоходы</category>
+            <category id="11">Водный транспорт</category>
+            <category id="12" parentId="11">Катера</category>
+            <category id="13" parentId="11">Яхты</category>
+            <category id="14">Сигвеи</category>
+            <category id="15">Велосипеды</category>
+            <category id="16">Детские электроциклы</category>
+            <category id="17">Вертолеты</category>
+            <category id="18">Спецтехника</category>
+            <category id="19">Другое</category>
+            <category id="20" parentId="7">Скутеры</category>
+            <category id="21">Самолеты</category>
+            <category id="22" parentId="1">Автодом</category>
+            <category id="23">Гидроциклы</category>
+            <category id="24">Багги</category>
+            <category id="25">Флайборды</category>
+            <category id="26">Электросамокаты</category>
+        </categories>
+        <delivery-options>
+        </delivery-options>
+        <offers>
+            {% for product in products %}
+            <offer id="{{ product.id }}">
+                <name>{{ product.name }}</name>
+                <url>{{ product.url }}</url>
+                <price>{{ product.price }}</price>
+                <currencyId>RUR</currencyId>
+                <categoryId>{{ product.category }}</categoryId>
+                <picture>{{ product.image }}</picture>
+                <delivery>false</delivery>
+                <pickup>true</pickup>
+                <pickup-options>
+                    <option cost="0" days="1"/>
+                </pickup-options>
+                <store>true</store>
+                <description>
+                    {{ product.desc }}
+                </description>
+                <sales_notes>В некоторых случаях владелц может попросить залог.</sales_notes>
+            </offer>
+            {% endfor %}
+        </offers>
+    </shop>
+</yml_catalog>
