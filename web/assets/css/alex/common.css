@@ -1313,6 +1313,8 @@ hr, .uk-hr {
 .footer-main {
     padding: 30px 0 0;
     background-color: #fff;
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 .footer-main .instagram-icon {

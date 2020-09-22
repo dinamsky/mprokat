@@ -8010,7 +8010,7 @@ a:hover {
     -webkit-box-pack: justify;
     -webkit-justify-content: space-between;
     -ms-flex-pack: justify;
-    justify-content: space-between
+    justify-content: space-between;
     padding-left: 30px;
     padding-right: 30px;
 }
@@ -8080,7 +8080,7 @@ a:hover {
     -webkit-box-align: center;
     -webkit-align-items: center;
     -ms-flex-align: center;
-    align-items: center
+    align-items: center;
     padding-left: 30px;
     padding-right: 30px;
 }
@@ -8239,7 +8239,7 @@ a:hover {
     -webkit-align-items: flex-end;
     -ms-flex-align: end;
     align-items: flex-end;
-    margin-bottom: 20px
+    margin-bottom: 20px;
     padding-left: 30px;
     padding-right: 30px;
 }
@@ -8599,7 +8599,7 @@ a:hover {
 }
 
 .categories {
-    margin-bottom: 70px
+    margin-bottom: 70px;
     padding-left: 30px;
     padding-right: 30px;
 }
