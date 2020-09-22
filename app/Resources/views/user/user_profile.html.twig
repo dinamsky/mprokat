@@ -23,31 +23,31 @@
 
 {% block content %}
 
-{% if user.isNew == 0 %}
-<form action="/user_go_new" class="uk-margin-large-bottom padding20 bg_white bordered" method="POST">
-    <div class="uk-margin-bottom">
-        Мультипрокат предлагает вам перейти на новую систему заказов,<br>
-        а также получить  PRO аккаунт - Бесплатно!<br>
-        PRO аккаунт подтверждает вашу деятельность и дает больше клиентов.<br><br>
+{#{% if user.isNew == 0 %}#}
+{#<form action="/user_go_new" class="uk-margin-large-bottom padding20 bg_white bordered" method="POST">#}
+{#    <div class="uk-margin-bottom">#}
+{#        Мультипрокат предлагает вам перейти на новую систему заказов,<br>#}
+{#        а также получить  PRO аккаунт - Бесплатно!<br>#}
+{#        PRO аккаунт подтверждает вашу деятельность и дает больше клиентов.<br><br>#}
 
-        PRO аккаунт действует бессрочно и дает больше возможностей, в том числе: размещать больше транспорта и получать больше звонков от клиентов
-    </div>
+{#        PRO аккаунт действует бессрочно и дает больше возможностей, в том числе: размещать больше транспорта и получать больше звонков от клиентов#}
+{#    </div>#}
 
-    <div class="uk-margin-bottom">
-        <label>Я ознакомлен и согласен с условиями
-            <a class="underline" href="/assets/docs/oferta.pdf" target="_blanc" uk-tooltip="title:откроется в новом окне">оферты</a>
-            <input checked name="oferta_check" type="checkbox">
-        </label>
-    </div>
-    <div class="uk-margin-bottom">
-        <label>Активировать бесплатно PRO аккаунт
-            <input checked name="pro_check" type="checkbox">
-        </label>
-    </div>
-    <input type="hidden" name="id" value="{{ user.id }}">
-    <button class="uk-button uk-button-primary">Перейти</button>
-</form>
-{% endif %}
+{#    <div class="uk-margin-bottom">#}
+{#        <label>Я ознакомлен и согласен с условиями#}
+{#            <a class="underline" href="/assets/docs/oferta.pdf" target="_blanc" uk-tooltip="title:откроется в новом окне">оферты</a>#}
+{#            <input checked name="oferta_check" type="checkbox">#}
+{#        </label>#}
+{#    </div>#}
+{#    <div class="uk-margin-bottom">#}
+{#        <label>Активировать бесплатно PRO аккаунт#}
+{#            <input checked name="pro_check" type="checkbox">#}
+{#        </label>#}
+{#    </div>#}
+{#    <input type="hidden" name="id" value="{{ user.id }}">#}
+{#    <button class="uk-button uk-button-primary">Перейти</button>#}
+{#</form>#}
+{#{% endif %}#}
 
 {% set phone = '' %}
 {% set website = '' %}
@@ -102,31 +102,7 @@
 
 <div class="uk-container uk-margin-large-bottom">
 
-{#    {% if user.isNew == 0 %}#}
-{#    <form action="/user_go_new" class="uk-margin-large-bottom padding20 bg_white bordered" method="POST">#}
-{#        <div class="uk-margin-bottom">#}
-{#            Мультипрокат предлагает вам перейти на новую систему заказов,<br>#}
-{#            а также получить  PRO аккаунт - Бесплатно!<br>#}
-{#            PRO аккаунт подтверждает вашу деятельность и дает больше клиентов.<br><br>#}
 
-{#            PRO аккаунт действует бессрочно и дает больше возможностей, в том числе: размещать больше транспорта и получать больше звонков от клиентов#}
-{#        </div>#}
-
-{#        <div class="uk-margin-bottom">#}
-{#            <label>Я ознакомлен и согласен с условиями#}
-{#                <a class="underline" href="/assets/docs/oferta.pdf" target="_blanc" uk-tooltip="title:откроется в новом окне">оферты</a>#}
-{#                <input checked name="oferta_check" type="checkbox">#}
-{#            </label>#}
-{#        </div>#}
-{#        <div class="uk-margin-bottom">#}
-{#            <label>Активировать бесплатно PRO аккаунт#}
-{#                <input checked name="pro_check" type="checkbox">#}
-{#            </label>#}
-{#        </div>#}
-{#        <input type="hidden" name="id" value="{{ user.id }}">#}
-{#        <button class="uk-button uk-button-primary">Перейти</button>#}
-{#    </form>#}
-{#    {% endif %}#}
 
     <div class="uk-grid-medium" uk-grid>
         <div class="uk-width-1-1 uk-width-1-4@m">
@@ -193,7 +169,7 @@
                             <ul class="uk-list uk-list-small uk-margin-remove uk-column-1-1">
                                 <li class="uk-flex uk-flex-between uk-flex-left@m"><span class="uk-text-muted">{% trans %}Телефон{% endtrans %}<span class="uk-visible@m">:</span></span>&nbsp;{{ phone }}</li>
                                 <li class="uk-flex uk-flex-between uk-flex-left@m"><span class="uk-text-muted">{% trans %}E-Mail{% endtrans %}<span class="uk-visible@m">:</span></span>&nbsp;{{ user.email }}</li>
-                                <li class="uk-flex uk-flex-between uk-flex-left@m"><span class="uk-text-muted">{% trans %}Город{% endtrans %}<span class="uk-visible@m">:</span></span>&nbsp;{% trans %}Москва{% endtrans %}</li>
+                                <li class="uk-flex uk-flex-between uk-flex-left@m"><span class="uk-text-muted">{% trans %}Город{% endtrans %}<span class="uk-visible@m">:</span></span>&nbsp;</li>
                             </ul>
                         </div>
 
