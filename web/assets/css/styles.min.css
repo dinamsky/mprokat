@@ -8011,8 +8011,7 @@ a:hover {
     -webkit-justify-content: space-between;
     -ms-flex-pack: justify;
     justify-content: space-between;
-    padding-left: 30px;
-    padding-right: 30px;
+
 }
 
 .mobile-header .inner .logo img {
@@ -11046,6 +11045,10 @@ a:hover {
     border-radius: 20px;
 }
 .footer-main{
+    padding-left: 30px;
+    padding-right: 30px;
+}
+.mobile-header-main{
     padding-left: 30px;
     padding-right: 30px;
 }
