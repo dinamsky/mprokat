@@ -8011,6 +8011,8 @@ a:hover {
     -webkit-justify-content: space-between;
     -ms-flex-pack: justify;
     justify-content: space-between
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 .mobile-header .inner .logo img {
@@ -8079,6 +8081,8 @@ a:hover {
     -webkit-align-items: center;
     -ms-flex-align: center;
     align-items: center
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 .main .main-slider {
@@ -8236,6 +8240,8 @@ a:hover {
     -ms-flex-align: end;
     align-items: flex-end;
     margin-bottom: 20px
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 .cards .cards-header.cards-header-center {
@@ -8492,6 +8498,8 @@ a:hover {
     text-align: center;
     margin-bottom: 70px;
     padding-top: 40px;
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 .advantages h2 {
@@ -8592,6 +8600,8 @@ a:hover {
 
 .categories {
     margin-bottom: 70px
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 .categories-list {
@@ -11034,4 +11044,8 @@ a:hover {
     border: 1px solid #e4e3e3;
     margin-bottom: 0;
     border-radius: 20px;
+}
+.footer-main{
+    padding-left: 30px;
+    padding-right: 30px;
 }
