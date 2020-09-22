@@ -4,6 +4,7 @@
 {{ parent() }}
     <link href="{{ asset('assets/css/auto-complete.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/alex/profile/profile-main.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/padding_fix.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block javascripts %}
@@ -169,7 +170,7 @@
                             <ul class="uk-list uk-list-small uk-margin-remove uk-column-1-1">
                                 <li class="uk-flex uk-flex-between uk-flex-left@m"><span class="uk-text-muted">{% trans %}Телефон{% endtrans %}<span class="uk-visible@m">:</span></span>&nbsp;{{ phone }}</li>
                                 <li class="uk-flex uk-flex-between uk-flex-left@m"><span class="uk-text-muted">{% trans %}E-Mail{% endtrans %}<span class="uk-visible@m">:</span></span>&nbsp;{{ user.email }}</li>
-                                <li class="uk-flex uk-flex-between uk-flex-left@m"><span class="uk-text-muted">{% trans %}Город{% endtrans %}<span class="uk-visible@m">:</span></span>&nbsp;</li>
+                                <li class="uk-flex uk-flex-between uk-flex-left@m"><span class="uk-text-muted">{% trans %}Город{% endtrans %}<span class="uk-visible@m">:</span></span>&nbsp;{{ city.header }}</li>
                             </ul>
                         </div>
 
@@ -297,6 +298,10 @@
                                 <div class="uk-visible@m"><a href="/user/cards" class="uk-link link-underline">{% trans %}Весь транспорт{% endtrans %}</a></div>
                             </div>
                             <div class="uk-child-width-1-2 uk-child-width-1-4@m uk-grid-medium" uk-grid>
+                                <div class="card-item" style="background-color: var(--purple-color);color:#fff;padding: 20px;border-radius: 10px; ">
+                              <a href="/card/new">  <h2 style="color:#fff; ">Добавить еще транспорт</h2>
+                                  <p style="color:#fff; ">Больше транспорта - больше заявок</p></a>
+                                </div>
                                 {% for card in user.cards %}
                                 {{ include('search/one_grid_view_alex.html.twig', {'card':card, 'height':'150px'}) }}
                                 {% endfor %}

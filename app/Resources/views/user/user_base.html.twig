@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{% block title %}Мультипрокат{% endblock %}</title>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="yandex-verification" content="a2d59e156f2bd014">
@@ -11,7 +11,7 @@
     {% block stylesheets %}
         <link href="{{ asset('assets/css/uikit.css') }}" rel="stylesheet">
         <link href="{{ asset('assets/css/font-awesome.min.css') }}" rel="stylesheet">
-
+        <link href="{{ asset('assets/css/padding_fix.css') }}" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 
         <link href="{{ asset('assets/css/selectric-default.css') }}" rel="stylesheet">
@@ -19,6 +19,33 @@
         <link href="{{ asset('assets/css/alex/common.css') }}" rel="stylesheet">
         <link href="{{ asset('assets/css/alex/profile/profile-main.css') }}" rel="stylesheet">
         {% if is_mobile() %}<link href="{{ asset('assets/css/alex/common_mobile.css') }}" rel="stylesheet">{% endif %}
+    {% endblock %}
+    {% block openGraph %}
+        {{ parent() }}
+        <link rel="shortcut icon" type="image/ico" href="/assets/favicon.ico" />
+        <link rel="icon" type="image/ico" href="/assets/favicon.ico" />
+        <link rel="canonical" href="https://multiprokat.com/" />
+        <link rel="apple-touch-icon" href="https://multiprokat.com/apple-touch-icon.png">
+        <link rel="shortcut icon" href="https://multiprokat.com/apple-touch-icon.png">
+        <meta itemprop="description" name="description" content="Мультипрокат: аренда и прокат мотоциклов, автомобилей, катеров, яхт в 230 городах от владельцев транспорта. 4600 единиц транспорта в одном месте"  />
+        <meta name="twitter:card" content="summary_large_image">
+        <meta property="og:type" content="website">
+
+        <meta property="og:url" content="https://multiprokat.com">
+        <meta property="og:title" content="Мультипрокат: аренда и прокат транспорта от владельцев.">
+        <meta property="og:description" content="Мультипрокат: аренда и прокат мотоциклов, автомобилей, катеров, яхт в 230 городах от владельцев. 4600 единиц транспорта в одном месте"/>
+        <meta property="og:image" content="https://multiprokat.com/logosnip.png">
+    {% endblock %}
+    {% block title %}
+
+    <meta itemprop="title" name="title" content="Мультипрокат | Прокат и Аренда транспорта от владельцев"/>
+
+    {% endblock %}
+    {% block metaTags %}
+
+
+        <meta itemprop="description" name="description" content="Мультипрокат: аренда и прокат мотоциклов, автомобилей, катеров, яхт в 230 городах от владельцев. 4600 единиц транспорта в одном месте"/>
+
     {% endblock %}
 </head>
 
