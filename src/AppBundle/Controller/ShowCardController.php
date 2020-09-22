@@ -221,6 +221,8 @@ class ShowCardController extends Controller
         $seo['model'] = $model->getHeader();
         $seo['city']['chto'] = $city->getHeader();
         $seo['city']['gde'] = $city->getGde();
+        if($seo['city']['gde'] == ' '){
+            $seo['city']['gde'] = $city->getHeader();}
 
         $mark_arr = $mm->getExistMarks('',$mark->getCarTypeId());
         $mark_arr_sorted = $mark_arr['sorted_marks'];
@@ -304,6 +306,8 @@ class ShowCardController extends Controller
             }
             //if(isset($phone) and $phone != '') $phone = true;
         }
+        $currency = $card -> getCurrency();
+        $exchangeRate = $this->getExchangeRates($currency);
 
         $day = $hour = 0;
         foreach($card->getCardPrices() as $cp){
@@ -368,7 +372,10 @@ class ShowCardController extends Controller
 
             'blockings' => $blk,
             'price_hour' => $hour,
-            'price_day' => $day
+            'price_day' => $day,
+            'currency' => $currency,
+            'exchange' => $exchangeRate,
+
 
         ]);
     }
@@ -405,4 +412,18 @@ class ShowCardController extends Controller
 
         return $this->redirect('/card/'.$request->request->get('card_id'));
     }
+    public function getExchangeRates($currency)
+    {
+        $rates = array();
+        $id = 'Nominal';
+        $id1 = 'Valute';
+        $id2 = $currency;
+        $id3 = 'Value';
+
+        $rates[] = json_decode(file_get_contents('https://www.cbr-xml-daily.ru/daily_json.js'),true);
+        $rate = $rates[0][$id1][$id2][$id3];
+        $nominal = $rates[0][$id1][$id2][$id];
+        return  $rate/$nominal;
+    }
+
 }

@@ -19,15 +19,14 @@
     {% set serviceType = 'Аренда' %}
     {% endif %}
 
-    {% if card.currency == 'RUB' %}
-    {% set currency = 'ruble' %}
-    {% endif %}
-    {% if card.currency == 'EUR' %}
-    {% set currency = 'euro' %}
-    {% endif %}
-    {% if card.currency == 'USD' %}
-    {% set currency = 'dollar' %}
-    {% endif %}
+    {% set currency = {
+        'RUB': '<i class="fa fa-ruble"></i>',
+        'EUR': '<i class="fa fa-euro"></i>',
+        'USD': '<i class="fa fa-dollar"></i>',
+        'BYN':'Бел. Рублей',
+        'KZT':'Тенге',
+        'UAH':'Гривен'
+    } %}
 
     <a class="uk-display-block" href="/card/{{ card.id }}">
         <div class="card-item__figure">
@@ -40,12 +39,14 @@
 
     {% for price in card.cardPrices if price.priceId == 2 %}
     {% set c_price = price.value %}
-    {% set c_ed = 'день'|trans %}
+        {% set c_price = price.value %}{% set c_ed = '/'~'день'|trans %}
+
     {% endfor %}
 
     {% for price in card.cardPrices if price.priceId == 1 and c_price == '' %}
     {% set c_price = price.value %}
-    {% set c_ed = 'час'|trans %}
+        {% set c_price = price.value %}{% set c_ed = '/'~'час'|trans %}
+
     {% endfor %}
 
     {% for price in card.cardPrices if price.priceId == 6 and c_price == '' %}
@@ -80,7 +81,7 @@
         </div>
     <div class="card-item__price">
         {{ c_price|number_format(0,'.','&nbsp;')|raw }}
-        &nbsp;<i class="fa fa-{{ currency }}"></i>&nbsp;
+        {{ currency[card.currency]|raw }}
         {{ c_ed }}
     </div>
     {% endif %}

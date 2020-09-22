@@ -61,6 +61,7 @@
                             <select class="phone-select" id="phoneSelect">
                                 <option value="russia"></option>
                                 <option value="abkhazia"></option>
+                                <option value="belarus"></option>
                                 <option value="kazakhstan"></option>
                                 <option value="ukraine"></option>
                                 <option value="usa"></option>
@@ -138,40 +139,36 @@
         <h2 class="uk-modal-title">{% trans %}Смена пароля через телефон{% endtrans %}</h2>
 
         <form action="/userRecoverPhone" method="POST">
-            <div class="uk-grid uk-margin-bottom" uk-grid>
-                <div class=" uk-width-1-1 uk-width-auto@s uk-inline">
-                    <div uk-form-custom="target: > * > span:last-child">
-                        <select class="country-select" name="country">
-                            <option value="RU" data-code="+7" data-pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{2}$" data-filter="(999) 999-99-99" data-plshold="(###)###-##-##" selected>Россия</option>
-                            {# {% for countr in country %}
-                            <option value="2">Абхазия</option>
-                            {% endfor %} #}
-
-                            <option value="AB" data-code="+7 840" data-pattern="^\d{3}[-]\d{2}[-]\d{2}$"  data-filter="999-99-99" data-plshold="###-##-##">Абхазия</option>
-                            <option value="KZ" data-code="+7" data-pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{2}$"  data-filter="(999) 999-99-99" data-plshold="(###)###-##-##">Казахстан</option>
-                            <option value="UK" data-code="+380" data-pattern="^\(\d{2}\)\s\d{3}[-]\d{2}[-]\d{2}$"  data-filter="(99) 999-99-99" data-plshold="(##)###-##-##">Украина</option>
-                            <option value="US" data-code="+1" data-pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{3}$"  data-filter="(999) 999-99-999" data-plshold="(###)###-##-###">США</option>
-                        </select>
-                        <span class="uk-link">
-                                <span uk-icon="icon: pencil"></span>
-                                <span></span>
-                            </span>
-                    </div>
+            <div class="mat-form">
+                <div class="mat-group">
+                    <label for="phoneInput" class="mat-label phone-label">Номер телефона</label>
+                    <select class="phone-select" id="phoneRecoverSelect">
+                        <option value="russia"></option>
+                        <option value="abkhazia"></option>
+                        <option value="belarus"></option>
+                        <option value="kazakhstan"></option>
+                        <option value="ukraine"></option>
+                        <option value="usa"></option>
+                    </select>
+                    <input type="text" name="phone" class="mat-input phone-input" id="phoneRecoverInput" required>
                 </div>
-                <div class=" uk-width-1-1 uk-width-expand@s">
-                    <div class="uk-inline uk-width-expand">
-                        <span class="uk-form-icon mp-country-code mp-form-span">+7</span>
-                        <input type="tel" name="phone" class="uk-input mp-country-phone" placeholder="(###)###-##-##" pattern="^\(\d{3}\)\s\d{3}[-]\d{2}[-]\d{2}$"  required>
-                    </div>
-                </div>
-            </div>
-            <input type="password" name="password1" placeholder="{% trans %}Придумайте новый пароль{% endtrans %}" class="uk-input uk-margin-bottom" required>
-            <input type="password" name="password2" placeholder="{% trans %}Повторите новый пароль{% endtrans %}" class="uk-input uk-margin-bottom" required>
-            <input type="hidden" name="return" value="{{ app.request.requestUri }}">
 
-            <div class="uk-clearfix">
-                <div class="uk-float-left"><button class="uk-button uk-button-primary" id="prtc1">{% trans %}Сменить пароль{% endtrans %}</button></div>
-                <div class="uk-float-right"><a uk-toggle="target: #pass_recover">{% trans %}Сменить через email{% endtrans %}</a></div>
+                <div class="mat-group">
+                    <label class="mat-label">{% trans %}Придумайте новый пароль{% endtrans %}</label>
+                    <input type="password" name="password1" class="mat-input uk-input" required>
+                </div>
+
+                <div class="mat-group">
+                    <label class="mat-label">{% trans %}Повторите новый пароль{% endtrans %}</label>
+                    <input type="password" name="password2" class="mat-input uk-input" required>
+                </div>
+
+                <input type="hidden" name="return" value="{{ app.request.requestUri }}">
+
+                <div class="uk-margin-medium-top uk-grid-medium uk-child-width-1-1 uk-child-width-auto@m uk-flex-between uk-flex-middle uk-grid" uk-grid>
+                    <div><button class="btn btn-solid uk-width-1-1 uk-width-auto@m" id="prtc1">{% trans %}Сменить пароль{% endtrans %}</button></div>
+                    <div class="uk-text-center uk-text-right@m"><a href="#pass_recover" class="link-underline small" uk-toggle>{% trans %}Сменить через email{% endtrans %}</a></div>
+                </div>
             </div>
         </form>
     </div>

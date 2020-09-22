@@ -53,7 +53,7 @@ const commonAlex = (function($) {
 
     function _modalSearchButton(e) {
         e.preventDefault();
-        let go_href = getSelectorUrl() + getQueryVars();
+        let go_href = getSelectorUrlCommon() + getQueryVarsCommon();
         document.location.href = go_href;
     }
 
@@ -90,7 +90,7 @@ const commonAlex = (function($) {
         });
     }
 
-    function getSelectorUrl(){
+    function getSelectorUrlCommon(){
         let city = '/rus',
             generalType = '/alltypes',
             markModel = '';
@@ -98,14 +98,14 @@ const commonAlex = (function($) {
         city = '/'+$('#cityURL').val();
 
         let generalParent = $('.js-modal-search-selected-category').val(),
-            general = $('#gtURL').val(),
+            //general = $('#gtURL').val(),
             body = $('.body_header').data('body'),
             mark = $('#markURL').val(),
             model = $('#modelURL').val(),
             service = '/all';
 
         if (generalParent) generalType = '/'+generalParent;
-        if (general) generalType = '/'+general;
+        //if (general) generalType = '/'+general;
         if (mark && mark !== 'Любая марка') markModel = '/'+mark;
         if (mark && model && mark !== 'Любая марка' && model !== 'Любая модель') markModel = '/'+mark+'/'+model;
 
@@ -124,7 +124,7 @@ const commonAlex = (function($) {
         return '/rent'+city+service+generalType+markModel+bodyType;
     }
 
-    function getQueryVars() {
+    function getQueryVarsCommon() {
         let view = $('#main_search_button').data('view'); view ? view = 'view='+view : view = '',
             page = $('#main_search_button').data('page'); page ? page = '&page='+page : page = '',
             onpage = $('#main_search_button').data('onpage'); onpage ? onpage = '&onpage='+onpage : onpage = '',

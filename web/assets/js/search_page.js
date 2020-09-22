@@ -15,8 +15,13 @@ $( document ).ready(function() {
         document.location.href = getSelectorUrl() + getQueryVars();
     });
 
-    $('#order').on('change', function () {
-        $('#main_search_button').attr('data-order',$(this).find('option:selected').val());
+    //$('#order').on('change', function () {
+        //$('#main_search_button').attr('data-order',$(this).find('option:selected').val());
+        //document.location.href = getSelectorUrl() + getQueryVars();
+    //});
+
+    $('#order').on('change', function() {
+        console.log($(this).val());
         document.location.href = getSelectorUrl() + getQueryVars();
     });
 
