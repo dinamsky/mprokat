@@ -423,6 +423,10 @@ class ShowCardController extends Controller
         $rates[] = json_decode(file_get_contents('https://www.cbr-xml-daily.ru/daily_json.js'),true);
         $rate = $rates[0][$id1][$id2][$id3];
         $nominal = $rates[0][$id1][$id2][$id];
+        if($currency='RUB'){
+            $rate =1;
+            $nominal =1;
+        }
         return  $rate/$nominal;
     }
 

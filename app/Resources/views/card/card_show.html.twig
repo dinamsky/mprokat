@@ -237,6 +237,15 @@ prefix="og: http://ogp.me/ns#"
                         </li>
                         {% endfor %}
 
+{#                    <--Сервисный процент -->#}
+{#                        <li class="price-entry__item price-entry__item_pledge">#}
+{#                            <span class="price-entry__time">Сервисный процент в {{ price_day?'день':'час' }} составляет {{ servicePercent|number_format(0,'.','&nbsp;')|raw }} процентов</span>#}
+{#                            <span class="price-entry__price">#}
+{#                                        {{ (price_day?price_day:price_hour)*servicePercent*exchange/100|number_format(0,'.','&nbsp;')|raw }}&nbsp;#}
+{#                                        {{ currency[card.currency]|raw }}#}
+{#                                    </span>#}
+{#                        </li>#}
+
 
                     </ul>
                 </div>
