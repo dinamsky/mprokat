@@ -375,9 +375,27 @@ big_order_list
                             <div class="chat-footer ord_content">
 
                                 <div class="uk-grid-small uk-flex-middle" uk-grid>
+                                    <!-- Attachment -->
+                                    {% if app.session.get('logged_user').id == o.renterId %}
                                     <div class="uk-width-auto">
-                                        <span uk-icon="upload"></span>
+                                        <div class="js-upload" uk-form-custom>
+                                            {# <progress id="js-progressbar" class="uk-progress" max="1" hidden="hidden"></progress> #}
+                                            <input id="attach_files" type="file" name="atfiles[]" multiple data-allow="*.jpg" data-concurrent="5" data-id="{{ o.id }}">
+                                            <button class="uk-button uk-button-default" type="button" tabindex="-1" style="padding: 0px 0px;">
+                                                <div class="uk-flex uk-flex-center" style="height: auto;    color: #12d061;
+                    width: 40px;
+                    background-size: 20px;
+                    background-repeat: no-repeat;
+                    background-position: center;" data-src="/assets/images/interface/attach.svg" uk-img >
+                                                    <b>&nbsp;</b>
+                                                </div>
+                                            </button>
+                                        </div>
+
+                                        <span class="uk-icon uk-icon-image" style="background-image: url('/assets/images/icons/icon-attachment.svg');"></span>
                                     </div>
+                                    {% endif %}
+                                    <!-- /Attachment -->
 
                                     <div class="uk-width-expand msgb">
                                         <textarea name="answer" class="uk-width-1-1 autoExpand chat-textarea-answer" placeholder="Написать сообщение"></textarea>
@@ -386,6 +404,22 @@ big_order_list
                                     <div class="uk-width-auto">
                                         <button type="button" class="{{ app.session.get('logged_user').id == o.userId ? 'owner' : 'renter' }}_answer snd_btn uk-icon-button uk-icon" value="{{ o.id }}"><i class="fa fa-send"></i></button>
                                     </div>
+
+
+                                    {% if app.session.get('logged_user').id == o.renterId %}
+                                    <div class="uk-width-1-1">
+                                        <div id="js-attachfiles" class="attach-back-chat uk-card uk-card-default" style="    margin-top: 3px;
+                    margin-bottom: 3px;" hidden>
+                                            <button id="attach_files_clear" type="button" uk-close  data-id="{{ o.id }}"></button>
+                                            <b>Файлы для отправки: </b><br>
+                                            <div class = "mp-list-files" uk-grid></div>
+                                        </div>
+                                        <div style="margin-top: 3px; margin-bottom: 3px;">
+                                            <progress id="js-progressbar" class="uk-progress" value="0" max="100" hidden></progress>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+
                                 </div>
                             </div>
                         </div>
