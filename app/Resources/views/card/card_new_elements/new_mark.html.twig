@@ -8,6 +8,20 @@
                 <select name="mark" class="uk-select select-border-bottom js-transport-mark-select">
                     {{ include( 'common/ajax_edit_options.html.twig', { 'options': marks, 'id': 0 }) }}
                 </select>
+                <div class="uk-position-relative">
+
+                    <input type="text" class="uk-input js-transport-mark-input-value" placeholder="{% trans %}Марка вашего транспорта{% endtrans %}">
+
+                    <div class="js-mark-dropdown theme-dropdown theme-dropdown-tip uk-width-1-1" uk-dropdown="mode: click">
+                        <ul class="js-mark-dropdown-list uk-nav uk-dropdown-nav theme-dropdown-nav uk-flex uk-flex-column">
+                            <li><a href="##">link</a></li>
+                            <li><a href="##">link</a></li>
+                            <li><a href="##">link</a></li>
+                            <li><a href="##">link</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <input type="text" class="uk-input js-transport-mark-input-id" placeholder="{% trans %}ID марки вашего транспорта{% endtrans %}">
             </div>
         </div>
 
