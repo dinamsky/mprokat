@@ -691,7 +691,11 @@ hr, .uk-hr {
     border-radius: 3px;
     box-shadow: 0px 15px 45px rgba(0, 0, 0, 0.15);
     border: 1px solid transparent;
-    max-height: 250px;
+}
+
+.theme-dropdown-inner-250 {
+    display: block;
+    max-height: 230px;
     overflow-y: auto;
 }
 

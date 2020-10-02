@@ -5,23 +5,20 @@
         <div class="uk-form-stacked">
             <label class="uk-form-label">{% trans %}Марка вашего транспорта{% endtrans %}</label>
             <div class="uk-form-controls">
-                <select name="mark" class="uk-select select-border-bottom js-transport-mark-select">
-                    {{ include( 'common/ajax_edit_options.html.twig', { 'options': marks, 'id': 0 }) }}
-                </select>
+                <div class="uk-hidden">
+                    <select class="uk-select select-border-bottom js-transport-mark-select">
+                        {{ include( 'common/ajax_edit_options.html.twig', { 'options': marks, 'id': 0 }) }}
+                    </select>
+                </div>
                 <div class="uk-position-relative">
-
-                    <input type="text" class="uk-input js-transport-mark-input-value" placeholder="{% trans %}Марка вашего транспорта{% endtrans %}">
-
-                    <div class="js-mark-dropdown theme-dropdown theme-dropdown-tip uk-width-1-1" uk-dropdown="mode: click">
-                        <ul class="js-mark-dropdown-list uk-nav uk-dropdown-nav theme-dropdown-nav uk-flex uk-flex-column">
-                            <li><a href="##">link</a></li>
-                            <li><a href="##">link</a></li>
-                            <li><a href="##">link</a></li>
-                            <li><a href="##">link</a></li>
-                        </ul>
+                    <input type="text" autocomplete="off" class="uk-input js-transport-mark-input-value" placeholder="{% trans %}Марка вашего транспорта{% endtrans %}">
+                    <div class="js-mark-dropdown theme-dropdown theme-dropdown-tip uk-width-1-1" uk-dropdown="mode: click; delay-hide: 100">
+                        <div class="theme-dropdown-inner-250">
+                            <ul class="js-mark-dropdown-list uk-nav uk-dropdown-nav theme-dropdown-nav uk-flex uk-flex-column"></ul>
+                        </div>
                     </div>
                 </div>
-                <input type="text" class="uk-input js-transport-mark-input-id" placeholder="{% trans %}ID марки вашего транспорта{% endtrans %}">
+                <input type="hidden" name="mark" class="uk-input js-transport-mark-input-id" placeholder="{% trans %}ID марки вашего транспорта{% endtrans %}">
             </div>
         </div>
 
@@ -55,8 +52,20 @@
         <div class="uk-form-stacked">
             <label class="uk-form-label">{% trans %}Модель вашего транспорта{% endtrans %}</label>
             <div class="uk-form-controls">
-                <select name="modelId" class="uk-select select-border-bottom js-transport-model-select">
-                </select>
+                <div class="uk-hidden">
+                    <select class="uk-select select-border-bottom js-transport-model-select"></select>
+                </div>
+
+                <div class="uk-position-relative">
+                    <input type="text" autocomplete="off" class="uk-input js-transport-model-input-value" placeholder="{% trans %}Модель вашего транспорта{% endtrans %}" disabled>
+                    <div class="js-model-dropdown theme-dropdown theme-dropdown-tip uk-width-1-1" uk-dropdown="mode: click; delay-hide: 100">
+                        <div class="theme-dropdown-inner-250">
+                            <ul class="js-model-dropdown-list uk-nav uk-dropdown-nav theme-dropdown-nav uk-flex uk-flex-column"></ul>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" name="modelId" class="uk-input js-transport-model-input-id" placeholder="{% trans %}ID Модели вашего транспорта{% endtrans %}">
+
             </div>
         </div>
 

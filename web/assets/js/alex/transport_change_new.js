@@ -11,8 +11,14 @@ const transportChange = (function($) {
         $markDropdown: $('.js-mark-dropdown'),
         $markDropdownList: $('.js-mark-dropdown-list'),
 
+        $modelInputValue: $('.js-transport-model-input-value'),
+        $modelInputId: $('.js-transport-model-input-id'),
+        $modelDropdown: $('.js-model-dropdown'),
+        $modelDropdownList: $('.js-model-dropdown-list'),
+
         $markCheckbox: $('.js-mark-checkbox'),
         $markCollapse: $('.js-mark-collapse'),
+
         $modelCheckbox: $('.js-model-checkbox'),
         $modelCollapse: $('.js-model-collapse'),
         $subfieldsArea: $('.js-subfields-area'),
@@ -21,7 +27,9 @@ const transportChange = (function($) {
 
     let isSubfieldsEmpty = window.isSubfieldsEmpty;
 
-    let subFields, carType, markTestArr;
+    let subFields, markTestArr, modelTestArr;
+
+    let carType = 1;
 
     let prototypeReduce = Array.prototype.reduce;
 
@@ -31,14 +39,23 @@ const transportChange = (function($) {
 
     function _bindHandlers() {
         _initModel();
+        _putMarks();
         if(isSubfieldsEmpty) _initSubfields();
         ui.$typeSelect.on('change', _changeType);
         ui.$groupSelect.on('change', _changeGroup);
-        ui.$markSelect.on('change', _changeMark);
-        ui.$markInputValue.on('focus', _showMarkDropdown);
-        $('body').on('click', '.js-mark-link-select', _selectMarkDropdown)
+
+
+
+        $('body').on('click', '.js-mark-link-select', _selectMarkDropdown);
+        $('body').on('click', '.js-model-link-select', _selectModelDropdown);
         ui.$markInputValue.on('input', _markFill);
-        ui.$modelSelect.on('change', _changeModel);
+        ui.$markInputId.on('change', _changeMark);
+        //ui.$markSelect.on('change', _changeMark);
+
+        ui.$modelInputValue.on('input', _modelFill);
+        ui.$modelInputId.on('change', _changeModel);
+        //ui.$modelSelect.on('change', _changeModel);
+
         ui.$markCheckbox.on('change', _toggleNewMark);
         ui.$modelCheckbox.on('change', _toggleNewModel);
     }
@@ -46,19 +63,33 @@ const transportChange = (function($) {
     function _selectMarkDropdown(e) {
         e.preventDefault();
         let $this = $(this),
-            currId = $this.attr('href');
+            currId = $this.attr('href'),
+            currValue = $this.text();
 
-        ui.$markInputId.val(currId);
-        UIkit.dropdown(ui.$markDropdown).hide(0);
+        ui.$markInputId.val(currId).change();
+        ui.$markInputValue.val(currValue);
+        UIkit.dropdown(ui.$markDropdown).hide();
     }
 
-    function _showMarkDropdown() {
-        //UIkit.dropdown(ui.$markDropdown).show();
+    function _selectModelDropdown(e) {
+        e.preventDefault();
+        let $this = $(this),
+            currId = $this.attr('href') - 0,
+            currValue = $this.text();
+
+        ui.$modelInputId.val(currId).change();
+        ui.$modelInputValue.val(currValue);
+
+        UIkit.dropdown(ui.$modelDropdown).hide();
     }
 
     function _initModel() {
         let markVal = ui.$markSelect.val();
-        if(!markVal) ui.$modelSelect.prop('disabled', true).selectric('refresh');
+        if(!markVal) {
+            ui.$modelSelect.prop('disabled', true).selectric('refresh');
+            ui.$modelInputValue.prop('disabled', true).val('');
+            ui.$modelInputId.val('');
+        }
     }
 
     function _initSubfields() {
@@ -135,7 +166,13 @@ const transportChange = (function($) {
                 .selectric('refresh');
 
             ui.$modelSelect.prop('selectedIndex', 0).prop('disabled', true).selectric('refresh');
+            ui.$modelInputValue.prop('disabled', true).val('');
+            ui.$modelInputId.val('');
+
             ui.$markSelect.prop('selectedIndex', 0).prop('disabled', true).selectric('refresh');
+            ui.$markInputValue.prop('disabled', true).val('');
+            ui.$markInputId.val('');
+
 
             carType = responseCarType[0];
 
@@ -154,8 +191,6 @@ const transportChange = (function($) {
 
         });
 
-
-
     }
 
     function _markFill(e) {
@@ -163,11 +198,38 @@ const transportChange = (function($) {
         let $this = $(this),
             inputVal = $this.val();
 
-        let markTestArrTwo = markTestArr.filter(i => i.value.toLowerCase().includes(inputVal.toLowerCase()));
+        let markTestArrTwo = markTestArr.filter(function(i) {
+            let currVal = i.value,
+                currValLowerCase = currVal.toLowerCase(),
+                inputValLowerCase = inputVal.toLowerCase();
+
+            return currValLowerCase.includes(inputValLowerCase);
+            //mi.value.toLowerCase().includes(inputVal.toLowerCase())
+        });
 
         ui.$markDropdownList.html('');
         $.each(markTestArrTwo, function(index, value){
             ui.$markDropdownList.append('<li><a href="' + value.id + '" class="js-mark-link-select">' + value.value + '</a></li>')
+        });
+    }
+
+    function _modelFill(e) {
+        e.preventDefault();
+        let $this = $(this),
+            inputVal = $this.val();
+
+        let modelTestArrTwo = modelTestArr.filter(function(i) {
+            let currVal = i.value,
+                currValLowerCase = currVal.toLowerCase(),
+                inputValLowerCase = inputVal.toLowerCase();
+
+            return currValLowerCase.includes(inputValLowerCase);
+            //mi.value.toLowerCase().includes(inputVal.toLowerCase())
+        });
+
+        ui.$modelDropdownList.html('');
+        $.each(modelTestArrTwo, function(index, value){
+            ui.$modelDropdownList.append('<li><a href="' + value.id + '" class="js-model-link-select">' + value.value + '</a></li>')
         });
     }
 
@@ -185,8 +247,29 @@ const transportChange = (function($) {
 
         //ui.$markDropdown.find('ul').html('');
         //markArray.each(function(index, value) {
+        ui.$markDropdownList.html('');
         $.each(markTestArr, function(index, value){
             ui.$markDropdownList.append('<li><a href="' + value.id + '" class="js-mark-link-select">' + value.value + '</a></li>')
+        });
+    }
+
+    function _putModels() {
+        let modelOptions = ui.$modelSelect.find('option');
+
+        modelTestArr = prototypeReduce.call(modelOptions, function(modelAcc, currentModel) {
+
+            modelAcc.push({id: currentModel.value, value: currentModel.textContent.trim()});
+
+            return modelAcc
+        }, []);
+
+        //return markArray;
+
+        //ui.$markDropdown.find('ul').html('');
+        //markArray.each(function(index, value) {
+        ui.$modelDropdownList.html('');
+        $.each(modelTestArr, function(index, value){
+            ui.$modelDropdownList.append('<li><a href="' + value.id + '" class="js-model-link-select">' + value.value + '</a></li>')
         });
     }
 
@@ -205,7 +288,10 @@ const transportChange = (function($) {
                         .selectric('refresh');
 
                     _putMarks();
-                    //console.log(_putMarks());
+
+                    ui.$markInputValue.prop('disabled', false).val('');
+                    ui.$markInputId.val('');
+
             });
 
             return;
@@ -220,7 +306,10 @@ const transportChange = (function($) {
                     .selectric('refresh');
 
                 _putMarks();
-                //console.log(_putMarks());
+
+                ui.$markInputValue.prop('disabled', false).val('');
+                ui.$markInputId.val('');
+
             });
         });
 
@@ -235,7 +324,8 @@ const transportChange = (function($) {
         });
 
         ui.$modelSelect.prop('selectedIndex', 0).prop('disabled', true).selectric('refresh');
-
+        ui.$modelInputValue.prop('disabled', true).val('');
+        ui.$modelInputId.val('');
     }
 
 
@@ -250,6 +340,11 @@ const transportChange = (function($) {
                 .prop('selectedIndex', 0)
                 .prop('disabled', false)
                 .selectric('refresh');
+
+            _putModels();
+
+            ui.$modelInputValue.prop('disabled', false).val('');
+            ui.$modelInputId.val('');
         });
 
     }
