@@ -6,7 +6,9 @@ const cardNewValidate = (function($) {
         $switchForm: $('.js-step-new-form'),
         $prevStep: $('.js-prev-step'),
 
+
         // Steps List
+        $stepOne: $('.js-step-one'),
         $stepTwo: $('.js-step-two'),
         $stepThree: $('.js-step-three'),
         $stepFour: $('.js-step-four'),
@@ -100,30 +102,46 @@ const cardNewValidate = (function($) {
         // Prev Step
         ui.$prevStep.on('click', _prevStep);
 
+        // Step One - Next
+        ui.$stepOne.on('click', '.js-next-step', function (e) {
+            _nextStep();
+            _scrollToElem(ui.$stepTwo);
+        })
+
         // Step Two - Next
         ui.$stepTwo.on('click', '.js-next-step', function(e){
             if (!_validateStepTwo()) return false;
             _nextStep();
+            _scrollToElem(ui.$stepThree);
         });
 
         // Step Three - Next
         ui.$stepThree.on('click', '.js-next-step', function(e){
             if (!_validateStepThree()) return false;
             _nextStep();
+            _scrollToElem(ui.$stepFour);
         });
 
         // Step Four - Next
         ui.$stepFour.on('click', '.js-next-step', function(e){
             if (!_validateStepFour()) return false;
             _nextStep();
+            _scrollToElem(ui.$stepFive);
         });
 
         // Step Five - Next
         ui.$stepFive.on('click', '.js-next-step', function(e){
             if (!_validateStepFive()) return false;
             _nextStep();
+            _scrollToElem(ui.$stepSix);
         });
 
+    }
+
+    function _scrollToElem(elem) {
+        $('html, body').stop().animate({
+            scrollTop: elem.offset().top - 160
+        }, 800);
     }
 
     // Валидация Пятого шага
