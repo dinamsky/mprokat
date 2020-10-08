@@ -27,8 +27,8 @@
     <script src="{{ asset('assets/js/alex/images_upload.js') }}"></script>
     <script src="{{ asset('assets/js/alex/address_change.js') }}"></script>
     <script src="{{ asset('assets/js/alex/tariff_change.js') }}"></script>
-    <script src="{{ asset('assets/js/alex/transport-edit_change.js') }}"></script>
-    <script src="{{ asset('assets/js/alex/card-edit_validate.js') }}"></script>
+    <script src="{{ asset('assets/js/alex/transport-edit_change_new.js') }}"></script>
+    <script src="{{ asset('assets/js/alex/card-edit_validate_new.js') }}"></script>
 
      {% if app.session.has('promote') %}
         <script src="{{ asset('assets/js/promote.js') }}"></script>
@@ -158,6 +158,17 @@
                             <select name="mark" class="uk-select select-border-bottom js-transport-mark-select">
                                 {{ include( 'common/ajax_edit_options.html.twig', { 'options': marks, 'id': mark.id }) }}
                             </select>
+
+                            <div class="uk-position-relative">
+                                <input type="text" autocomplete="off" class="uk-input js-transport-mark-input-value" placeholder="{% trans %}Марка вашего транспорта{% endtrans %}">
+                                <div class="js-mark-dropdown theme-dropdown theme-dropdown-tip uk-width-1-1" uk-dropdown="mode: click; delay-hide: 100">
+                                    <div class="theme-dropdown-inner-250">
+                                        <ul class="js-mark-dropdown-list uk-nav uk-dropdown-nav theme-dropdown-nav uk-flex uk-flex-column"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="text" name="mark" class="uk-input js-transport-mark-input-id" placeholder="{% trans %}ID марки вашего транспорта{% endtrans %}">
+
                         </div>
                     </div>
                         <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-bottom uk-text-danger uk-text-small theme-d-none js-transport-mark-select-error js-error-alert">
@@ -170,6 +181,17 @@
                             <select name="modelId" class="uk-select select-border-bottom js-transport-model-select">
                                 {{ include( 'common/ajax_edit_options.html.twig', { 'options': models, 'id': model.id }) }}
                             </select>
+
+                            <div class="uk-position-relative">
+                                <input type="text" autocomplete="off" class="uk-input js-transport-model-input-value" placeholder="{% trans %}Модель вашего транспорта{% endtrans %}">
+                                <div class="js-model-dropdown theme-dropdown theme-dropdown-tip uk-width-1-1" uk-dropdown="mode: click; delay-hide: 100">
+                                    <div class="theme-dropdown-inner-250">
+                                        <ul class="js-model-dropdown-list uk-nav uk-dropdown-nav theme-dropdown-nav uk-flex uk-flex-column"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="text" name="modelId" class="uk-input js-transport-model-input-id" placeholder="{% trans %}ID Модели вашего транспорта{% endtrans %}">
+
                         </div>
                     </div>
                         <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-bottom uk-text-danger uk-text-small theme-d-none js-transport-model-select-error js-error-alert">
