@@ -37,7 +37,7 @@ class FotoUtils extends Controller
 
         foreach($_FILES[$ff]['name'] as $k=>$v)
         {
-            if (!empty($_FILES[$ff]['name'][$k]) and in_array($_FILES[$ff]['name'][$k],$_POST['to_upload'],true))
+            if (!empty($_FILES[$ff]['name'][$k]) and in_array($_FILES[$ff]['name'][$k], $_POST['to_upload'],true))
             {
                 $ext = explode(".",basename($_FILES[$ff]['name'][$k]));
                 $ext = strtolower($ext[(count($ext)-1)]);

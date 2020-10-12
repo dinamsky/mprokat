@@ -153,9 +153,11 @@
                         <div class="uk-form-stacked">
                         <label class="uk-form-label">{% trans %}Марка{% endtrans %}</label>
                         <div class="uk-form-controls">
-                            <select name="mark" class="uk-select select-border-bottom js-transport-mark-select">
-                                {{ include( 'common/ajax_edit_options.html.twig', { 'options': marks, 'id': mark.id }) }}
-                            </select>
+                            <div class="uk-hidden">
+                                <select name="mark" class="uk-select select-border-bottom js-transport-mark-select">
+                                    {{ include( 'common/ajax_edit_options.html.twig', { 'options': marks, 'id': mark.id }) }}
+                                </select>
+                            </div>
 
                             <div class="uk-position-relative">
                                 <input type="text" autocomplete="off" class="uk-input js-transport-mark-input-value" placeholder="{% trans %}Марка вашего транспорта{% endtrans %}">
@@ -165,7 +167,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <input type="text" name="mark" class="uk-input js-transport-mark-input-id" placeholder="{% trans %}ID марки вашего транспорта{% endtrans %}">
+                            <input type="hidden" name="mark" class="uk-input js-transport-mark-input-id" placeholder="{% trans %}ID марки вашего транспорта{% endtrans %}">
 
                         </div>
                     </div>
@@ -176,9 +178,11 @@
                         <div class="uk-form-stacked">
                         <label class="uk-form-label">{% trans %}Модель{% endtrans %}</label>
                         <div class="uk-form-controls">
-                            <select name="modelId" class="uk-select select-border-bottom js-transport-model-select">
-                                {{ include( 'common/ajax_edit_options.html.twig', { 'options': models, 'id': model.id }) }}
-                            </select>
+                            <div class="uk-hidden">
+                                <select name="modelId" class="uk-select select-border-bottom js-transport-model-select">
+                                    {{ include( 'common/ajax_edit_options.html.twig', { 'options': models, 'id': model.id }) }}
+                                </select>
+                            </div>
 
                             <div class="uk-position-relative">
                                 <input type="text" autocomplete="off" class="uk-input js-transport-model-input-value" placeholder="{% trans %}Модель вашего транспорта{% endtrans %}">
@@ -188,7 +192,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <input type="text" name="modelId" class="uk-input js-transport-model-input-id" placeholder="{% trans %}ID Модели вашего транспорта{% endtrans %}">
+                            <input type="hidden" name="modelId" class="uk-input js-transport-model-input-id" placeholder="{% trans %}ID Модели вашего транспорта{% endtrans %}">
 
                         </div>
                     </div>

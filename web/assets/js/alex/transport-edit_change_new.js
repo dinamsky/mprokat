@@ -39,6 +39,7 @@ const transportEditChange = (function($) {
     function _bindHandlers() {
         _initModel();
         _putMarks();
+        _putModels();
 
         if(isSubfieldsEmpty) _initSubfields();
         ui.$typeSelect.on('change', _changeType);
@@ -60,15 +61,28 @@ const transportEditChange = (function($) {
     }
 
     function _initModel() {
+
+        carType = ui.$typeSelect.val();
+        if(ui.$groupSelect.val()) carType = ui.$groupSelect.val();
+
         let markVal = ui.$markSelect.val(),
             markText = ui.$markSelect.find('option:selected').text(),
+            modelVal = ui.$modelSelect.val(),
             modelText = ui.$modelSelect.find('option:selected').text();
+
+        ui.$markInputValue.val(markText);
+        ui.$markInputId.val(markVal);
+        ui.$modelInputValue.prop('disabled', false).val(modelText);
+        ui.$modelInputId.val(modelVal);
 
         if(!markVal) {
             ui.$modelSelect.prop('disabled', true).selectric('refresh');
             ui.$modelInputValue.prop('disabled', true).val('');
             ui.$modelInputId.val('');
+
         }
+
+
     }
 
     function _initSubfields() {
@@ -155,6 +169,8 @@ const transportEditChange = (function($) {
             return markAcc
         }, []);
 
+
+        markTestArr = markTestArr.filter(i => i.id.length);
         //return markArray;
 
         //ui.$markDropdown.find('ul').html('');
@@ -175,6 +191,7 @@ const transportEditChange = (function($) {
             return modelAcc
         }, []);
 
+        modelTestArr = modelTestArr.filter(i => i.id.length);
         //return markArray;
 
         //ui.$markDropdown.find('ul').html('');
@@ -280,6 +297,8 @@ const transportEditChange = (function($) {
 
         let $this = $(this),
             currentVal = $this.val() - 0;
+
+        carType = currentVal;
 
         if(carType.length) {
             _getData('getMarks', {groupId: carType})
