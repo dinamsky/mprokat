@@ -68,7 +68,7 @@ $( document ).ready(function() {
         if (this.files.length > 0){
             $('#js-attachfiles').removeAttr("hidden");
             $('.renter_answer').attr("disabled", false);
-            var ins = $('#js-attachfiles'); 
+            var ins = $('#js-attachfiles');
             $(ins).find('.mp-list-files').html('')
             var j = 0;
             for (var i = 0; i < this.files.length; ++i) {

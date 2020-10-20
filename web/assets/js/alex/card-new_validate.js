@@ -159,10 +159,13 @@ const cardNewValidate = (function($) {
             $rentTerms = $('.js-rent-terms'),
             rentTermsVal = $rentTerms.val();
 
+        /*
         if (!$previewPhotos.length) {
             stepFourErrors.photos = true;
             ui.$previewPhotosError.show();
-        }
+        }вфывфы
+
+         */
 
         if (!rentTermsVal.length) {
             stepFourErrors.terms = true;

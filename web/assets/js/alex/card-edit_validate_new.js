@@ -6,7 +6,10 @@ const cardEditValidate = (function($) {
         $transportType: $('.js-transport-type-select'),
         $transportGroup: $('.js-transport-group-select'),
         $transportMark: $('.js-transport-mark-select'),
+        $markInputId: $('.js-transport-mark-input-id'),
+
         $transportModel: $('.js-transport-model-select'),
+        $modelInputId: $('.js-transport-model-input-id'),
 
         $addressCountry: $('.js-address-country-select'),
         $addressRegion: $('.js-address-region-select'),
@@ -80,8 +83,8 @@ const cardEditValidate = (function($) {
 
             type = ui.$transportType.val(),
             group = ui.$transportGroup.val(),
-            mark = ui.$transportMark.val(),
-            model = ui.$transportModel.val(),
+            mark = ui.$markInputId.val(),
+            model = ui.$modelInputId.val(),
 
             rentTermsVal = ui.$rentTerms.val(),
 
