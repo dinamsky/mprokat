@@ -4,6 +4,9 @@ const imagesUpload = (function($) {
         $uploadPhoto: $('.js-upload-photo'),
         $uploadArea: $('.js-upload-area'),
         $previewPhotosError: $('.js-preview-photos-error'),
+
+        $rotateInput: $('.js-ajax-rotate-file'),
+        $rotateBtn: $('.js-ajax-rotate-btn')
     };
 
     let coutner = 0;
@@ -16,6 +19,26 @@ const imagesUpload = (function($) {
         _updSortableGrid();
         ui.$uploadPhoto.on('change', _addPhotos);
         $(document).on('click', '.js-delete-photo', _deletePhoto);
+        ui.$rotateBtn.on('click', _rotateStart);
+    }
+
+    function _rotateStart(e) {
+        e.preventDefault();
+
+        var fd = new FormData;
+        fd.append('img', ui.$rotateInput.prop('files')[0]);
+
+        $.ajax({
+            url: '/ajax/rotateFoto',
+            type: 'POST',
+            data: {id: 74151, rotate: 'r90'},
+            //processData: false,
+            //contentType: false,
+            //dataType: 'json',
+            success: function () {
+                console.log('test')
+            }
+        });
     }
 
     function _updSortableGrid() {
@@ -35,7 +58,8 @@ const imagesUpload = (function($) {
             fileClone = $(this).clone(),
             photos = $this[0].files;
 
-        fileClone.attr('name', 'fotos[][' + coutner + ']');
+        //fileClone.attr('name', 'fotos[][' + coutner + ']');
+        fileClone.attr('name', 'fotos[]');
 
         ui.$previewPhotosError.hide();
 
@@ -58,21 +82,22 @@ const imagesUpload = (function($) {
 
         let photoSize = formatBytes(photo.size);
         reader.onloadend = function() {
-            let img =
-                '<li class="js-photo-preview">' +
-                '<div class="uk-cover-container uk-inline uk-height-small uk-panel js-photo-preview-card">' +
+
+            let img = '<li class="js-photo-preview">';
+            img += '<div class="uk-cover-container uk-inline uk-height-small uk-panel js-photo-preview-card">' +
                 '<img src="' + reader.result + '" alt="">' +
                 '</div>' +
                 '<div class="uk-text-truncate uk-text-small uk-text-bold uk-text-left uk-margin-small-top uk-margin-small-bottom">' + photo.name + '</div>' +
                 '<div class="uk-flex uk-flex-middle uk-flex-between">' +
                 '<span class="uk-text-meta">' + photoSize + '</span>' +
                 '<a href="javascript:;" class="js-delete-photo button-outline-primary" uk-icon="icon: trash"></a>' +
-                '</div>' +
-                '<input type="hidden" name="to_upload[]" value="' + photo.name + '">' +
-                fileHtml +
-                '</li>';
+                '</div>'
+            ;
+            img += '<input type="hidden" name="to_upload[]" value="' + photo.name + '">';
+            img += '</li>'
             ui.$uploadArea.append(fileHtml);
-            ui.$uploadArea.prepend('<input type="hidden" name="to_upload[]" value="' + photo.name + '">');
+            //ui.$uploadArea.prepend('<input type="hidden" name="to_upload[]" value="' + photo.name + '">');
+            ui.$uploadArea.append(img);
         }
     }
 
