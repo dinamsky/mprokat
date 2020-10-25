@@ -1937,3 +1937,40 @@ body.user-base section.categories {
 .transport-card-footer {
     padding: 3px 0 0;
 }
+
+.card-edit__option-btns {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    width: 100%;
+}
+
+.card-edit__option-btns_right {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.delete_foto_button,
+.rotate_foto_button,
+.main_foto_button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    padding: 3px;
+    color: #fff;
+}
+
+.main_foto_button.not_first {
+    background: rgb(0 0 0 / 50%);
+}

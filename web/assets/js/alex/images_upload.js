@@ -31,7 +31,7 @@ const imagesUpload = (function($) {
         $.ajax({
             url: '/ajax/rotateFoto',
             type: 'POST',
-            data: {id: 74151, rotate: 'r90'},
+            data: {id: 74165, rotate: 'r90'},
             //processData: false,
             //contentType: false,
             //dataType: 'json',

@@ -54,14 +54,19 @@
                         <div class="template-photo-grid__photo" style="background-image: url('/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg');">
                         </div>
 
-                        <button type="button" class="uk-button-danger delete_foto_button" uk-close data-id="{{ foto.id }}"
-                                style="position:absolute;top:0;right:0;color: white;">
-                        </button>
+                        <div class="card-edit__option-btns uk-flex">
+                            <div class="card-edit__option-btns_left">
+                                <button type="button" class="{{ foto.isMain ? 'uk-button-primary' : 'uk-button-default not_first' }} main_foto_button" data-id="{{ foto.id }}" style="color: white;">1</button>
+                            </div>
 
-                        <button type="button" class="{{ foto.isMain ? 'uk-button-primary' : 'uk-button-default not_first' }} main_foto_button" data-id="{{ foto.id }}"
-                                style="position:absolute;top:0;left:0;color: white;">1
-                        </button>
+                            <div class="card-edit__option-btns_right">
+                                <button type="button" class="uk-button-secondary rotate_foto_button" data-rotate="0" data-id="{{ foto.id }}">
+                                    <span uk-icon="refresh"></span>
+                                </button>
+                                <button type="button" class="uk-button-danger delete_foto_button" uk-close data-id="{{ foto.id }}"></button>
+                            </div>
 
+                        </div>
                     </div>
                     {% endfor %}
                 </div>
