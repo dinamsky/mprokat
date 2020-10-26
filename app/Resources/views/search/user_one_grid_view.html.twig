@@ -19,15 +19,15 @@
     {% set serviceType = 'Аренда' %}
     {% endif %}
 
-    {% if card.currency == 'RUB' %}
-    {% set currency = 'ruble' %}
-    {% endif %}
-    {% if card.currency == 'EUR' %}
-    {% set currency = 'euro' %}
-    {% endif %}
-    {% if card.currency == 'USD' %}
-    {% set currency = 'dollar' %}
-    {% endif %}
+    {% set currency = {
+        'RUB': '<i class="fa fa-ruble"></i>',
+        'EUR': '<i class="fa fa-euro"></i>',
+        'USD': '<i class="fa fa-dollar"></i>',
+        'BYN':'Бел. Рублей',
+        'KZT':'Тенге',
+        'UAH':'Гривен',
+        'GEL':'Лари'
+    } %}
 
 
         <div class="card-item__figure">
@@ -92,7 +92,7 @@
 
     <div class="card-item__price">
         {{ c_price|number_format(0,'.','&nbsp;')|raw }}
-        &nbsp;<i class="fa fa-{{ currency }}"></i>&nbsp;
+        {{ currency[card.currency]|raw }}
         {{ c_ed }}
     </div>
     {% endif %}
