@@ -212,9 +212,10 @@ prefix="og: http://ogp.me/ns#"
                         'RUB': '<i class="fa fa-ruble"></i>',
                         'EUR': '<i class="fa fa-euro"></i>',
                         'USD': '<i class="fa fa-dollar"></i>',
-                        'BYN':'Бел. Рублей',
+                        'BYN':'Бел.Рублей',
                         'KZT':'Тенге',
-                        'UAH':'Гривен'
+                        'UAH':'Гривен',
+                        "GEL":'Лари'
                     } %}
                     <ul class="price-entry__list">
                         {% for price in card.getCardPrices if price.value != '' and price.value != '0.00' and price.priceId != 10 %}

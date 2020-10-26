@@ -13,6 +13,7 @@
                         <option value="UAH" {{ city.country == 'UKR' or city.country == 'UKR' ? 'selected' }}>UAH</option>
                         <option value="BYN" {{ city.country == 'BLR' or city.country == 'BLR' ? 'selected' }}>BYN</option>
                         <option value="KZT" {{ city.country == 'KAZ' or city.country == 'KAZ' ? 'selected' }}>KZT</option>
+                        <option value="GEL" {{ city.country == 'GEO' or city.country == 'GEO' ? 'selected' }}>GEL</option>
                     </select>
                 </div>
             </div>
@@ -26,7 +27,7 @@
             <div class="uk-form-stacked uk-align">
                 <label class="uk-form-label">{{ price.header|trans }}</label>
                 <div class="uk-inline uk-width-1-1">
-                    <span class="uk-form-icon uk-flex-right@m uk-form-icon-flip"><i class="fa fa-rub"></i></span>
+                    <span class="uk-form-icon uk-flex-right@m uk-form-icon-flip">{#<i class="fa fa-rub"></i>#}</span>
                     <input type="text"
                            class="uk-input js-pay-per-hour"
                            name="price[{{ price.id }}]"
@@ -42,7 +43,7 @@
             <div class="uk-form-stacked uk-align">
                 <label class="uk-form-label">{{ price.header|trans }}</label>
                 <div class="uk-inline uk-width-1-1">
-                    <span class="uk-form-icon uk-flex-right@m uk-form-icon-flip"><i class="fa fa-rub"></i></span>
+                    <span class="uk-form-icon uk-flex-right@m uk-form-icon-flip">{#<i class="fa fa-rub"></i>#}</span>
                     <input type="text"
                            class="uk-input js-pay-per-day"
                            name="price[{{ price.id }}]"
@@ -67,7 +68,7 @@
                 <div class="uk-form-stacked uk-align">
                     <label class="uk-form-label">{{ price.header|trans }}</label>
                     <div class="uk-inline uk-width-1-1">
-                        <span class="uk-form-icon uk-flex-right@m uk-form-icon-flip"><i class="fa fa-rub"></i></span>
+                        <span class="uk-form-icon uk-flex-right@m uk-form-icon-flip">{#<i class="fa fa-rub"></i>#}</span>
                         <input type="text"
                                class="uk-input"
                                name="price[{{ price.id }}]"
@@ -91,7 +92,7 @@
             <div class="uk-form-stacked uk-align">
                 <label class="uk-form-label">{% trans %}Залог{% endtrans %}</label>
                 <div class="uk-inline uk-width-1-1">
-                    <span class="uk-form-icon uk-flex-right@m uk-form-icon-flip"><i class="fa fa-rub"></i></span>
+                    <span class="uk-form-icon uk-flex-right@m uk-form-icon-flip">{#<i class="fa fa-rub"></i>#}</span>
                     <input type="text"
                            class="uk-input"
                            name="price[10]"
