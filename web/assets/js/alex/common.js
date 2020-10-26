@@ -25,9 +25,13 @@ const commonAlex = (function($) {
             placeholder: '+380 (00) 000-00-00',
             val: '+380 ('
         },
-        usa: {
-            placeholder: '+1 (000) 000-00-00',
-            val: '+1 ('
+        geo: {
+            placeholder: '+995 (00) 000-00-00',
+            val: '+995 ('
+        },
+        blr: {
+            placeholder: '+375 (00) 000-00-00',
+            val: '+375 ('
         }
     };
 
