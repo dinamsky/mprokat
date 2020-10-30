@@ -9,7 +9,7 @@
             <div class="uk-width-1-1 uk-width-3-5@m">
                 <div uk-form-custom>
                     {# <input class="js-upload-photo" name="fotos[]" type="file" accept="image/x-png,image/gif,image/jpeg" multiple> #}
-                    <input class="js-upload-photo" type="file" accept="image/x-png,image/gif,image/jpeg" multiple>
+                    <input class="js-upload-photo js-upload-photo-main" type="file" accept="image/x-png,image/gif,image/jpeg" multiple>
                     <button class="uk-flex uk-flex-column uk-flex-middle uk-flex-center uk-padding uk-placeholder uk-margin-remove theme-image-uploader" type="button" tabindex="-1">
                         <span class="uk-icon uk-icon-image uk-margin-small-bottom" style="background-image: url('/assets/images/icons/image-upload-icon.svg'); width: 120px; height: 40px;"></span>
                         <span class="uk-padding-small uk-padding-remove-vertical ">{% trans %}Нажмите, чтобы загрузить фотографии{% endtrans %}</span>
@@ -21,11 +21,6 @@
                 <div class="uk-text-muted">{% trans %}До 5 фотографий одновременно{% endtrans %}</div>
             </div>
 
-        </div>
-
-        <div class="ajax-rotate-test">
-            <input type="file" class="js-ajax-rotate-file">
-            <a href="javascript:;" class="js-ajax-rotate-btn">load</a>
         </div>
 
     </div>

@@ -1,15 +1,10 @@
 const imagesUpload = (function($) {
 
     let ui = {
-        $uploadPhoto: $('.js-upload-photo'),
+        $uploadPhoto: $('.js-upload-photo-main'),
         $uploadArea: $('.js-upload-area'),
         $previewPhotosError: $('.js-preview-photos-error'),
-
-        $rotateInput: $('.js-ajax-rotate-file'),
-        $rotateBtn: $('.js-ajax-rotate-btn')
     };
-
-    let coutner = 0;
 
     function init() {
         _bindHandlers();
@@ -19,26 +14,6 @@ const imagesUpload = (function($) {
         _updSortableGrid();
         ui.$uploadPhoto.on('change', _addPhotos);
         $(document).on('click', '.js-delete-photo', _deletePhoto);
-        ui.$rotateBtn.on('click', _rotateStart);
-    }
-
-    function _rotateStart(e) {
-        e.preventDefault();
-
-        var fd = new FormData;
-        fd.append('img', ui.$rotateInput.prop('files')[0]);
-
-        $.ajax({
-            url: '/ajax/rotateFoto',
-            type: 'POST',
-            data: {id: 74165, rotate: 'r90'},
-            //processData: false,
-            //contentType: false,
-            //dataType: 'json',
-            success: function () {
-                console.log('test')
-            }
-        });
     }
 
     function _updSortableGrid() {
@@ -52,27 +27,31 @@ const imagesUpload = (function($) {
     }
 
     function _addPhotos() {
-        coutner++;
-
         let $this = $(this),
             fileClone = $(this).clone(),
-            photos = $this[0].files;
+            photos = $this[0].files,
+            photosLength = photos.length;
 
-        //fileClone.attr('name', 'fotos[][' + coutner + ']');
-        fileClone.attr('name', 'fotos[]');
+        console.log(photosLength);
+
+        fileClone.attr('name', 'fotos[]').addClass('uk-hidden').removeClass('js-upload-photo-main');
+
+        if(photosLength > 1) {
+            photos = [...photos];
+            _addFileInput(fileClone);
+            photos.forEach(_previewFile);
+        } else {
+            _addNewPreview(fileClone, photos[0]);
+        }
 
         ui.$previewPhotosError.hide();
-
-        //if(!photos.length) ui.$previewPhotosError.show();
-
-        //photos = [...photos];
-
-        //ui.$uploadArea.empty();
-
-        //photos.forEach(_previewFile);
-        _addNewPreview(fileClone, photos[0])
         _updSortableGrid();
-        //_clearUploadInput();
+        _clearUploadInput();
+        //if(!photos.length) ui.$previewPhotosError.show();
+    }
+
+    function _addFileInput(fileHtml) {
+        ui.$uploadArea.append(fileHtml);
     }
 
     function _addNewPreview(fileHtml, photo) {
@@ -96,7 +75,6 @@ const imagesUpload = (function($) {
             img += '<input type="hidden" name="to_upload[]" value="' + photo.name + '">';
             img += '</li>'
             ui.$uploadArea.append(fileHtml);
-            //ui.$uploadArea.prepend('<input type="hidden" name="to_upload[]" value="' + photo.name + '">');
             ui.$uploadArea.append(img);
         }
     }

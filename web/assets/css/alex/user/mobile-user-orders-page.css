@@ -454,3 +454,8 @@
     color: #000;
 
 }
+
+.attach-back-chat,
+.mp-list-files {
+    width: 100%;
+}

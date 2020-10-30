@@ -12,7 +12,6 @@
 <script src="{{ asset('assets/js/jquery.maskedinput.js') }}"></script>
 <script src="{{ asset('assets/js/phone_validate.js') }}"></script>
 <script src="{{ asset('assets/js/order.js') }}"></script>
-<script src="{{ asset('assets/js/upload_files.js') }}"></script>
 <script src="{{ asset('assets/js/alex/mobile-user-order-page.js') }}"></script>
 {% endblock %}
 
@@ -189,7 +188,7 @@ user__order-page_mobile
 
             </div>
             <!-- type here -->
-            <div class="messenger__footer">
+            <div class="messenger__footer js-messenger-footer">
 
                 <!-- messanger footer content -->
                 {% set btm = 0 %}
@@ -206,10 +205,10 @@ user__order-page_mobile
                 {% endif %}
 
                 {% if app.session.get('logged_user').id == o.renterId %}
-                <div id="js-attachfiles" class="attach-back-chat uk-card uk-card-default" style="position: fixed; bottom: {{ btm_prog }}px;" hidden>
+                <div id="js-attachfiles" class="attach-back-chat uk-card uk-card-default" hidden>
                     <button id="attach_files_clear" type="button" uk-close></button>
                     <b>Файлы для отправки: </b><br>
-                    <div class = "mp-list-files " uk-grid></div>
+                    <div class="mp-list-files active" uk-grid></div>
                 </div>
 
                 <div style="position: fixed; bottom: {{ btm_prog }}px; width: 100%; z-index: 100; left:0;">
@@ -222,7 +221,8 @@ user__order-page_mobile
 
                         {% if app.session.get('logged_user').id == o.renterId %}
                         <div class="js-upload" uk-form-custom>
-                            <input id="attach_files" type="file" name="atfiles[]" multiple data-allow="*.jpg" data-concurrent="5" data-id="{{ o.id }}">
+                            {# <input id="attach_files" type="file" name="atfiles[]" multiple data-allow="*.jpg" data-concurrent="5" data-id="{{ o.id }}"> #}
+                            <input id="attach_files" type="file" multiple data-allow="*.jpg" data-concurrent="5" data-id="{{ o.id }}">
                             <button class="uk-button uk-button-link" type="button" tabindex="-1" style="padding: 0; color: #aaa">
                                 <span class="uk-icon uk-icon-image" style="background-image: url('/assets/images/interface/attach.svg');"></span>
                             </button>

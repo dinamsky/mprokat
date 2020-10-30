@@ -182,8 +182,8 @@ const cardNewValidate = (function($) {
             rentTermsVal = $rentTerms.val();
 
         if (!$previewPhotos.length) {
-            //stepFourErrors.photos = true;
-            //ui.$previewPhotosError.show();
+            stepFourErrors.photos = true;
+            ui.$previewPhotosError.show();
         }
 
         if (!rentTermsVal.length) {
