@@ -63,6 +63,33 @@ $( document ).ready(function() {
 
     });
 
+    $('body').on('click', '.rotate_foto_button', function () {
+        let $this = $(this),
+            fotoId = $this.attr('data-id'),
+            fotoAngle = $this.data('rotate') + 0,
+            parentBlock = $this.parents('.template-photo-grid__item'),
+            fotoBlock = parentBlock.find('.template-photo-grid__photo'),
+            data = {id: fotoId, rotate: 'r90'};
+
+        fotoBlock.fadeOut(100);
+        console.log(fotoAngle);
+
+        $.ajax({
+            url: '/ajax/rotateFoto',
+            type: 'POST',
+            data: data,
+            success: function(response){
+                console.log('Photo rotated');
+                let newRotate = fotoAngle + 1;
+                let angleToRotate = 90 * newRotate;
+                $this.data('rotate', newRotate);
+                fotoBlock.css({'transform': 'rotate(-' + angleToRotate + 'deg)'});
+
+                setTimeout(() => fotoBlock.fadeIn(600), 1000);
+            }
+        });
+    });
+
     $('body').on('click', '.main_foto_button', function(){
         var t = $(this);
         var id = $(t).data('id');

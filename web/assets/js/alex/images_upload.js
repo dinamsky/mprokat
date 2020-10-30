@@ -1,12 +1,10 @@
 const imagesUpload = (function($) {
 
     let ui = {
-        $uploadPhoto: $('.js-upload-photo'),
+        $uploadPhoto: $('.js-upload-photo-main'),
         $uploadArea: $('.js-upload-area'),
         $previewPhotosError: $('.js-preview-photos-error'),
     };
-
-    let coutner = 0;
 
     function init() {
         _bindHandlers();
@@ -29,26 +27,31 @@ const imagesUpload = (function($) {
     }
 
     function _addPhotos() {
-        coutner++;
-
         let $this = $(this),
             fileClone = $(this).clone(),
-            photos = $this[0].files;
+            photos = $this[0].files,
+            photosLength = photos.length;
 
-        fileClone.attr('name', 'fotos[][' + coutner + ']');
+        console.log(photosLength);
+
+        fileClone.attr('name', 'fotos[]').addClass('uk-hidden').removeClass('js-upload-photo-main');
+
+        if(photosLength > 1) {
+            photos = [...photos];
+            _addFileInput(fileClone);
+            photos.forEach(_previewFile);
+        } else {
+            _addNewPreview(fileClone, photos[0]);
+        }
 
         ui.$previewPhotosError.hide();
-
-        //if(!photos.length) ui.$previewPhotosError.show();
-
-        //photos = [...photos];
-
-        //ui.$uploadArea.empty();
-
-        //photos.forEach(_previewFile);
-        _addNewPreview(fileClone, photos[0])
         _updSortableGrid();
-        //_clearUploadInput();
+        _clearUploadInput();
+        //if(!photos.length) ui.$previewPhotosError.show();
+    }
+
+    function _addFileInput(fileHtml) {
+        ui.$uploadArea.append(fileHtml);
     }
 
     function _addNewPreview(fileHtml, photo) {
@@ -58,21 +61,21 @@ const imagesUpload = (function($) {
 
         let photoSize = formatBytes(photo.size);
         reader.onloadend = function() {
-            let img =
-                '<li class="js-photo-preview">' +
-                '<div class="uk-cover-container uk-inline uk-height-small uk-panel js-photo-preview-card">' +
+
+            let img = '<li class="js-photo-preview">';
+            img += '<div class="uk-cover-container uk-inline uk-height-small uk-panel js-photo-preview-card">' +
                 '<img src="' + reader.result + '" alt="">' +
                 '</div>' +
                 '<div class="uk-text-truncate uk-text-small uk-text-bold uk-text-left uk-margin-small-top uk-margin-small-bottom">' + photo.name + '</div>' +
                 '<div class="uk-flex uk-flex-middle uk-flex-between">' +
                 '<span class="uk-text-meta">' + photoSize + '</span>' +
                 '<a href="javascript:;" class="js-delete-photo button-outline-primary" uk-icon="icon: trash"></a>' +
-                '</div>' +
-                '<input type="hidden" name="to_upload[]" value="' + photo.name + '">' +
-                fileHtml +
-                '</li>';
+                '</div>'
+            ;
+            img += '<input type="hidden" name="to_upload[]" value="' + photo.name + '">';
+            img += '</li>'
             ui.$uploadArea.append(fileHtml);
-            ui.$uploadArea.prepend('<input type="hidden" name="to_upload[]" value="' + photo.name + '">');
+            ui.$uploadArea.append(img);
         }
     }
 

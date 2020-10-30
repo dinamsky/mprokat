@@ -12,8 +12,10 @@
 <script src="{{ asset('assets/js/image_upload_preview.js') }}"></script>
 <script src="{{ asset('assets/js/jquery.maskedinput.js') }}"></script>
 <script src="{{ asset('assets/js/phone_validate.js') }}"></script>
-<script src="{{ asset('assets/js/alex/transport_orders.js') }}"></script>
+{# <script src="{{ asset('assets/js/alex/transport_orders.js') }}"></script> #}
+<script src="{{ asset('assets/js/order.js') }}"></script>
 <script src="{{ asset('assets/js/alex/user-messages.js') }}"></script>
+
 {% endblock %}
 
 {% block bodyClass %}
@@ -372,7 +374,7 @@ big_order_list
 
                                 </div>
                             </div>
-                            <div class="chat-footer ord_content">
+                            <div class="chat-footer ord_content js-messenger-footer">
 
                                 <div class="uk-grid-small uk-flex-middle" uk-grid>
                                     <!-- Attachment -->
@@ -380,7 +382,8 @@ big_order_list
                                     <div class="uk-width-auto">
                                         <div class="js-upload" uk-form-custom>
                                             {# <progress id="js-progressbar" class="uk-progress" max="1" hidden="hidden"></progress> #}
-                                            <input id="attach_files" type="file" name="atfiles[]" multiple data-allow="*.jpg" data-concurrent="5" data-id="{{ o.id }}">
+                                            {# <input id="attach_files" type="file" name="atfiles[]" multiple data-allow="*.jpg" data-concurrent="5" data-id="{{ o.id }}"> #}
+                                            <input id="attach_files" type="file" multiple data-allow="*.jpg" data-concurrent="5" data-id="{{ o.id }}">
                                             <button class="uk-button uk-button-default" type="button" tabindex="-1" style="padding: 0px 0px;">
                                                 <div class="uk-flex uk-flex-center" style="height: auto;    color: #12d061;
                     width: 40px;
@@ -391,8 +394,6 @@ big_order_list
                                                 </div>
                                             </button>
                                         </div>
-
-                                        <span class="uk-icon uk-icon-image" style="background-image: url('/assets/images/icons/icon-attachment.svg');"></span>
                                     </div>
                                     {% endif %}
                                     <!-- /Attachment -->

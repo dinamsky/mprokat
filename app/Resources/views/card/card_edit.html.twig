@@ -56,14 +56,19 @@
                         <div class="template-photo-grid__photo" style="background-image: url('/assets/images/cards/{{ foto.folder }}/{{ foto.id }}.jpg');">
                         </div>
 
-                        <button type="button" class="uk-button-danger delete_foto_button" uk-close data-id="{{ foto.id }}"
-                                style="position:absolute;top:0;right:0;color: white;">
-                        </button>
+                        <div class="card-edit__option-btns uk-flex">
+                            <div class="card-edit__option-btns_left">
+                                <button type="button" class="{{ foto.isMain ? 'uk-button-primary' : 'uk-button-default not_first' }} main_foto_button" data-id="{{ foto.id }}" style="color: white;">1</button>
+                            </div>
 
-                        <button type="button" class="{{ foto.isMain ? 'uk-button-primary' : 'uk-button-default not_first' }} main_foto_button" data-id="{{ foto.id }}"
-                                style="position:absolute;top:0;left:0;color: white;">1
-                        </button>
+                            <div class="card-edit__option-btns_right">
+                                <button type="button" class="uk-button-secondary rotate_foto_button" data-rotate="0" data-id="{{ foto.id }}">
+                                    <span uk-icon="refresh"></span>
+                                </button>
+                                <button type="button" class="uk-button-danger delete_foto_button" uk-close data-id="{{ foto.id }}"></button>
+                            </div>
 
+                        </div>
                     </div>
                     {% endfor %}
                 </div>
@@ -74,7 +79,7 @@
 
             <div class="uk-width-1-1 uk-width-3-5@m">
                 <div uk-form-custom>
-                    <input class="js-upload-photo" name="fotos[]" type="file" accept="image/x-png,image/gif,image/jpeg" multiple>
+                    <input class="js-upload-photo js-upload-photo-main" type="file" accept="image/x-png,image/gif,image/jpeg" multiple>
                     <button class="uk-flex uk-flex-column uk-flex-middle uk-flex-center uk-padding uk-placeholder uk-margin-remove theme-image-uploader" type="button" tabindex="-1">
                         <span class="uk-icon uk-icon-image uk-margin-small-bottom" style="background-image: url('/assets/images/icons/image-upload-icon.svg'); width: 120px; height: 40px;"></span>
                         <span class="uk-padding-small uk-padding-remove-vertical ">{% trans %}Нажмите, чтобы загрузить фотографии{% endtrans %}</span>

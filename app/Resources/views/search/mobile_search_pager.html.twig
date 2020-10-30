@@ -1,6 +1,6 @@
 {% if total_pages > 1 %}
     <hr>
-    <div id="pager" class="uk-text-center">
+    <div id="pager" class="uk-text-center uk-margin-medium-bottom">
         {# {% if total_pages > pages_in_center %} #}
 
             {% if current_page > 1 %}
@@ -27,7 +27,7 @@
 
     </div>
     <div class="uk-grid-medium uk-flex-middle uk-flex-between uk-child-width-1-1 uk-child-width-auto@m" uk-grid>
-        <div class="uk-flex uk-flex-middle">
+        <div class="uk-flex uk-flex-middle uk-flex-center">
             <span class="uk-margin-small-right">{% trans %}На странице{% endtrans %}</span>
             <select name="onpage" id="onpage" class="uk-select select-border-bottom" form="searchForm">
                 <option value="12" {{ 12 == onpage ? 'selected' : '' }}>12</option>
@@ -37,7 +37,7 @@
             <span class="uk-margin-small-left">{% trans %}транспорта{% endtrans %}</span>
         </div>
 
-        <div class="uk-flex uk-flex-middle">
+        <div class="uk-flex uk-flex-middle uk-flex-center">
             {% trans %}Показать{% endtrans %}
             <button class="uk-margin-small-right uk-margin-small-left view_select {{ view == 'grid_view' ? 'uk-button-primary' : '' }}" type="button" value="grid_view" uk-icon="icon:grid"></button>
             {% trans %}или{% endtrans %}

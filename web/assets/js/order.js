@@ -46,7 +46,7 @@ $( document ).ready(function() {
         $(this).attr("disabled", true);
         var id = $(this).val();
         var answer = $(this).parents('.ord_content').find('textarea[name="answer"], textarea[name="message"]').val();
-        
+
         $.ajax({
             url: '/ajax_owner_answer',
             type: 'POST',
@@ -65,6 +65,33 @@ $( document ).ready(function() {
     });
 
     $('#attach_files').on('change', function () {
+        $('.mp-list-files').removeClass('active');
+
+        console.log('test');
+
+        $('#js-attachfiles').attr('hidden', false);
+        $('.renter_answer').attr('disabled', false);
+
+        let $this = $(this),
+            fileClone = $(this).clone(),
+            photos = $this[0].files,
+            photosLength = photos.length,
+            parentfooter = $(this).parents('.js-messenger-footer'),
+            mpListFiles = parentfooter.find('.mp-list-files');
+
+        mpListFiles.addClass('active');
+
+        fileClone.attr('name', 'atfiles[]').addClass('uk-hidden js-attachfiles-file').attr('id', '');
+
+        if(photosLength > 1) {
+            photos = [...photos];
+            _addFileInput(fileClone);
+            photos.forEach(_previewFile);
+        } else {
+            _addNewPreview(fileClone, photos[0]);
+        }
+
+        /*
         if (this.files.length > 0){
             $('#js-attachfiles').removeAttr("hidden");
             $('.renter_answer').attr("disabled", false);
@@ -85,7 +112,38 @@ $( document ).ready(function() {
         } else {
             $('#js-attachfiles').attr("hidden");
         }
+         */
+        $this.val('');
     });
+
+    function _addFileInput(fileHtml) {
+        $('.mp-list-files.active').append(fileHtml);
+    }
+
+    function _addNewPreview(fileHtml, photo) {
+        let reader = new FileReader();
+
+        reader.readAsDataURL(photo);
+
+        reader.onloadend = function() {
+
+            let img = '<div class="uk-width-1-5 preview_parent uk-position-relative"><img src="' + reader.result + '" style="max-height: 100px; max-width: 100px;" alt=""><span class="delete_preview"><i class="fa fa-close"></i></span><input type="hidden" name="files[]" value="'+ photo.name + '"></div>';
+
+            $('.mp-list-files.active').append(fileHtml);
+            $('.mp-list-files.active').append(img);
+        }
+    }
+
+    function _previewFile(photo) {
+        let reader = new FileReader();
+        reader.readAsDataURL(photo);
+
+        reader.onloadend = function() {
+            let img = '<div class="uk-width-1-5 preview_parent uk-position-relative"><img src="' + reader.result + '" style="max-height: 100px; max-width: 100px;" alt=""><span class="delete_preview"><i class="fa fa-close"></i></span><input type="hidden" name="files[]" value="'+ photo.name + '"></div>';
+            $('.mp-list-files.active').append(img);
+        }
+    }
+
 
     $('#attach_files').on('click','.delete_preview', function() {
         $(this).parents('.preview_parent').remove();
@@ -113,17 +171,32 @@ $( document ).ready(function() {
 
         $(this).attr("disabled", true);
         var bar = document.getElementById('js-progressbar');
-        
+
         var answer = $(this).parents('.ord_content').find('textarea[name="answer"]').val();
         var fd = new FormData;
 
         fd.append('id', $(this).val());
         fd.append('answer', answer);
+
+        /*
         $.each($('#attach_files')[0].files, function(i, file) {
             fd.append('files[]', file, file.name);
         });
-        
+         */
+
+        $.each($('.js-attachfiles-file'), function(i, input) {
+            $.each(input.files, function(i, file) {
+                fd.append('files[]', file, file.name);
+            });
+        });
+
+        /*
         $.each($('#js-attachfiles').find('.mp-list-files input[name="files[]"]'), function(i, file){
+            fd.append('files_in[]', $(file).val());
+        });
+         */
+
+        $.each($('#js-attachfiles').find('.mp-list-files.active input[name="files[]"]'), function(i, file){
             fd.append('files_in[]', $(file).val());
         });
 
@@ -143,7 +216,7 @@ $( document ).ready(function() {
                         //Do something with upload progress here
                     }
                 }, false);
-       
+
                 return xhr;
             },
             url: '/ajax_renter_answer',
