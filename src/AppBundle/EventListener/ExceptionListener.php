@@ -35,6 +35,8 @@ class ExceptionListener
             $exception->getCode()
         );
 
+
+
 //        $msg = (new \Swift_Message('Ошибка в системе'))
 //                ->setFrom('mail@multiprokat.com')
 //                ->setTo('wqs-info@mail.ru')
@@ -81,7 +83,13 @@ class ExceptionListener
             }
 
         } else {
-            $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+            $templating = $this->container->get('templating');
+
+            $city = $event->getRequest()->getSession()->get('city');
+            $response = new Response($templating->render('TwigBundle:Exception:error500.html.twig', array(
+                'city' => $city,
+                'lang' => 'ru'
+            )));
 
         }
 
