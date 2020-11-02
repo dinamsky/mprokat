@@ -22,6 +22,13 @@
             <link href="{{ asset('assets/css/selectric-default.css') }}" rel="stylesheet">
             <link href="{{ asset('assets/css/styles.min.css') }}" rel="stylesheet">
             <link href="{{ asset('assets/css/alex/common.css') }}" rel="stylesheet">
+
+            <link href="{{ asset('assets/css/tilda-grid-3.css') }}" rel="stylesheet">
+            <link href="{{ asset('assets/css/tilda-blocks-2.css') }}" rel="stylesheet">
+            <link href="{{ asset('assets/css/tilda-animation-1.css') }}" rel="stylesheet">
+            <link href="{{ asset('assets/css/tilda-menusub-1.css') }}" rel="stylesheet">
+            <link href="{{ asset('assets/css/tilda-slds-1.css') }}" rel="stylesheet">
+
         {% endblock %}
 
         {% block openGraph %}
@@ -31,14 +38,53 @@
         {% endblock %}
 
         {% block socialScripts %}
+            <script type="text/javascript">
+                window.dataLayer = window.dataLayer || [];
+
+            </script>
+            <script type="text/javascript">
+                if ((/bot|google|yandex|baidu|bing|msn|duckduckbot|teoma|slurp|crawler|spider|robot|crawling|facebook/i.test(navigator.userAgent)) === false && typeof(sessionStorage) != 'undefined' && sessionStorage.getItem('visited') !== 'y') {
+                    var style = document.createElement('style');
+                    style.type = 'text/css';
+                    style.innerHTML = '@media screen and (min-width: 980px) {.t-records {opacity: 0;}.t-records_animated {-webkit-transition: opacity ease-in-out .2s;-moz-transition: opacity ease-in-out .2s;-o-transition: opacity ease-in-out .2s;transition: opacity ease-in-out .2s;}.t-records.t-records_visible {opacity: 1;}}';
+                    document.getElementsByTagName('head')[0].appendChild(style);
+                    $(document).ready(function() {
+                        $('.t-records').addClass('t-records_animated');
+                        setTimeout(function() {
+                            $('.t-records').addClass('t-records_visible');
+                            sessionStorage.setItem('visited', 'y');
+                        }, 400);
+                    });
+                }
+
+            </script>
+            <style type="text/css">
+                @media screen and (min-width: 980px) {
+                    .t-records {
+                        opacity: 0;
+                    }
+
+                    .t-records_animated {
+                        -webkit-transition: opacity ease-in-out .2s;
+                        -moz-transition: opacity ease-in-out .2s;
+                        -o-transition: opacity ease-in-out .2s;
+                        transition: opacity ease-in-out .2s;
+                    }
+
+                    .t-records.t-records_visible {
+                        opacity: 1;
+                    }
+                }
+
+            </style>
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('assets/favicon.ico') }}">
         <meta name="yandex-verification" content="a2d59e156f2bd014" />
     </head>
-    <body {% block bodyVars %}{% endblock %} class="{{ is_mobile() ? 'mobile' : 'desktop' }} {% block bodyClass %}{% endblock %}">
+    <body {% block bodyVars %}{% endblock %} class="t-body {{ is_mobile() ? 'mobile' : 'desktop' }} {% block bodyClass %}{% endblock %}" style="margin: 0px;">
         {{ include('header.html.twig') }}
-        <div id="content"><div class="page uk-margin-large-bottom">{% block content %}{% endblock %}</div></div>
-        {{ include('footer.html.twig') }}
+        <div id="content" style="padding-top: 0px"><div class="page uk-margin-large-bottom">{% block content %}{% endblock %}</div></div>
+        {{ include('footer_с.html.twig') }}
 
         {% block javascripts %}
             <script src="{{ asset('assets/js/jquery-3.2.1.min.js') }}"></script>
@@ -52,6 +98,15 @@
             <script src="{{ asset('assets/js/search_popup.js') }}"></script>
             <script src="{{ asset('assets/js/scripts.min.js') }}"></script>
             <script src="{{ asset('assets/js/alex/common.js') }}"></script>
+
+            <script src="{{ asset('assets/js/tildastat-0.js') }}"></script>
+            <script src="{{ asset('assets/js/tilda-scripts-2.js') }}"></script>
+            <script src="{{ asset('assets/js/tilda-blocks-2.js') }}"></script>
+            <script src="{{ asset('assets/js/lazyload-1.js') }}"></script>
+            <script src="{{ asset('assets/js/tilda-animation-1.js') }}"></script>
+            <script src="{{ asset('assets/js/tilda-menusub-1.js') }}"></script>
+            <script src="{{ asset('assets/js/tilda-slds-1.js') }}"></script>
+            <script src="{{ asset('assets/js/hammer.js') }}"></script>
 
             {% if app.session.has('logged_user') %}
                 <script src="{{ asset('assets/js/user_notify.js') }}"></script>
