@@ -21,8 +21,10 @@ class SitemapBaseCity extends Controller
 
         // add static urls
 
-
-        foreach ($em->getRepository('AppBundle:City')->findBy(['country'=>'RUS']) as $city) {
+        $dql = "SELECT c FROM AppBundle:City c WHERE c.country = 'RUS' AND c.total >= 1";
+        $query = $em->createQuery($dql);
+        $city_ids = $query->getResult();
+        foreach ($city_ids as $city) {
         foreach ($em->getRepository('AppBundle:GeneralType')->findAll() as $gt){
 
                 $urls[] = array(
