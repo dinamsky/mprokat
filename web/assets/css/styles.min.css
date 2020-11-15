@@ -6784,7 +6784,11 @@ h6 {
     text-align: center
 }
 
+
 img {
+    max-width: 100%
+}
+.js-photo-preview-card img {
     max-width: 100%
 }
 
