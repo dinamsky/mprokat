@@ -50,30 +50,34 @@ class MainPageController extends Controller
 
         $all = $this->getDoctrine()
             ->getRepository(Card::class)
-            ->getLimitedSliders([2,6,8,9,13], $this->get('session')->get('city')->getId());
+            ->getLimitedSliders([2,8,9,10,17], $this->get('session')->get('city')->getId());
 
         $cars = $all[2];
         $quadro = $all[9];
         $wedding = $all[6];
-        // $snow = $all[10];
+         $snow = $all[10];
         // $trucks = $all[3];
         $yachts = $all[13];
         $bikes = $all[8];
         shuffle($cars);
         // $moto = $all[8];
-        // $heli = $all[17];
+         $heli = $all[17];
 
         $countsGr = [
+            'heli'=> count($heli),
+            'snow'=>count($snow),
             'bikes'=>count($bikes),
-            'wedding'=>count($wedding),
+           // 'wedding'=>count($wedding),
             'quadro'=>count($quadro),
-            'yachts'=>count($yachts),
+           // 'yachts'=>count($yachts),
         ];
         $grHeader = [
+            'snow'=>'Снегоходы',
+            'heli'=>'Вертолеты',
             'bikes'=>'Мотоциклы',
-            'wedding'=>'Свадебные авто',
+            //'wedding'=>'Свадебные авто',
             'quadro'=>'Квадроциклы',
-            'yachts'=>'Яхты',
+           // 'yachts'=>'Яхты',
         ];
         asort($countsGr);
 
@@ -214,13 +218,13 @@ class MainPageController extends Controller
             // 'bikes' => $bikes,
 
             'blockCars' => [
-                // 'heli' => $heli,
-                // 'snow' => $snow,
+                 'heli' => $heli,
+                 'snow' => $snow,
                 // 'moto' => $moto,
-                'wedding' => $wedding,
+               // 'wedding' => $wedding,
                 'quadro' => $quadro,
                 // 'trucks' => $trucks,
-                'yachts' => $yachts,
+               // 'yachts' => $yachts,
                 'bikes' => $bikes,
             ],
             'positionCars' => $grCount,
