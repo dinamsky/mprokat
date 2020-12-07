@@ -50,12 +50,20 @@ class MainPageController extends Controller
 
         $all = $this->getDoctrine()
             ->getRepository(Card::class)
-            ->getLimitedSliders([2,6,8,9,10,13,17], $this->get('session')->get('city')->getId());
-
+            ->getLimitedSliders([2,4,5,6,8,9,10,13,14,15,17,18,28,29,30,44], $this->get('session')->get('city')->getId());
+        $buggy = $all[44];
         $cars = $all[2];
         $quadro = $all[9];
         $wedding = $all[6];
          $snow = $all[10];
+         $specialmachines = $all[18];
+         $bicycles = $all[15];
+         $vans = $all[5];
+         $airplanes = $all[29];
+         $rv = $all[30];
+         $segways = $all[14];
+         $limo = $all[4];
+         $scooters = $all[28];
         // $trucks = $all[3];
         $yachts = $all[13];
         $bikes = $all[8];
@@ -65,24 +73,42 @@ class MainPageController extends Controller
 
         $countsGr = [
 
-            'snow'=>count($snow),
+            'snowride'=>count($snow),
             'quadro'=>count($quadro),
+            'buggy' => count($buggy),
+            'segways' => count($segways),
             'bikes'=>count($bikes),
-            'heli'=> count($heli),
+            'bicycles'=>count($bicycles),
+            'scooters'=>count($scooters),
+            'vans'=>count($vans),
+            'rv'=>count($rv),
+            'limo'=>count($limo),
             'wedding'=>count($wedding),
+            'heli'=> count($heli),
            'yachts'=>count($yachts),
+            'airplanes'=>count($airplanes),
+            'special-machines' => count($specialmachines),
            // 'trucks'=>count($trucks),
         ];
         $grHeader = [
-            'snow'=>'Снегоходы',
+            'buggy' => 'Багги',
+            'snowride'=>'Снегоходы',
             'heli'=>'Вертолеты',
             'bikes'=>'Мотоциклы',
             'wedding'=>'Свадебные авто',
             'quadro'=>'Квадроциклы',
             'yachts'=>'Яхты',
+            'rv'=>'Автодома',
+            'airplanes'=>'Самолеты',
+            'vans'=>'Микроавтобусы',
+            'bicycles'=>'Велосипеды',
+            'special-machines' => 'Спецтехника',
+            'segways' => 'Сегвеи',
+            'scooters' => 'Мотороллеры',
+            'limo' => 'Лимузины',
             //'trucks'=>'Грузовые',
         ];
-        asort($countsGr);
+//        asort($countsGr);
 
         $totalCount = 0;
         $keyGr = 0;
@@ -221,14 +247,22 @@ class MainPageController extends Controller
             // 'bikes' => $bikes,
 
             'blockCars' => [
-                 'heli' => $heli,
-                 'snow' => $snow,
-                // 'moto' => $moto,
-                'wedding' => $wedding,
-                'quadro' => $quadro,
-                // 'trucks' => $trucks,
-                'yachts' => $yachts,
+                'buggy' => $buggy,
                 'bikes' => $bikes,
+                'special-machines'=>$specialmachines,
+                 'heli' => $heli,
+                 'snowride' => $snow,
+                'quadro' => $quadro,
+                'bicycles'=>$bicycles,
+                'wedding' => $wedding,
+               'vans' => $vans,
+                'airplanes' => $airplanes,
+                'yachts' => $yachts,
+                'rv'=>$rv,
+                'segways' => $segways,
+                'scooters' => $scooters,
+                'limo' => $limo,
+
             ],
             'positionCars' => $grCount,
             'positionHeader' => $grHeader,
